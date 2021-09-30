@@ -24,12 +24,6 @@ class TranslationServiceProvider extends ServiceProvider
     public function register()
     {
         $toBind = [
-            ITranslationRepository::class    => TranslationRepository::class,
-            ITranslationEntity::class        => TranslationRepository::class,
-            IDependencyInjector::class       => DI::class,
-            IAndFilterComposite::class       => AndFilterComposite::class,
-            IFilter::class                   => Filter::class,
-            IOrderBy::class                  => OrderBy::class
 
         ];
 
