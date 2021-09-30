@@ -3,18 +3,11 @@
 namespace Jawabkom\Backend\Module\Translation\Test\Classes\Provider;
 
 use Illuminate\Support\ServiceProvider;
-use Jawabkom\Backend\Module\Translation\Contract\{ITranslationEntity,ITranslationRepository};
-use Jawabkom\Backend\Module\Translation\Test\Classes\{AbstractTranslation,
-    Composite\Filter,
-    Composite\Filters\AndFilterComposite,
-    Composite\OrderBy,
-    Composite\OrderByComposite,
-    DI,
-    TranslationEntity,
-    TranslationRepository};
-use Jawabkom\Standard\Contract\{IAndFilterComposite, IDependencyInjector, IFilter, IOrderBy, IOrderByFilterComposite};
+use Jawabkom\Backend\Module\Translation\Test\Classes\{
+    DI
+};
 
-class TranslationServiceProvider extends ServiceProvider
+class ProfileServiceProvider extends ServiceProvider
 {
     public function boot(){
         $this->registerResources();
