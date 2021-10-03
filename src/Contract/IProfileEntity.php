@@ -9,5 +9,5 @@ interface IProfileEntity extends IEntity
     public function addName(IProfileEntityName $name);
     public function getNames():iterable;
 
-    
+
 }
