@@ -1,5 +1,5 @@
 {
-    "name": "jawabkom-com/backend-translation-module",
+    "name": "jawabkom-com/backend-profiles-module",
     "type": "library",
     "authors": [
         {
@@ -13,8 +13,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Jawabkom\\Backend\\Module\\Translation\\": "src/",
-            "Jawabkom\\Backend\\Module\\Translation\\Test\\": "tests/"
+            "Jawabkom\\Backend\\Module\\Profile\\": "src/",
+            "Jawabkom\\Backend\\Module\\Profile\\Test\\": "tests/"
         }
     },
     "description": "",

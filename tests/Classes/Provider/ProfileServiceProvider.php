@@ -1,9 +1,9 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Translation\Test\Classes\Provider;
+namespace Jawabkom\Backend\Module\Profile\Test\Classes\Provider;
 
 use Illuminate\Support\ServiceProvider;
-use Jawabkom\Backend\Module\Translation\Test\Classes\{
+use Jawabkom\Backend\Module\Profile\Test\Classes\{
     DI
 };
 

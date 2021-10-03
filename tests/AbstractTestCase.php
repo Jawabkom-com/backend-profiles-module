@@ -1,8 +1,8 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Translation\Test;
+namespace Jawabkom\Backend\Module\Profile\Test;
 
-use Jawabkom\Backend\Module\Translation\Test\Classes\Provider\TranslationServiceProvider;
+use Jawabkom\Backend\Module\Profile\Test\Classes\Provider\TranslationServiceProvider;
 use Orchestra\Testbench\TestCase as TestCaseAlisa;
 
 class AbstractTestCase extends TestCaseAlisa

@@ -1,6 +1,6 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Translation\Test\Classes;
+namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
 use Jawabkom\Standard\Contract\IDependencyInjector;
 
