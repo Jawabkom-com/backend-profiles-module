@@ -14,4 +14,11 @@ interface IProfileEntityName
 
     public function setMiddle(string $middle);
     public function getMiddle():string;
+
+    public function setLast(string $last);
+    public function getLast():string;
+
+    public function setDisplay(string $display);
+    public function getDisplay():string;
+
 }
