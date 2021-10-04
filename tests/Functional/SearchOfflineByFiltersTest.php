@@ -12,7 +12,9 @@ class SearchOfflineByFiltersTest extends AbstractTestCase
     }
 
     //search by filter
-    public function testSearchResultByName(){}
+    public function testSearchResultByName(){
+        $this->assertTrue(true);
+    }
 
     //search by filter
     public function testSearchResultByEmail(){}

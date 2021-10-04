@@ -12,7 +12,7 @@ interface IProfileEntityImage
     public function setLocalPath(string $localPath);
     public function getLocalPath():string;
 
-    public function setValidSince(string $validSince);
-    public function getValidSince():string;
+    public function setValidSince(\DateTime $validSince);
+    public function getValidSince():\DateTime;
 
 }

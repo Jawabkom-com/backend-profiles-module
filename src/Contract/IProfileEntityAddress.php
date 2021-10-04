@@ -5,8 +5,8 @@ namespace Jawabkom\Backend\Module\Profile\Contract;
 
 interface IProfileEntityAddress
 {
-    public function setValidSince(string $validSince);
-    public function getValidSince():string;
+    public function setValidSince(\DateTime $validSince);
+    public function getValidSince():\DateTime;
 
     public function setCountry(string $country);
     public function getCountry():string;

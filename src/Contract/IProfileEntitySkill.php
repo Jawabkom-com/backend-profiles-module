@@ -6,8 +6,8 @@ use Jawabkom\Standard\Contract\IEntity;
 
 interface IProfileEntitySkill
 {
-    public function setValidSince(string $validSince);
-    public function getValidSince():string;
+    public function setValidSince(\DateTime $validSince);
+    public function getValidSince():\DateTime;
 
     public function setLevel(string $level);
     public function getLevel():string;

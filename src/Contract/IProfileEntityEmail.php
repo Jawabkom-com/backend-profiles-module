@@ -6,8 +6,8 @@ use Jawabkom\Standard\Contract\IEntity;
 
 interface IProfileEntityEmail
 {
-    public function setValidSince(string $validSince);
-    public function getValidSince():string;
+    public function setValidSince(\DateTime $validSince);
+    public function getValidSince():\DateTime;
 
     public function setEmail(string $email);
     public function getEmail():string;

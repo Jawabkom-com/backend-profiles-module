@@ -6,8 +6,8 @@ use Jawabkom\Standard\Contract\IEntity;
 
 interface IProfileEntitySocialProfile
 {
-    public function setValidSince(string $validSince);
-    public function getValidSince():string;
+    public function setValidSince(\DateTime $validSince);
+    public function getValidSince():\DateTime;
 
     public function setUrl(string $url);
     public function getUrl():string;
