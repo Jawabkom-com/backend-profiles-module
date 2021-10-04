@@ -23,6 +23,4 @@ interface IProfileRepository extends IRepository {
 
     public function deleteEntity(IProfileEntity|IEntity $entity):bool;
 
-    public function getByKey(string $key, string $group = '', string $language = '', string $countryCode = ''): IEntity|IProfileEntity|null;
-
 }

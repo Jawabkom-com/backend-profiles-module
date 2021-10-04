@@ -6,5 +6,5 @@ use Jawabkom\Standard\Contract\IEntity;
 
 interface IProfileEntityMapper extends IEntity
 {
-    public function map(mixed $searchResult):IProfileEntity;
+    public function map(mixed $searchResult):iterable;
 }
