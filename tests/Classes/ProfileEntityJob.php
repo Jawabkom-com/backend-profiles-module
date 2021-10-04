@@ -22,61 +22,61 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setValidSince(\DateTime $validSince)
      {
-         // TODO: Implement setValidSince() method.
+         $this->valid_since = $validSince;
      }
 
      public function getValidSince(): \DateTime
      {
-         // TODO: Implement getValidSince() method.
+         return $this->valid_sence;
      }
 
      public function setFrom(string $from)
      {
-         // TODO: Implement setFrom() method.
+         $this->from = $from;
      }
 
      public function getFrom(): string
      {
-         // TODO: Implement getFrom() method.
+         return $this->from;
      }
 
      public function setTo(string $to)
      {
-         // TODO: Implement setTo() method.
+         $this->to = $to;
      }
 
      public function getTo(): string
      {
-         // TODO: Implement getTo() method.
+         return $this->to;
      }
 
      public function setTitle(string $title)
      {
-         // TODO: Implement setTitle() method.
+         $this->title = $title;
      }
 
      public function getTitle(): string
      {
-         // TODO: Implement getTitle() method.
+         return $this->title;
      }
 
      public function setOrganization(string $organization)
      {
-         // TODO: Implement setOrganization() method.
+         $this->organization = $organization;
      }
 
      public function getOrganization(): string
      {
-         // TODO: Implement getOrganization() method.
+         return $this->organization;
      }
 
      public function setIndustry(string $industry)
      {
-         // TODO: Implement setIndustry() method.
+         $this->industry = $industry;
      }
 
      public function getIndustry(): string
      {
-         // TODO: Implement getIndustry() method.
+         return $this->industry;
      }
  }

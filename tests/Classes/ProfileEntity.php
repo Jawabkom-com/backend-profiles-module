@@ -22,12 +22,12 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function addName(IProfileEntityName $IProfileEntityName)
      {
-         // TODO: Implement addName() method.
+         $this->name = $IProfileEntityName;
      }
 
      public function getNames(): iterable
      {
-         // TODO: Implement getNames() method.
+         return $this->name;
      }
 
      public function addPhone(IProfileEntityPhone $IProfileEntityPhone)
@@ -52,12 +52,12 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function addUsername(IProfileEntityUsername $IProfileEntityUsername)
      {
-         // TODO: Implement addUsername() method.
+        $this->username=$IProfileEntityUsername;
      }
 
      public function getUsernames(): iterable
      {
-         // TODO: Implement getUsernames() method.
+         return $this->username;
      }
 
      public function addEmail(IProfileEntityEmail $IProfileEntityEmail)

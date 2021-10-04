@@ -22,31 +22,31 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setValidSince(\DateTime $validSince)
      {
-         // TODO: Implement setValidSince() method.
+         $this->valid_since = $validSince;
      }
 
      public function getValidSince(): \DateTime
      {
-         // TODO: Implement getValidSince() method.
+         return $this->valid_sence;
      }
 
      public function setLevel(string $level)
      {
-         // TODO: Implement setLevel() method.
+         $this->level = $level;
      }
 
      public function getLevel(): string
      {
-         // TODO: Implement getLevel() method.
+         return $this->level;
      }
 
      public function setSkill(string $skill)
      {
-         // TODO: Implement setSkill() method.
+         $this->skill = $skill;
      }
 
      public function getSkill(): string
      {
-         // TODO: Implement getSkill() method.
+         return $this->skill;
      }
  }

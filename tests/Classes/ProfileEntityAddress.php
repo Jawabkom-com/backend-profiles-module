@@ -22,81 +22,81 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setValidSince(\DateTime $validSince)
      {
-         // TODO: Implement setValidSince() method.
+         $this->valid_since = $validSince;
      }
 
      public function getValidSince(): \DateTime
      {
-         // TODO: Implement getValidSince() method.
+         return $this->valid_since;
      }
 
      public function setCountry(string $country)
      {
-         // TODO: Implement setCountry() method.
+         $this->country = $country;
      }
 
      public function getCountry(): string
      {
-         // TODO: Implement getCountry() method.
+         return $this->country;
      }
 
      public function setState(string $state)
      {
-         // TODO: Implement setState() method.
+         $this->state = $state;
      }
 
      public function getState(): string
      {
-         // TODO: Implement getState() method.
+         return $this->state;
      }
 
      public function setCity(string $city)
      {
-         // TODO: Implement setCity() method.
+         $this->city = $city;
      }
 
      public function getCity(): string
      {
-         // TODO: Implement getCity() method.
+         return $this->city;
      }
 
      public function setZip(string $zip)
      {
-         // TODO: Implement setZip() method.
+         $this->zip = $zip;
      }
 
      public function getZip(): string
      {
-         // TODO: Implement getZip() method.
+         return $this->zip;
      }
 
      public function setStreet(string $street)
      {
-         // TODO: Implement setStreet() method.
+         $this->street = $street;
      }
 
      public function getStreet(): string
      {
-         // TODO: Implement getStreet() method.
+         return $this->street;
      }
 
      public function setBuildingNumber(string $buildingNumber)
      {
-         // TODO: Implement setBuildingNumber() method.
+         $this->building_number = $buildingNumber;
      }
 
      public function getBuildingNumber(): string
      {
-         // TODO: Implement getBuildingNumber() method.
+         return $this->building_number;
      }
 
      public function setDisplay(string $display)
      {
-         // TODO: Implement setDisplay() method.
+         $this->display = $display;
      }
 
      public function getDisplay(): string
      {
-         // TODO: Implement getDisplay() method.
+         return $this->display;
      }
  }

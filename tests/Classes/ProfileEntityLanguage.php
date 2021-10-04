@@ -22,21 +22,21 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setLanguage(string $language)
      {
-         // TODO: Implement setLanguage() method.
+         $this->language = $language;
      }
 
      public function getLanguage(): string
      {
-         // TODO: Implement getLanguage() method.
+         return $this->language;
      }
 
      public function setCountry(string $country)
      {
-         // TODO: Implement setCountry() method.
+         $this->country = $country;
      }
 
      public function getCountry(): string
      {
-         // TODO: Implement getCountry() method.
+         return $this->country;
      }
  }

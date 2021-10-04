@@ -22,41 +22,41 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setValidSince(\DateTime $validSince)
      {
-         // TODO: Implement setValidSince() method.
+         $this->valid_since = $validSince;
      }
 
      public function getValidSince(): \DateTime
      {
-         // TODO: Implement getValidSince() method.
+         return $this->valid_sence;
      }
 
      public function setEmail(string $email)
      {
-         // TODO: Implement setEmail() method.
+         $this->email = $email;
      }
 
      public function getEmail(): string
      {
-         // TODO: Implement getEmail() method.
+         return $this->email;
      }
 
-     public function setEspDomain(string $EspDomain)
+     public function setEspDomain(string $espDomain)
      {
-         // TODO: Implement setEspDomain() method.
+         $this->esp_admin = $espDomain;
      }
 
      public function getEspDomain(): string
      {
-         // TODO: Implement getEspDomain() method.
+         return $this->esp_admin;
      }
 
      public function setType(string $type)
      {
-         // TODO: Implement setType() method.
+         $this->type = $type;
      }
 
      public function getType(): string
      {
-         // TODO: Implement getType() method.
+         return $this->type;
      }
  }

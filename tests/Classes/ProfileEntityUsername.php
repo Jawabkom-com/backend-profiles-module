@@ -22,21 +22,21 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setValidSince(\DateTime $validSince)
      {
-         // TODO: Implement setValidSince() method.
+         $this->valid_since = $validSince;
      }
 
      public function getValidSince(): \DateTime
      {
-         // TODO: Implement getValidSince() method.
+        return $this->valid_sence;
      }
 
      public function setUsername(string $username)
      {
-         // TODO: Implement setUsername() method.
+         $this->username = $username;
      }
 
      public function getUsername(): string
      {
-         // TODO: Implement getUsername() method.
+         return $this->username;
      }
  }

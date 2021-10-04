@@ -22,51 +22,51 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setCaseNumber(string $caseNumber)
      {
-         // TODO: Implement setCaseNumber() method.
+         $this->case_number = $caseNumber;
      }
 
      public function getCaseNumber(): string
      {
-         // TODO: Implement getCaseNumber() method.
+         return $this->case_number;
      }
 
      public function setCaseType(string $caseType)
      {
-         // TODO: Implement setCaseType() method.
+         $this->case_type = $caseType;
      }
 
      public function getCaseType(): string
      {
-         // TODO: Implement getCaseType() method.
+         return $this->case_type;
      }
 
      public function setCaseYear(string $caseYear)
      {
-         // TODO: Implement setCaseYear() method.
+         $this->case_year = $caseYear;
      }
 
      public function getCaseYear(): string
      {
-         // TODO: Implement getCaseYear() method.
+         return $this->case_year;
      }
 
      public function setCaseStatus(string $caseStatus)
      {
-         // TODO: Implement setCaseStatus() method.
+         $this->case_status = $caseStatus;
      }
 
      public function getCaseStatus(): string
      {
-         // TODO: Implement getCaseStatus() method.
+         return $this->case_status;
      }
 
      public function setDisplay(string $display)
      {
-         // TODO: Implement setDisplay() method.
+         $this->display = $display;
      }
 
      public function getDisplay(): string
      {
-         // TODO: Implement getDisplay() method.
+         return $this->display;
      }
  }

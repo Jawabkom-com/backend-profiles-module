@@ -22,51 +22,51 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setPrefix(string $prefix)
      {
-         // TODO: Implement setPrefix() method.
+         $this->prefix = $prefix;
      }
 
      public function getPrefix(): string
      {
-         // TODO: Implement getPrefix() method.
+         return $this->prefix;
      }
 
      public function setFirst(string $first)
      {
-         // TODO: Implement setFirst() method.
+         $this->first = $first;
      }
 
      public function getFirst(): string
      {
-         // TODO: Implement getFirst() method.
+         return $this->first;
      }
 
      public function setMiddle(string $middle)
      {
-         // TODO: Implement setMiddle() method.
+         $this->middle = $middle;
      }
 
      public function getMiddle(): string
      {
-         // TODO: Implement getMiddle() method.
+         return $this->middle;
      }
 
      public function setLast(string $last)
      {
-         // TODO: Implement setLast() method.
+         $this->last = $last;
      }
 
      public function getLast(): string
      {
-         // TODO: Implement getLast() method.
+         return $this->last;
      }
 
      public function setDisplay(string $display)
      {
-         // TODO: Implement setDisplay() method.
+         $this->display = $display;
      }
 
      public function getDisplay(): string
      {
-         // TODO: Implement getDisplay() method.
+         return $this->display;
      }
  }

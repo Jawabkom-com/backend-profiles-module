@@ -22,31 +22,31 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setOriginalUrl(string $originalUrl)
      {
-         // TODO: Implement setOriginalUrl() method.
+         $this->original_url = $originalUrl;
      }
 
      public function getOriginalUrl(): string
      {
-         // TODO: Implement getOriginalUrl() method.
+         return $this->original_url;
      }
 
      public function setLocalPath(string $localPath)
      {
-         // TODO: Implement setLocalPath() method.
+         $this->local_path = $localPath;
      }
 
      public function getLocalPath(): string
      {
-         // TODO: Implement getLocalPath() method.
+         return $this->local_path;
      }
 
      public function setValidSince(\DateTime $validSince)
      {
-         // TODO: Implement setValidSince() method.
+         $this->valid_since = $validSince;
      }
 
      public function getValidSince(): \DateTime
      {
-         // TODO: Implement getValidSince() method.
+         return $this->valid_sence;
      }
  }

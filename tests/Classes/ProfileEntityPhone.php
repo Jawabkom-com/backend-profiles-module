@@ -23,131 +23,131 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setCreatedAt(\DateTime $createdAt)
      {
-         // TODO: Implement setCreatedAt() method.
+         $this->created_at = $createdAt;
      }
 
      public function getCreatedAt(): \DateTime
      {
-         // TODO: Implement getCreatedAt() method.
+         return $this->created_at;
      }
 
      public function setUpdatedAt(\DateTime $updatedAt)
      {
-         // TODO: Implement setUpdatedAt() method.
+         $this->updated_at = $updatedAt;
      }
 
      public function getUpdatedAt(): \DateTime
      {
-         // TODO: Implement getUpdatedAt() method.
+         return $this->updated_at;
      }
 
      public function setType(string $type)
      {
-         // TODO: Implement setType() method.
+         $this->type = $type;
      }
 
      public function getType(): string
      {
-         // TODO: Implement getType() method.
+         return $this->type;
      }
 
      public function setDoNotCallFlag(bool $doNotCallFlag)
      {
-         // TODO: Implement setDoNotCallFlag() method.
+         $this->do_not_call_flag = $doNotCallFlag;
      }
 
      public function getDoNotCallFlag(): bool
      {
-         // TODO: Implement getDoNotCallFlag() method.
+         return $this->do_not_call_flag;
      }
 
      public function setCountryCode(string $countryCode)
      {
-         // TODO: Implement setCountryCode() method.
+         $this->country_code = $countryCode;
      }
 
      public function getCountryCode(): string
      {
-         // TODO: Implement getCountryCode() method.
+         return $this->country_code;
      }
 
      public function setOriginalNumber(string $originalNumber)
      {
-         // TODO: Implement setOriginalNumber() method.
+         $this->original_number = $originalNumber;
      }
 
      public function getOriginalNumber(): string
      {
-         // TODO: Implement getOriginalNumber() method.
+         return $this->original_number;
      }
 
      public function setFormattedNumber(string $formattedNumber)
      {
-         // TODO: Implement setFormattedNumber() method.
+         $this->formatted_number = $formattedNumber;
      }
 
      public function getFormattedNumber(): string
      {
-         // TODO: Implement getFormattedNumber() method.
+         return $this->formatted_number;
      }
 
      public function setValidPhone(bool $validPhone)
      {
-         // TODO: Implement setValidPhone() method.
+         $this->valid_phone = $validPhone;
      }
 
      public function getValidPhone(): bool
      {
-         // TODO: Implement getValidPhone() method.
+         return $this->valid_phone;
      }
 
      public function setRiskyPhone(bool $riskyPhone)
      {
-         // TODO: Implement setRiskyPhone() method.
+         $this->risky_phone = $riskyPhone;
      }
 
      public function getRiskyPhone(): bool
      {
-         // TODO: Implement getRiskyPhone() method.
+         return $this->risky_phone;
      }
 
      public function setDisposablePhone(bool $disposablePhone)
      {
-         // TODO: Implement setDisposablePhone() method.
+         $this->disposable_phone = $disposablePhone;
      }
 
      public function getDisposablePhone(): bool
      {
-         // TODO: Implement getDisposablePhone() method.
+         return $this->disposable_phone;
      }
 
      public function setCarrier(bool $carrier)
      {
-         // TODO: Implement setCarrier() method.
+         $this->carrier = $carrier;
      }
 
      public function getCarrier(): bool
      {
-         // TODO: Implement getCarrier() method.
+         return $this->carrier;
      }
 
      public function setPurpose(bool $purpose)
      {
-         // TODO: Implement setPurpose() method.
+         $this->purpose = $purpose;
      }
 
      public function getPurpose(): bool
      {
-         // TODO: Implement getPurpose() method.
+         return $this->purpose;
      }
 
      public function setIndustry(bool $industry)
      {
-         // TODO: Implement setIndustry() method.
+         $this->industry = $industry;
      }
 
      public function getIndustry(): bool
      {
-         // TODO: Implement getIndustry() method.
+         return $this->industry;
      }
  }

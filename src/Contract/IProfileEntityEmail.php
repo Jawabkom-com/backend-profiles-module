@@ -12,7 +12,7 @@ interface IProfileEntityEmail
     public function setEmail(string $email);
     public function getEmail():string;
 
-    public function setEspDomain(string $EspDomain);
+    public function setEspDomain(string $espDomain);
     public function getEspDomain():string;
 
     public function setType(string $type);

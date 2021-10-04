@@ -22,51 +22,51 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setValidSince(\DateTime $validSince)
      {
-         // TODO: Implement setValidSince() method.
+         $this->valid_since = $validSince;
      }
 
      public function getValidSince(): \DateTime
      {
-         // TODO: Implement getValidSince() method.
+         return $this->valid_sence;
      }
 
      public function setType(string $type)
      {
-         // TODO: Implement setType() method.
+         $this->type = $type;
      }
 
      public function getType(): string
      {
-         // TODO: Implement getType() method.
+         return $this->type;
      }
 
      public function setFirstName(string $firstName)
      {
-         // TODO: Implement setFirstName() method.
+         $this->first_name = $firstName;
      }
 
      public function getFirstName(): string
      {
-         // TODO: Implement getFirstName() method.
+         return $this->first_name;
      }
 
      public function setLastName(string $lastName)
      {
-         // TODO: Implement setLastName() method.
+         $this->last_name = $lastName;
      }
 
      public function getLastName(): string
      {
-         // TODO: Implement getLastName() method.
+         return $this->last_name;
      }
 
      public function setPersonId(string $personId)
      {
-         // TODO: Implement setPersonId() method.
+         $this->person_id = $personId;
      }
 
      public function getPersonId(): string
      {
-         // TODO: Implement getPersonId() method.
+         return $this->person_id;
      }
  }
