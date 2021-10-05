@@ -2,8 +2,6 @@
 
 namespace Jawabkom\Backend\Module\Profile\Contract;
 
-use Jawabkom\Standard\Contract\IEntity;
-
 interface IProfileEntitySkill
 {
     public function setValidSince(\DateTime $validSince);
