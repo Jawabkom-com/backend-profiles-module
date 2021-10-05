@@ -18,13 +18,25 @@ class SearchOfflineByFiltersTest extends AbstractTestCase
     //search by filter
     public function testSearchResultByName(){
         $profileBuilder = new ProfileBuilder();
-        $entity = $profileBuilder->addFakeUserName()->addFakeUserName()->addFakeUserName()->setGender()->get();
+        $entity = $profileBuilder->addFakeUserName()->addFakeUserName()->addFakeUserName()->setGender()
+            ->addFakeAddress()
+            ->addFakeCriminalRecord()
+            ->addFakeCriminalRecord()
+            ->addFakeEducation()
+            ->addFakeEmail()
+            ->addFakeImage()
+            ->addFakeJob()
+            ->addFakeLanguage()
+            ->addFakeName()
+            ->addFakePhone()
+            ->addFakeRelationship()
+            ->addFakeSkill()
+            ->addFakeSocialProfile()
+            ->setDateOfBirth()
+            ->setPlaceOfBirth()
+            ->get();
+        dd($entity);
 
-
-        $profile = new ProfileEntity();
-        $profileProducer = new ProfileBuilder($profile);
-        dd($profileProducer->ProduceProfile());
-        $this->assertInstanceOf(IProfileEntity::class,$profileProducer->ProduceProfile());
         $this->assertTrue(true);
     }
 

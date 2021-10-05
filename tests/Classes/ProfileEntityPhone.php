@@ -121,32 +121,32 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->disposable_phone;
      }
 
-     public function setCarrier(bool $carrier)
+     public function setCarrier(string $carrier)
      {
          $this->carrier = $carrier;
      }
 
-     public function getCarrier(): bool
+     public function getCarrier(): string
      {
          return $this->carrier;
      }
 
-     public function setPurpose(bool $purpose)
+     public function setPurpose(string $purpose)
      {
          $this->purpose = $purpose;
      }
 
-     public function getPurpose(): bool
+     public function getPurpose(): string
      {
          return $this->purpose;
      }
 
-     public function setIndustry(bool $industry)
+     public function setIndustry(string $industry)
      {
          $this->industry = $industry;
      }
 
-     public function getIndustry(): bool
+     public function getIndustry(): string
      {
          return $this->industry;
      }

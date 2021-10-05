@@ -35,13 +35,13 @@ interface IProfileEntityPhone
     public function setDisposablePhone(bool $disposablePhone);
     public function getDisposablePhone():bool;
 
-    public function setCarrier(bool $carrier);
-    public function getCarrier():bool;
+    public function setCarrier(string $carrier);
+    public function getCarrier():string;
 
-    public function setPurpose(bool $purpose);
-    public function getPurpose():bool;
+    public function setPurpose(string $purpose);
+    public function getPurpose():string;
 
-    public function setIndustry(bool $industry);
-    public function getIndustry():bool;
+    public function setIndustry(string $industry);
+    public function getIndustry():string;
 
 }
