@@ -22,7 +22,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function addName(IProfileEntityName $IProfileEntityName)
      {
-         $this->Name = $IProfileEntityName;
+         $this->Name[] = $IProfileEntityName;
      }
 
      public function getNames(): iterable
@@ -32,7 +32,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function addPhone(IProfileEntityPhone $IProfileEntityPhone)
      {
-         $this->Phone = $IProfileEntityPhone;
+         $this->Phone[] = $IProfileEntityPhone;
      }
 
      public function getPhones(): iterable
@@ -42,7 +42,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function addAddress(IProfileEntityAddress $IProfileEntityAddress)
      {
-         $this->Address = $IProfileEntityAddress;
+         $this->Address[] = $IProfileEntityAddress;
      }
 
      public function getAddresses(): iterable
@@ -52,7 +52,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function addUsername(IProfileEntityUsername $IProfileEntityUsername)
      {
-        $this->Username=$IProfileEntityUsername;
+        $this->Username[]=$IProfileEntityUsername;
      }
 
      public function getUsernames(): iterable
@@ -62,7 +62,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function addEmail(IProfileEntityEmail $IProfileEntityEmail)
      {
-         $this->Email=$IProfileEntityEmail;
+         $this->Email[] =$IProfileEntityEmail;
      }
 
      public function getEmails(): iterable
@@ -72,7 +72,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function addRelationship(IProfileEntityRelationship $IProfileEntityRelationship)
      {
-         $this->Relationship=$IProfileEntityRelationship;
+         $this->Relationship[] =$IProfileEntityRelationship;
      }
 
      public function getRelationships(): iterable
@@ -82,7 +82,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function addSkill(IProfileEntitySkill $IProfileEntitySkill)
      {
-         $this->Skill=$IProfileEntitySkill;
+         $this->Skill[] =$IProfileEntitySkill;
      }
 
      public function getSkills(): iterable
@@ -92,7 +92,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function addImage(IProfileEntityImage $IProfileEntityImage)
      {
-         $this->Image=$IProfileEntityImage;
+         $this->Image[] =$IProfileEntityImage;
      }
 
      public function getImages(): iterable
@@ -102,7 +102,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function addLanguage(IProfileEntityLanguage $IProfileEntityLanguage)
      {
-         $this->Language=$IProfileEntityLanguage;
+         $this->Language[] =$IProfileEntityLanguage;
      }
 
      public function getLanguages(): iterable
@@ -112,7 +112,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function addJob(IProfileEntityJob $IProfileEntityJob)
      {
-         $this->Job=$IProfileEntityJob;
+         $this->Job[] =$IProfileEntityJob;
      }
 
      public function getJobs(): iterable
@@ -122,7 +122,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function addEducation(IProfileEntityEducation $IProfileEntityEducation)
      {
-         $this->Education=$IProfileEntityEducation;
+         $this->Education[] =$IProfileEntityEducation;
      }
 
      public function getEducations(): iterable
@@ -132,7 +132,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function addSocialProfile(IProfileEntitySocialProfile $IProfileEntitySocialProfile)
      {
-         $this->SocialProfile=$IProfileEntitySocialProfile;
+         $this->SocialProfile[] =$IProfileEntitySocialProfile;
      }
 
      public function getSocialProfiles(): iterable
@@ -142,7 +142,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function addCriminalRecord(IProfileEntityCriminalRecord $IProfileEntityCriminalRecord)
      {
-         $this->CriminalRecord=$IProfileEntityCriminalRecord;
+         $this->CriminalRecord[] =$IProfileEntityCriminalRecord;
      }
 
      public function getCriminalRecords(): iterable
