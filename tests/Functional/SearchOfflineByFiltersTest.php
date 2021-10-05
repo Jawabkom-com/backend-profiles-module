@@ -5,7 +5,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 use Carbon\Carbon;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
-use Jawabkom\Backend\Module\Profile\Test\Classes\Builder\ProfileProducer;
+use Jawabkom\Backend\Module\Profile\Test\Classes\Builder\ProfileBuilder;
 use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntity;
 
 class SearchOfflineByFiltersTest extends AbstractTestCase
@@ -17,8 +17,12 @@ class SearchOfflineByFiltersTest extends AbstractTestCase
 
     //search by filter
     public function testSearchResultByName(){
+        $profileBuilder = new ProfileBuilder();
+        $entity = $profileBuilder->addFakeUserName()->addFakeUserName()->addFakeUserName()->setGender()->get();
+
+
         $profile = new ProfileEntity();
-        $profileProducer = new ProfileProducer($profile);
+        $profileProducer = new ProfileBuilder($profile);
         dd($profileProducer->ProduceProfile());
         $this->assertInstanceOf(IProfileEntity::class,$profileProducer->ProduceProfile());
         $this->assertTrue(true);

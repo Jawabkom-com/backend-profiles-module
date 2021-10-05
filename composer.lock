@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4d5069d0b248af79744cafad7e85a88f",
+    "content-hash": "39aee15467cb48a99598141c6e340ae0",
     "packages": [
         {
             "name": "jawabkom-com/jawabkom-standards",

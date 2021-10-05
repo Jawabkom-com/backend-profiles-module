@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Profile\Service;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
+use Jawabkom\Backend\Module\Profile\Exception\SearcherRegistryDoesNotExist;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
@@ -24,12 +25,20 @@ class SearchOnlineBySearchersChain extends AbstractService
     //
     public function process(): static
     {
-        foreach($aliases as $alias) {
+        $filter = $this->getInput('filter');
+        $searchersAliases = $this->getInput('searchersAliases', []);
+
+        foreach($searchersAliases as $alias) {
             $searcher = $this->registry->getSearcher($alias);
-            $results = $searcher->search($filters);
+            if(!$searcher) {
+                throw new SearcherRegistryDoesNotExist("Alias: {$alias}");
+            }
+            $results = $searcher->search($filter);
+
             if($results) {
                 $mapper = $this->registry->getMapper($alias);
-                return $mapper->map($results);
+                $profileEntities = $mapper->map($results);
+
             }
         }
         return $this;
