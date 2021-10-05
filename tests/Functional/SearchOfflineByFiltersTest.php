@@ -3,9 +3,10 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
 use Carbon\Carbon;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
+use Jawabkom\Backend\Module\Profile\Test\Classes\Builder\ProfileProducer;
 use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntity;
-use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntityUsername;
 
 class SearchOfflineByFiltersTest extends AbstractTestCase
 {
@@ -16,12 +17,10 @@ class SearchOfflineByFiltersTest extends AbstractTestCase
 
     //search by filter
     public function testSearchResultByName(){
-        $username = new ProfileEntityUsername();
         $profile = new ProfileEntity();
-        $username->setUsername('edjked');
-        $username->setValidSince(new \DateTime());
-        $profile->addUsername($username);
-        dd($profile);
+        $profileProducer = new ProfileProducer($profile);
+        dd($profileProducer->ProduceProfile());
+        $this->assertInstanceOf(IProfileEntity::class,$profileProducer->ProduceProfile());
         $this->assertTrue(true);
     }
 

@@ -22,171 +22,171 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function addName(IProfileEntityName $IProfileEntityName)
      {
-         $this->name = $IProfileEntityName;
+         $this->Name = $IProfileEntityName;
      }
 
      public function getNames(): iterable
      {
-         return $this->name;
+         return $this->Name;
      }
 
      public function addPhone(IProfileEntityPhone $IProfileEntityPhone)
      {
-         // TODO: Implement addPhone() method.
+         $this->Phone = $IProfileEntityPhone;
      }
 
      public function getPhones(): iterable
      {
-         // TODO: Implement getPhones() method.
+         return $this->Phone;
      }
 
      public function addAddress(IProfileEntityAddress $IProfileEntityAddress)
      {
-         // TODO: Implement addAddress() method.
+         $this->Address = $IProfileEntityAddress;
      }
 
      public function getAddresses(): iterable
      {
-         // TODO: Implement getAddresses() method.
+         return $this->Address;
      }
 
      public function addUsername(IProfileEntityUsername $IProfileEntityUsername)
      {
-        $this->username=$IProfileEntityUsername;
+        $this->Username=$IProfileEntityUsername;
      }
 
      public function getUsernames(): iterable
      {
-         return $this->username;
+         return $this->Username;
      }
 
      public function addEmail(IProfileEntityEmail $IProfileEntityEmail)
      {
-         // TODO: Implement addEmail() method.
+         $this->Email=$IProfileEntityEmail;
      }
 
      public function getEmails(): iterable
      {
-         // TODO: Implement getEmails() method.
+         return $this->Email;
      }
 
      public function addRelationship(IProfileEntityRelationship $IProfileEntityRelationship)
      {
-         // TODO: Implement addRelationship() method.
+         $this->Relationship=$IProfileEntityRelationship;
      }
 
      public function getRelationships(): iterable
      {
-         // TODO: Implement getRelationships() method.
+         return $this->Relationship;
      }
 
      public function addSkill(IProfileEntitySkill $IProfileEntitySkill)
      {
-         // TODO: Implement addSkill() method.
+         $this->Skill=$IProfileEntitySkill;
      }
 
      public function getSkills(): iterable
      {
-         // TODO: Implement getSkills() method.
+         return $this->Skill;
      }
 
      public function addImage(IProfileEntityImage $IProfileEntityImage)
      {
-         // TODO: Implement addImage() method.
+         $this->Image=$IProfileEntityImage;
      }
 
      public function getImages(): iterable
      {
-         // TODO: Implement getImages() method.
+         return $this->Image;
      }
 
      public function addLanguage(IProfileEntityLanguage $IProfileEntityLanguage)
      {
-         // TODO: Implement addLanguage() method.
+         $this->Language=$IProfileEntityLanguage;
      }
 
      public function getLanguages(): iterable
      {
-         // TODO: Implement getLanguages() method.
+         return $this->Language;
      }
 
      public function addJob(IProfileEntityJob $IProfileEntityJob)
      {
-         // TODO: Implement addJob() method.
+         $this->Job=$IProfileEntityJob;
      }
 
      public function getJobs(): iterable
      {
-         // TODO: Implement getJobs() method.
+         return $this->Job;
      }
 
      public function addEducation(IProfileEntityEducation $IProfileEntityEducation)
      {
-         // TODO: Implement addEducation() method.
+         $this->Education=$IProfileEntityEducation;
      }
 
      public function getEducations(): iterable
      {
-         // TODO: Implement getEducations() method.
+         return $this->Education;
      }
 
      public function addSocialProfile(IProfileEntitySocialProfile $IProfileEntitySocialProfile)
      {
-         // TODO: Implement addSocialProfile() method.
+         $this->SocialProfile=$IProfileEntitySocialProfile;
      }
 
      public function getSocialProfiles(): iterable
      {
-         // TODO: Implement getSocialProfiles() method.
+         return $this->SocialProfile;
      }
 
      public function addCriminalRecord(IProfileEntityCriminalRecord $IProfileEntityCriminalRecord)
      {
-         // TODO: Implement addCriminalRecord() method.
+         $this->CriminalRecord=$IProfileEntityCriminalRecord;
      }
 
      public function getCriminalRecords(): iterable
      {
-         // TODO: Implement getCriminalRecords() method.
+         return $this->CriminalRecord;
      }
 
      public function addGender(string $gender)
      {
-         // TODO: Implement addGender() method.
+         $this->Gender=$gender;
      }
 
      public function getGender(): string
      {
-         // TODO: Implement getGender() method.
+         return $this->Gender;
      }
 
      public function addDateOfBirth(\DateTime $dateOfBirth)
      {
-         // TODO: Implement addDateOfBirth() method.
+         $this->DateOfBirth=$dateOfBirth;
      }
 
      public function getDateOfBirth(): \DateTime
      {
-         // TODO: Implement getDateOfBirth() method.
+         return $this->DateOfBirth;
      }
 
      public function addPlaceOfBirth(string $placeOfBirth)
      {
-         // TODO: Implement addPlaceOfBirth() method.
+         $this->PlaceOfBirth=$placeOfBirth;
      }
 
      public function getPlaceOfBirth(): string
      {
-         // TODO: Implement getPlaceOfBirth() method.
+         return $this->PlaceOfBirth;
      }
 
      public function addDataSource(string $dataSource)
      {
-         // TODO: Implement addDataSource() method.
+         $this->DataSource=$dataSource;
      }
 
      public function getDataSource(): string
      {
-         // TODO: Implement getDataSource() method.
+         return $this->DataSource;
      }
  }
