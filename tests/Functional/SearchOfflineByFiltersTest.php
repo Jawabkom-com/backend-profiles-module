@@ -5,7 +5,6 @@ namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Builder\ProfileBuilder;
-use SleekDB\Store;
 
 class SearchOfflineByFiltersTest extends AbstractTestCase
 {

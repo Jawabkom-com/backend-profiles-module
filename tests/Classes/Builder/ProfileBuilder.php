@@ -215,7 +215,7 @@ class ProfileBuilder
 
     public function setProfileId(): static
     {
-        $this->profileEntity->setProfileId($this->faker->text(20));
+        $this->profileEntity->addProfileId($this->faker->text(20));
         return $this;
     }
 
