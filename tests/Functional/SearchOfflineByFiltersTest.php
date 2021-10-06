@@ -5,6 +5,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Builder\ProfileBuilder;
+use SleekDB\Store;
 
 class SearchOfflineByFiltersTest extends AbstractTestCase
 {
@@ -18,7 +19,17 @@ class SearchOfflineByFiltersTest extends AbstractTestCase
 
     //search result by name
     public function testSearchResultByName(){
-        $dummyData = $this->generateProfiles();
+        $databaseDirectory = __DIR__ . "/ProfileDB";
+        $newsStore = new \SleekDB\Store("profiles", $databaseDirectory ,[
+            "timeout" => false,
+        ]);
+//        $dummyData = $this->generateProfiles();
+//        $results = $newsStore->insert($dummyData);
+
+
+        $allNews = $newsStore->findAll();
+        dd($allNews);
+
         $filter =[
                 'raw_name'=>$dummyData[0]->Name[0]->first
         ];
@@ -45,29 +56,30 @@ class SearchOfflineByFiltersTest extends AbstractTestCase
 
     public function generateProfiles() :array
     {
-        $profileBuilder = new ProfileBuilder();
         $array = [];
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 2; $i++) {
+            $profileBuilder = new ProfileBuilder();
             $array[] = $profileBuilder
+                ->setProfileId()
                 ->addFakeUserName()
-                ->addFakeUserName()
-                ->addFakeUserName()
+//                ->addFakeUserName()
+//                ->addFakeUserName()
                 ->setGender()
-                ->addFakeAddress()
-                ->addFakeCriminalRecord()
-                ->addFakeCriminalRecord()
-                ->addFakeEducation()
-                ->addFakeEmail()
-                ->addFakeImage()
-                ->addFakeJob()
-                ->addFakeLanguage()
+//                ->addFakeAddress()
+//                ->addFakeCriminalRecord()
+//                ->addFakeCriminalRecord()
+//                ->addFakeEducation()
+//                ->addFakeEmail()
+//                ->addFakeImage()
+//                ->addFakeJob()
+//                ->addFakeLanguage()
                 ->addFakeName()
-                ->addFakePhone()
-                ->addFakeRelationship()
-                ->addFakeSkill()
-                ->addFakeSocialProfile()
-                ->setDateOfBirth()
-                ->setPlaceOfBirth()
+//                ->addFakePhone()
+//                ->addFakeRelationship()
+//                ->addFakeSkill()
+//                ->addFakeSocialProfile()
+//                ->setDateOfBirth()
+//                ->setPlaceOfBirth()
                 ->get();
         }
         return $array;
