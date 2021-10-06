@@ -12,12 +12,14 @@ class SearchOnlineBySearchersChain extends AbstractService
 {
     protected IProfileRepository $repository;
     private SearcherRegistry $registry;
+    private SearchFiltersBuilder $searchFiltersBuilder;
 
-    public function __construct(IDependencyInjector $di, IProfileRepository $repository, SearcherRegistry $registry)
+    public function __construct(IDependencyInjector $di, IProfileRepository $repository, SearcherRegistry $registry, SearchFiltersBuilder $searchFiltersBuilder)
     {
         parent::__construct($di);
         $this->repository = $repository;
         $this->registry = $registry;
+        $this->searchFiltersBuilder = $searchFiltersBuilder;
     }
 
     //

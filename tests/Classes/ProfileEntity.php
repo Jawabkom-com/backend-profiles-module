@@ -20,6 +20,8 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
  class ProfileEntity implements IProfileEntity
 {
 
+     private mixed $id;
+
      public function addName(IProfileEntityName $IProfileEntityName)
      {
          $this->Name[] = $IProfileEntityName;
@@ -188,5 +190,15 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
      public function getDataSource(): string
      {
          return $this->DataSource;
+     }
+
+     public function getProfileId(): mixed
+     {
+         return $this->id;
+     }
+
+     public function setProfileId(mixed $id)
+     {
+         $this->id = $id;
      }
  }

@@ -10,8 +10,21 @@ interface ISearchRequestEntity extends IEntity
     public function setHash(string $hash);
     public function getHash():string;
 
-    public function setRequestParams(array $request);
-    public function getRequestParams():array;
+    public function setRequestSearchFilters(array $request);
+    public function getRequestSearchFilters():array;
 
+    public function setRequestSearchResults(array $result);
+    public function getRequestSearchResults():array;
 
+    public function setRequestDateTime(\DateTime $dateTime);
+    public function getRequestDateTime():\DateTime;
+
+    public function setResultAliasSource(string $alias);
+    public function getResultAliasSource():string;
+
+    public function setIsFromCache(bool $isFromCache);
+    public function getIsFromCache(): bool;
+
+    public function setOtherParams(array $params);
+    public function getOtherParams():array;
 }

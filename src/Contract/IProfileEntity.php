@@ -6,10 +6,21 @@ use Jawabkom\Standard\Contract\IEntity;
 
 interface IProfileEntity extends IEntity
 {
+    public function getProfileId():mixed;
+    public function setProfileId(mixed $id);
+
     public function addName(IProfileEntityName $IProfileEntityName);
+
+    /**
+     * @return IProfileEntityName[]
+     */
     public function getNames():iterable;
 
     public function addPhone(IProfileEntityPhone $IProfileEntityPhone);
+
+    /**
+     * @return IProfileEntityPhone[]
+     */
     public function getPhones():iterable;
 
     public function addAddress(IProfileEntityAddress $IProfileEntityAddress);

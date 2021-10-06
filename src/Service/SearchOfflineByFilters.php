@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Profile\Service;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
+use Jawabkom\Backend\Module\Profile\SearchFiltersBuilder;
 use Jawabkom\Backend\Module\Profile\Trait\GetProfileTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
@@ -11,11 +12,13 @@ class SearchOfflineByFilters extends AbstractService
 {
     use GetProfileTrait;
     protected IProfileRepository $repository;
+    private SearchFiltersBuilder $searchFiltersBuilder;
 
-    public function __construct(IDependencyInjector $di, IProfileRepository $repository)
+    public function __construct(IDependencyInjector $di, IProfileRepository $repository, SearchFiltersBuilder $searchFiltersBuilder)
     {
         parent::__construct($di);
         $this->repository = $repository;
+        $this->searchFiltersBuilder = $searchFiltersBuilder;
     }
 
     //
@@ -23,6 +26,11 @@ class SearchOfflineByFilters extends AbstractService
     //
     public function process(): static
     {
+
+        $compositeFilters = $this->searchFiltersBuilder->setAllFilters($this->getInputs('filters'))->build();
+        $this->repository->getByFilters($compositeFilters, );
+
+
         $page = $this->getInput('page', 1);
         $perPage = $this->getInput('perPage', 0);
         $filtersInput = $this->getInput('filters', []);
