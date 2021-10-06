@@ -9,8 +9,7 @@
     ],
     "require": {
         "php": ">=8.0",
-        "jawabkom-com/jawabkom-standards": "^0.0.0",
-        "rakibtg/sleekdb": "^2.12"
+        "jawabkom-com/jawabkom-standards": "^0.0.0"
     },
     "autoload": {
         "psr-4": {
@@ -24,6 +23,7 @@
         "laravel/legacy-factories": "^1.1",
         "phpunit/phpunit": "^9.5",
         "orchestra/testbench": "^6.20",
-        "fakerphp/faker": "^1.16"
+        "fakerphp/faker": "^1.16",
+        "rakibtg/sleekdb": "^2.12"
     }
 }

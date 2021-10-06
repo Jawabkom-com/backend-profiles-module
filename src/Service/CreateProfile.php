@@ -21,7 +21,14 @@ class CreateProfile extends AbstractService
     //
     public function process(): static
     {
-        
+        // get inputs as an array
+
+        // create profile entity object
+
+        // fill profile entity object from the inputs
+
+        // save profile entity object
+
         return $this;
     }
 
