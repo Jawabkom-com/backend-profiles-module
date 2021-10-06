@@ -26,8 +26,8 @@ class SearchOfflineByFilters extends AbstractService
     //
     public function process(): static
     {
-
-        $compositeFilters = $this->searchFiltersBuilder->setAllFilters($this->getInputs('filters'))->build();
+        $compositeFilters = $this->searchFiltersBuilder->setAllFilters($this->getInput('filters'))->build();
+        dd($compositeFilters->getChildren());
         $this->repository->getByFilters($compositeFilters, );
 
 

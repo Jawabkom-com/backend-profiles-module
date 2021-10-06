@@ -20,7 +20,7 @@ class SearchOfflineByFiltersTest extends AbstractTestCase
     public function testSearchResultByName(){
         $dummyData = $this->generateProfiles();
         $filter =[
-                'name'=>$dummyData[0]->Name[0]->first
+                'raw_name'=>$dummyData[0]->Name[0]->first
         ];
         $result = $this->searchOfflineByFilters->input('filters',$filter)->process()->output('profiles');;
         dd($result);

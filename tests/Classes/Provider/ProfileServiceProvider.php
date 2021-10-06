@@ -3,8 +3,9 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Classes\Provider;
 
 use Illuminate\Support\ServiceProvider;
-use Jawabkom\Backend\Module\Profile\Test\Classes\{DI, ProfileRepository};
+use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AndFilterComposite, DI, ProfileRepository};
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
+use Jawabkom\Standard\Contract\IAndFilterComposite;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 
 class ProfileServiceProvider extends ServiceProvider
@@ -18,7 +19,9 @@ class ProfileServiceProvider extends ServiceProvider
     {
         $toBind = [
             IDependencyInjector::class       => DI::class,
-            IProfileRepository::class        => ProfileRepository::class
+            IProfileRepository::class        => ProfileRepository::class,
+            IAndFilterComposite::class       => AndFilterComposite::class,
+
         ];
 
         foreach ($toBind as $interface => $implementation) {
