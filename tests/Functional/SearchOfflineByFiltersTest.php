@@ -2,41 +2,28 @@
 
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
-use Carbon\Carbon;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
+use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Builder\ProfileBuilder;
-use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntity;
 
 class SearchOfflineByFiltersTest extends AbstractTestCase
 {
+    private SearchOfflineByFilters $searchOfflineByFilters;
+
     public function setUp(): void
     {
         parent::setUp();
+        $this->searchOfflineByFilters = app()->make(SearchOfflineByFilters::class);
     }
 
-    //search by filter
+    //search result by name
     public function testSearchResultByName(){
-        $profileBuilder = new ProfileBuilder();
-        $entity = $profileBuilder->addFakeUserName()->addFakeUserName()->addFakeUserName()->setGender()
-            ->addFakeAddress()
-            ->addFakeCriminalRecord()
-            ->addFakeCriminalRecord()
-            ->addFakeEducation()
-            ->addFakeEmail()
-            ->addFakeImage()
-            ->addFakeJob()
-            ->addFakeLanguage()
-            ->addFakeName()
-            ->addFakePhone()
-            ->addFakeRelationship()
-            ->addFakeSkill()
-            ->addFakeSocialProfile()
-            ->setDateOfBirth()
-            ->setPlaceOfBirth()
-            ->get();
-        dd($entity);
-
+        $dummyData = $this->generateProfiles();
+        $filter =[
+                'name'=>$dummyData[0]->Name[0]->first
+        ];
+        $result = $this->searchOfflineByFilters->input('filters',$filter)->process()->output('profiles');;
+        dd($result);
         $this->assertTrue(true);
     }
 
@@ -55,4 +42,34 @@ class SearchOfflineByFiltersTest extends AbstractTestCase
     //search by filter
     public function testSearchNotInstanceOfMapper(){}
 
+
+    public function generateProfiles() :array
+    {
+        $profileBuilder = new ProfileBuilder();
+        $array = [];
+        for ($i = 0; $i < 3; $i++) {
+            $array[] = $profileBuilder
+                ->addFakeUserName()
+                ->addFakeUserName()
+                ->addFakeUserName()
+                ->setGender()
+                ->addFakeAddress()
+                ->addFakeCriminalRecord()
+                ->addFakeCriminalRecord()
+                ->addFakeEducation()
+                ->addFakeEmail()
+                ->addFakeImage()
+                ->addFakeJob()
+                ->addFakeLanguage()
+                ->addFakeName()
+                ->addFakePhone()
+                ->addFakeRelationship()
+                ->addFakeSkill()
+                ->addFakeSocialProfile()
+                ->setDateOfBirth()
+                ->setPlaceOfBirth()
+                ->get();
+        }
+        return $array;
+    }
 }
