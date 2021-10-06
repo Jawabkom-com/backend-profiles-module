@@ -24,36 +24,80 @@ interface IProfileEntity extends IEntity
     public function getPhones():iterable;
 
     public function addAddress(IProfileEntityAddress $IProfileEntityAddress);
+
+    /**
+     * @return IProfileEntityAddress[]
+     */
     public function getAddresses():iterable;
 
     public function addUsername(IProfileEntityUsername $IProfileEntityUsername);
+
+    /**
+     * @return IProfileEntityName[]
+     */
     public function getUsernames():iterable;
 
     public function addEmail(IProfileEntityEmail $IProfileEntityEmail);
+
+    /**
+     * @return IProfileEntityEmail[]
+     */
     public function getEmails():iterable;
 
     public function addRelationship(IProfileEntityRelationship $IProfileEntityRelationship);
+
+    /**
+     * @return IProfileEntityRelationship[]
+     */
     public function getRelationships():iterable;
 
     public function addSkill(IProfileEntitySkill $IProfileEntitySkill);
+
+    /**
+     * @return IProfileEntitySkill[]
+     */
     public function getSkills():iterable;
 
     public function addImage(IProfileEntityImage $IProfileEntityImage);
+
+    /**
+     * @return IProfileEntityImage[]
+     */
     public function getImages():iterable;
 
     public function addLanguage(IProfileEntityLanguage $IProfileEntityLanguage);
+
+    /**
+     * @return IProfileEntityLanguage[]
+     */
     public function getLanguages():iterable;
 
     public function addJob(IProfileEntityJob $IProfileEntityJob);
+
+    /**
+     * @return IProfileEntityJob[]
+     */
     public function getJobs():iterable;
 
     public function addEducation(IProfileEntityEducation $IProfileEntityEducation);
+
+    /**
+     * @return IProfileEntityEducation[]
+     */
     public function getEducations():iterable;
 
     public function addSocialProfile(IProfileEntitySocialProfile $IProfileEntitySocialProfile);
+
+    /**
+     * @return IProfileEntitySocialProfile[]
+     */
     public function getSocialProfiles():iterable;
 
     public function addCriminalRecord(IProfileEntityCriminalRecord $IProfileEntityCriminalRecord);
+
+    /**
+     * @return IProfileEntityCriminalRecord[]
+     */
     public function getCriminalRecords():iterable;
 
     public function addGender(string $gender );

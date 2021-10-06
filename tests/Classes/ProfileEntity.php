@@ -194,11 +194,11 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function getProfileId(): mixed
      {
-         return $this->id;
+         return $this->profileId;
      }
 
      public function setProfileId(mixed $id)
      {
-         $this->id = $id;
+         $this->profileId = $id;
      }
  }

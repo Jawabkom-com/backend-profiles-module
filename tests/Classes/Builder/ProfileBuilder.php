@@ -213,6 +213,13 @@ class ProfileBuilder
         return $this;
     }
 
+    public function setProfileId(): static
+    {
+        $this->profileEntity->setProfileId($this->faker->text(20));
+        return $this;
+    }
+
+
     public function get(): ProfileEntity
     {
         return $this->profileEntity;

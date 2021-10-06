@@ -57,7 +57,7 @@ class SearchFiltersBuilder
     {
         if($this->filterType == 'or') {
             return $this->di->make(IOrFilterComposite::class);
-        } elseif($this->filterType == 'or') {
+        } elseif($this->filterType == 'and') {
             return $this->di->make(IAndFilterComposite::class);
         }
 
