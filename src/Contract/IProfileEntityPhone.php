@@ -2,7 +2,6 @@
 
 namespace Jawabkom\Backend\Module\Profile\Contract;
 
-
 interface IProfileEntityPhone
 {
     public function setCreatedAt(\DateTime $createdAt);
