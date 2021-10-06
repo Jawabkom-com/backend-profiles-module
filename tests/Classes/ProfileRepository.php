@@ -37,7 +37,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
                  if($filter->getName() == 'first_name') {
                      foreach($profile->getNames() as $nameObj) {
                          if($nameObj->getFirst() == $filter->getValue()) {
-                             
+
                          }
                      }
                  } elseif($filter->getName() == 'phone') {
