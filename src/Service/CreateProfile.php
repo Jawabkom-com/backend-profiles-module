@@ -50,12 +50,10 @@ class CreateProfile extends AbstractService
             $profileAddMethod =  'add'.ucfirst($profileKey);
             if (class_exists($ProfileObjectPath.$profileKey)){
                $profileEntityObject =  $this->createProfileEntityNestedObject($ProfileObjectPath.$profileKey,$profileInput);
-               $profileEntity->$profileAddMethod($profileEntityObject);
+                $this->assignObjectIfMethodExist($profileEntity ,$profileAddMethod , $profileEntityObject );
             }
             else {
-                if (method_exists($profileEntity,$profileAddMethod)){
-                    $profileEntity->$profileAddMethod($profileInput);
-                }
+                $this->assignObjectIfMethodExist($profileEntity ,$profileAddMethod , $profileInput );
             }
         }
         return $profileEntity;
@@ -67,16 +65,26 @@ class CreateProfile extends AbstractService
     //
     protected function createProfileEntityNestedObject($getProfileObjectClass , $profileInputs)
     {
-        $classObject =  new $getProfileObjectClass;
+        $entity =  new $getProfileObjectClass;
         foreach ($profileInputs as $profileInput){
-            foreach ($profileInput as $key => $value){
+            foreach ($profileInput as $key => $profileValue){
                 $profileSetMethod= 'set'.$key;
-                $classObject->$profileSetMethod($value);
+                $this->assignObjectIfMethodExist($entity ,$profileSetMethod , $profileValue );
             }
         }
-        return $classObject;
+        return $entity;
     }
 
+
+    //
+    // LEVEL 3
+    //
+    protected function assignObjectIfMethodExist($classObject ,$profileSetMethod , $profileValue)
+    {
+        if (method_exists($classObject,$profileSetMethod)){
+            $classObject->$profileSetMethod($profileValue);
+        }
+    }
 
 
 }
