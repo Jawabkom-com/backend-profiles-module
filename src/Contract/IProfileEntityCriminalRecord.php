@@ -2,8 +2,13 @@
 
 namespace Jawabkom\Backend\Module\Profile\Contract;
 
-interface IProfileEntityCriminalRecord
+use Jawabkom\Standard\Contract\IEntity;
+
+interface IProfileEntityCriminalRecord extends IEntity
 {
+    public function getProfileId():mixed;
+    public function setProfileId(mixed $id);
+    
     public function setCaseNumber(string $caseNumber);
     public function getCaseNumber():string;
 

@@ -2,8 +2,13 @@
 
 namespace Jawabkom\Backend\Module\Profile\Contract;
 
-interface IProfileEntityAddress
+use Jawabkom\Standard\Contract\IEntity;
+
+interface IProfileEntityAddress extends IEntity
 {
+    public function getProfileId():mixed;
+    public function setProfileId(mixed $id);
+
     public function setValidSince(\DateTime $validSince);
     public function getValidSince():\DateTime;
 
@@ -27,7 +32,5 @@ interface IProfileEntityAddress
 
     public function setDisplay(string $display);
     public function getDisplay():string;
-
-
 
 }

@@ -7,7 +7,7 @@ use Jawabkom\Standard\Contract\IEntity;
 interface IProfileEntity extends IEntity
 {
     public function getProfileId():mixed;
-    public function addProfileId(mixed $id);
+    public function setProfileId(mixed $id);
 
     public function addName(IProfileEntityName $IProfileEntityName);
 
