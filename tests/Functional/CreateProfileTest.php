@@ -36,7 +36,17 @@ class CreateProfileTest extends AbstractTestCase
                 ->addFakeAddress()
                 ->addFakeCriminalRecord()
                 ->addFakeEducation()
+                ->addFakeEmail()
                 ->addFakeName()
+                ->addFakeImage()
+                ->addFakeJob()
+                ->addFakeLanguage()
+                ->addFakePhone()
+                ->addFakeRelationship()
+                ->addFakeSkill()
+                ->addFakeSocialProfile()
+                ->setDateOfBirth()
+                ->setPlaceOfBirth()
                 ->get();
     }
 }

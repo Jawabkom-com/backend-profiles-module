@@ -22,12 +22,12 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setValidSince(\DateTime $validSince)
      {
-         $this->valid_since = $validSince;
+         $this->validSince = $validSince;
      }
 
      public function getValidSince(): \DateTime
      {
-         return $this->valid_sence;
+         return $this->validSince;
      }
 
      public function setType(string $type)
@@ -42,31 +42,31 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setFirstName(string $firstName)
      {
-         $this->first_name = $firstName;
+         $this->firstName = $firstName;
      }
 
      public function getFirstName(): string
      {
-         return $this->first_name;
+         return $this->firstName;
      }
 
      public function setLastName(string $lastName)
      {
-         $this->last_name = $lastName;
+         $this->lastName = $lastName;
      }
 
      public function getLastName(): string
      {
-         return $this->last_name;
+         return $this->lastName;
      }
 
      public function setPersonId(string $personId)
      {
-         $this->person_id = $personId;
+         $this->personId = $personId;
      }
 
      public function getPersonId(): string
      {
-         return $this->person_id;
+         return $this->personId;
      }
  }

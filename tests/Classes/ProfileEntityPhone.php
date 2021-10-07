@@ -23,22 +23,22 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setCreatedAt(\DateTime $createdAt)
      {
-         $this->created_at = $createdAt;
+         $this->createdAt = $createdAt;
      }
 
      public function getCreatedAt(): \DateTime
      {
-         return $this->created_at;
+         return $this->createdAt;
      }
 
      public function setUpdatedAt(\DateTime $updatedAt)
      {
-         $this->updated_at = $updatedAt;
+         $this->updatedAt = $updatedAt;
      }
 
      public function getUpdatedAt(): \DateTime
      {
-         return $this->updated_at;
+         return $this->updatedAt;
      }
 
      public function setType(string $type)
@@ -53,72 +53,72 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setDoNotCallFlag(bool $doNotCallFlag)
      {
-         $this->do_not_call_flag = $doNotCallFlag;
+         $this->doNotCallFlag = $doNotCallFlag;
      }
 
      public function getDoNotCallFlag(): bool
      {
-         return $this->do_not_call_flag;
+         return $this->doNotCallFlag;
      }
 
      public function setCountryCode(string $countryCode)
      {
-         $this->country_code = $countryCode;
+         $this->countryCode = $countryCode;
      }
 
      public function getCountryCode(): string
      {
-         return $this->country_code;
+         return $this->countryCode;
      }
 
      public function setOriginalNumber(string $originalNumber)
      {
-         $this->original_number = $originalNumber;
+         $this->originalNumber = $originalNumber;
      }
 
      public function getOriginalNumber(): string
      {
-         return $this->original_number;
+         return $this->originalNumber;
      }
 
      public function setFormattedNumber(string $formattedNumber)
      {
-         $this->formatted_number = $formattedNumber;
+         $this->formattedNumber = $formattedNumber;
      }
 
      public function getFormattedNumber(): string
      {
-         return $this->formatted_number;
+         return $this->formattedNumber;
      }
 
      public function setValidPhone(bool $validPhone)
      {
-         $this->valid_phone = $validPhone;
+         $this->validPhone = $validPhone;
      }
 
      public function getValidPhone(): bool
      {
-         return $this->valid_phone;
+         return $this->validPhone;
      }
 
      public function setRiskyPhone(bool $riskyPhone)
      {
-         $this->risky_phone = $riskyPhone;
+         $this->riskyPhone = $riskyPhone;
      }
 
      public function getRiskyPhone(): bool
      {
-         return $this->risky_phone;
+         return $this->riskyPhone;
      }
 
      public function setDisposablePhone(bool $disposablePhone)
      {
-         $this->disposable_phone = $disposablePhone;
+         $this->disposablePhone = $disposablePhone;
      }
 
      public function getDisposablePhone(): bool
      {
-         return $this->disposable_phone;
+         return $this->disposablePhone;
      }
 
      public function setCarrier(string $carrier)

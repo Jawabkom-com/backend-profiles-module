@@ -42,12 +42,12 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setEspDomain(string $espDomain)
      {
-         $this->espAdmin = $espDomain;
+         $this->espDomain = $espDomain;
      }
 
      public function getEspDomain(): string
      {
-         return $this->espAdmin;
+         return $this->espDomain;
      }
 
      public function setType(string $type)

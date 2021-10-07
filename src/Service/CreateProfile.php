@@ -45,11 +45,11 @@ class CreateProfile extends AbstractService
     {
         $profileEntity = $this->di->make(ProfileEntity::class);
         $profileInputs = $this->getInput('profile');
+        $ProfileObjectPath= '\Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntity';
         foreach ($profileInputs as $profileKey => $profileInput) {
-            $getProfileObjectClass= '\Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntity'.$profileKey;
             $profileAddMethod =  'add'.ucfirst($profileKey);
-            if (class_exists($getProfileObjectClass)){
-               $profileEntityObject =  $this->createProfileEntityObject($getProfileObjectClass,$profileInput);
+            if (class_exists($ProfileObjectPath.$profileKey)){
+               $profileEntityObject =  $this->createProfileEntityNestedObject($ProfileObjectPath.$profileKey,$profileInput);
                $profileEntity->$profileAddMethod($profileEntityObject);
             }
             else {
@@ -59,7 +59,11 @@ class CreateProfile extends AbstractService
         return $profileEntity;
     }
 
-    protected function createProfileEntityObject($getProfileObjectClass , $profileInputs)
+
+    //
+    // LEVEL 2
+    //
+    protected function createProfileEntityNestedObject($getProfileObjectClass , $profileInputs)
     {
         $classObject =  new $getProfileObjectClass;
         foreach ($profileInputs as $profileInput){
@@ -70,4 +74,7 @@ class CreateProfile extends AbstractService
         }
         return $classObject;
     }
+
+
+
 }
