@@ -53,7 +53,9 @@ class CreateProfile extends AbstractService
                $profileEntity->$profileAddMethod($profileEntityObject);
             }
             else {
-                $profileEntity->$profileAddMethod($profileInput);
+                if (method_exists($profileEntity,$profileAddMethod)){
+                    $profileEntity->$profileAddMethod($profileInput);
+                }
             }
         }
         return $profileEntity;
