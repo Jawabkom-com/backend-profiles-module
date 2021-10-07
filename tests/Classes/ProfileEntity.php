@@ -3,26 +3,26 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
  use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
- use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityAddress;
- use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityCriminalRecord;
- use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityEducation;
- use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityEmail;
- use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityImage;
- use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityJob;
- use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityLanguage;
- use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityName;
- use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityPhone;
- use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityRelationship;
- use Jawabkom\Backend\Module\Profile\Contract\IProfileEntitySkill;
- use Jawabkom\Backend\Module\Profile\Contract\IProfileEntitySocialProfile;
- use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityUsername;
+ use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressEntity;
+ use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordEntity;
+ use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationEntity;
+ use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
+ use Jawabkom\Backend\Module\Profile\Contract\IProfileImageEntity;
+ use Jawabkom\Backend\Module\Profile\Contract\IProfileJobEntity;
+ use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageEntity;
+ use Jawabkom\Backend\Module\Profile\Contract\IProfileNameEntity;
+ use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
+ use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipEntity;
+ use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillEntity;
+ use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileEntity;
+ use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 
  class ProfileEntity implements IProfileEntity
 {
 
      private mixed $id;
 
-     public function addName(IProfileEntityName $IProfileEntityName)
+     public function addName(IProfileNameEntity $IProfileEntityName)
      {
          $this->Name[] = $IProfileEntityName;
      }
@@ -32,7 +32,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->Name;
      }
 
-     public function addPhone(IProfileEntityPhone $IProfileEntityPhone)
+     public function addPhone(IProfilePhoneEntity $IProfileEntityPhone)
      {
          $this->Phone[] = $IProfileEntityPhone;
      }
@@ -42,7 +42,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->Phone;
      }
 
-     public function addAddress(IProfileEntityAddress $IProfileEntityAddress)
+     public function addAddress(IProfileAddressEntity $IProfileEntityAddress)
      {
          $this->Address[] = $IProfileEntityAddress;
      }
@@ -52,7 +52,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->Address;
      }
 
-     public function addUsername(IProfileEntityUsername $IProfileEntityUsername)
+     public function addUsername(IProfileUsernameEntity $IProfileEntityUsername)
      {
         $this->Username[]=$IProfileEntityUsername;
      }
@@ -62,7 +62,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->Username;
      }
 
-     public function addEmail(IProfileEntityEmail $IProfileEntityEmail)
+     public function addEmail(IProfileEmailEntity $IProfileEntityEmail)
      {
          $this->Email[] =$IProfileEntityEmail;
      }
@@ -72,7 +72,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->Email;
      }
 
-     public function addRelationship(IProfileEntityRelationship $IProfileEntityRelationship)
+     public function addRelationship(IProfileRelationshipEntity $IProfileEntityRelationship)
      {
          $this->Relationship[] =$IProfileEntityRelationship;
      }
@@ -82,7 +82,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->Relationship;
      }
 
-     public function addSkill(IProfileEntitySkill $IProfileEntitySkill)
+     public function addSkill(IProfileSkillEntity $IProfileEntitySkill)
      {
          $this->Skill[] =$IProfileEntitySkill;
      }
@@ -92,7 +92,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->Skill;
      }
 
-     public function addImage(IProfileEntityImage $IProfileEntityImage)
+     public function addImage(IProfileImageEntity $IProfileEntityImage)
      {
          $this->Image[] =$IProfileEntityImage;
      }
@@ -102,7 +102,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->Image;
      }
 
-     public function addLanguage(IProfileEntityLanguage $IProfileEntityLanguage)
+     public function addLanguage(IProfileLanguageEntity $IProfileEntityLanguage)
      {
          $this->Language[] =$IProfileEntityLanguage;
      }
@@ -112,7 +112,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->Language;
      }
 
-     public function addJob(IProfileEntityJob $IProfileEntityJob)
+     public function addJob(IProfileJobEntity $IProfileEntityJob)
      {
          $this->Job[] =$IProfileEntityJob;
      }
@@ -122,7 +122,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->Job;
      }
 
-     public function addEducation(IProfileEntityEducation $IProfileEntityEducation)
+     public function addEducation(IProfileEducationEntity $IProfileEntityEducation)
      {
          $this->Education[] =$IProfileEntityEducation;
      }
@@ -132,7 +132,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->Education;
      }
 
-     public function addSocialProfile(IProfileEntitySocialProfile $IProfileEntitySocialProfile)
+     public function addSocialProfile(IProfileSocialProfileEntity $IProfileEntitySocialProfile)
      {
          $this->SocialProfile[] =$IProfileEntitySocialProfile;
      }
@@ -142,7 +142,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->SocialProfile;
      }
 
-     public function addCriminalRecord(IProfileEntityCriminalRecord $IProfileEntityCriminalRecord)
+     public function addCriminalRecord(IProfileCriminalRecordEntity $IProfileEntityCriminalRecord)
      {
          $this->CriminalRecord[] =$IProfileEntityCriminalRecord;
      }

@@ -5,19 +5,19 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes\Builder;
 use Faker\Factory;
 use Faker\Generator;
 use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntity;
-use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntityAddress;
-use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntityCriminalRecord;
-use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntityEducation;
-use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntityEmail;
-use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntityImage;
-use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntityJob;
-use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntityLanguage;
-use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntityName;
-use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntityPhone;
-use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntityRelationship;
-use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntitySkill;
-use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntitySocialProfile;
-use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntityUsername;
+use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileAddressEntity;
+use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileCriminalRecordEntity;
+use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEducationEntity;
+use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEmailEntity;
+use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileImageEntity;
+use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileJobEntity;
+use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileLanguageEntity;
+use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileNameEntity;
+use Jawabkom\Backend\Module\Profile\Test\Classes\ProfilePhoneEntity;
+use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileRelationshipEntity;
+use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileSkillEntity;
+use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileSocialProfileEntity;
+use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileUsernameEntity;
 
 class ProfileBuilder
 {
@@ -33,7 +33,7 @@ class ProfileBuilder
 
     public function addFakeUserName(): static
     {
-        $userName = new ProfileEntityUsername();
+        $userName = new ProfileUsernameEntity();
         $userName->setUsername($this->faker->userName());
         $userName->setValidSince($this->faker->dateTime());
         $this->profileEntity->addUsername($userName);
@@ -42,7 +42,7 @@ class ProfileBuilder
 
     public function addFakeAddress(): static
     {
-        $address = new ProfileEntityAddress();
+        $address = new ProfileAddressEntity();
         $address->setValidSince($this->faker->dateTime());
         $address->setCountry($this->faker->countryCode);
         $address->setState($this->faker->word);
@@ -57,7 +57,7 @@ class ProfileBuilder
 
     public function addFakeCriminalRecord(): static
     {
-        $criminalRecord = new ProfileEntityCriminalRecord();
+        $criminalRecord = new ProfileCriminalRecordEntity();
         $criminalRecord->setCaseNumber($this->faker->buildingNumber);
         $criminalRecord->setCaseType($this->faker->word);
         $criminalRecord->setCaseYear($this->faker->year);
@@ -69,7 +69,7 @@ class ProfileBuilder
 
     public function addFakeEducation(): static
     {
-        $education = new ProfileEntityEducation();
+        $education = new ProfileEducationEntity();
         $education->setValidSince($this->faker->dateTime());
         $education->setFrom($this->faker->word);
         $education->setTo($this->faker->word);
@@ -82,7 +82,7 @@ class ProfileBuilder
 
     public function addFakeEmail(): static
     {
-        $email = new ProfileEntityEmail();
+        $email = new ProfileEmailEntity();
         $email->setValidSince($this->faker->dateTime());
         $email->setEmail($this->faker->email);
         $email->setEspDomain($this->faker->domainName);
@@ -93,7 +93,7 @@ class ProfileBuilder
 
     public function addFakeImage(): static
     {
-        $image = new ProfileEntityImage();
+        $image = new ProfileImageEntity();
         $image->setOriginalUrl($this->faker->imageUrl);
         $image->setLocalPath($this->faker->imageUrl);
         $image->setValidSince($this->faker->dateTime());
@@ -103,7 +103,7 @@ class ProfileBuilder
 
     public function addFakeJob(): static
     {
-        $job = new ProfileEntityJob();
+        $job = new ProfileJobEntity();
         $job->setValidSince($this->faker->dateTime());
         $job->setFrom($this->faker->word);
         $job->setTo($this->faker->word);
@@ -116,7 +116,7 @@ class ProfileBuilder
 
     public function addFakeLanguage(): static
     {
-        $language = new ProfileEntityLanguage();
+        $language = new ProfileLanguageEntity();
         $language->setLanguage($this->faker->languageCode);
         $language->setCountry($this->faker->country);
         $this->profileEntity->addLanguage($language);
@@ -125,7 +125,7 @@ class ProfileBuilder
 
     public function addFakeName(): static
     {
-        $name = new ProfileEntityName();
+        $name = new ProfileNameEntity();
         $name->setPrefix($this->faker->word);
         $name->setFirst($this->faker->firstName);
         $name->setMiddle($this->faker->firstName);
@@ -137,7 +137,7 @@ class ProfileBuilder
 
     public function addFakePhone(): static
     {
-        $phone = new ProfileEntityPhone();
+        $phone = new ProfilePhoneEntity();
         $phone->setCreatedAt($this->faker->dateTime());
         $phone->setUpdatedAt($this->faker->dateTime());
         $phone->setType($this->faker->word);
@@ -157,7 +157,7 @@ class ProfileBuilder
 
     public function addFakeRelationship(): static
     {
-        $relationship = new ProfileEntityRelationship();
+        $relationship = new ProfileRelationshipEntity();
         $relationship->setValidSince($this->faker->dateTime());
         $relationship->setType($this->faker->word);
         $relationship->setFirstName($this->faker->firstName);
@@ -169,7 +169,7 @@ class ProfileBuilder
 
     public function addFakeSkill(): static
     {
-        $skill = new ProfileEntitySkill();
+        $skill = new ProfileSkillEntity();
         $skill->setValidSince($this->faker->dateTime());
         $skill->setLevel($this->faker->numberBetween(1,9));
         $skill->setSkill($this->faker->word);
@@ -179,7 +179,7 @@ class ProfileBuilder
 
     public function addFakeSocialProfile(): static
     {
-        $socialProfile = new ProfileEntitySocialProfile();
+        $socialProfile = new ProfileSocialProfileEntity();
         $socialProfile->setValidSince($this->faker->dateTime());
         $socialProfile->setUrl($this->faker->url);
         $socialProfile->setType($this->faker->word);
