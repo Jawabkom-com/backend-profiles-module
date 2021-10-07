@@ -22,12 +22,12 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setValidSince(\DateTime $validSince)
      {
-         $this->valid_since = $validSince;
+         $this->validSince = $validSince;
      }
 
      public function getValidSince(): \DateTime
      {
-         return $this->valid_since;
+         return $this->validSince;
      }
 
      public function setCountry(string $country)
@@ -82,12 +82,12 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setBuildingNumber(string $buildingNumber)
      {
-         $this->building_number = $buildingNumber;
+         $this->buildingNumber = $buildingNumber;
      }
 
      public function getBuildingNumber(): string
      {
-         return $this->building_number;
+         return $this->buildingNumber;
      }
 
      public function setDisplay(string $display)

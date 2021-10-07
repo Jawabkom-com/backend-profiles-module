@@ -22,12 +22,12 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setValidSince(\DateTime $validSince)
      {
-         $this->valid_since = $validSince;
+         $this->validSince = $validSince;
      }
 
      public function getValidSince(): \DateTime
      {
-         return $this->valid_sence;
+         return $this->validSince;
      }
 
      public function setEmail(string $email)
@@ -42,12 +42,12 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function setEspDomain(string $espDomain)
      {
-         $this->esp_admin = $espDomain;
+         $this->espAdmin = $espDomain;
      }
 
      public function getEspDomain(): string
      {
-         return $this->esp_admin;
+         return $this->espAdmin;
      }
 
      public function setType(string $type)
