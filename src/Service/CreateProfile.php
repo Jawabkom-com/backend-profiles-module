@@ -6,6 +6,8 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntity;
+use Jawabkom\Backend\Module\Profile\Validator\ProfileInputValidator;
+use Jawabkom\Backend\Module\Profile\Validator\ProfileNamesInputValidator;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 
@@ -13,11 +15,15 @@ class CreateProfile extends AbstractService
 {
     protected IProfileRepository $repository;
     protected array $profileStructure = ['names', 'phones', 'addresses', 'usernames', 'emails', 'relationships', 'skills', 'images', 'languages', 'jobs', 'educations', 'social_profiles', 'criminal_records', 'gender', 'date_of_birth', 'place_of_birth', 'data_source'];
+    private ProfileInputValidator $profileInputValidator;
+    private ProfileNamesInputValidator $profileNamesInputValidator;
 
-    public function __construct(IDependencyInjector $di, IProfileRepository $repository)
+    public function __construct(IDependencyInjector $di, IProfileRepository $repository, ProfileInputValidator $profileInputValidator, ProfileNamesInputValidator $profileNamesInputValidator)
     {
         parent::__construct($di);
         $this->repository = $repository;
+        $this->profileInputValidator = $profileInputValidator;
+        $this->profileNamesInputValidator = $profileNamesInputValidator;
     }
 
     //
@@ -25,7 +31,7 @@ class CreateProfile extends AbstractService
     //
     public function process(): static
     {
-
+        $this->validateInputs();
         $createNewProfileRecord = $this->createNewProfileRecord();
         dd($createNewProfileRecord);
 
@@ -43,6 +49,16 @@ class CreateProfile extends AbstractService
     //
     // LEVEL 1
     //
+    protected function validateInputs()
+    {
+        $profile = $this->getInput('profile');
+        $this->profileInputValidator->validate($profile);
+        if(isset($profile['names']))
+            $this->profileNamesInputValidator->validate($profile['names']);
+
+    }
+
+
     protected function createNewProfileRecord(): IProfileEntity
     {
         $profileEntity = $this->di->make(ProfileEntity::class);
