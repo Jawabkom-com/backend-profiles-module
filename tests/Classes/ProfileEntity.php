@@ -152,7 +152,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->CriminalRecord;
      }
 
-     public function addGender(string $gender)
+     public function setGender(string $gender)
      {
          $this->Gender=$gender;
      }
@@ -162,7 +162,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->Gender;
      }
 
-     public function addDateOfBirth(\DateTime $dateOfBirth)
+     public function setDateOfBirth(\DateTime $dateOfBirth)
      {
          $this->DateOfBirth=$dateOfBirth;
      }
@@ -172,7 +172,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->DateOfBirth;
      }
 
-     public function addPlaceOfBirth(string $placeOfBirth)
+     public function setPlaceOfBirth(string $placeOfBirth)
      {
          $this->PlaceOfBirth=$placeOfBirth;
      }
@@ -182,7 +182,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->PlaceOfBirth;
      }
 
-     public function addDataSource(string $dataSource)
+     public function setDataSource(string $dataSource)
      {
          $this->DataSource=$dataSource;
      }
@@ -192,7 +192,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
          return $this->DataSource;
      }
 
-     public function getProfileId(): mixed
+     public function getProfileId(): int|string
      {
          return $this->ProfileId;
      }
@@ -200,5 +200,10 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
      public function addProfileId(mixed $id)
      {
          $this->ProfileId = $id;
+     }
+
+     public function setProfileId(int|string $id)
+     {
+         $this->profileId = $id;
      }
  }

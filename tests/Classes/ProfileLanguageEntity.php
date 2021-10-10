@@ -39,4 +39,14 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
      {
          return $this->country;
      }
+
+     public function getProfileId(): int|string
+     {
+         return $this->profileId;
+     }
+
+     public function setProfileId(int|string $id)
+     {
+         $this->profileId = $id;
+     }
  }
