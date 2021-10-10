@@ -6,6 +6,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntity;
+use Jawabkom\Backend\Module\Profile\Trait\ProfileAddEditMethods;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileNamesInputValidator;
 use Jawabkom\Standard\Abstract\AbstractService;
@@ -13,8 +14,10 @@ use Jawabkom\Standard\Contract\IDependencyInjector;
 
 class CreateProfile extends AbstractService
 {
+    use ProfileAddEditMethods;
+
     protected IProfileRepository $repository;
-    protected array $profileStructure = ['names', 'phones', 'addresses', 'usernames', 'emails', 'relationships', 'skills', 'images', 'languages', 'jobs', 'educations', 'social_profiles', 'criminal_records', 'gender', 'date_of_birth', 'place_of_birth', 'data_source'];
+    protected array $profileStructure = ['phones', 'addresses', 'usernames', 'emails', 'relationships', 'skills', 'images', 'languages', 'jobs', 'educations', 'social_profiles', 'criminal_records', 'gender', 'date_of_birth', 'place_of_birth', 'data_source'];
     private ProfileInputValidator $profileInputValidator;
     private ProfileNamesInputValidator $profileNamesInputValidator;
 
@@ -32,7 +35,7 @@ class CreateProfile extends AbstractService
     public function process(): static
     {
         $this->validateInputs();
-        $createNewProfileRecord = $this->createNewProfileRecord();
+        $createNewProfileRecord = $this->createNewProfileRecord( $this->getInput('profile') );
         dd($createNewProfileRecord);
 
         // get inputs as an array
@@ -55,19 +58,16 @@ class CreateProfile extends AbstractService
         $this->profileInputValidator->validate($profile);
         if(isset($profile['names']))
             $this->profileNamesInputValidator->validate($profile['names']);
-
     }
 
-
-    protected function createNewProfileRecord(): IProfileEntity
+    protected function createNewProfileRecord($profileInputs): IProfileEntity
     {
         $profileEntity = $this->di->make(ProfileEntity::class);
-        $profileInputs = $this->getInput('profile');
+        $this->fillProfileEntity($profileEntity, $profileInputs, true);
         foreach ($profileInputs as $profilePartKey => $profilePartInput) {
-            if (in_array($profilePartKey, $this->profileStructure)) {
-                $processingMethodName = "process" . ucfirst($profilePartKey);
+            $processingMethodName = "process" . ucfirst($profilePartKey);
+            if(method_exists($this, $processingMethodName))
                 $this->$processingMethodName($profileEntity, $profilePartInput);
-            }
         }
         return $profileEntity;
     }
@@ -79,38 +79,8 @@ class CreateProfile extends AbstractService
     {
         foreach ($names as $name) {
             $nameObj = $this->di->make(IProfileNameEntity::class);
-            $nameObj->setFirst($name['first'] ?? '');
-            $nameObj->setMiddle($name['middle'] ?? '');
-            $nameObj->setLast($name['last'] ?? '');
-            $nameObj->setPrefix($name['prefix'] ?? '');
-            $displayName = preg_replace('#[\s]+#', ' ', trim($nameObj->getPrefix() . ' ' . $nameObj->getFirst() . ' ' . $nameObj->getMiddle() . ' ' . $nameObj->getLast()));
-            $nameObj->setDisplay($displayName);
-
+            $this->fillNameEntity($profileEntity, $nameObj, $name);
             $profileEntity->addName($nameObj);
-        }
-    }
-
-
-    protected function createProfileEntityNestedObject($getProfileObjectClass, $profileInputs)
-    {
-        $entity = new $getProfileObjectClass;
-        foreach ($profileInputs as $profileInput) {
-            foreach ($profileInput as $key => $profileValue) {
-                $profileSetMethod = 'set' . $key;
-                $this->assignObjectIfMethodExist($entity, $profileSetMethod, $profileValue);
-            }
-        }
-        return $entity;
-    }
-
-
-    //
-    // LEVEL 3
-    //
-    protected function assignObjectIfMethodExist($classObject, $profileSetMethod, $profileValue)
-    {
-        if (method_exists($classObject, $profileSetMethod)) {
-            $classObject->$profileSetMethod($profileValue);
         }
     }
 
