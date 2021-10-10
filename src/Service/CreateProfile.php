@@ -18,11 +18,14 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntity;
+
 use Jawabkom\Backend\Module\Profile\Validator\ProfileAddressesInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileCriminalRecordsInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileEducationsInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileEmailsInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileImagesInputValidator;
+
+use Jawabkom\Backend\Module\Profile\Trait\ProfileAddEditMethods;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileJobsInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileLanguagesInputValidator;
@@ -37,8 +40,10 @@ use Jawabkom\Standard\Contract\IDependencyInjector;
 
 class CreateProfile extends AbstractService
 {
+    use ProfileAddEditMethods;
+
     protected IProfileRepository $repository;
-    protected array $profileStructure = ['names', 'phones', 'addresses', 'usernames', 'emails', 'relationships', 'skills', 'images', 'languages', 'jobs', 'educations', 'social_profiles', 'criminal_records', 'gender', 'date_of_birth', 'place_of_birth', 'data_source'];
+    protected array $profileStructure = ['phones', 'addresses', 'usernames', 'emails', 'relationships', 'skills', 'images', 'languages', 'jobs', 'educations', 'social_profiles', 'criminal_records', 'gender', 'date_of_birth', 'place_of_birth', 'data_source'];
     private ProfileInputValidator $profileInputValidator;
     private ProfileNamesInputValidator $profileNamesInputValidator;
     private ProfileAddressesInputValidator $profileAddressesInputValidator;
@@ -96,7 +101,7 @@ class CreateProfile extends AbstractService
     public function process(): static
     {
         $this->validateInputs();
-        $createNewProfileRecord = $this->createNewProfileRecord();
+        $createNewProfileRecord = $this->createNewProfileRecord( $this->getInput('profile') );
         dd($createNewProfileRecord);
 
         // get inputs as an array
@@ -117,6 +122,7 @@ class CreateProfile extends AbstractService
     {
         $profile = $this->getInput('profile');
         $this->profileInputValidator->validate($profile);
+
         if(isset($profile['names'])) $this->profileNamesInputValidator->validate($profile['names']);
         if(isset($profile['addresses'])) $this->profileAddressesInputValidator->validate($profile['addresses']);
         if(isset($profile['criminalRecords'])) $this->profileCriminalRecordsInputValidator->validate($profile['criminalRecords']);
@@ -130,18 +136,17 @@ class CreateProfile extends AbstractService
         if(isset($profile['skills'])) $this->profileSkillsInputValidator->validate($profile['skills']);
         if(isset($profile['socialProfiles'])) $this->profileSocialProfilesInputValidator->validate($profile['socialProfiles']);
         if(isset($profile['usernames'])) $this->profileUsernamesInputValidator->validate($profile['usernames']);
+
     }
 
-
-    protected function createNewProfileRecord(): IProfileEntity
+    protected function createNewProfileRecord($profileInputs): IProfileEntity
     {
         $profileEntity = $this->di->make(ProfileEntity::class);
-        $profileInputs = $this->getInput('profile');
+        $this->fillProfileEntity($profileEntity, $profileInputs, true);
         foreach ($profileInputs as $profilePartKey => $profilePartInput) {
-            if (in_array($profilePartKey, $this->profileStructure)) {
-                $processingMethodName = "process" . ucfirst($profilePartKey);
+            $processingMethodName = "process" . ucfirst($profilePartKey);
+            if(method_exists($this, $processingMethodName))
                 $this->$processingMethodName($profileEntity, $profilePartInput);
-            }
         }
         return $profileEntity;
     }
@@ -153,13 +158,7 @@ class CreateProfile extends AbstractService
     {
         foreach ($names as $name) {
             $nameObj = $this->di->make(IProfileNameEntity::class);
-            $nameObj->setFirst($name['first'] ?? '');
-            $nameObj->setMiddle($name['middle'] ?? '');
-            $nameObj->setLast($name['last'] ?? '');
-            $nameObj->setPrefix($name['prefix'] ?? '');
-            $displayName = preg_replace('#[\s]+#', ' ', trim($nameObj->getPrefix() . ' ' . $nameObj->getFirst() . ' ' . $nameObj->getMiddle() . ' ' . $nameObj->getLast()));
-            $nameObj->setDisplay($displayName);
-
+            $this->fillNameEntity($profileEntity, $nameObj, $name);
             $profileEntity->addName($nameObj);
         }
     }
@@ -168,15 +167,7 @@ class CreateProfile extends AbstractService
     {
         foreach ($addresses as $address) {
             $addressObj = $this->di->make(IProfileAddressEntity::class);
-            $addressObj->setValidSince($address['validSince'] ?? '');
-            $addressObj->setCountry($address['country'] ?? '');
-            $addressObj->setState($address['state'] ?? '');
-            $addressObj->setCity($address['city'] ?? '');
-            $addressObj->setZip($address['zip'] ?? '');
-            $addressObj->setStreet($address['street'] ?? '');
-            $addressObj->setBuildingNumber($address['buildingNumber'] ?? '');
-            $addressObj->setDisplay($address['display'] ?? '');
-
+            $this->fillAddressEntity($profileEntity,$addressObj,$address);
             $profileEntity->addAddress($addressObj);
         }
     }
@@ -185,12 +176,7 @@ class CreateProfile extends AbstractService
     {
         foreach ($criminalRecords as $criminalRecord) {
             $criminalRecordObj = $this->di->make(IProfileCriminalRecordEntity::class);
-            $criminalRecordObj->setCaseNumber($criminalRecord['caseNumber'] ?? '');
-            $criminalRecordObj->setCaseType($criminalRecord['caseType'] ?? '');
-            $criminalRecordObj->setCaseYear($criminalRecord['caseYear'] ?? '');
-            $criminalRecordObj->setCaseStatus($criminalRecord['caseStatus'] ?? '');
-            $criminalRecordObj->setDisplay($criminalRecord['display'] ?? '');;
-
+            $this->fillCriminalRecordEntity($profileEntity,$criminalRecordObj,$criminalRecord);
             $profileEntity->addCriminalRecord($criminalRecordObj);
         }
     }
@@ -199,13 +185,7 @@ class CreateProfile extends AbstractService
     {
         foreach ($educations as $education) {
             $educationObj = $this->di->make(IProfileEducationEntity::class);
-            $educationObj->setValidSince($education['validSince'] ?? '');
-            $educationObj->setFrom($education['from'] ?? '');
-            $educationObj->setTo($education['to'] ?? '');
-            $educationObj->setSchool($education['school'] ?? '');
-            $educationObj->setDegree($education['degree'] ?? '');;
-            $educationObj->setMajor($education['major'] ?? '');;
-
+            $this->fillEducationEntity($profileEntity,$educationObj,$education);
             $profileEntity->addEducation($educationObj);
         }
     }
@@ -214,11 +194,7 @@ class CreateProfile extends AbstractService
     {
         foreach ($emails as $email) {
             $emailObj = $this->di->make(IProfileEmailEntity::class);
-            $emailObj->setValidSince($email['validSince'] ?? '');
-            $emailObj->setEmail($email['email'] ?? '');
-            $emailObj->setEspDomain($email['espDomain'] ?? '');
-            $emailObj->setType($email['type'] ?? '');
-
+            $this->fillEmailEntity($profileEntity,$emailObj,$email);
             $profileEntity->addEmail($emailObj);
         }
     }
@@ -227,10 +203,7 @@ class CreateProfile extends AbstractService
     {
         foreach ($images as $image) {
             $imageObj = $this->di->make(IProfileImageEntity::class);
-            $imageObj->setOriginalUrl($image['originalUrl'] ?? '');
-            $imageObj->setLocalPath($image['localPath'] ?? '');
-            $imageObj->setValidSince($image['validSince'] ?? '');
-
+            $this->fillImageEntity($profileEntity,$imageObj,$image);
             $profileEntity->addImage($imageObj);
         }
     }
@@ -239,13 +212,7 @@ class CreateProfile extends AbstractService
     {
         foreach ($jobs as $job) {
             $jobObj = $this->di->make(IProfileJobEntity::class);
-            $jobObj->setValidSince($job['validSince'] ?? '');
-            $jobObj->setFrom($job['from'] ?? '');
-            $jobObj->setTo($job['to'] ?? '');
-            $jobObj->setTitle($job['title'] ?? '');
-            $jobObj->setOrganization($job['organization'] ?? '');
-            $jobObj->setIndustry($job['industry'] ?? '');
-
+            $this->fillJobEntity($profileEntity,$jobObj,$job);
             $profileEntity->addJob($jobObj);
         }
     }
@@ -254,9 +221,7 @@ class CreateProfile extends AbstractService
     {
         foreach ($languages as $language) {
             $languageObj = $this->di->make(IProfileLanguageEntity::class);
-            $languageObj->setLanguage($language['language'] ?? '');
-            $languageObj->setCountry($job['country'] ?? '');
-
+            $this->fillLanguageEntity($profileEntity,$languageObj,$language);
             $profileEntity->addLanguage($languageObj);
         }
     }
@@ -265,20 +230,7 @@ class CreateProfile extends AbstractService
     {
         foreach ($phones as $phone) {
             $phoneObj = $this->di->make(IProfilePhoneEntity::class);
-            $phoneObj->setCreatedAt($phone['createdAt'] ?? '');
-            $phoneObj->setUpdatedAt($phone['updatedAt'] ?? '');
-            $phoneObj->setType($phone['type'] ?? '');
-            $phoneObj->setDoNotCallFlag($phone['doNotCallFlag'] ?? '');
-            $phoneObj->setCountryCode($phone['countryCode'] ?? '');
-            $phoneObj->setOriginalNumber($phone['originalNumber'] ?? '');
-            $phoneObj->setFormattedNumber($phone['formattedNumber'] ?? '');
-            $phoneObj->setValidPhone($phone['validPhone'] ?? '');
-            $phoneObj->setRiskyPhone($phone['riskyPhone'] ?? '');
-            $phoneObj->setDisposablePhone($phone['disposablePhone'] ?? '');
-            $phoneObj->setCarrier($phone['carrier'] ?? '');
-            $phoneObj->setPurpose($phone['purpose'] ?? '');
-            $phoneObj->setIndustry($phone['industry'] ?? '');
-
+            $this->fillPhoneEntity($profileEntity,$phoneObj,$phone);
             $profileEntity->addPhone($phoneObj);
         }
     }
@@ -287,12 +239,7 @@ class CreateProfile extends AbstractService
     {
         foreach ($relationships as $relationship) {
             $relationshipObj = $this->di->make(IProfileRelationshipEntity::class);
-            $relationshipObj->setValidSince($relationship['validSince'] ?? '');
-            $relationshipObj->setType($relationship['type'] ?? '');
-            $relationshipObj->setFirstName($relationship['firstName'] ?? '');
-            $relationshipObj->setLastName($relationship['lastName'] ?? '');
-            $relationshipObj->setPersonId($relationship['personId'] ?? '');
-
+            $this->fillRelationshipEntity($profileEntity,$relationshipObj,$relationship);
             $profileEntity->addRelationship($relationshipObj);
         }
     }
@@ -301,10 +248,7 @@ class CreateProfile extends AbstractService
     {
         foreach ($skills as $skill) {
             $skillObj = $this->di->make(IProfileSkillEntity::class);
-            $skillObj->setValidSince($skill['validSince'] ?? '');
-            $skillObj->setLevel($skill['level'] ?? '');
-            $skillObj->setSkill($skill['skill'] ?? '');
-
+            $this->fillSkillEntity($profileEntity,$skillObj,$skill);
             $profileEntity->addSkill($skillObj);
         }
     }
@@ -313,12 +257,7 @@ class CreateProfile extends AbstractService
     {
         foreach ($socialProfiles as $socialProfile) {
             $socialProfileObj = $this->di->make(IProfileSocialProfileEntity::class);
-            $socialProfileObj->setValidSince($socialProfile['validSince'] ?? '');
-            $socialProfileObj->setUrl($socialProfile['url'] ?? '');
-            $socialProfileObj->setType($socialProfile['type'] ?? '');
-            $socialProfileObj->setUsername($socialProfile['username'] ?? '');
-            $socialProfileObj->setAccountId($socialProfile['accountId'] ?? '');
-
+            $this->fillSocialProfileEntity($profileEntity,$socialProfileObj,$socialProfile);
             $profileEntity->addSocialProfile($socialProfileObj);
         }
     }
@@ -327,34 +266,8 @@ class CreateProfile extends AbstractService
     {
         foreach ($usernames as $username) {
             $usernameObj = $this->di->make(IProfileUsernameEntity::class);
-            $usernameObj->setValidSince($username['validSince'] ?? '');
-            $usernameObj->setUsername($username['username'] ?? '');
-
+            $this->fillUsernameEntity($profileEntity,$usernameObj,$username);
             $profileEntity->addUsername($usernameObj);
-        }
-    }
-
-
-    protected function createProfileEntityNestedObject($getProfileObjectClass, $profileInputs)
-    {
-        $entity = new $getProfileObjectClass;
-        foreach ($profileInputs as $profileInput) {
-            foreach ($profileInput as $key => $profileValue) {
-                $profileSetMethod = 'set' . $key;
-                $this->assignObjectIfMethodExist($entity, $profileSetMethod, $profileValue);
-            }
-        }
-        return $entity;
-    }
-
-
-    //
-    // LEVEL 3
-    //
-    protected function assignObjectIfMethodExist($classObject, $profileSetMethod, $profileValue)
-    {
-        if (method_exists($classObject, $profileSetMethod)) {
-            $classObject->$profileSetMethod($profileValue);
         }
     }
 
