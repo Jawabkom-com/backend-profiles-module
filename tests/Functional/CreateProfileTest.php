@@ -3,6 +3,8 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
 use Carbon\Carbon;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
@@ -96,6 +98,33 @@ class CreateProfileTest extends AbstractTestCase
         ]);
         $this->assertDatabaseHas('profile_usernames',[
             'username' => $usernames[0]->getUsername()
+        ]);
+    }
+
+    public function testProfileWithEmail(){
+
+        $userData = $this->dummyBasicProfileData();
+        $userData['emails'][] = $this->dummyEmailsData();
+        $profile = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+        $this->assertTrue(true);
+        $this->assertNotEmpty($profile);
+        $this->assertInstanceOf(IProfileRepository::class,$profile);
+        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+
+        $emails =$profile->getEmails();
+        $this->assertNotEmpty($emails);
+        $this->assertInstanceOf(IProfileEmailRepository::class,$emails[0]);
+        $this->assertInstanceOf(IProfileEmailEntity::class,$emails[0]);
+        $this->assertDatabaseHas('profile_emails',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_emails',[
+            'email' => $emails[0]->getEmail()
         ]);
     }
 
