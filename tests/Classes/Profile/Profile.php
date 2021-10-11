@@ -2,6 +2,7 @@
 
 namespace Jawabkom\Backend\Module\Profile\Test\Profile;
 
+use Classes\Database\Factories\ProfileFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -35,6 +36,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 {
     use HasFactory;
     protected $fillable=[
+      'profile_id',
       'gender',
       'date_of_birth',
       'place_of_birth',
@@ -42,12 +44,12 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
     ];
     public function getProfileId(): int|string
     {
-       return $this->id;
+       return $this->profile_id;
     }
 
     public function setProfileId(int|string $id)
     {
-        $this->id = $id;
+        $this->profile_id = $id;
     }
 
     public function setGender(string $gender)
@@ -313,6 +315,11 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
     public function profileSocialProfile(): HasMany
     {
         return $this->hasMany(ProfileSocialProfile::class,'profile_id','profile_id');
+    }
+    /*************************** Factory *********************************/
+    protected static function newFactory(): ProfileFactory
+    {
+        return ProfileFactory::new();
     }
 
 }
