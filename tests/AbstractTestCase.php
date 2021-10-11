@@ -48,7 +48,6 @@ class AbstractTestCase extends TestCaseAlisa
            "CreateProfileRelationshipsTable",
            "CreateProfileSkillsTable",
            "CreateProfileSocialProfilesTable",
-           "CreateProfilesTable",
            "CreateProfileUsernamesTable",
         ];
         foreach($classes as $class){
