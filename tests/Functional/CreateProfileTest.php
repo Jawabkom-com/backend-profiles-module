@@ -5,6 +5,8 @@ namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 use Carbon\Carbon;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
@@ -85,16 +87,17 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
 
-/*        $phones =$profile->getPhones();
-        $this->assertNotEmpty($phones);
-        $this->assertInstanceOf(IProfilePhoneRepository::class,$phones[0]);
-        $this->assertInstanceOf(IProfilePhoneEntity::class,$phones[0]);
-        $this->assertDatabaseHas('profile_phones',[
+        $usernames =$profile->getUsernames();
+        dd($usernames);
+        $this->assertNotEmpty($usernames);
+        $this->assertInstanceOf(IProfileUsernameRepository::class,$usernames[0]);
+        $this->assertInstanceOf(IProfileUsernameEntity::class,$usernames[0]);
+        $this->assertDatabaseHas('profile_usernames',[
             'profile_id' => $profile->getProfileId()
         ]);
-        $this->assertDatabaseHas('profile_phones',[
-            'original_number' => $phones[0]->getOriginalNumber()
-        ]);*/
+        $this->assertDatabaseHas('profile_usernames',[
+            'username' => $usernames[0]->getDisplay()
+        ]);
     }
 
 }
