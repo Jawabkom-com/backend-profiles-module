@@ -91,7 +91,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function addName(IProfileNameEntity $IProfileEntityName)
     {
-        // TODO: Implement addName() method.
+        $IProfileEntityName->saveEntity($IProfileEntityName);
     }
 
     public function getNames(): iterable
@@ -111,7 +111,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function addAddress(IProfileAddressEntity $IProfileEntityAddress)
     {
-        // TODO: Implement addAddress() method.
+        $IProfileEntityAddress->saveEntity($IProfileEntityAddress);
     }
 
     public function getAddresses(): iterable
@@ -121,7 +121,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function addUsername(IProfileUsernameEntity $IProfileEntityUsername)
     {
-       // $IProfileEntityUsername->
+        $IProfileEntityUsername->saveEntity($IProfileEntityUsername);
     }
 
     public function getUsernames(): iterable
@@ -131,7 +131,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function addEmail(IProfileEmailEntity $IProfileEntityEmail)
     {
-        // TODO: Implement addEmail() method.
+        $IProfileEntityEmail->saveEntity($IProfileEntityEmail);
     }
 
     public function getEmails(): iterable
@@ -141,7 +141,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function addRelationship(IProfileRelationshipEntity $IProfileEntityRelationship)
     {
-        // TODO: Implement addRelationship() method.
+        $IProfileEntityRelationship->saveEntity($IProfileEntityRelationship);
     }
 
     public function getRelationships(): iterable
@@ -151,7 +151,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function addSkill(IProfileSkillEntity $IProfileEntitySkill)
     {
-        // TODO: Implement addSkill() method.
+        $IProfileEntitySkill->saveEntity($IProfileEntitySkill);
     }
 
     public function getSkills(): iterable
@@ -161,7 +161,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function addImage(IProfileImageEntity $IProfileEntityImage)
     {
-        // TODO: Implement addImage() method.
+        $IProfileEntityImage->saveEntity($IProfileEntityImage);
     }
 
     public function getImages(): iterable
@@ -171,7 +171,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function addLanguage(IProfileLanguageEntity $IProfileEntityLanguage)
     {
-        // TODO: Implement addLanguage() method.
+        $IProfileEntityLanguage->saveEntity($IProfileEntityLanguage);
     }
 
     public function getLanguages(): iterable
@@ -181,7 +181,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function addJob(IProfileJobEntity $IProfileEntityJob)
     {
-        // TODO: Implement addJob() method.
+        $IProfileEntityJob->saveEntity($IProfileEntityJob);
     }
 
     public function getJobs(): iterable
@@ -191,7 +191,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function addEducation(IProfileEducationEntity $IProfileEntityEducation)
     {
-        // TODO: Implement addEducation() method.
+        $IProfileEntityEducation->saveEntity($IProfileEntityEducation);
     }
 
     public function getEducations(): iterable
@@ -201,7 +201,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function addSocialProfile(IProfileSocialProfileEntity $IProfileEntitySocialProfile)
     {
-        // TODO: Implement addSocialProfile() method.
+        $IProfileEntitySocialProfile->saveEntity($IProfileEntitySocialProfile);
     }
 
     public function getSocialProfiles(): iterable
@@ -211,7 +211,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function addCriminalRecord(IProfileCriminalRecordEntity $IProfileEntityCriminalRecord)
     {
-        // TODO: Implement addCriminalRecord() method.
+        $IProfileEntityCriminalRecord->saveEntity($IProfileEntityCriminalRecord);
     }
 
     public function getCriminalRecords(): iterable

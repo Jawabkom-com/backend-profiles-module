@@ -54,7 +54,7 @@ class ProfileUsername extends Model implements IProfileUsernameEntity,IProfileUs
 
     public function saveEntity(IProfileUsernameEntity|IEntity $entity): bool
     {
-        // TODO: Implement saveEntity() method.
+        $entity->save();
     }
 
     public function createEntity(array $params = []): IProfileUsernameEntity

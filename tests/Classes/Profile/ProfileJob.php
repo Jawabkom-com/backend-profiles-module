@@ -102,7 +102,7 @@ class ProfileJob extends Model implements IProfileJobEntity,IProfileJobRepositor
 
     public function saveEntity(IProfileJobEntity|IEntity $entity): bool
     {
-        // TODO: Implement saveEntity() method.
+        $entity->save();
     }
 
     public function createEntity(array $params = []): IProfileJobEntity
