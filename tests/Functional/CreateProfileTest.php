@@ -88,7 +88,6 @@ class CreateProfileTest extends AbstractTestCase
         ]);
 
         $usernames =$profile->getUsernames();
-        dd($usernames);
         $this->assertNotEmpty($usernames);
         $this->assertInstanceOf(IProfileUsernameRepository::class,$usernames[0]);
         $this->assertInstanceOf(IProfileUsernameEntity::class,$usernames[0]);
@@ -96,7 +95,7 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
         $this->assertDatabaseHas('profile_usernames',[
-            'username' => $usernames[0]->getDisplay()
+            'username' => $usernames[0]->getUsername()
         ]);
     }
 
