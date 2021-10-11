@@ -224,12 +224,16 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function saveEntity(IProfileEntity|IEntity $entity): bool
     {
-        // TODO: Implement saveEntity() method.
+        try {
+            return (boolean) $entity->save();
+        }catch (\Throwable $exception){
+            return false;
+        }
     }
 
     public function createEntity(array $params = []): IEntity|IProfileEntity
     {
-        // TODO: Implement createEntity() method.
+        return app()->make(static::class)->fill($params);
     }
 
     public function getByFilters(IFilterComposite $filterComposite = null, array $orderBy = [], int $page = 1, int $perPage = 0): iterable

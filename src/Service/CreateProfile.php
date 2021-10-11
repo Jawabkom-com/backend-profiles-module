@@ -60,7 +60,7 @@ class CreateProfile extends AbstractService
         //validate inputs
         $this->validateInputs();
         //create && save profile
-        $createNewProfileRecord = $this->createNewProfileRecord( $this->getInput('profile') );
+        $createNewProfileRecord = $this->createNewProfileRecord( $this->getInput('profile'));
         $this->setOutput('profile',$createNewProfileRecord);
         return $this;
     }
@@ -89,13 +89,15 @@ class CreateProfile extends AbstractService
 
     protected function createNewProfileRecord($profileInputs): IProfileEntity
     {
-        $profileEntity = $this->di->make(IProfileRepository::class);
+        $profileEntity = $this->repository->createEntity();
         $this->fillProfileEntity($profileEntity, $profileInputs, true);
         foreach ($profileInputs as $profilePartKey => $profilePartInput) {
             $processingMethodName = "process" . ucfirst($profilePartKey);
-            if(method_exists($this, $processingMethodName))
+            if(method_exists($this, $processingMethodName)){
                 $this->$processingMethodName($profileEntity, $profilePartInput);
+            }
         }
+        $this->repository->saveEntity($profileEntity);
         return $profileEntity;
     }
 

@@ -6,7 +6,25 @@ use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 
 class ProfileInputValidator
 {
-    protected array $structure = ['names', 'phones', 'addresses', 'usernames', 'emails', 'relationships', 'skills', 'images', 'languages', 'jobs', 'educations', 'social_profiles', 'criminal_records', 'gender', 'date_of_birth', 'place_of_birth', 'data_source'];
+    protected array $structure = [
+        'names',
+        'phones',
+        'addresses',
+        'usernames',
+        'emails',
+        'relationships',
+        'skills',
+        'images',
+        'languages',
+        'jobs',
+        'educations',
+        'social_profiles',
+        'criminal_records',
+        'gender',
+        'date_of_birth',
+        'place_of_birth',
+        'data_source'
+    ];
 
     public function validate(array $inputs)
     {
