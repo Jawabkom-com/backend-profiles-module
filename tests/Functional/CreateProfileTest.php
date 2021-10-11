@@ -7,11 +7,11 @@ use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Builder\ProfileBuilder;
+use Jawabkom\Standard\Contract\IDependencyInjector;
 
 class CreateProfileTest extends AbstractTestCase
 {
     private CreateProfile $createProfile;
-
     public function setUp(): void
     {
         parent::setUp();
@@ -20,33 +20,8 @@ class CreateProfileTest extends AbstractTestCase
 
     //Create New Profile
     public function testCreateProfile(){
-        $dummyData = $this->generateProfiles();
-        $this->createProfile->input('profile',$dummyData)->process();
+       // $this->createProfile->input('profile',$dummyData)->process();
         $this->assertTrue(true);
     }
 
-
-    public function generateProfiles() :IProfileEntity
-    {
-            $profileBuilder = new ProfileBuilder();
-            return $profileBuilder
-                ->setProfileId()
-                ->addFakeUserName()
-                ->setGender()
-                ->addFakeAddress()
-                ->addFakeCriminalRecord()
-                ->addFakeEducation()
-                ->addFakeEmail()
-                ->addFakeName()
-                ->addFakeImage()
-                ->addFakeJob()
-                ->addFakeLanguage()
-                ->addFakePhone()
-                ->addFakeRelationship()
-                ->addFakeSkill()
-                ->addFakeSocialProfile()
-                ->setDateOfBirth()
-                ->setPlaceOfBirth()
-                ->get();
-    }
 }

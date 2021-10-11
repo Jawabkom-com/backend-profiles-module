@@ -3,7 +3,6 @@
 namespace Jawabkom\Backend\Module\Profile\Test;
 
 use Jawabkom\Backend\Module\Profile\Test\Classes\Provider\ProfileServiceProvider;
-use Jawabkom\Backend\Module\Profile\Test\Classes\Provider\TranslationServiceProvider;
 use Orchestra\Testbench\TestCase as TestCaseAlisa;
 
 class AbstractTestCase extends TestCaseAlisa
@@ -36,10 +35,10 @@ class AbstractTestCase extends TestCaseAlisa
             'database' => ':memory:'
         ]);
         $classes =[
-       //     "CreateTranslationTable",
+           "CreateProfilesTable",
         ];
         foreach($classes as $class){
-          $class ="\\Jawabkom\\Backend\\Module\\Translation\\Test\\Classes\\Database\\Migrations\\{$class}";
+          $class ="\\Jawabkom\\Backend\\Module\\Profile\\Test\\Classes\\Database\\Migrations\\{$class}";
             (new $class)->up();
         }
 
