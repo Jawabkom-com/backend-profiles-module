@@ -4,6 +4,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Profile;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationEntity;
@@ -96,7 +97,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getNames(): iterable
     {
-        // TODO: Implement getNames() method.
+     return $this->ProfileName()->get();
     }
 
     public function addPhone(IProfilePhoneEntity $IProfileEntityPhone)
@@ -106,7 +107,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getPhones(): iterable
     {
-        // TODO: Implement getPhones() method.
+      return $this->profilePhone()->get();
     }
 
     public function addAddress(IProfileAddressEntity $IProfileEntityAddress)
@@ -116,7 +117,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getAddresses(): iterable
     {
-        // TODO: Implement getAddresses() method.
+       return $this->profileAddress()->get();
     }
 
     public function addUsername(IProfileUsernameEntity $IProfileEntityUsername)
@@ -126,7 +127,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getUsernames(): iterable
     {
-        // TODO: Implement getUsernames() method.
+        return $this->profileUsername()->get();
     }
 
     public function addEmail(IProfileEmailEntity $IProfileEntityEmail)
@@ -136,7 +137,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getEmails(): iterable
     {
-        // TODO: Implement getEmails() method.
+       return $this->profileEmail()->get();
     }
 
     public function addRelationship(IProfileRelationshipEntity $IProfileEntityRelationship)
@@ -146,7 +147,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getRelationships(): iterable
     {
-        // TODO: Implement getRelationships() method.
+      return $this->profileRelationship()->get();
     }
 
     public function addSkill(IProfileSkillEntity $IProfileEntitySkill)
@@ -156,7 +157,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getSkills(): iterable
     {
-        // TODO: Implement getSkills() method.
+      return $this->profileSkill()->get();
     }
 
     public function addImage(IProfileImageEntity $IProfileEntityImage)
@@ -166,7 +167,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getImages(): iterable
     {
-        // TODO: Implement getImages() method.
+       return $this->profileImage()->get();
     }
 
     public function addLanguage(IProfileLanguageEntity $IProfileEntityLanguage)
@@ -176,7 +177,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getLanguages(): iterable
     {
-        // TODO: Implement getLanguages() method.
+       return $this->profileLanguage()->get();
     }
 
     public function addJob(IProfileJobEntity $IProfileEntityJob)
@@ -186,7 +187,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getJobs(): iterable
     {
-        // TODO: Implement getJobs() method.
+       $this->profileJob()->get();
     }
 
     public function addEducation(IProfileEducationEntity $IProfileEntityEducation)
@@ -196,7 +197,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getEducations(): iterable
     {
-        // TODO: Implement getEducations() method.
+      return $this->profileEducation()->get();
     }
 
     public function addSocialProfile(IProfileSocialProfileEntity $IProfileEntitySocialProfile)
@@ -206,7 +207,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getSocialProfiles(): iterable
     {
-        // TODO: Implement getSocialProfiles() method.
+      return $this->profileSocialProfile()->get();
     }
 
     public function addCriminalRecord(IProfileCriminalRecordEntity $IProfileEntityCriminalRecord)
@@ -216,7 +217,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getCriminalRecords(): iterable
     {
-        // TODO: Implement getCriminalRecords() method.
+       return $this->profileCriminalRecord()->get();
     }
 
     public function saveEntity(IProfileEntity|IEntity $entity): bool
@@ -247,4 +248,71 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
     {
         return  $this->where('profile_id',$profileId)->first();
     }
+
+    /********************************** RelationsShip **************************************************/
+    public function profileName(): HasMany
+    {
+        return $this->hasMany(ProfileName::class,'profile_id','profile_id');
+    }
+
+    public function profileJob(): HasMany
+    {
+        return $this->hasMany(ProfileJob::class,'profile_id','profile_id');
+    }
+
+    public function profileAddress(): HasMany
+    {
+        return $this->hasMany(ProfileAddress::class,'profile_id','profile_id');
+    }
+
+    public function profileCriminalRecord(): HasMany
+    {
+        return $this->hasMany(ProfileCriminalRecord::class,'profile_id','profile_id');
+    }
+
+    public function profileEducation(): HasMany
+    {
+        return $this->hasMany(ProfileEducation::class,'profile_id','profile_id');
+    }
+
+    public function profileEmail(): HasMany
+    {
+        return $this->hasMany(ProfileEmail::class,'profile_id','profile_id');
+    }
+
+    public function profileImage(): HasMany
+    {
+        return $this->hasMany(ProfileImage::class,'profile_id','profile_id');
+    }
+
+    public function profileLanguage(): HasMany
+    {
+        return $this->hasMany(ProfileLanguage::class,'profile_id','profile_id');
+    }
+
+    public function profilePhone(): HasMany
+    {
+        return $this->hasMany(ProfilePhone::class,'profile_id','profile_id');
+    }
+
+    public function profileRelationship(): HasMany
+    {
+        return $this->hasMany(ProfileRelationship::class,'profile_id','profile_id');
+    }
+
+    public function profileSkill(): HasMany
+    {
+        return $this->hasMany(ProfileSkill::class,'profile_id','profile_id');
+    }
+
+    public function profileUsername(): HasMany
+    {
+        return $this->hasMany(ProfileUsername::class,'profile_id','profile_id');
+    }
+    
+    public function profileSocialProfile(): HasMany
+    {
+        return $this->hasMany(ProfileSocialProfile::class,'profile_id','profile_id');
+    }
+
 }
