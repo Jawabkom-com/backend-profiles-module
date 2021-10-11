@@ -6,7 +6,7 @@ use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 
 class ProfileCriminalRecordsInputValidator
 {
-    protected array $structure = ['caseNumber', 'caseType', 'caseYear', 'caseStatus' , 'display'];
+    protected array $structure = ['case_number', 'case_type', 'case_year', 'case_status' , 'display'];
 
     public function validate(array $inputs)
     {

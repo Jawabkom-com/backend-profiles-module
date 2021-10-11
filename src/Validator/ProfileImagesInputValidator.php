@@ -6,7 +6,7 @@ use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 
 class ProfileImagesInputValidator
 {
-    protected array $structure = ['originalUrl', 'localPath', 'validSince'];
+    protected array $structure = ['original_url', 'local_path', 'valid_since'];
 
     public function validate(array $inputs)
     {

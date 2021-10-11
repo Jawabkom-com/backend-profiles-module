@@ -6,7 +6,7 @@ use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 
 class ProfileSkillsInputValidator
 {
-    protected array $structure = ['validSince', 'level', 'skill'];
+    protected array $structure = ['valid_since', 'level', 'skill'];
 
     public function validate(array $inputs)
     {

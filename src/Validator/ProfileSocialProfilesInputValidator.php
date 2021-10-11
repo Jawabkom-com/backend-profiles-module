@@ -6,7 +6,7 @@ use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 
 class ProfileSocialProfilesInputValidator
 {
-    protected array $structure = ['validSince', 'url', 'type' , 'username' , 'accountId'];
+    protected array $structure = ['valid_since', 'url', 'type' , 'username' , 'account_id'];
 
     public function validate(array $inputs)
     {
