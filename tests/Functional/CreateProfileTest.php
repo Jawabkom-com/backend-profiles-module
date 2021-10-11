@@ -46,6 +46,7 @@ class CreateProfileTest extends AbstractTestCase
         $profile = $this->createProfile->input('profile',$userData)
             ->process()
             ->output('profile');
+        dd($profile->get);
 /*        $this->assertTrue(true);
         $this->assertNotEmpty($profile);
         $this->assertInstanceOf(IProfileRepository::class,$profile);

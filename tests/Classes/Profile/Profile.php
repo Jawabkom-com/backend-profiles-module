@@ -104,7 +104,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function addPhone(IProfilePhoneEntity $IProfileEntityPhone)
     {
-        $IProfileEntityPhone->saveEntity($IProfileEntityPhone);
+      return  $IProfileEntityPhone->saveEntity($IProfileEntityPhone);
     }
 
     public function getPhones(): iterable

@@ -173,7 +173,7 @@ class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRep
 
     public function saveEntity(IEntity|IProfilePhoneEntity $entity): bool
     {
-          $entity->save();
+       return  $entity->save();
     }
 
     public function createEntity(array $params = []): IProfilePhoneEntity
