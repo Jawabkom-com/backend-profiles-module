@@ -7,6 +7,8 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileImageEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileImageRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileJobEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
@@ -241,6 +243,33 @@ class CreateProfileTest extends AbstractTestCase
         ]);
         $this->assertDatabaseHas('profile_languages',[
             'language' => $locals[0]->getLanguage()
+        ]);
+    }
+
+    public function testProfileWithJobs(){
+
+        $userData = $this->dummyBasicProfileData();
+        $userData['jobs'][] = $this->dummyjobsData();
+        $profile = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+        $this->assertTrue(true);
+        $this->assertNotEmpty($profile);
+        $this->assertInstanceOf(IProfileRepository::class,$profile);
+        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+
+        $jobs =$profile->getJobs();
+        $this->assertNotEmpty($jobs);
+        $this->assertInstanceOf(IProfileJobRepository::class,$jobs[0]);
+        $this->assertInstanceOf(IProfileJobEntity::class,$jobs[0]);
+        $this->assertDatabaseHas('profile_jobs',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_jobs',[
+            'organization' => $jobs[0]->getOrganization()
         ]);
     }
 

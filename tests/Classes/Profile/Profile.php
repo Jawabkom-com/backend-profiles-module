@@ -189,7 +189,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getJobs(): iterable
     {
-       $this->profileJob()->get();
+      return $this->profileJob()->get();
     }
 
     public function addEducation(IProfileEducationEntity $IProfileEntityEducation)

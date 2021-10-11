@@ -8,6 +8,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileImageRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
@@ -161,7 +162,7 @@ class CreateProfile extends AbstractService
     protected function processJobs(IProfileEntity $profileEntity, array $jobs)
     {
         foreach ($jobs as $job) {
-            $jobObj = $this->di->make(IProfileRepository::class);
+            $jobObj = $this->di->make(IProfileJobRepository::class);
             $this->fillJobEntity($profileEntity,$jobObj,$job);
             $profileEntity->addJob($jobObj);
         }

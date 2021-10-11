@@ -90,4 +90,16 @@ trait DummyTrait
             'country'=>$this->faker->countryCode,
         ];
     }
+
+    private function dummyjobsData()
+    {
+        return [
+            'valid_since'=>Carbon::now(),
+            'from'=>$this->faker->year,
+            'to'=>$this->faker->year,
+            'title'=>$this->faker->title,
+            'organization'=>$this->faker->companySuffix,
+            'industry'=>'software',
+        ];
+    }
 }
