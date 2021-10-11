@@ -1,6 +1,6 @@
 <?php
 
-namespace Classes;
+namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
 use Carbon\Carbon;
 
