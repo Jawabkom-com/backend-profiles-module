@@ -22,17 +22,21 @@ class CreateProfileTest extends AbstractTestCase
     //Create New Profile
     public function testCreateProfile(){
         $userData =[
-            'gender'=>'male',
-            'date_of_birth'=>Carbon::now()->subYears(20),
-            'place_of_birth'=>'palestine',
-            'data_source'=>'facebook',
+            'gender'        => 'male',
+            'date_of_birth' =>  Carbon::now()->subYears(20),
+            'place_of_birth'=> 'palestine',
+            'data_source'   => 'facebook',
         ];
         $profile = $this->createProfile->input('profile',$userData)
                                        ->process()
                                        ->output('profile');
+        $this->assertTrue(true);
         $this->assertNotEmpty($profile);
-        //$this->assertInstanceOf(IProfileRepository::class,$profile);
-    //   $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertInstanceOf(IProfileRepository::class,$profile);
+        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
     }
 
 }
