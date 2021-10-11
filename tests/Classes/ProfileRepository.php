@@ -4,40 +4,54 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
  use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
  use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
+ use Jawabkom\Standard\Contract\IAndFilterComposite;
  use Jawabkom\Standard\Contract\IEntity;
+ use Jawabkom\Standard\Contract\IFilter;
  use Jawabkom\Standard\Contract\IFilterComposite;
+ use Jawabkom\Standard\Contract\IOrFilterComposite;
 
  class ProfileRepository implements IProfileRepository
 {
 
      public function saveEntity(IProfileEntity|IEntity $entity): bool
      {
-//         $this->datebase->addProfile($entity);
      }
 
      public function createEntity(array $params = []): IEntity|IProfileEntity
      {
-//         return new ProfileEntity();
      }
 
      public function getByFilters(IFilterComposite $filterComposite = null, array $orderBy = [], int $page = 1, int $perPage = 0): iterable
      {
          /**@var $filter \Jawabkom\Standard\Contract\IFilter */
          $filtered = [];
-//         foreach($this->datebase->getAll() as $id => $profile) {
-//             foreach($filterComposite->getChildren() as $filter) {
-//                 if($filter->getName() == 'first_name') {
-//                     foreach($profile->getNames() as $nameObj) {
-//                         if($nameObj->getFirst() == $filter->getValue()) {
-//
-//                         }
-//                     }
-//                 } elseif($filter->getName() == 'phone') {
-//
-//                 }
-//             }
-//         }
+
          return $filtered;
+     }
+
+
+     protected function filtersToWhereCondition(IFilterComposite $filterComposite,$query) {
+         foreach ($filterComposite->getChildren() as $child) {
+             if($child instanceof IOrFilterComposite) {
+                 $query->orWhere(function ($q) use ($child) {
+                     $this->filtersToWhereCondition($child, $q);
+                 });
+             } elseif($child instanceof IAndFilterComposite) {
+                 $query->where(function ($q) use($child) {
+                     $this->filtersToWhereCondition($child, $q);
+                 });
+             } elseif($child instanceof IFilter) {
+                 //////// apply join accordint to filter na
+
+
+                 if($filterComposite instanceof IOrFilterComposite) {
+                     $query->orWhere($child->getName(), $child->getOperation()??'=', $child->getValue());
+                 } else {
+                     $query->Where($child->getName(), $child->getOperation()??'=', $child->getValue());
+                 }
+             }
+         }
+         return $query;
      }
 
      public function deleteEntity(IProfileEntity|IEntity $entity): bool
