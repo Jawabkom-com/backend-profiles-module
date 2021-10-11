@@ -27,4 +27,18 @@ interface ISearchRequestEntity extends IEntity
 
     public function setOtherParams(array $params);
     public function getOtherParams():array;
+
+    public function setMatchesCount(int $count);
+    public function getMatchesCount():int;
+
+    public function setStatus(string $status);
+    public function getStatus():string;
+
+    public function addError(string $message);
+
+    /**
+     * @return string[]
+     */
+    public function getErrors():iterable;
+
 }

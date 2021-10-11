@@ -3,7 +3,7 @@
 namespace Jawabkom\Backend\Module\Profile\Service;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
-use Jawabkom\Backend\Module\Profile\SearchFiltersBuilder;
+use Jawabkom\Backend\Module\Profile\SimpleSearchFiltersBuilder;
 use Jawabkom\Backend\Module\Profile\Trait\GetProfileTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
@@ -12,9 +12,9 @@ class SearchOfflineByFilters extends AbstractService
 {
     use GetProfileTrait;
     protected IProfileRepository $repository;
-    private SearchFiltersBuilder $searchFiltersBuilder;
+    private SimpleSearchFiltersBuilder $searchFiltersBuilder;
 
-    public function __construct(IDependencyInjector $di, IProfileRepository $repository, SearchFiltersBuilder $searchFiltersBuilder)
+    public function __construct(IDependencyInjector $di, IProfileRepository $repository, SimpleSearchFiltersBuilder $searchFiltersBuilder)
     {
         parent::__construct($di);
         $this->repository = $repository;

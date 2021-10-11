@@ -29,6 +29,11 @@ class SearcherRegistry
         return $this->registry[$alias]['mapper'] ?? null;
     }
 
+    public function isRegistered(string $alias):bool
+    {
+        return isset($this->registry[$alias]);
+    }
+
     public function getRegistries(): array
     {
         return $this->registry;
