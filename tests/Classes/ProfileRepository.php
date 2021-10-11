@@ -15,18 +15,24 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function saveEntity(IProfileEntity|IEntity $entity): bool
      {
+         return $entity->save();
      }
 
      public function createEntity(array $params = []): IEntity|IProfileEntity
      {
+         return app()->make(IProfileEntity::class);
+
      }
 
      public function getByFilters(IFilterComposite $filterComposite = null, array $orderBy = [], int $page = 1, int $perPage = 0): iterable
      {
          /**@var $filter \Jawabkom\Standard\Contract\IFilter */
-         $filtered = [];
-
-         return $filtered;
+         $builder = new static;
+         $builder = $this->filtersToWhereCondition($filterComposite, $builder);
+         if ($perPage){
+             return  $builder->paginate($perPage);
+         }
+         return $builder->get()->all();
      }
 
 
@@ -56,6 +62,6 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
 
      public function deleteEntity(IProfileEntity|IEntity $entity): bool
      {
-         // TODO: Implement deleteEntity() method.
+         return $entity->delete();
      }
  }
