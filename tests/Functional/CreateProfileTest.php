@@ -3,6 +3,8 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
 use Carbon\Carbon;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileImageEntity;
@@ -270,6 +272,33 @@ class CreateProfileTest extends AbstractTestCase
         ]);
         $this->assertDatabaseHas('profile_jobs',[
             'organization' => $jobs[0]->getOrganization()
+        ]);
+    }
+
+    public function testProfileWithEducations(){
+
+        $userData = $this->dummyBasicProfileData();
+        $userData['educations'][] = $this->dummyEducationsData();
+        $profile = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+        $this->assertTrue(true);
+        $this->assertNotEmpty($profile);
+        $this->assertInstanceOf(IProfileRepository::class,$profile);
+        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+
+        $educations =$profile->getEducations();
+        $this->assertNotEmpty($educations);
+        $this->assertInstanceOf(IProfileEducationRepository::class,$educations[0]);
+        $this->assertInstanceOf(IProfileEducationEntity::class,$educations[0]);
+        $this->assertDatabaseHas('profile_education',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_education',[
+            'school' => $educations[0]->getSchool()
         ]);
     }
 

@@ -102,4 +102,15 @@ trait DummyTrait
             'industry'=>'software',
         ];
     }
+    private function dummyEducationsData()
+    {
+        return [
+            'valid_since'=>Carbon::now(),
+            'from'=>$this->faker->year,
+            'to'=>$this->faker->year,
+            'school'=>$this->faker->word,
+            'degree'=>$this->faker->word,
+            'major'=>$this->faker->word,
+        ];
+    }
 }
