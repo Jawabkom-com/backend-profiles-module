@@ -73,4 +73,13 @@ trait DummyTrait
             'skill'=>'Software Engineer',
         ];
     }
+
+    private function dummyImagesData()
+    {
+        return [
+            'original_url'=>$this->faker->imageUrl,
+            'local_path'=>$this->faker->imageUrl,
+            'valid_since'=>Carbon::now()
+        ];
+    }
 }

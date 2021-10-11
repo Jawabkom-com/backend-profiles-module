@@ -5,6 +5,8 @@ namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 use Carbon\Carbon;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileImageEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileImageRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipEntity;
@@ -183,6 +185,33 @@ class CreateProfileTest extends AbstractTestCase
         ]);
         $this->assertDatabaseHas('profile_skills',[
             'skill' => $skills[0]->getSkill()
+        ]);
+    }
+
+    public function testProfileWithImage(){
+
+        $userData = $this->dummyBasicProfileData();
+        $userData['images'][] = $this->dummyImagesData();
+        $profile = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+        $this->assertTrue(true);
+        $this->assertNotEmpty($profile);
+        $this->assertInstanceOf(IProfileRepository::class,$profile);
+        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+
+        $images =$profile->getImages();
+        $this->assertNotEmpty($images);
+        $this->assertInstanceOf(IProfileImageRepository::class,$images[0]);
+        $this->assertInstanceOf(IProfileImageEntity::class,$images[0]);
+        $this->assertDatabaseHas('profile_images',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_images',[
+            'original_url' => $images[0]->getOriginalUrl()
         ]);
     }
 
