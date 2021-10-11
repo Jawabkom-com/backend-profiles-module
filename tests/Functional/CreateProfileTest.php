@@ -25,6 +25,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
+use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
@@ -358,6 +359,15 @@ class CreateProfileTest extends AbstractTestCase
         $this->assertDatabaseHas('profile_criminal_records',[
             'case_number' => $records[0]->getCaseNumber()
         ]);
+    }
+
+    public function testCheckInvalidInputStructure(){
+        $this->expectException(InvalidInputStructure::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData[$this->faker->word] =$this->faker->word;
+        $profile = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
     }
 
     public function testCreateFullProfile(){
