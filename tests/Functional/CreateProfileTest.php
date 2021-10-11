@@ -42,7 +42,7 @@ class CreateProfileTest extends AbstractTestCase
 
     public function testProfileWithPhones(){
         $userData = $this->dummyBasicProfileData();
-        $userData['phones'] = $this->dummyPhoneData();
+        $userData['phones'][] = $this->dummyPhoneData();
         $profile = $this->createProfile->input('profile',$userData)
             ->process()
             ->output('profile');

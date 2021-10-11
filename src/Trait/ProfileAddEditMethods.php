@@ -98,16 +98,15 @@ trait ProfileAddEditMethods
 
     protected function fillPhoneEntity(IProfileEntity $profileEntity, IProfilePhoneEntity $profilePhoneEntity, array $phone)
     {
-        $profilePhoneEntity->setCreatedAt($phone['createdAt'] ?? '');
-        $profilePhoneEntity->setUpdatedAt($phone['updatedAt'] ?? '');
+        $profilePhoneEntity->setProfileId($profileEntity->getProfileId());
         $profilePhoneEntity->setType($phone['type'] ?? '');
-        $profilePhoneEntity->setDoNotCallFlag($phone['doNotCallFlag'] ?? '');
-        $profilePhoneEntity->setCountryCode($phone['countryCode'] ?? '');
-        $profilePhoneEntity->setOriginalNumber($phone['originalNumber'] ?? '');
-        $profilePhoneEntity->setFormattedNumber($phone['formattedNumber'] ?? '');
-        $profilePhoneEntity->setValidPhone($phone['validPhone'] ?? '');
-        $profilePhoneEntity->setRiskyPhone($phone['riskyPhone'] ?? '');
-        $profilePhoneEntity->setDisposablePhone($phone['disposablePhone'] ?? '');
+        $profilePhoneEntity->setDoNotCallFlag($phone['do_not_call_flag'] ?? '');
+        $profilePhoneEntity->setCountryCode($phone['country_code'] ?? '');
+        $profilePhoneEntity->setOriginalNumber($phone['original_number'] ?? '');
+        $profilePhoneEntity->setFormattedNumber($phone['formatted_number'] ?? '');
+        $profilePhoneEntity->setValidPhone($phone['valid_phone'] ?? '');
+        $profilePhoneEntity->setRiskyPhone($phone['risky_phone'] ?? '');
+        $profilePhoneEntity->setDisposablePhone($phone['disposable_phone'] ?? '');
         $profilePhoneEntity->setCarrier($phone['carrier'] ?? '');
         $profilePhoneEntity->setPurpose($phone['purpose'] ?? '');
         $profilePhoneEntity->setIndustry($phone['industry'] ?? '');
