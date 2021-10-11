@@ -67,7 +67,7 @@ class ProfileSkill extends Model implements IProfileSkillEntity,IProfileSkillRep
 
     public function saveEntity(IProfileSkillEntity|IEntity $entity): bool
     {
-        $entity->save();
+       return $entity->save();
     }
 
     public function createEntity(array $params = []): IProfileSkillEntity

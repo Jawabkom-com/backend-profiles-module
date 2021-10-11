@@ -89,7 +89,7 @@ class ProfileSocialProfile extends Model implements IProfileSocialProfileEntity,
 
     public function saveEntity(IProfileSocialProfileEntity|IEntity $entity): bool
     {
-        $entity->save();
+       return $entity->save();
     }
 
     public function createEntity(array $params = []): IProfileSocialProfileEntity

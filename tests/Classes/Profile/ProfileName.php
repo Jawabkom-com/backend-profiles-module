@@ -90,7 +90,7 @@ class ProfileName extends Model implements IProfileNameEntity,IProfileNameReposi
 
     public function saveEntity(IProfileNameEntity|IEntity $entity): bool
     {
-        $entity->save();
+       return $entity->save();
     }
 
     public function createEntity(array $params = []): IProfileNameEntity

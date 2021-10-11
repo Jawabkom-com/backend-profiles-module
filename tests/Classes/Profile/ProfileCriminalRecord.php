@@ -90,7 +90,7 @@ class ProfileCriminalRecord extends Model implements IProfileCriminalRecordEntit
 
     public function saveEntity(IProfileCriminalRecordEntity|IEntity $entity): bool
     {
-        $entity->save();
+       return $entity->save();
     }
 
     public function createEntity(array $params = []): IProfileCriminalRecordEntity

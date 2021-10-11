@@ -126,7 +126,7 @@ class ProfileAddress extends Model implements IProfileAddressEntity,IProfileAddr
 
     public function saveEntity(IProfileAddressEntity|IEntity $entity): bool
     {
-        $entity->save();
+       return $entity->save();
     }
 
     public function createEntity(array $params = []): IProfileAddressEntity
