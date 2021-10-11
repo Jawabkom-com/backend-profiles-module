@@ -34,36 +34,114 @@ trait ProfileAddEditMethods
         $profileNameEntity->setDisplay($displayName);
     }
 
-    protected function fillPhoneEntity(IProfileEntity $profileEntity,IProfilePhoneEntity $phoneEntity,array $phone){
-        $phoneEntity->setType($phone['type']??'');
-        $phoneEntity->setCountryCode($phone['country_code']??'');
-        $phoneEntity->setCarrier($phone['carrier']??'');
-        $phoneEntity->setCreatedAt(new \DateTime('NOW'));
-        $phoneEntity->setDisposablePhone($phone['disposable_phone']??false);
-        $phoneEntity->setDoNotCallFlag($phone['do_not_call_flag']??false);
-        $phoneEntity->setFormattedNumber($phone['formatted_number']??'');
-        $phoneEntity->setProfileId($profileEntity->getProfileId());
-        $phoneEntity->setOriginalNumber($phone['original_number']??'');
-        $phoneEntity->setPurpose($phone['purpose']??'');
-        $phoneEntity->setValidPhone($phone['valid_phone']??false);
-        $phoneEntity->setRiskyPhone($phone['risky_phone']??false);
+    protected function fillAddressEntity(IProfileEntity $profileEntity, IProfileAddressEntity $profileAddressEntity, array $address)
+    {
+        $profileAddressEntity->setValidSince($address['validSince'] ?? '');
+        $profileAddressEntity->setCountry($address['country'] ?? '');
+        $profileAddressEntity->setState($address['state'] ?? '');
+        $profileAddressEntity->setCity($address['city'] ?? '');
+        $profileAddressEntity->setZip($address['zip'] ?? '');
+        $profileAddressEntity->setStreet($address['street'] ?? '');
+        $profileAddressEntity->setBuildingNumber($address['buildingNumber'] ?? '');
+        $profileAddressEntity->setDisplay($address['display'] ?? '');
     }
 
-    protected function fillAddressEntity(IProfileEntity $IProfileEntity,IProfileAddressEntity $addressEntity,array $address){
-        $addressEntity->setProfileId($IProfileEntity->getProfileId());
-        $addressEntity->setBuildingNumber($address['building_number']??'');
-        $addressEntity->setCity($address['city']??'');
-        $addressEntity->setCountry($address['country']??'');
-        $addressEntity->setDisplay($address['display']??'');
-        $addressEntity->setState($address['state']??'');
-        $addressEntity->setStreet($address['street']??'');
-        $addressEntity->setValidSince(new \DateTime('NOW'));
-        $addressEntity->setZip($address['zip']??'');
+    protected function fillCriminalRecordEntity(IProfileEntity $profileEntity, IProfileCriminalRecordEntity $profileCriminalRecordEntity, array $criminalRecord)
+    {
+        $profileCriminalRecordEntity->setCaseNumber($criminalRecord['caseNumber'] ?? '');
+        $profileCriminalRecordEntity->setCaseType($criminalRecord['caseType'] ?? '');
+        $profileCriminalRecordEntity->setCaseYear($criminalRecord['caseYear'] ?? '');
+        $profileCriminalRecordEntity->setCaseStatus($criminalRecord['caseStatus'] ?? '');
+        $profileCriminalRecordEntity->setDisplay($criminalRecord['display'] ?? '');
     }
 
-    protected function fillUsernameEntity(IProfileEntity $IProfileEntity,IProfileUsernameEntity $usernameEntity,array $username){
-        $usernameEntity->setValidSince(new \DateTime('NOW'));
-        $usernameEntity->getProfileId($IProfileEntity->getProfileId());
-        $usernameEntity->setUsername($username['username']??'');
+    protected function fillEducationEntity(IProfileEntity $profileEntity, IProfileEducationEntity $profileEducationEntity, array $education)
+    {
+        $profileEducationEntity->setValidSince($education['validSince'] ?? '');
+        $profileEducationEntity->setFrom($education['from'] ?? '');
+        $profileEducationEntity->setTo($education['to'] ?? '');
+        $profileEducationEntity->setSchool($education['school'] ?? '');
+        $profileEducationEntity->setDegree($education['degree'] ?? '');;
+        $profileEducationEntity->setMajor($education['major'] ?? '');;
     }
+
+    protected function fillEmailEntity(IProfileEntity $profileEntity, IProfileEmailEntity $profileEmailEntity, array $email)
+    {
+        $profileEmailEntity->setValidSince($email['validSince'] ?? '');
+        $profileEmailEntity->setEmail($email['email'] ?? '');
+        $profileEmailEntity->setEspDomain($email['espDomain'] ?? '');
+        $profileEmailEntity->setType($email['type'] ?? '');
+    }
+
+    protected function fillImageEntity(IProfileEntity $profileEntity, IProfileImageEntity $profileImageEntity, array $image)
+    {
+        $profileImageEntity->setOriginalUrl($image['originalUrl'] ?? '');
+        $profileImageEntity->setLocalPath($image['localPath'] ?? '');
+        $profileImageEntity->setValidSince($image['validSince'] ?? '');
+    }
+
+    protected function fillJobEntity(IProfileEntity $profileEntity, IProfileJobEntity $profileJobEntity, array $job)
+    {
+        $profileJobEntity->setValidSince($job['validSince'] ?? '');
+        $profileJobEntity->setFrom($job['from'] ?? '');
+        $profileJobEntity->setTo($job['to'] ?? '');
+        $profileJobEntity->setTitle($job['title'] ?? '');
+        $profileJobEntity->setOrganization($job['organization'] ?? '');
+        $profileJobEntity->setIndustry($job['industry'] ?? '');
+    }
+
+    protected function fillLanguageEntity(IProfileEntity $profileEntity, IProfileLanguageEntity $profileLanguageEntity, array $language)
+    {
+        $profileLanguageEntity->setLanguage($language['language'] ?? '');
+        $profileLanguageEntity->setCountry($job['country'] ?? '');
+    }
+
+    protected function fillPhoneEntity(IProfileEntity $profileEntity, IProfilePhoneEntity $profilePhoneEntity, array $phone)
+    {
+        $profilePhoneEntity->setCreatedAt($phone['createdAt'] ?? '');
+        $profilePhoneEntity->setUpdatedAt($phone['updatedAt'] ?? '');
+        $profilePhoneEntity->setType($phone['type'] ?? '');
+        $profilePhoneEntity->setDoNotCallFlag($phone['doNotCallFlag'] ?? '');
+        $profilePhoneEntity->setCountryCode($phone['countryCode'] ?? '');
+        $profilePhoneEntity->setOriginalNumber($phone['originalNumber'] ?? '');
+        $profilePhoneEntity->setFormattedNumber($phone['formattedNumber'] ?? '');
+        $profilePhoneEntity->setValidPhone($phone['validPhone'] ?? '');
+        $profilePhoneEntity->setRiskyPhone($phone['riskyPhone'] ?? '');
+        $profilePhoneEntity->setDisposablePhone($phone['disposablePhone'] ?? '');
+        $profilePhoneEntity->setCarrier($phone['carrier'] ?? '');
+        $profilePhoneEntity->setPurpose($phone['purpose'] ?? '');
+        $profilePhoneEntity->setIndustry($phone['industry'] ?? '');
+    }
+
+    protected function fillRelationshipEntity(IProfileEntity $profileEntity, IProfileRelationshipEntity $profileRelationshipEntity, array $relationship)
+    {
+        $profileRelationshipEntity->setValidSince($relationship['validSince'] ?? '');
+        $profileRelationshipEntity->setType($relationship['type'] ?? '');
+        $profileRelationshipEntity->setFirstName($relationship['firstName'] ?? '');
+        $profileRelationshipEntity->setLastName($relationship['lastName'] ?? '');
+        $profileRelationshipEntity->setPersonId($relationship['personId'] ?? '');
+    }
+
+    protected function fillSkillEntity(IProfileEntity $profileEntity, IProfileSkillEntity $profileSkillEntity, array $skill)
+    {
+        $profileSkillEntity->setValidSince($skill['validSince'] ?? '');
+        $profileSkillEntity->setLevel($skill['level'] ?? '');
+        $profileSkillEntity->setSkill($skill['skill'] ?? '');
+    }
+
+    protected function fillSocialProfileEntity(IProfileEntity $profileEntity, IProfileSocialProfileEntity $profileSocialProfileEntity, array $socialProfile)
+    {
+        $profileSocialProfileEntity->setValidSince($socialProfile['validSince'] ?? '');
+        $profileSocialProfileEntity->setUrl($socialProfile['url'] ?? '');
+        $profileSocialProfileEntity->setType($socialProfile['type'] ?? '');
+        $profileSocialProfileEntity->setUsername($socialProfile['username'] ?? '');
+        $profileSocialProfileEntity->setAccountId($socialProfile['accountId'] ?? '');
+    }
+
+    protected function fillUsernameEntity(IProfileEntity $profileEntity, IProfileUsernameEntity $profileUsernameEntity, array $username)
+    {
+        $profileUsernameEntity->setValidSince($username['validSince'] ?? '');
+        $profileUsernameEntity->setUsername($username['username'] ?? '');
+    }
+
 }

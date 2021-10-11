@@ -24,9 +24,9 @@ class ProfilePhonesInputValidator
     public function validate(array $inputs)
     {
         foreach ($inputs as $name) {
-            foreach($name as $inputKey => $inputValue) {
-                if(!in_array($inputKey, $this->structure)) {
-                    throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
+            foreach ($name as $inputKey => $inputValue) {
+                if (!in_array($inputKey, $this->structure)) {
+                    throw new InvalidInputStructure('CLASS: ' . __CLASS__ . ", input key is not defined '{$inputKey}'");
                 }
             }
         }

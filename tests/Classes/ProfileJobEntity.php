@@ -79,4 +79,14 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes;
      {
          return $this->industry;
      }
+
+     public function getProfileId(): int|string
+     {
+         return $this->profileId;
+     }
+
+     public function setProfileId(int|string $id)
+     {
+         $this->profileId = $id;
+     }
  }
