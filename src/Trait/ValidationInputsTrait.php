@@ -15,6 +15,7 @@ use Jawabkom\Backend\Module\Profile\Validator\ProfilePhonesInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileRelationshipsInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileSkillsInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileSocialProfilesInputValidator;
+use Jawabkom\Backend\Module\Profile\Validator\ProfileUsernamesInputValidator;
 
 trait ValidationInputsTrait
 {
@@ -51,7 +52,7 @@ trait ValidationInputsTrait
     private function validateUsernameInputs(array $usernames)
     {
          if ($usernames){
-            $validator = $this->di->make(ProfileAddressesInputValidator::class);
+            $validator = $this->di->make(ProfileUsernamesInputValidator::class);
             $validator->validate($usernames);
          }
     }

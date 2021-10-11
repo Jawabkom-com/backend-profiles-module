@@ -3,8 +3,14 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
 use Carbon\Carbon;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
@@ -29,6 +35,7 @@ class CreateProfileTest extends AbstractTestCase
 
     //Create New Profile
     public function testCreateBasicProfile(){
+
         $userData = $this->dummyBasicProfileData();
         $profile = $this->createProfile->input('profile',$userData)
                                        ->process()
@@ -43,6 +50,7 @@ class CreateProfileTest extends AbstractTestCase
     }
 
     public function testProfileWithPhones(){
+
         $userData = $this->dummyBasicProfileData();
         $userData['phones'][] = $this->dummyPhoneData();
         $profile = $this->createProfile->input('profile',$userData)
@@ -67,4 +75,86 @@ class CreateProfileTest extends AbstractTestCase
             'original_number' => $phones[0]->getOriginalNumber()
         ]);
     }
+
+    public function testProfileWithUserName(){
+
+        $userData = $this->dummyBasicProfileData();
+        $userData['usernames'][] = $this->dummyUsernamesData();
+        $profile = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+        $this->assertTrue(true);
+        $this->assertNotEmpty($profile);
+        $this->assertInstanceOf(IProfileRepository::class,$profile);
+        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+
+        $usernames =$profile->getUsernames();
+        $this->assertNotEmpty($usernames);
+        $this->assertInstanceOf(IProfileUsernameRepository::class,$usernames[0]);
+        $this->assertInstanceOf(IProfileUsernameEntity::class,$usernames[0]);
+        $this->assertDatabaseHas('profile_usernames',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_usernames',[
+            'username' => $usernames[0]->getUsername()
+        ]);
+    }
+
+    public function testProfileWithEmail(){
+
+        $userData = $this->dummyBasicProfileData();
+        $userData['emails'][] = $this->dummyEmailsData();
+        $profile = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+        $this->assertTrue(true);
+        $this->assertNotEmpty($profile);
+        $this->assertInstanceOf(IProfileRepository::class,$profile);
+        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+
+        $emails =$profile->getEmails();
+        $this->assertNotEmpty($emails);
+        $this->assertInstanceOf(IProfileEmailRepository::class,$emails[0]);
+        $this->assertInstanceOf(IProfileEmailEntity::class,$emails[0]);
+        $this->assertDatabaseHas('profile_emails',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_emails',[
+            'email' => $emails[0]->getEmail()
+        ]);
+    }
+
+    public function testProfileWithRelationships(){
+
+        $userData = $this->dummyBasicProfileData();
+        $userData['relationships'][] = $this->dummyRelationshipsData();
+        $profile = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+        $this->assertTrue(true);
+        $this->assertNotEmpty($profile);
+        $this->assertInstanceOf(IProfileRepository::class,$profile);
+        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+
+        $relations =$profile->getRelationships();
+        $this->assertNotEmpty($relations);
+        $this->assertInstanceOf(IProfileRelationshipRepository::class,$relations[0]);
+        $this->assertInstanceOf(IProfileRelationshipEntity::class,$relations[0]);
+        $this->assertDatabaseHas('profile_relationships',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_relationships',[
+            'first_name' => $relations[0]->getFirstName()
+        ]);
+    }
+
 }

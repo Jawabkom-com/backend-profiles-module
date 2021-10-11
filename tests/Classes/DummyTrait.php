@@ -35,4 +35,33 @@ trait DummyTrait
             'industry'=>'home',
         ];
     }
+
+    private function dummyUsernamesData()
+    {
+        return [
+            'valid_since' => Carbon::now(),
+            'username'    => $this->faker->userName
+        ];
+    }
+
+    private function dummyEmailsData()
+    {
+        return [
+            'valid_since'=>Carbon::now(),
+            'email'=>$this->faker->safeEmail,
+            'esp_domain'=>$this->faker->domainName(),
+            'type'=>'personal',
+        ];
+    }
+
+    private function dummyRelationshipsData()
+    {
+        return [
+            'valid_since'=>Carbon::now(),
+            'type'=>'friend',
+            'first_name'=>$this->faker->firstName,
+            'last_name'=>$this->faker->lastName,
+            'person_id'=>$this->faker->randomKey,
+        ];
+    }
 }

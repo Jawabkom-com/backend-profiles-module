@@ -78,7 +78,7 @@ class ProfileEmail extends Model implements IProfileEmailEntity,IProfileEmailRep
 
     public function saveEntity(IProfileEmailEntity|IEntity $entity): bool
     {
-        $entity->save();
+        return $entity->save();
     }
 
     public function createEntity(array $params = []): IProfileEmailEntity

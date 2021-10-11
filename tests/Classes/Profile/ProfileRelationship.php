@@ -90,7 +90,7 @@ class ProfileRelationship extends Model implements IProfileRelationshipEntity,IP
 
     public function saveEntity(IProfileRelationshipEntity|IEntity $entity): bool
     {
-        $entity->save();
+      return  $entity->save();
     }
 
     public function createEntity(array $params = []): IProfileRelationshipEntity
