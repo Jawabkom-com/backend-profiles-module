@@ -69,4 +69,32 @@ class CreateProfileTest extends AbstractTestCase
             'original_number' => $phones[0]->getOriginalNumber()
         ]);
     }
+
+    public function testProfileWithUserName(){
+
+        $userData = $this->dummyBasicProfileData();
+        $userData['usernames'][] = $this->dummyUsernamesData();
+        $profile = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+        $this->assertTrue(true);
+        $this->assertNotEmpty($profile);
+        $this->assertInstanceOf(IProfileRepository::class,$profile);
+        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+
+/*        $phones =$profile->getPhones();
+        $this->assertNotEmpty($phones);
+        $this->assertInstanceOf(IProfilePhoneRepository::class,$phones[0]);
+        $this->assertInstanceOf(IProfilePhoneEntity::class,$phones[0]);
+        $this->assertDatabaseHas('profile_phones',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_phones',[
+            'original_number' => $phones[0]->getOriginalNumber()
+        ]);*/
+    }
+
 }
