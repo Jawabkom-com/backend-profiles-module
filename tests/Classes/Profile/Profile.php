@@ -236,7 +236,11 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function deleteEntity(IProfileEntity|IEntity $entity): bool
     {
-        // TODO: Implement deleteEntity() method.
+        try {
+           return (boolean)$entity->delete();
+        }catch (\Throwable $exception){
+            return false;
+        }
     }
 
     public function getByProfileId(int|string $profileId): null|IEntity|IProfileEntity|IProfileRepository
