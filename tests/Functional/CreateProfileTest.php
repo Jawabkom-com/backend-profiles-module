@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
 use Carbon\Carbon;
+use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
@@ -58,5 +59,12 @@ class CreateProfileTest extends AbstractTestCase
         $phones =$profile->getPhones();
         $this->assertNotEmpty($phones);
         $this->assertInstanceOf(IProfilePhoneRepository::class,$phones[0]);
+        $this->assertInstanceOf(IProfilePhoneEntity::class,$phones[0]);
+        $this->assertDatabaseHas('profile_phones',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_phones',[
+            'original_number' => $phones[0]->getOriginalNumber()
+        ]);
     }
 }
