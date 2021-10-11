@@ -309,7 +309,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
     {
         return $this->hasMany(ProfileUsername::class,'profile_id','profile_id');
     }
-    
+
     public function profileSocialProfile(): HasMany
     {
         return $this->hasMany(ProfileSocialProfile::class,'profile_id','profile_id');
