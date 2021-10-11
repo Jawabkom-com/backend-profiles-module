@@ -36,6 +36,20 @@ class AbstractTestCase extends TestCaseAlisa
         ]);
         $classes =[
            "CreateProfilesTable",
+           "CreateProfileAddressesTable",
+           "CreateProfileCriminalRecordsTable",
+           "CreateProfileEducationTable",
+           "CreateProfileEmailsTable",
+           "CreateProfileImagesTable",
+           "CreateProfileJobsTable",
+           "CreateProfileLanguagesTable",
+           "CreateProfileNamesTable",
+           "CreateProfilePhonesTable",
+           "CreateProfileRelationshipsTable",
+           "CreateProfileSkillsTable",
+           "CreateProfileSocialProfilesTable",
+           "CreateProfilesTable",
+           "CreateProfileUsernamesTable",
         ];
         foreach($classes as $class){
           $class ="\\Jawabkom\\Backend\\Module\\Profile\\Test\\Classes\\Database\\Migrations\\{$class}";
