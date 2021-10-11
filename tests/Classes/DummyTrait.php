@@ -53,4 +53,15 @@ trait DummyTrait
             'type'=>'personal',
         ];
     }
+
+    private function dummyRelationshipsData()
+    {
+        return [
+            'valid_since'=>Carbon::now(),
+            'type'=>'friend',
+            'first_name'=>$this->faker->firstName,
+            'last_name'=>$this->faker->lastName,
+            'person_id'=>$this->faker->randomKey,
+        ];
+    }
 }

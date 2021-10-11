@@ -7,6 +7,8 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
@@ -125,6 +127,33 @@ class CreateProfileTest extends AbstractTestCase
         ]);
         $this->assertDatabaseHas('profile_emails',[
             'email' => $emails[0]->getEmail()
+        ]);
+    }
+
+    public function testProfileWithRelationships(){
+
+        $userData = $this->dummyBasicProfileData();
+        $userData['relationships'][] = $this->dummyRelationshipsData();
+        $profile = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+        $this->assertTrue(true);
+        $this->assertNotEmpty($profile);
+        $this->assertInstanceOf(IProfileRepository::class,$profile);
+        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+
+        $relations =$profile->getRelationships();
+        $this->assertNotEmpty($relations);
+        $this->assertInstanceOf(IProfileRelationshipRepository::class,$relations[0]);
+        $this->assertInstanceOf(IProfileRelationshipEntity::class,$relations[0]);
+        $this->assertDatabaseHas('profile_relationships',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_relationships',[
+            'first_name' => $relations[0]->getFirstName()
         ]);
     }
 
