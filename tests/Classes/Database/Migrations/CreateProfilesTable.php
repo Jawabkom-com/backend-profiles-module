@@ -1,5 +1,4 @@
 <?php
-namespace Jawabkom\Backend\Module\Profile\Test\Classes\Database\Migrations;
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,10 +14,11 @@ class CreateProfilesTable extends Migration
     public function up()
     {
         Schema::create('profiles', function (Blueprint $table) {
-            $table->string('id')->primary();
+            $table->id();
+            $table->string('profile_id')->unique();
             $table->string('gender')->index();
-            $table->string('date_of_birth');
-            $table->string('place_of_birth');
+            $table->string('date_of_birth')->index();
+            $table->string('place_of_birth')->index();
             $table->string('data_source')->index();
             $table->timestamps();
         });
