@@ -139,7 +139,8 @@ trait ProfileAddEditMethods
 
     protected function fillUsernameEntity(IProfileEntity $profileEntity, IProfileUsernameEntity $profileUsernameEntity, array $username)
     {
-        $profileUsernameEntity->setValidSince($username['validSince'] ?? '');
+        $profileUsernameEntity->setProfileId($profileEntity->getProfileId());
+        $profileUsernameEntity->setValidSince($username['valid_since'] ?? '');
         $profileUsernameEntity->setUsername($username['username'] ?? '');
     }
 
