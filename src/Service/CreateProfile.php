@@ -16,6 +16,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileAddEditMethods;
 use Jawabkom\Backend\Module\Profile\Trait\ValidationInputsTrait;
@@ -93,7 +94,7 @@ class CreateProfile extends AbstractService
         $profileEntity = $this->repository->createEntity();
         $this->fillProfileEntity($profileEntity, $profileInputs, true);
         foreach ($profileInputs as $profilePartKey => $profilePartInput) {
-            $processingMethodName = "process" . ucfirst($profilePartKey);
+            $processingMethodName = "process" . str_replace('_','',ucwords($profilePartKey,'_'));
             if(method_exists($this, $processingMethodName)){
                 $this->$processingMethodName($profileEntity, $profilePartInput);
             }
@@ -207,7 +208,7 @@ class CreateProfile extends AbstractService
     protected function processSocialProfiles(IProfileEntity $profileEntity, array $socialProfiles)
     {
         foreach ($socialProfiles as $socialProfile) {
-            $socialProfileObj = $this->di->make(IProfileSocialProfileEntity::class);
+            $socialProfileObj = $this->di->make(IProfileSocialProfileRepository::class);
             $this->fillSocialProfileEntity($profileEntity,$socialProfileObj,$socialProfile);
             $profileEntity->addSocialProfile($socialProfileObj);
         }

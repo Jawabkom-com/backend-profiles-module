@@ -3,6 +3,8 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
 use Carbon\Carbon;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
@@ -19,6 +21,8 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
@@ -299,6 +303,60 @@ class CreateProfileTest extends AbstractTestCase
         ]);
         $this->assertDatabaseHas('profile_education',[
             'school' => $educations[0]->getSchool()
+        ]);
+    }
+
+    public function testProfileWithSocial(){
+
+        $userData = $this->dummyBasicProfileData();
+        $userData['social_profiles'][] = $this->dummysSocialProfilesData();
+        $profile = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+        $this->assertTrue(true);
+        $this->assertNotEmpty($profile);
+        $this->assertInstanceOf(IProfileRepository::class,$profile);
+        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+
+        $socials =$profile->getSocialProfiles();
+        $this->assertNotEmpty($socials);
+        $this->assertInstanceOf(IProfileSocialProfileRepository::class,$socials[0]);
+        $this->assertInstanceOf(IProfileSocialProfileEntity::class,$socials[0]);
+        $this->assertDatabaseHas('profile_social_profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_social_profiles',[
+            'username' => $socials[0]->getUsername()
+        ]);
+    }
+
+    public function testProfileWithCriminalRecords(){
+
+        $userData = $this->dummyBasicProfileData();
+        $userData['criminal_records'][] = $this->dummyCriminalRecordsData();
+        $profile = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+        $this->assertTrue(true);
+        $this->assertNotEmpty($profile);
+        $this->assertInstanceOf(IProfileRepository::class,$profile);
+        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+
+        $records =$profile->getCriminalRecords();
+        $this->assertNotEmpty($records);
+        $this->assertInstanceOf(IProfileCriminalRecordRepository::class,$records[0]);
+        $this->assertInstanceOf(IProfileCriminalRecordEntity::class,$records[0]);
+        $this->assertDatabaseHas('profile_criminal_records',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_criminal_records',[
+            'case_number' => $records[0]->getCaseNumber()
         ]);
     }
 

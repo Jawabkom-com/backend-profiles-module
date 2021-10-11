@@ -102,6 +102,7 @@ trait DummyTrait
             'industry'=>'software',
         ];
     }
+
     private function dummyEducationsData()
     {
         return [
@@ -111,6 +112,29 @@ trait DummyTrait
             'school'=>$this->faker->word,
             'degree'=>$this->faker->word,
             'major'=>$this->faker->word,
+        ];
+    }
+
+    private function dummysSocialProfilesData()
+    {
+        return [
+            'valid_since'=>Carbon::now(),
+            'url'=>$this->faker->url,
+            'type'=>'facebook',
+            'username'=>$this->faker->userName,
+            'account_id'=>'57574564564654564',
+
+        ];
+    }
+
+    private function dummyCriminalRecordsData()
+    {
+        return [
+            'case_number'=>$this->faker->randomDigit(),
+            'case_type'=>$this->faker->word,
+            'case_year'=>$this->faker->year,
+            'case_status'=>'closed',
+            'display'=>$this->faker->title,
         ];
     }
 }
