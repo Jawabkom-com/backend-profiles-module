@@ -54,7 +54,7 @@ class ProfileLanguage extends Model implements IProfileLanguageEntity,IProfileLa
 
     public function saveEntity(IProfileLanguageEntity|IEntity $entity): bool
     {
-        // TODO: Implement saveEntity() method.
+        $entity->save();
     }
 
     public function createEntity(array $params = []): IProfileLanguageEntity

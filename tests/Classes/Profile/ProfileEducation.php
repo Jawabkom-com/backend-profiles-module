@@ -102,7 +102,7 @@ class ProfileEducation extends Model implements IProfileEducationEntity,IProfile
 
     public function saveEntity(IProfileEducationEntity|IEntity $entity): bool
     {
-        // TODO: Implement saveEntity() method.
+        $entity->save();
     }
 
     public function createEntity(array $params = []): IProfileEducationEntity
