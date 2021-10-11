@@ -7,6 +7,8 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileImageEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileImageRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipEntity;
@@ -212,6 +214,33 @@ class CreateProfileTest extends AbstractTestCase
         ]);
         $this->assertDatabaseHas('profile_images',[
             'original_url' => $images[0]->getOriginalUrl()
+        ]);
+    }
+
+    public function testProfileWithLanguage(){
+
+        $userData = $this->dummyBasicProfileData();
+        $userData['languages'][] = $this->dummyImagesData();
+        $profile = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+        $this->assertTrue(true);
+        $this->assertNotEmpty($profile);
+        $this->assertInstanceOf(IProfileRepository::class,$profile);
+        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+
+        $locals =$profile->getLanguages();
+        $this->assertNotEmpty($locals);
+        $this->assertInstanceOf(IProfileLanguageRepository::class,$locals[0]);
+        $this->assertInstanceOf(IProfileLanguageEntity::class,$locals[0]);
+        $this->assertDatabaseHas('profile_languages',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_languages',[
+            'language' => $locals[0]->getLanguage()
         ]);
     }
 

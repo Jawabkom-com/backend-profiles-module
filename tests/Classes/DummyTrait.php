@@ -82,4 +82,12 @@ trait DummyTrait
             'valid_since'=>Carbon::now()
         ];
     }
+
+    private function dummyLanguagesData()
+    {
+        return [
+            'language'=>$this->faker->languageCode,
+            'country'=>$this->faker->countryCode,
+        ];
+    }
 }
