@@ -101,7 +101,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function addPhone(IProfilePhoneEntity $IProfileEntityPhone)
     {
-        // TODO: Implement addPhone() method.
+        $IProfileEntityPhone->saveEntity($IProfileEntityPhone);
     }
 
     public function getPhones(): iterable
@@ -121,7 +121,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function addUsername(IProfileUsernameEntity $IProfileEntityUsername)
     {
-        // TODO: Implement addUsername() method.
+       // $IProfileEntityUsername->
     }
 
     public function getUsernames(): iterable
@@ -237,5 +237,10 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
     public function deleteEntity(IProfileEntity|IEntity $entity): bool
     {
         // TODO: Implement deleteEntity() method.
+    }
+
+    public function getByProfileId(int|string $profileId): null|IEntity|IProfileEntity|IProfileRepository
+    {
+        return  $this->where('profile_id',$profileId)->first();
     }
 }
