@@ -9,6 +9,8 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
@@ -154,6 +156,33 @@ class CreateProfileTest extends AbstractTestCase
         ]);
         $this->assertDatabaseHas('profile_relationships',[
             'first_name' => $relations[0]->getFirstName()
+        ]);
+    }
+
+    public function testProfileWithSkill(){
+
+        $userData = $this->dummyBasicProfileData();
+        $userData['skills'][] = $this->dummySkillsData();
+        $profile = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+        $this->assertTrue(true);
+        $this->assertNotEmpty($profile);
+        $this->assertInstanceOf(IProfileRepository::class,$profile);
+        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+
+        $skills =$profile->getSkills();
+        $this->assertNotEmpty($skills);
+        $this->assertInstanceOf(IProfileSkillRepository::class,$skills[0]);
+        $this->assertInstanceOf(IProfileSkillEntity::class,$skills[0]);
+        $this->assertDatabaseHas('profile_skills',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_skills',[
+            'skill' => $skills[0]->getSkill()
         ]);
     }
 

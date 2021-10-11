@@ -64,4 +64,13 @@ trait DummyTrait
             'person_id'=>$this->faker->randomKey,
         ];
     }
+
+    private function dummySkillsData()
+    {
+        return [
+            'valid_since'=>Carbon::now(),
+            'level'=>$this->faker->randomDigit(),
+            'skill'=>'Software Engineer',
+        ];
+    }
 }
