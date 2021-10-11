@@ -29,6 +29,7 @@ class CreateProfileTest extends AbstractTestCase
 
     //Create New Profile
     public function testCreateBasicProfile(){
+
         $userData = $this->dummyBasicProfileData();
         $profile = $this->createProfile->input('profile',$userData)
                                        ->process()
@@ -43,6 +44,7 @@ class CreateProfileTest extends AbstractTestCase
     }
 
     public function testProfileWithPhones(){
+
         $userData = $this->dummyBasicProfileData();
         $userData['phones'][] = $this->dummyPhoneData();
         $profile = $this->createProfile->input('profile',$userData)

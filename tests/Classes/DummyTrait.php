@@ -35,4 +35,12 @@ trait DummyTrait
             'industry'=>'home',
         ];
     }
+
+    private function dummyUsernamesData()
+    {
+        return [
+            'valid_since' => Carbon::now(),
+            'username'    => $this->faker->userName
+        ];
+    }
 }
