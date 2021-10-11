@@ -53,9 +53,9 @@ class SearchOnlineBySearchersChain extends AbstractService
                     $results = $cachedResultsByAliases[$alias];
                 }
 
-                if($results) {
-                    $mapper = $this->registry->getMapper($alias);
-                    $profileEntities = $mapper->map($results);
+                $mapper = $this->registry->getMapper($alias);
+                $profileEntities = $mapper->map($results);
+                if(count($profileEntities)) {
                     $this->setOutput('profiles', $profileEntities);
                     $this->setOutput('raw_result', $results);
 
@@ -65,6 +65,9 @@ class SearchOnlineBySearchersChain extends AbstractService
                     $this->setEmptySearchRequestStatus($searchRequest);
                 }
             } catch (\Throwable $exception) {
+                if(!isset($searchRequest))
+                    throw $exception;
+
                 $this->setErrorSearchRequestStatus($searchRequest, $exception);
             }
         }
