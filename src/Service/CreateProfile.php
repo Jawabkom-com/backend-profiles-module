@@ -16,12 +16,8 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
-use Jawabkom\Backend\Module\Profile\Test\Classes\ProfileEntity;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileAddEditMethods;
 use Jawabkom\Backend\Module\Profile\Trait\ValidationInputsTrait;
-use Jawabkom\Backend\Module\Profile\Validator\ProfileInputValidator;
-use Jawabkom\Backend\Module\Profile\Validator\ProfileNamesInputValidator;
-use Jawabkom\Backend\Module\Profile\Validator\ProfilePhonesInputValidator;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 

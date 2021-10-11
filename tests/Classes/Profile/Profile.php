@@ -1,6 +1,6 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Profile\Test\Profile;
+namespace Jawabkom\Backend\Module\Profile\Test\Classes\Profile;
 
 use Classes\Database\Factories\ProfileFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

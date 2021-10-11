@@ -5,6 +5,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
+use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
 
 class CreateProfileTest extends AbstractTestCase
 {
@@ -12,7 +13,8 @@ class CreateProfileTest extends AbstractTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->createProfile = app()->make(CreateProfile::class);
+        $di = new DI();
+       $this->createProfile = $di->make(CreateProfile::class);
     }
 
     //Create New Profile

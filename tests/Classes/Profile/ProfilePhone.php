@@ -1,7 +1,6 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Profile\Test\Profile;
-
+namespace Jawabkom\Backend\Module\Profile\Test\Classes\Profile;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
