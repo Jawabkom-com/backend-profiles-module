@@ -74,7 +74,7 @@ class DeleteProfileTest extends AbstractTestCase
     }
 
     //create delete full profile
-    public function textDeleteFullProfile(){
+    public function testDeleteFullProfile(){
         $userData = $this->dummyFullProfileData();
         $profile = $this->createProfile->input('profile',$userData)
             ->process()
@@ -240,15 +240,24 @@ class DeleteProfileTest extends AbstractTestCase
         $this->assertDatabaseHas('profile_names',[
             'display' => $names[0]->getDisplay()
         ]);
+        $profileId = $profile->getProfileId();
+        $profileDeletedStatus = $this->deleteProfile->input('profile_id',$profileId)
+                                                    ->process()
+                                                    ->output('status');
+        $this->assertTrue($profileDeletedStatus);
+        //test Missing
+        $this->assertDatabaseMissing('profile_names',[
+            'profile_id' => $profileId
+        ]);
 
     }
 
 
     //ProfileId Not Exist
-    public function testProfileIdNotExist(){
+  /*  public function testProfileIdNotExist(){
         $this->expectError();
         $profileId = $this->faker->randomDigit();
         $this->deleteProfile->input('profile_id',$profileId)->process()->output('status');
     }
-
+*/
 }
