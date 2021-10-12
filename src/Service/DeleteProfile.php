@@ -9,6 +9,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileImageRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
@@ -65,7 +66,7 @@ class DeleteProfile extends AbstractService
     {
         $jobs = $profileEntirety->getJobs();
         if ($jobs){
-            $jobRepository = $this->di->make(IProfileJobEntity::class);
+            $jobRepository = $this->di->make(IProfileJobRepository::class);
             foreach ($jobs as $job){
                 $jobRepository->deleteEntity($job);
             }
