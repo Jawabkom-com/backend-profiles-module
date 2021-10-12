@@ -540,21 +540,7 @@ class CreateProfileTest extends AbstractTestCase
 
 
     public function testCreateFullProfile(){
-        $userData = $this->dummyBasicProfileData();
-        $userData['phones'][] = $this->dummyPhoneData();
-        $userData['usernames'][] = $this->dummyUsernamesData();
-        $userData['emails'][] = $this->dummyEmailsData();
-        $userData['relationships'][] = $this->dummyRelationshipsData();
-        $userData['skills'][] = $this->dummySkillsData();
-        $userData['images'][] = $this->dummyImagesData();
-        $userData['languages'][] = $this->dummyLanguagesData();
-        $userData['jobs'][] = $this->dummyjobsData();
-        $userData['educations'][] = $this->dummyEducationsData();
-        $userData['social_profiles'][] = $this->dummysSocialProfilesData();
-        $userData['criminal_records'][] = $this->dummyCriminalRecordsData();
-        $userData['addresses'][] = $this->dummyAddressData();
-        $userData['names'][] = $this->dummyNamesData();
-
+        $userData = $this->dummyFullProfileData();
         $profile = $this->createProfile->input('profile',$userData)
             ->process()
             ->output('profile');
