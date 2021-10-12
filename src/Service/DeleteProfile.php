@@ -44,11 +44,10 @@ class DeleteProfile extends AbstractService
         $this->validate($profileId);
         $profileEntirety = $this->repository->getByProfileId($profileId);
         try {
-            $this->deletePorfileEnitiyRelated($profileEntirety);
+            $this->deleteProfileEntityRelated($profileEntirety);
             $status          = $profileEntirety->deleteEntity($profileEntirety);
             $this->setOutput('status',$status);
         }catch (\Throwable $exception){
-            dd($exception);
             $this->setOutput('status',false);
         }
         return $this;
@@ -217,7 +216,7 @@ class DeleteProfile extends AbstractService
     /**
      * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
      */
-    protected function deletePorfileEnitiyRelated(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety): void
+    protected function deleteProfileEntityRelated(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety): void
     {
         $this->deleteProfileJobsIfExistes($profileEntirety);
         $this->deleteProfileNamesIfExistes($profileEntirety);

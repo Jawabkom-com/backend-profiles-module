@@ -3,6 +3,31 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
 
+use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileImageEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileImageRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileJobEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileNameEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileNameRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Backend\Module\Profile\Service\DeleteProfile;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
@@ -65,7 +90,7 @@ class DeleteProfileTest extends AbstractTestCase
         $phones =$profile->getPhones();
         $this->assertNotEmpty($phones);
         $this->assertInstanceOf(IProfilePhoneRepository::class,$phones[0]);
-        $this->assertInstanceOf(IProfilePhoneEntity::class,$phones[0]);
+        $this->assertInstanceOf(IProfilePhoneRepository::class,$phones[0]);
         $this->assertDatabaseHas('profile_phones',[
             'profile_id' => $profile->getProfileId()
         ]);
