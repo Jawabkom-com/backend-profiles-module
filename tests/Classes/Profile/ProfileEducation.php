@@ -112,6 +112,6 @@ class ProfileEducation extends Model implements IProfileEducationEntity,IProfile
 
     public function deleteEntity(IEntity $entity): bool
     {
-        // TODO: Implement deleteEntity() method.
+       return $entity->delete();
     }
 }

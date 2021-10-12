@@ -88,6 +88,6 @@ class ProfileEmail extends Model implements IProfileEmailEntity,IProfileEmailRep
 
     public function deleteEntity(IEntity $entity): bool
     {
-        // TODO: Implement deleteEntity() method.
+        return $entity->delete();
     }
 }

@@ -64,6 +64,6 @@ class ProfileUsername extends Model implements IProfileUsernameEntity,IProfileUs
 
     public function deleteEntity(IEntity $entity): bool
     {
-        // TODO: Implement deleteEntity() method.
+      return $entity->delete();
     }
 }

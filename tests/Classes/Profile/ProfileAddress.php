@@ -136,6 +136,6 @@ class ProfileAddress extends Model implements IProfileAddressEntity,IProfileAddr
 
     public function deleteEntity(IEntity $entity): bool
     {
-        // TODO: Implement deleteEntity() method.
+        return $entity->delete();
     }
 }

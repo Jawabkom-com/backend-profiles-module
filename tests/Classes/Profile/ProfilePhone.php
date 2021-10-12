@@ -183,6 +183,6 @@ class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRep
 
     public function deleteEntity(IEntity $entity): bool
     {
-        // TODO: Implement deleteEntity() method.
+       return $entity->delete();
     }
 }

@@ -64,6 +64,6 @@ class ProfileLanguage extends Model implements IProfileLanguageEntity,IProfileLa
 
     public function deleteEntity(IEntity $entity): bool
     {
-        // TODO: Implement deleteEntity() method.
+       return $entity->delete();
     }
 }

@@ -112,6 +112,6 @@ class ProfileJob extends Model implements IProfileJobEntity,IProfileJobRepositor
 
     public function deleteEntity(IEntity $entity): bool
     {
-        // TODO: Implement deleteEntity() method.
+      return $entity->delete();
     }
 }
