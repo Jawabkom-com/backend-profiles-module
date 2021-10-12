@@ -100,6 +100,6 @@ class ProfileRelationship extends Model implements IProfileRelationshipEntity,IP
 
     public function deleteEntity(IEntity $entity): bool
     {
-        // TODO: Implement deleteEntity() method.
+      return $entity->delete();
     }
 }

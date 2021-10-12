@@ -5,10 +5,12 @@ namespace Jawabkom\Backend\Module\Profile\Service;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileImageRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
@@ -46,7 +48,7 @@ class DeleteProfile extends AbstractService
         $this->deleteProfileSocialProfilesIfExistes($profileEntirety);
         $this->deleteProfileLanguagesIfExistes($profileEntirety);
         $this->deleteProfileSkillsIfExistes($profileEntirety);
-        $images = $profileEntirety->getImages();
+        $this->deleteProfileImagesIfExistes($profileEntirety);
         $relationShip = $profileEntirety->getRelationships();
         $emails = $profileEntirety->getEmails();
         $usernames = $profileEntirety->getUsernames();
@@ -156,6 +158,34 @@ class DeleteProfile extends AbstractService
             $skillRepository = $this->di->make(IProfileSkillRepository::class);
             foreach ($skills as $skill){
                 $skillRepository->deleteEntity($skill);
+            }
+        }
+    }
+
+    /**
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     */
+    protected function deleteProfileImagesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    {
+        $images = $profileEntirety->getImages();
+        if ($images){
+            $imageRepository = $this->di->make(IProfileImageRepository::class);
+            foreach ($images as $image){
+                $imageRepository->deleteEntity($image);
+            }
+        }
+    }
+
+    /**
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     */
+    protected function deleteProfileRelationshipsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    {
+        $relationships = $profileEntirety->getRelationships();
+        if ($relationships){
+            $relationshipRepository = $this->di->make(IProfileRelationshipRepository::class);
+            foreach ($relationships as $relationship){
+                $relationshipRepository->deleteEntity($relationship);
             }
         }
     }
