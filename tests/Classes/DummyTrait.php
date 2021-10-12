@@ -148,4 +148,18 @@ trait DummyTrait
             'display'=>$this->faker->lastName.' '.$this->faker->lastName,
         ];
     }
+
+    private function dummyAddressData()
+    {
+        return [
+            'valid_since'=>Carbon::now(),
+            'country' => $this->faker->country(),
+            'state'=>$this->faker->word,
+            'city'=>$this->faker->city,
+            'zip'=>$this->faker->phoneNumber,
+            'street'=>$this->faker->streetAddress,
+            'building_number'=>$this->faker->buildingNumber,
+            'display'=>$this->faker->title,
+        ];
+    }
 }

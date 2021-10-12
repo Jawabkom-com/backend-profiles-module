@@ -3,6 +3,8 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
 use Carbon\Carbon;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationEntity;
@@ -117,6 +119,33 @@ class CreateProfileTest extends AbstractTestCase
         ]);
         $this->assertDatabaseHas('profile_names',[
             'display' => $names[0]->getDisplay()
+        ]);
+    }
+
+    public function testProfileWithAddresses(){
+
+        $userData = $this->dummyBasicProfileData();
+        $userData['addresses'][] = $this->dummyAddressData();
+        $profile = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+        $this->assertTrue(true);
+        $this->assertNotEmpty($profile);
+        $this->assertInstanceOf(IProfileRepository::class,$profile);
+        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+
+        $names =$profile->getAddresses();
+        $this->assertNotEmpty($names);
+        $this->assertInstanceOf(IProfileAddressRepository::class,$names[0]);
+        $this->assertInstanceOf(IProfileAddressEntity::class,$names[0]);
+        $this->assertDatabaseHas('profile_addresses',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_addresses',[
+            'country' => $names[0]->getCountry()
         ]);
     }
 
