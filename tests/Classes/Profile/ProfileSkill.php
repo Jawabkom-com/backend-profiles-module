@@ -77,6 +77,6 @@ class ProfileSkill extends Model implements IProfileSkillEntity,IProfileSkillRep
 
     public function deleteEntity(IEntity $entity): bool
     {
-        // TODO: Implement deleteEntity() method.
+        return $entity->delete();
     }
 }

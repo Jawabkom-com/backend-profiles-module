@@ -10,6 +10,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
@@ -43,8 +44,8 @@ class DeleteProfile extends AbstractService
         $this->deleteProfileAddressesIfExistes($profileEntirety);
         $this->deleteProfileCriminalRecordsIfExistes($profileEntirety);
         $this->deleteProfileSocialProfilesIfExistes($profileEntirety);
-        $languages = $profileEntirety->getLanguages();
-        $skills = $profileEntirety->getSkills();
+        $this->deleteProfileLanguagesIfExistes($profileEntirety);
+        $this->deleteProfileSkillsIfExistes($profileEntirety);
         $images = $profileEntirety->getImages();
         $relationShip = $profileEntirety->getRelationships();
         $emails = $profileEntirety->getEmails();
@@ -141,6 +142,20 @@ class DeleteProfile extends AbstractService
             $languageRepository = $this->di->make(IProfileLanguageRepository::class);
             foreach ($languages as $language){
                 $languageRepository->deleteEntity($language);
+            }
+        }
+    }
+
+    /**
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     */
+    protected function deleteProfileSkillsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    {
+        $skills = $profileEntirety->getSkills();
+        if ($skills){
+            $skillRepository = $this->di->make(IProfileSkillRepository::class);
+            foreach ($skills as $skill){
+                $skillRepository->deleteEntity($skill);
             }
         }
     }
