@@ -10,6 +10,7 @@ use Jawabkom\Backend\Module\Profile\Validator\ProfileEmailsInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileImagesInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileJobsInputValidator;
+use Jawabkom\Backend\Module\Profile\Validator\ProfileLanguagesInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileNamesInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfilePhonesInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileRelationshipsInputValidator;
@@ -25,6 +26,15 @@ trait ValidationInputsTrait
         $validator = $this->di->make(ProfileInputValidator::class);
         $validator->validate($profile);
     }
+
+    private function validateLanguageInputs(array $languages)
+    {
+        if ($languages){
+            $validator = $this->di->make(ProfileLanguagesInputValidator::class);
+            $validator->validate($languages);
+        }
+    }
+
 
     private function validateNameInputs(array $names)
     {

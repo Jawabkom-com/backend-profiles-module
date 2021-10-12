@@ -361,14 +361,125 @@ class CreateProfileTest extends AbstractTestCase
         ]);
     }
 
-    public function testCheckInvalidInputStructure(){
+    public function testCheckInvalidProfileInputBasicStructure(){
         $this->expectException(InvalidInputStructure::class);
         $userData = $this->dummyBasicProfileData();
         $userData[$this->faker->word] =$this->faker->word;
-        $profile = $this->createProfile->input('profile',$userData)
+        $this->createProfile->input('profile',$userData)
             ->process()
             ->output('profile');
     }
+
+    public function testCheckInvalidProfilePhoneInputStructure(){
+        $this->expectException(InvalidInputStructure::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['phones'][] = $this->dummyPhoneData();
+        $userData['phones'][0][$this->faker->word]=$this->faker->word;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileUsernameInputStructure(){
+        $this->expectException(InvalidInputStructure::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['usernames'][] = $this->dummyUsernamesData();
+        $userData['usernames'][0][$this->faker->word]=$this->faker->word;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileEmailInputStructure(){
+        $this->expectException(InvalidInputStructure::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['emails'][] = $this->dummyEmailsData();
+        $userData['emails'][0][$this->faker->word]=$this->faker->word;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileRelationshipInputStructure(){
+        $this->expectException(InvalidInputStructure::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['relationships'][] = $this->dummyRelationshipsData();
+        $userData['relationships'][0][$this->faker->word]=$this->faker->word;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileSkillInputStructure(){
+        $this->expectException(InvalidInputStructure::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['skills'][] = $this->dummySkillsData();
+        $userData['skills'][0][$this->faker->word]=$this->faker->word;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileImageInputStructure(){
+        $this->expectException(InvalidInputStructure::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['images'][] = $this->dummyImagesData();
+        $userData['images'][0][$this->faker->word]=$this->faker->word;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileLanguageInputStructure(){
+        $this->expectException(InvalidInputStructure::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['languages'][] = $this->dummyLanguagesData();
+        $userData['languages'][0][$this->faker->word]=$this->faker->word;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileJobInputStructure(){
+        $this->expectException(InvalidInputStructure::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['jobs'][] = $this->dummyLanguagesData();
+        $userData['jobs'][0][$this->faker->word]=$this->faker->word;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileEducationInputStructure(){
+        $this->expectException(InvalidInputStructure::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['educations'][] = $this->dummyLanguagesData();
+        $userData['educations'][0][$this->faker->word]=$this->faker->word;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileSocialProfileInputStructure(){
+        $this->expectException(InvalidInputStructure::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['social_profiles'][] = $this->dummyLanguagesData();
+        $userData['social_profiles'][0][$this->faker->word]=$this->faker->word;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileCriminalRecordInputStructure(){
+        $this->expectException(InvalidInputStructure::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['criminal_records'][] = $this->dummyLanguagesData();
+        $userData['criminal_records'][0][$this->faker->word]=$this->faker->word;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
 
     public function testCreateFullProfile(){
         $userData = $this->dummyBasicProfileData();
