@@ -246,9 +246,37 @@ class DeleteProfileTest extends AbstractTestCase
                                                     ->output('status');
         $this->assertTrue($profileDeletedStatus);
         //test Missing
+        $this->assertDatabaseMissing('profiles',[
+            'profile_id' => $profileId
+        ]);
         $this->assertDatabaseMissing('profile_names',[
             'profile_id' => $profileId
         ]);
+        $this->assertDatabaseMissing('profile_phones',[
+            'profile_id' => $profileId
+        ]);
+        $this->assertDatabaseMissing('profile_usernames',[
+            'profile_id' => $profileId
+        ]);
+        $this->assertDatabaseMissing('profile_emails',[
+            'profile_id' => $profileId
+        ]);
+        $this->assertDatabaseMissing('profile_relationships',[
+            'profile_id' => $profileId
+        ]);
+        $this->assertDatabaseMissing('profile_skills',[
+            'profile_id' => $profileId
+        ]);
+        $this->assertDatabaseMissing('profile_images',[
+            'profile_id' => $profileId
+        ]);
+        $this->assertDatabaseMissing('profile_languages',[
+            'profile_id' => $profileId
+        ]);
+        $this->assertDatabaseMissing('profile_education',[
+            'profile_id' => $profileId
+        ]);
+
 
     }
 

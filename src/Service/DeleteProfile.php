@@ -4,12 +4,14 @@ namespace Jawabkom\Backend\Module\Profile\Service;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileImageRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
@@ -19,7 +21,6 @@ use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Contract\IEntity;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
-use phpDocumentor\Reflection\Types\True_;
 
 class DeleteProfile extends AbstractService
 {
@@ -42,13 +43,9 @@ class DeleteProfile extends AbstractService
         $profileId = $this->getInput('profile_id');
         $this->validate($profileId);
         $profileEntirety = $this->repository->getByProfileId($profileId);
-        try {
-            $this->deleteProfileEntityRelated($profileEntirety);
-            $status          = $profileEntirety->deleteEntity($profileEntirety);
-            $this->setOutput('status',$status);
-        }catch (\Throwable $exception){
-            $this->setOutput('status',false);
-        }
+        $this->deleteProfileEntityRelated($profileEntirety);
+        $status          = $profileEntirety->deleteEntity($profileEntirety);
+        $this->setOutput('status',$status);
         return $this;
     }
 
@@ -215,6 +212,34 @@ class DeleteProfile extends AbstractService
     /**
      * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
      */
+    protected function deleteProfilePhonesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    {
+        $phones = $profileEntirety->getPhones();
+        if ($phones){
+            $phoneRepository = $this->di->make(IProfilePhoneEntity::class);
+            foreach ($phones as $phone){
+                $phoneRepository->deleteEntity($phone);
+            }
+        }
+    }
+
+    /**
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     */
+    protected function deleteProfileEducationsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    {
+        $educations = $profileEntirety->getEducations();
+        if ($educations){
+            $educationRepository = $this->di->make(IProfileEducationRepository::class);
+            foreach ($educations as $education){
+                $educationRepository->deleteEntity($education);
+            }
+        }
+    }
+
+    /**
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     */
     protected function deleteProfileEntityRelated(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety): void
     {
         $this->deleteProfileJobsIfExistes($profileEntirety);
@@ -228,6 +253,8 @@ class DeleteProfile extends AbstractService
         $this->deleteProfileRelationshipsIfExistes($profileEntirety);
         $this->deleteProfileEmailsIfExistes($profileEntirety);
         $this->deleteProfileUsernamesIfExistes($profileEntirety);
+        $this->deleteProfilePhonesIfExistes($profileEntirety);
+        $this->deleteProfileEducationsIfExistes($profileEntirety);
     }
 
 }
