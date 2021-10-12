@@ -7,6 +7,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
@@ -94,7 +95,7 @@ class DeleteProfile extends AbstractService
      */
     protected function deleteProfileAddressesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
     {
-        $addresses = $profileEntirety->getNames();
+        $addresses = $profileEntirety->getAddresses();
         if ($addresses){
             $addressRepository = $this->di->make(IProfileAddressRepository::class);
             foreach ($addresses as $address){
@@ -107,7 +108,7 @@ class DeleteProfile extends AbstractService
      */
     protected function deleteProfileCriminalRecordsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
     {
-        $criminalRecords = $profileEntirety->getNames();
+        $criminalRecords = $profileEntirety->getCriminalRecords();
         if ($criminalRecords){
             $criminalRecordRepository = $this->di->make(IProfileCriminalRecordRepository::class);
             foreach ($criminalRecords as $criminalRecord){
@@ -121,11 +122,25 @@ class DeleteProfile extends AbstractService
      */
     protected function deleteProfileSocialProfilesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
     {
-        $socialProfiles = $profileEntirety->getNames();
+        $socialProfiles = $profileEntirety->getSocialProfiles();
         if ($socialProfiles){
-            $socialProfileRecordRepository = $this->di->make(IProfileSocialProfileRepository::class);
+            $socialProfileRepository = $this->di->make(IProfileSocialProfileRepository::class);
             foreach ($socialProfiles as $socialProfile){
-                $socialProfileRecordRepository->deleteEntity($socialProfile);
+                $socialProfileRepository->deleteEntity($socialProfile);
+            }
+        }
+    }
+
+    /**
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     */
+    protected function deleteProfileLanguagesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    {
+        $languages = $profileEntirety->getLanguages();
+        if ($languages){
+            $languageRepository = $this->di->make(IProfileLanguageRepository::class);
+            foreach ($languages as $language){
+                $languageRepository->deleteEntity($language);
             }
         }
     }

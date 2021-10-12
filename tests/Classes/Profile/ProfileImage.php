@@ -76,6 +76,6 @@ class ProfileImage extends Model implements IProfileImageEntity,IProfileImageRep
 
     public function deleteEntity(IEntity $entity): bool
     {
-        // TODO: Implement deleteEntity() method.
+       return $entity->delete();
     }
 }
