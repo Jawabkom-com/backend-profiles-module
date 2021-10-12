@@ -5,11 +5,13 @@ namespace Jawabkom\Backend\Module\Profile\Service;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileNameRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Contract\IEntity;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
+use phpDocumentor\Reflection\Types\True_;
 
 class DeleteProfile extends AbstractService
 {
@@ -33,7 +35,7 @@ class DeleteProfile extends AbstractService
         $this->validate($profileId);
         $profileEntirety = $this->repository->getByProfileId($profileId);
         $this->deleteProfileJobsIfExistes($profileEntirety);
-        $names = $profileEntirety->getNames();
+        $this->deleteProfileNamesIfExistes($profileEntirety);
         $addresses = $profileEntirety->getAddresses();
         $criminalRecords = $profileEntirety->getCriminalRecords();
         $socialProfiles = $profileEntirety->getSocialProfiles();
@@ -65,7 +67,21 @@ class DeleteProfile extends AbstractService
         if ($jobs){
             $jobRepository = $this->di->make(IProfileJobEntity::class);
             foreach ($jobs as $job){
-                $jobRepository->deleteEnt
+                $jobRepository->deleteEntity($job);
+            }
+        }
+    }
+    
+    /**
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     */
+    protected function deleteProfileNamesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    {
+        $names = $profileEntirety->getNames();
+        if ($names){
+            $nameRepository = $this->di->make(IProfileNameRepository::class);
+            foreach ($names as $name){
+                $nameRepository->deleteEntity($name);
             }
         }
     }

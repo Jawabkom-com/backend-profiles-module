@@ -100,6 +100,6 @@ class ProfileName extends Model implements IProfileNameEntity,IProfileNameReposi
 
     public function deleteEntity(IEntity $entity): bool
     {
-        // TODO: Implement deleteEntity() method.
+      return $entity->delete();
     }
 }
