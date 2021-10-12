@@ -99,6 +99,6 @@ class ProfileSocialProfile extends Model implements IProfileSocialProfileEntity,
 
     public function deleteEntity(IEntity $entity): bool
     {
-        // TODO: Implement deleteEntity() method.
+      return $entity->delete();
     }
 }

@@ -2,11 +2,14 @@
 
 namespace Jawabkom\Backend\Module\Profile\Service;
 
+use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Contract\IEntity;
@@ -36,9 +39,9 @@ class DeleteProfile extends AbstractService
         $profileEntirety = $this->repository->getByProfileId($profileId);
         $this->deleteProfileJobsIfExistes($profileEntirety);
         $this->deleteProfileNamesIfExistes($profileEntirety);
-        $addresses = $profileEntirety->getAddresses();
-        $criminalRecords = $profileEntirety->getCriminalRecords();
-        $socialProfiles = $profileEntirety->getSocialProfiles();
+        $this->deleteProfileAddressesIfExistes($profileEntirety);
+        $this->deleteProfileCriminalRecordsIfExistes($profileEntirety);
+        $this->deleteProfileSocialProfilesIfExistes($profileEntirety);
         $languages = $profileEntirety->getLanguages();
         $skills = $profileEntirety->getSkills();
         $images = $profileEntirety->getImages();
@@ -71,7 +74,7 @@ class DeleteProfile extends AbstractService
             }
         }
     }
-    
+
     /**
      * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
      */
@@ -82,6 +85,47 @@ class DeleteProfile extends AbstractService
             $nameRepository = $this->di->make(IProfileNameRepository::class);
             foreach ($names as $name){
                 $nameRepository->deleteEntity($name);
+            }
+        }
+    }
+
+    /**
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     */
+    protected function deleteProfileAddressesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    {
+        $addresses = $profileEntirety->getNames();
+        if ($addresses){
+            $addressRepository = $this->di->make(IProfileAddressRepository::class);
+            foreach ($addresses as $address){
+                $addressRepository->deleteEntity($address);
+            }
+        }
+    }
+    /**
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     */
+    protected function deleteProfileCriminalRecordsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    {
+        $criminalRecords = $profileEntirety->getNames();
+        if ($criminalRecords){
+            $criminalRecordRepository = $this->di->make(IProfileCriminalRecordRepository::class);
+            foreach ($criminalRecords as $criminalRecord){
+                $criminalRecordRepository->deleteEntity($criminalRecord);
+            }
+        }
+    }
+
+    /**
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     */
+    protected function deleteProfileSocialProfilesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    {
+        $socialProfiles = $profileEntirety->getNames();
+        if ($socialProfiles){
+            $socialProfileRecordRepository = $this->di->make(IProfileSocialProfileRepository::class);
+            foreach ($socialProfiles as $socialProfile){
+                $socialProfileRecordRepository->deleteEntity($socialProfile);
             }
         }
     }
