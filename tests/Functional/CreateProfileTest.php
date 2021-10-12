@@ -552,6 +552,8 @@ class CreateProfileTest extends AbstractTestCase
         $userData['educations'][] = $this->dummyEducationsData();
         $userData['social_profiles'][] = $this->dummysSocialProfilesData();
         $userData['criminal_records'][] = $this->dummyCriminalRecordsData();
+        $userData['addresses'][] = $this->dummyAddressData();
+        $userData['names'][] = $this->dummyNamesData();
 
         $profile = $this->createProfile->input('profile',$userData)
             ->process()
@@ -692,6 +694,30 @@ class CreateProfileTest extends AbstractTestCase
         ]);
         $this->assertDatabaseHas('profile_criminal_records',[
             'case_number' => $records[0]->getCaseNumber()
+        ]);
+
+        /*** Address ***/
+        $names =$profile->getAddresses();
+        $this->assertNotEmpty($names);
+        $this->assertInstanceOf(IProfileAddressRepository::class,$names[0]);
+        $this->assertInstanceOf(IProfileAddressEntity::class,$names[0]);
+        $this->assertDatabaseHas('profile_addresses',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_addresses',[
+            'country' => $names[0]->getCountry()
+        ]);
+
+        /*** Name ***/
+        $names =$profile->getNames();
+        $this->assertNotEmpty($names);
+        $this->assertInstanceOf(IProfileNameRepository::class,$names[0]);
+        $this->assertInstanceOf(IProfileNameEntity::class,$names[0]);
+        $this->assertDatabaseHas('profile_names',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_names',[
+            'display' => $names[0]->getDisplay()
         ]);
     }
 }

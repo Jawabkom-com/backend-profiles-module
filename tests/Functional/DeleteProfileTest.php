@@ -24,7 +24,6 @@ class DeleteProfileTest extends AbstractTestCase
         parent::setUp();
         $di = new DI();
         $this->createProfile = $di->make(CreateProfile::class);
-        $this->createProfile = $di->make(CreateProfile::class);
         $this->deleteProfile = $di->make(DeleteProfile::class);
        $this->faker = Factory::create();
     }
@@ -55,7 +54,6 @@ class DeleteProfileTest extends AbstractTestCase
         $this->expectError();
         $profileId = $this->faker->randomDigit();
         $this->deleteProfile->input('profile_id',$profileId)->process()->output('status');
-
     }
 
 }
