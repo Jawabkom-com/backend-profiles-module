@@ -43,9 +43,14 @@ class DeleteProfile extends AbstractService
         $profileId = $this->getInput('profile_id');
         $this->validate($profileId);
         $profileEntirety = $this->repository->getByProfileId($profileId);
-        $this->deletePorfileEnitiyRelated($profileEntirety);
-        $status          = $profileEntirety->deleteEntity($profileEntirety);
-        $this->setOutput('status',$status);
+        try {
+            $this->deletePorfileEnitiyRelated($profileEntirety);
+            $status          = $profileEntirety->deleteEntity($profileEntirety);
+            $this->setOutput('status',$status);
+        }catch (\Throwable $exception){
+            dd($exception);
+            $this->setOutput('status',false);
+        }
         return $this;
     }
 
