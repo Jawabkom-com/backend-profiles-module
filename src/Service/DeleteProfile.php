@@ -17,6 +17,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
+use Jawabkom\Backend\Module\Profile\Exception\EntityNotExists;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Contract\IEntity;
@@ -37,12 +38,13 @@ class DeleteProfile extends AbstractService
     //
     /**
      * @throws MissingRequiredInputException
+     * @throws EntityNotExists
      */
     public function process(): static
     {
         $profileId = $this->getInput('profile_id');
         $this->validate($profileId);
-        $profileEntirety = $this->repository->getByProfileId($profileId);
+        $profileEntirety = $this->getProfileEntirety($profileId);
         $this->deleteProfileEntityRelated($profileEntirety);
         $status          = $profileEntirety->deleteEntity($profileEntirety);
         $this->setOutput('status',$status);
@@ -255,6 +257,20 @@ class DeleteProfile extends AbstractService
         $this->deleteProfileUsernamesIfExistes($profileEntirety);
         $this->deleteProfilePhonesIfExistes($profileEntirety);
         $this->deleteProfileEducationsIfExistes($profileEntirety);
+    }
+
+    /**
+     * @param mixed $profileId
+     * @return IProfileEntity|IProfileRepository|IEntity
+     * @throws EntityNotExists
+     */
+    protected function getProfileEntirety(mixed $profileId): IEntity|IProfileRepository|IProfileEntity
+    {
+        $profileEntirety = $this->repository->getByProfileId($profileId);
+            if (empty($profileEntirety)){
+                throw new EntityNotExists("Profile ID not exists");
+            }
+        return $profileEntirety;
     }
 
 }

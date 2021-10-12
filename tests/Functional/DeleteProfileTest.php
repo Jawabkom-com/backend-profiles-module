@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
 
+use Dotenv\Util\Str;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordEntity;
@@ -28,6 +29,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
+use Jawabkom\Backend\Module\Profile\Exception\EntityNotExists;
 use Jawabkom\Backend\Module\Profile\Service\DeleteProfile;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
@@ -276,16 +278,16 @@ class DeleteProfileTest extends AbstractTestCase
         $this->assertDatabaseMissing('profile_education',[
             'profile_id' => $profileId
         ]);
-
-
+        $this->assertDatabaseMissing('profile_criminal_records',[
+            'profile_id' => $profileId
+        ]);
     }
-
-
     //ProfileId Not Exist
-  /*  public function testProfileIdNotExist(){
-        $this->expectError();
-        $profileId = $this->faker->randomDigit();
-        $this->deleteProfile->input('profile_id',$profileId)->process()->output('status');
+   public function testProfileIdNotExist(){
+        $profileId = \Illuminate\Support\Str::uuid();
+        $this->expectException(EntityNotExists::class);
+        $this->deleteProfile->input('profile_id',$profileId)
+                            ->process()
+                            ->output('status');
     }
-*/
 }
