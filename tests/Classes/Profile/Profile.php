@@ -38,19 +38,21 @@ use Jawabkom\Standard\Contract\IOrFilterComposite;
  * @property string $data_source
  * @property int|string $id
  */
-class Profile extends Model implements IProfileEntity,IProfileRepository
+class Profile extends Model implements IProfileEntity, IProfileRepository
 {
     use HasFactory;
-    protected $fillable=[
-      'profile_id',
-      'gender',
-      'date_of_birth',
-      'place_of_birth',
-      'data_source',
+
+    protected $fillable = [
+        'profile_id',
+        'gender',
+        'date_of_birth',
+        'place_of_birth',
+        'data_source',
     ];
+
     public function getProfileId(): int|string
     {
-       return $this->profile_id;
+        return $this->profile_id;
     }
 
     public function setProfileId(int|string $id)
@@ -70,12 +72,12 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function setDateOfBirth(\DateTime $dateOfBirth)
     {
-       $this->date_of_birth = $dateOfBirth;
+        $this->date_of_birth = $dateOfBirth;
     }
 
     public function getDateOfBirth(): \DateTime
     {
-       return $this->date_of_birth;
+        return $this->date_of_birth;
     }
 
     public function setPlaceOfBirth(string $placeOfBirth)
@@ -85,12 +87,12 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getPlaceOfBirth(): string
     {
-       return $this->place_of_birth;
+        return $this->place_of_birth;
     }
 
     public function setDataSource(string $dataSource)
     {
-       $this->data_source = $dataSource;
+        $this->data_source = $dataSource;
     }
 
     public function getDataSource(): string
@@ -105,19 +107,19 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getNames(): iterable
     {
-     $names = $this->ProfileName()->get();
-     return $names->isNotEmpty()?$names:[];
+        $names = $this->ProfileName()->get();
+        return $names->isNotEmpty() ? $names : [];
     }
 
     public function addPhone(IProfilePhoneEntity $IProfileEntityPhone)
     {
-      return  $IProfileEntityPhone->saveEntity($IProfileEntityPhone);
+        return $IProfileEntityPhone->saveEntity($IProfileEntityPhone);
     }
 
     public function getPhones(): iterable
     {
-      $phones = $this->profilePhone()->get();
-      return  $phones->isNotEmpty()?$phones:[];
+        $phones = $this->profilePhone()->get();
+        return $phones->isNotEmpty() ? $phones : [];
     }
 
     public function addAddress(IProfileAddressEntity $IProfileEntityAddress)
@@ -127,8 +129,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getAddresses(): iterable
     {
-       $addresses = $this->profileAddress()->get();
-       return $addresses->isNotEmpty()?$addresses:[];
+        $addresses = $this->profileAddress()->get();
+        return $addresses->isNotEmpty() ? $addresses : [];
     }
 
     public function addUsername(IProfileUsernameEntity $IProfileEntityUsername)
@@ -139,7 +141,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
     public function getUsernames(): iterable
     {
         $usernames = $this->profileUsername()->get();
-        return $usernames->isNotEmpty()?$usernames:[];
+        return $usernames->isNotEmpty() ? $usernames : [];
     }
 
     public function addEmail(IProfileEmailEntity $IProfileEntityEmail)
@@ -149,8 +151,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getEmails(): iterable
     {
-       $emails = $this->profileEmail()->get();
-       return $emails->isNotEmpty()?$emails:[];
+        $emails = $this->profileEmail()->get();
+        return $emails->isNotEmpty() ? $emails : [];
     }
 
     public function addRelationship(IProfileRelationshipEntity $IProfileEntityRelationship)
@@ -160,8 +162,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getRelationships(): iterable
     {
-      $relations = $this->profileRelationship()->get();
-      return $relations->isNotEmpty()?$relations:[];
+        $relations = $this->profileRelationship()->get();
+        return $relations->isNotEmpty() ? $relations : [];
     }
 
     public function addSkill(IProfileSkillEntity $IProfileEntitySkill)
@@ -171,8 +173,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getSkills(): iterable
     {
-      $skills = $this->profileSkill()->get();
-      return $skills->isNotEmpty()?$skills:[];
+        $skills = $this->profileSkill()->get();
+        return $skills->isNotEmpty() ? $skills : [];
     }
 
     public function addImage(IProfileImageEntity $IProfileEntityImage)
@@ -182,8 +184,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getImages(): iterable
     {
-       $images = $this->profileImage()->get();
-       return $images->isNotEmpty()?$images:[];
+        $images = $this->profileImage()->get();
+        return $images->isNotEmpty() ? $images : [];
     }
 
     public function addLanguage(IProfileLanguageEntity $IProfileEntityLanguage)
@@ -193,8 +195,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getLanguages(): iterable
     {
-       $languages = $this->profileLanguage()->get();
-       return $languages->isNotEmpty()?$languages:[];
+        $languages = $this->profileLanguage()->get();
+        return $languages->isNotEmpty() ? $languages : [];
     }
 
     public function addJob(IProfileJobEntity $IProfileEntityJob)
@@ -204,8 +206,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getJobs(): iterable
     {
-      $jobs = $this->profileJob()->get();
-      return $jobs->isNotEmpty()?$jobs:[];
+        $jobs = $this->profileJob()->get();
+        return $jobs->isNotEmpty() ? $jobs : [];
     }
 
     public function addEducation(IProfileEducationEntity $IProfileEntityEducation)
@@ -215,8 +217,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getEducations(): iterable
     {
-      $educations = $this->profileEducation()->get();
-      return $educations->isNotEmpty()?$educations:[];
+        $educations = $this->profileEducation()->get();
+        return $educations->isNotEmpty() ? $educations : [];
     }
 
     public function addSocialProfile(IProfileSocialProfileEntity $IProfileEntitySocialProfile)
@@ -227,7 +229,7 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
     public function getSocialProfiles(): iterable
     {
         $socials = $this->profileSocialProfile()->get();
-        return $socials->isNotEmpty()?$socials:[];
+        return $socials->isNotEmpty() ? $socials : [];
     }
 
     public function addCriminalRecord(IProfileCriminalRecordEntity $IProfileEntityCriminalRecord)
@@ -238,14 +240,14 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
     public function getCriminalRecords(): iterable
     {
         $criminalRecord = $this->profileCriminalRecord()->get();
-        return $criminalRecord->isNotEmpty()?$criminalRecord:[];
+        return $criminalRecord->isNotEmpty() ? $criminalRecord : [];
     }
 
     public function saveEntity(IProfileEntity|IEntity $entity): bool
     {
         try {
-            return (boolean) $entity->save();
-        }catch (\Throwable $exception){
+            return (boolean)$entity->save();
+        } catch (\Throwable $exception) {
             return false;
         }
     }
@@ -259,27 +261,83 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
     {
         $builder = static::query();
         $this->filtersToWhereCondition($filterComposite, $builder);
-        return $builder->get()->all();
+        return $builder->select('profiles.*')->get();
 
     }
-    protected function filtersToWhereCondition(IFilterComposite $filterComposite, $query)
+
+    protected function filtersToWhereCondition(IFilterComposite $filterComposite, $query, &$meta = [])
     {
 
         foreach ($filterComposite->getChildren() as $child) {
             if ($child instanceof IOrFilterComposite) {
                 $query->orWhere(function ($q) use ($child) {
-                    $this->filtersToWhereCondition($child, $q);
+                    $this->filtersToWhereCondition($child, $q, $meta);
                 });
             } elseif ($child instanceof IAndFilterComposite) {
                 $query->where(function ($q) use ($child) {
-                    $this->filtersToWhereCondition($child, $q);
+                    $this->filtersToWhereCondition($child, $q, $meta);
                 });
             } elseif ($child instanceof IFilter) {
+
+                $table = '';
+                $field = '';
+                $value = $child->getValue();
+                switch ($child->getName()) {
+                    case 'first_name':
+                        $field = 'first';
+                        $table = 'profile_names';
+                        break;
+                    case 'last_name':
+                        $field = 'last';
+                        $table = 'profile_names';
+                        break;
+                    case 'middle_name':
+                        $field = 'middle';
+                        $table = 'profile_names';
+                        break;
+                    case 'phone':
+                        $field = 'formatted_number';
+                        $table = 'profile_phones';
+                        break;
+                    case 'email':
+                        $field = 'email';
+                        $table = 'profile_emails';
+                        break;
+                    case 'country_code':
+                        $field = 'country_code';
+                        $table = 'profile_phones';
+                        break;
+                    case 'city':
+                        $field = 'city';
+                        $table = 'profile_addresses';
+                        break;
+                    case 'state':
+                        $field = 'state';
+                        $table = 'profile_addresses';
+                        break;
+                    case 'age':
+                        $currentDate = new \DateTime();
+                        $field = 'date_of_birth';
+                        $table = 'profiles';
+                        $value = $currentDate->sub(new \DateInterval('P'((int)$value) . 'Y'));
+                        break;
+                    case 'username':
+                        $field = 'username';
+                        $table = 'profile_usernames';
+                        break;
+                    default:
+                        throw new \Exception("Invalid filter name {$child->getName()}");
+                }
+
+                if ($table != 'profiles' && !isset($meta['joins'][$table])) {
+                    $meta['joins'][$table] = true;
+                    $this->JoinWhereColumn($child, $query);
+                }
+
                 if ($filterComposite instanceof IOrFilterComposite) {
-                    $query->orWhere($child->getName(), $child->getOperation() ?? '=', $child->getValue());
+                    $query->orWhere("{$table}.{$field}", $child->getOperation() ?? '=', $value);
                 } else {
-                    $query = $this->JoinWhereColumn($child, $query);
-                    $query->where($child->getName(), $child->getOperation() ?? '=', $child->getValue());
+                    $query->where("{$table}.{$field}", $child->getOperation() ?? '=', $value);
                 }
             }
         }
@@ -288,15 +346,15 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
     public function deleteEntity(IProfileEntity|IEntity $entity): bool
     {
         try {
-           return (boolean)$entity->delete();
-        }catch (\Throwable $exception){
+            return (boolean)$entity->delete();
+        } catch (\Throwable $exception) {
             return false;
         }
     }
 
     public function getByProfileId(int|string $profileId): null|IEntity|IProfileEntity|IProfileRepository
     {
-        return  $this->where('profile_id',$profileId)->first();
+        return $this->where('profile_id', $profileId)->first();
     }
 
     /**
@@ -308,89 +366,92 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
         switch ($child->getName()) {
             case 'email':
                 $query->join('profile_emails', 'profiles.profile_id', '=', 'profile_emails.profile_id');
+                break;
             case 'first_name':
             case 'middle_name':
             case 'last_name':
-            case 'raw_name':
                 $query->join('profile_names', 'profiles.profile_id', '=', 'profile_names.profile_id');
+                break;
             case 'phone';
             case 'country_code';
                 $query->join('profile_phones', 'profiles.profile_id', '=', 'profile_phones.profile_id');
+                break;
             case 'city':
             case 'state':
                 $query->join('profile_addresses', 'profiles.profile_id', '=', 'profile_addresses.profile_id');
+                break;
             case 'username':
                 $query->join('profile_usernames', 'profiles.profile_id', '=', 'profile_usernames.profile_id');
-            default:
-                return $query;
+                break;
         }
     }
 
     /********************************** RelationsShip **************************************************/
     public function profileName(): HasMany
     {
-        return $this->hasMany(ProfileName::class,'profile_id','profile_id');
+        return $this->hasMany(ProfileName::class, 'profile_id', 'profile_id');
     }
 
     public function profileJob(): HasMany
     {
-        return $this->hasMany(ProfileJob::class,'profile_id','profile_id');
+        return $this->hasMany(ProfileJob::class, 'profile_id', 'profile_id');
     }
 
     public function profileAddress(): HasMany
     {
-        return $this->hasMany(ProfileAddress::class,'profile_id','profile_id');
+        return $this->hasMany(ProfileAddress::class, 'profile_id', 'profile_id');
     }
 
     public function profileCriminalRecord(): HasMany
     {
-        return $this->hasMany(ProfileCriminalRecord::class,'profile_id','profile_id');
+        return $this->hasMany(ProfileCriminalRecord::class, 'profile_id', 'profile_id');
     }
 
     public function profileEducation(): HasMany
     {
-        return $this->hasMany(ProfileEducation::class,'profile_id','profile_id');
+        return $this->hasMany(ProfileEducation::class, 'profile_id', 'profile_id');
     }
 
     public function profileEmail(): HasMany
     {
-        return $this->hasMany(ProfileEmail::class,'profile_id','profile_id');
+        return $this->hasMany(ProfileEmail::class, 'profile_id', 'profile_id');
     }
 
     public function profileImage(): HasMany
     {
-        return $this->hasMany(ProfileImage::class,'profile_id','profile_id');
+        return $this->hasMany(ProfileImage::class, 'profile_id', 'profile_id');
     }
 
     public function profileLanguage(): HasMany
     {
-        return $this->hasMany(ProfileLanguage::class,'profile_id','profile_id');
+        return $this->hasMany(ProfileLanguage::class, 'profile_id', 'profile_id');
     }
 
     public function profilePhone(): HasMany
     {
-        return $this->hasMany(ProfilePhone::class,'profile_id','profile_id');
+        return $this->hasMany(ProfilePhone::class, 'profile_id', 'profile_id');
     }
 
     public function profileRelationship(): HasMany
     {
-        return $this->hasMany(ProfileRelationship::class,'profile_id','profile_id');
+        return $this->hasMany(ProfileRelationship::class, 'profile_id', 'profile_id');
     }
 
     public function profileSkill(): HasMany
     {
-        return $this->hasMany(ProfileSkill::class,'profile_id','profile_id');
+        return $this->hasMany(ProfileSkill::class, 'profile_id', 'profile_id');
     }
 
     public function profileUsername(): HasMany
     {
-        return $this->hasMany(ProfileUsername::class,'profile_id','profile_id');
+        return $this->hasMany(ProfileUsername::class, 'profile_id', 'profile_id');
     }
 
     public function profileSocialProfile(): HasMany
     {
-        return $this->hasMany(ProfileSocialProfile::class,'profile_id','profile_id');
+        return $this->hasMany(ProfileSocialProfile::class, 'profile_id', 'profile_id');
     }
+
     /*************************** Factory *********************************/
     protected static function newFactory(): ProfileFactory
     {

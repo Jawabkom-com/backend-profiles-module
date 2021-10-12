@@ -17,7 +17,6 @@ class SimpleSearchFiltersBuilder implements ISearchFiltersBuilder
         'first_name',
         'last_name',
         'middle_name',
-        'raw_name',
         'phone',
         'email',
         'country_code',
