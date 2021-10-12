@@ -7,6 +7,7 @@ use Jawabkom\Backend\Module\Profile\Exception\FilterLogicalOperationDoesNotExist
 use Jawabkom\Backend\Module\Profile\Exception\FilterNameDoesNotExistsException;
 use Jawabkom\Standard\Contract\IAndFilterComposite;
 use Jawabkom\Standard\Contract\IDependencyInjector;
+use Jawabkom\Standard\Contract\IFilter;
 use Jawabkom\Standard\Contract\IFilterComposite;
 use Jawabkom\Standard\Contract\IOrFilterComposite;
 
@@ -67,7 +68,12 @@ class SimpleSearchFiltersBuilder implements ISearchFiltersBuilder
         if($this->filterType == 'or') {
             return $this->di->make(IOrFilterComposite::class);
         } elseif($this->filterType == 'and') {
-            return $this->di->make(IAndFilterComposite::class);
+            $compositeAndFilter = $this->di->make(IAndFilterComposite::class);
+            foreach ($this->filters as $filterName => $filterValue) {
+                $filterObj = $this->di->make(IFilter::class);
+                $compositeAndFilter->addChild($filterObj->setName($filterName)->setValue($filterValue));
+            }
+            return $compositeAndFilter;
         }
 
         throw new FilterLogicalOperationDoesNotExists("Operation: '{$this->filterType}'");

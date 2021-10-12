@@ -3,10 +3,10 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Classes\Provider;
 
 use Illuminate\Support\ServiceProvider;
-use Jawabkom\Backend\Module\Profile\Test\Classes\{
-        Composite\Filters\AndFilterComposite,
-        DI
-};
+use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilterComposite,
+    Composite\Filters\AndFilterComposite,
+    Composite\Filters\Filter,
+    DI};
 use Jawabkom\Backend\Module\Profile\Contract\{IProfileAddressEntity,
     IProfileAddressRepository,
     IProfileCriminalRecordEntity,
@@ -37,6 +37,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{IProfileAddressEntity,
     IProfileUsernameRepository};
 use Jawabkom\Standard\Contract\IAndFilterComposite;
 use Jawabkom\Standard\Contract\IDependencyInjector;
+use Jawabkom\Standard\Contract\IFilter;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Profile\{Profile,
     ProfileAddress,
     ProfileCriminalRecord,
@@ -91,7 +92,7 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileRelationshipRepository::class        => ProfileRelationship::class,
             IProfileNameRepository::class                => ProfileName::class,
             IProfileNameEntity::class                    => ProfileName::class,
-
+            IFilter::class                               => Filter::class
         ];
 
         foreach ($toBind as $interface => $implementation) {

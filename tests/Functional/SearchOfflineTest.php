@@ -28,28 +28,17 @@ class SearchOfflineTest extends AbstractTestCase
 
     //Create New Profile
     public function testFilterByEmail(){
-        $dummyData = $this->generateDummyData();
+        $dummyProfilesData = $this->generateBulkDummyData();
+        $fakeProfiles   = [];
+        foreach ($dummyProfilesData as $profileDummyData){
+          $fakeProfiles[] =  $this->createProfile->input('profile',$profileDummyData)
+                                               ->process()
+                                               ->output('profile');
+        }
         $filter =[
-            'email' =>$dummyData[0]['emails'][0]['email']
+            'email' =>$dummyProfilesData[1]['emails'][0]['email']
         ];
         $this->searchOfflineByFilters->input('filters',$filter)->process();
 
     }
-
-
-    private function generateDummyData()
-    {
-        $dummyData  = [];
-        for ($i = 0; $i < 1; $i++) {
-            $userData = $this->dummyBasicProfileData();
-            $userData['emails'][] = $this->dummyEmailsData();
-            $this->createProfile->input('profile',$userData)
-                ->process()
-                ->output('profile');
-
-            $dummyData[] =  $userData;
-        }
-        return $dummyData;
-    }
-
 }

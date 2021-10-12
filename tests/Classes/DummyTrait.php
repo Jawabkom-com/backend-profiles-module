@@ -180,4 +180,15 @@ trait DummyTrait
         $userData['names'][] = $this->dummyNamesData();
         return $userData;
     }
+
+    private function generateBulkDummyData()
+    {
+        $dummyData  = [];
+        for ($i = 0; $i < 2; $i++) {
+            $fakeProfile = $this->dummyFullProfileData();
+            $dummyData[] =  $fakeProfile;
+        }
+        return $dummyData;
+    }
+
 }

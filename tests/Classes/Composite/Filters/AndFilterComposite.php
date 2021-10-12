@@ -6,4 +6,5 @@ use Jawabkom\Standard\Contract\IAndFilterComposite;
 
 class AndFilterComposite extends AbstractFilterComposite implements IAndFilterComposite
 {
+
 }

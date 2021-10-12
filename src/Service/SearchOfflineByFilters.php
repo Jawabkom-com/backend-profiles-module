@@ -7,6 +7,7 @@ use Jawabkom\Backend\Module\Profile\SimpleSearchFiltersBuilder;
 use Jawabkom\Backend\Module\Profile\Trait\GetProfileTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
+use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class SearchOfflineByFilters extends AbstractService
 {
@@ -26,17 +27,22 @@ class SearchOfflineByFilters extends AbstractService
     //
     public function process(): static
     {
-        $compositeFilters = $this->searchFiltersBuilder->setAllFilters($this->getInput('filters'))->build();
-        dd($compositeFilters);
-        $this->repository->getByFilters($compositeFilters, );
-
-
+        $orderByInput = $this->getInput('orderBy', []);
         $page = $this->getInput('page', 1);
         $perPage = $this->getInput('perPage', 0);
         $filtersInput = $this->getInput('filters', []);
-        $orderByInput = $this->getInput('orderBy', []);
-        $this->validateFilters($filtersInput);
-        dd($filtersInput);
+        $this->validate($filtersInput);
+        $compositeFilters = $this->searchFiltersBuilder->setAllFilters($this->getInput('filters'))->build();
+        dd($compositeFilters);
+        $this->repository->getByFilters($compositeFilters);
     }
+
+    private function validate(mixed $filtersInput)
+    {
+        if (empty($filtersInput)){
+            throw new MissingRequiredInputException('Missing Filter');
+        }
+    }
+
 
 }
