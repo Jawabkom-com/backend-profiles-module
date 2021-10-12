@@ -6,6 +6,7 @@ use Classes\Database\Factories\ProfileFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationEntity;
@@ -21,8 +22,13 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
+use Jawabkom\Backend\Module\Profile\SimpleSearchFiltersBuilder;
+use Jawabkom\Standard\Contract\IAbstractFilter;
+use Jawabkom\Standard\Contract\IAndFilterComposite;
 use Jawabkom\Standard\Contract\IEntity;
+use Jawabkom\Standard\Contract\IFilter;
 use Jawabkom\Standard\Contract\IFilterComposite;
+use Jawabkom\Standard\Contract\IOrFilterComposite;
 
 /**
  * @property int|string $profile_id
@@ -251,7 +257,32 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getByFilters(IFilterComposite $filterComposite = null, array $orderBy = [], int $page = 1, int $perPage = 0): iterable
     {
-        // TODO: Implement getByFilters() method.
+        $builder = static::query();
+        $this->filtersToWhereCondition($filterComposite, $builder);
+        return $builder->get()->all();
+
+    }
+    protected function filtersToWhereCondition(IFilterComposite $filterComposite, $query)
+    {
+
+        foreach ($filterComposite->getChildren() as $child) {
+            if ($child instanceof IOrFilterComposite) {
+                $query->orWhere(function ($q) use ($child) {
+                    $this->filtersToWhereCondition($child, $q);
+                });
+            } elseif ($child instanceof IAndFilterComposite) {
+                $query->where(function ($q) use ($child) {
+                    $this->filtersToWhereCondition($child, $q);
+                });
+            } elseif ($child instanceof IFilter) {
+                if ($filterComposite instanceof IOrFilterComposite) {
+                    $query->orWhere($child->getName(), $child->getOperation() ?? '=', $child->getValue());
+                } else {
+                    $query = $this->JoinWhereColumn($child, $query);
+                    $query->where($child->getName(), $child->getOperation() ?? '=', $child->getValue());
+                }
+            }
+        }
     }
 
     public function deleteEntity(IProfileEntity|IEntity $entity): bool
@@ -266,6 +297,33 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
     public function getByProfileId(int|string $profileId): null|IEntity|IProfileEntity|IProfileRepository
     {
         return  $this->where('profile_id',$profileId)->first();
+    }
+
+    /**
+     * @param IAbstractFilter|IFilter $child
+     * @param $query
+     */
+    protected function JoinWhereColumn(IAbstractFilter|IFilter $child, $query)
+    {
+        switch ($child->getName()) {
+            case 'email':
+                $query->join('profile_emails', 'profiles.profile_id', '=', 'profile_emails.profile_id');
+            case 'first_name':
+            case 'middle_name':
+            case 'last_name':
+            case 'raw_name':
+                $query->join('profile_names', 'profiles.profile_id', '=', 'profile_names.profile_id');
+            case 'phone';
+            case 'country_code';
+                $query->join('profile_phones', 'profiles.profile_id', '=', 'profile_phones.profile_id');
+            case 'city':
+            case 'state':
+                $query->join('profile_addresses', 'profiles.profile_id', '=', 'profile_addresses.profile_id');
+            case 'username':
+                $query->join('profile_usernames', 'profiles.profile_id', '=', 'profile_usernames.profile_id');
+            default:
+                return $query;
+        }
     }
 
     /********************************** RelationsShip **************************************************/

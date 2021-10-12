@@ -36,7 +36,17 @@ class SearchOfflineTest extends AbstractTestCase
                                                ->output('profile');
         }
         $filter =[
-            'email' =>$dummyProfilesData[1]['emails'][0]['email']
+            'email'       => $dummyProfilesData[1]['emails'][0]['email'],
+            'first_name'  => $dummyProfilesData[1]['names'][0]['first'],
+            'middle_name' => $dummyProfilesData[1]['names'][0]['middle'],
+            'last_name'   => $dummyProfilesData[1]['names'][0]['last'],
+            'raw_name'    => $dummyProfilesData[1]['names'][0]['display'],
+            'phone'       => $dummyProfilesData[1]['phones'][0]['original_number'],
+            'country_code'=> $dummyProfilesData[1]['phones'][0]['country_code'],
+            'city'        => $dummyProfilesData[1]['addresses'][0]['city'],
+            'state'       => $dummyProfilesData[1]['addresses'][0]['state'],
+        // 'age'         => $dummyProfilesData[1]['addresses'][0]['state'],
+            'username'    => $dummyProfilesData[1]['usernames'][0]['username'],
         ];
         $this->searchOfflineByFilters->input('filters',$filter)->process();
 

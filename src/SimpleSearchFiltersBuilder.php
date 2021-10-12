@@ -13,7 +13,19 @@ use Jawabkom\Standard\Contract\IOrFilterComposite;
 
 class SimpleSearchFiltersBuilder implements ISearchFiltersBuilder
 {
-    protected array $registeredFilters = ['first_name', 'last_name', 'middle_name', 'raw_name', 'phone', 'email', 'country_code', 'city', 'state', 'age', 'username'];
+    protected array $registeredFilters = [
+        'first_name',
+        'last_name',
+        'middle_name',
+        'raw_name',
+        'phone',
+        'email',
+        'country_code',
+        'city',
+        'state',
+        'age',
+        'username'
+    ];
     protected array $filters;
     protected string $filterType = 'and';
 

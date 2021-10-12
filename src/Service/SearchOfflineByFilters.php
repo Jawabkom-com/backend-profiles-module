@@ -33,8 +33,9 @@ class SearchOfflineByFilters extends AbstractService
         $filtersInput = $this->getInput('filters', []);
         $this->validate($filtersInput);
         $compositeFilters = $this->searchFiltersBuilder->setAllFilters($this->getInput('filters'))->build();
-        dd($compositeFilters);
-        $this->repository->getByFilters($compositeFilters);
+        $result = $this->repository->getByFilters($compositeFilters);
+        dd($result);
+        return $this;
     }
 
     private function validate(mixed $filtersInput)
