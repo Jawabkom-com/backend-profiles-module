@@ -137,4 +137,15 @@ trait DummyTrait
             'display'=>$this->faker->title,
         ];
     }
+
+    private function dummyNamesData()
+    {
+        return [
+            'prefix'=>'test',
+            'first'=>$this->faker->firstName,
+            'middle'=>$this->faker->firstName,
+            'last'=>$this->faker->lastName,
+            'display'=>$this->faker->lastName.' '.$this->faker->lastName,
+        ];
+    }
 }

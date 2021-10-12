@@ -35,6 +35,7 @@ trait ProfileAddEditMethods
 
     protected function fillNameEntity(IProfileEntity $profileEntity, IProfileNameEntity $profileNameEntity, array $name)
     {
+        $profileNameEntity->setProfileId($profileEntity->getProfileId());
         $profileNameEntity->setFirst($name['first'] ?? '');
         $profileNameEntity->setMiddle($name['middle'] ?? '');
         $profileNameEntity->setLast($name['last'] ?? '');
