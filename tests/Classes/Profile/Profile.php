@@ -99,7 +99,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getNames(): iterable
     {
-     return $this->ProfileName()->get();
+     $names = $this->ProfileName()->get();
+     return $names->isNotEmpty()?$names:[];
     }
 
     public function addPhone(IProfilePhoneEntity $IProfileEntityPhone)
@@ -109,7 +110,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getPhones(): iterable
     {
-      return $this->profilePhone()->get();
+      $phones = $this->profilePhone()->get();
+      return  $phones->isNotEmpty()?$phones:[];
     }
 
     public function addAddress(IProfileAddressEntity $IProfileEntityAddress)
@@ -119,7 +121,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getAddresses(): iterable
     {
-       return $this->profileAddress()->get();
+       $addresses = $this->profileAddress()->get();
+       return $addresses->isNotEmpty()?$addresses:[];
     }
 
     public function addUsername(IProfileUsernameEntity $IProfileEntityUsername)
@@ -129,7 +132,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getUsernames(): iterable
     {
-        return $this->profileUsername()->get();
+        $usernames = $this->profileUsername()->get();
+        return $usernames->isNotEmpty()?$usernames:[];
     }
 
     public function addEmail(IProfileEmailEntity $IProfileEntityEmail)
@@ -139,7 +143,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getEmails(): iterable
     {
-       return $this->profileEmail()->get();
+       $emails = $this->profileEmail()->get();
+       return $emails->isNotEmpty()?$emails:[];
     }
 
     public function addRelationship(IProfileRelationshipEntity $IProfileEntityRelationship)
@@ -149,7 +154,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getRelationships(): iterable
     {
-      return $this->profileRelationship()->get();
+      $relations = $this->profileRelationship()->get();
+      return $relations->isNotEmpty()?$relations:[];
     }
 
     public function addSkill(IProfileSkillEntity $IProfileEntitySkill)
@@ -159,7 +165,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getSkills(): iterable
     {
-      return $this->profileSkill()->get();
+      $skills = $this->profileSkill()->get();
+      return $skills->isNotEmpty()?$skills:[];
     }
 
     public function addImage(IProfileImageEntity $IProfileEntityImage)
@@ -169,7 +176,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getImages(): iterable
     {
-       return $this->profileImage()->get();
+       $images = $this->profileImage()->get();
+       return $images->isNotEmpty()?$images:[];
     }
 
     public function addLanguage(IProfileLanguageEntity $IProfileEntityLanguage)
@@ -179,7 +187,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getLanguages(): iterable
     {
-       return $this->profileLanguage()->get();
+       $languages = $this->profileLanguage()->get();
+       return $languages->isNotEmpty()?$languages:[];
     }
 
     public function addJob(IProfileJobEntity $IProfileEntityJob)
@@ -189,7 +198,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getJobs(): iterable
     {
-      return $this->profileJob()->get();
+      $jobs = $this->profileJob()->get();
+      return $jobs->isNotEmpty()?$jobs:[];
     }
 
     public function addEducation(IProfileEducationEntity $IProfileEntityEducation)
@@ -199,7 +209,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getEducations(): iterable
     {
-      return $this->profileEducation()->get();
+      $educations = $this->profileEducation()->get();
+      return $educations->isNotEmpty()?$educations:[];
     }
 
     public function addSocialProfile(IProfileSocialProfileEntity $IProfileEntitySocialProfile)
@@ -209,7 +220,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getSocialProfiles(): iterable
     {
-      return $this->profileSocialProfile()->get();
+        $socials = $this->profileSocialProfile()->get();
+        return $socials->isNotEmpty()?$socials:[];
     }
 
     public function addCriminalRecord(IProfileCriminalRecordEntity $IProfileEntityCriminalRecord)
@@ -219,7 +231,8 @@ class Profile extends Model implements IProfileEntity,IProfileRepository
 
     public function getCriminalRecords(): iterable
     {
-       return $this->profileCriminalRecord()->get();
+        $criminalRecord = $this->profileCriminalRecord()->get();
+        return $criminalRecord->isNotEmpty()?$criminalRecord:[];
     }
 
     public function saveEntity(IProfileEntity|IEntity $entity): bool
