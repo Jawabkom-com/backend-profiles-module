@@ -74,10 +74,10 @@ class CreateProfile extends AbstractService
     {
          $profile = $this->getInput('profile');
          $this->validateProfileInputs($profile);
-
          $this->validateNameInputs($profile['names']??[]);
          $this->validatePhoneInputs($profile['phones']??[]);
-         $this->validateAddressInputs($profile['addresses']??[]);
+        $this->validateAddressInputs($profile['addresses']??[]);
+        $this->validateLanguageInputs($profile['languages']??[]);
          $this->validateUsernameInputs($profile['usernames']??[]);
          $this->validateEmailInputs($profile['emails']??[]);
          $this->validateCriminalRecordsInputs($profile['criminal_records']??[]);
