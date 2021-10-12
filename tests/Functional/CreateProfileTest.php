@@ -458,6 +458,16 @@ class CreateProfileTest extends AbstractTestCase
             ->output('profile');
     }
 
+    public function testCheckInvalidProfileNameInputStructure(){
+        $this->expectException(InvalidInputStructure::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['names'][] = $this->dummyNamesData();
+        $userData['names'][0][$this->faker->word]=$this->faker->word;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
     public function testCheckInvalidProfileRelationshipInputStructure(){
         $this->expectException(InvalidInputStructure::class);
         $userData = $this->dummyBasicProfileData();
@@ -533,6 +543,16 @@ class CreateProfileTest extends AbstractTestCase
         $userData = $this->dummyBasicProfileData();
         $userData['criminal_records'][] = $this->dummyLanguagesData();
         $userData['criminal_records'][0][$this->faker->word]=$this->faker->word;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileAddressInputStructure(){
+        $this->expectException(InvalidInputStructure::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['addresses'][] = $this->dummyLanguagesData();
+        $userData['addresses'][0][$this->faker->word]=$this->faker->word;
         $this->createProfile->input('profile',$userData)
             ->process()
             ->output('profile');
