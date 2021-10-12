@@ -38,6 +38,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
+use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class DeleteProfileTest extends AbstractTestCase
 {
@@ -287,6 +288,13 @@ class DeleteProfileTest extends AbstractTestCase
         $profileId = \Illuminate\Support\Str::uuid();
         $this->expectException(EntityNotExists::class);
         $this->deleteProfile->input('profile_id',$profileId)
+                            ->process()
+                            ->output('status');
+    }
+    //ProfileId Not Empty
+   public function testProfileIdEmpty(){
+        $this->expectException(MissingRequiredInputException::class);
+        $this->deleteProfile->input('profile_id','')
                             ->process()
                             ->output('status');
     }
