@@ -15,6 +15,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Contract\IEntity;
@@ -42,18 +43,7 @@ class DeleteProfile extends AbstractService
         $profileId = $this->getInput('profile_id');
         $this->validate($profileId);
         $profileEntirety = $this->repository->getByProfileId($profileId);
-        $this->deleteProfileJobsIfExistes($profileEntirety);
-        $this->deleteProfileNamesIfExistes($profileEntirety);
-        $this->deleteProfileAddressesIfExistes($profileEntirety);
-        $this->deleteProfileCriminalRecordsIfExistes($profileEntirety);
-        $this->deleteProfileSocialProfilesIfExistes($profileEntirety);
-        $this->deleteProfileLanguagesIfExistes($profileEntirety);
-        $this->deleteProfileSkillsIfExistes($profileEntirety);
-        $this->deleteProfileImagesIfExistes($profileEntirety);
-        $this->deleteProfileRelationshipsIfExistes($profileEntirety);
-        $this->deleteProfileEmailsIfExistes($profileEntirety);
-        $usernames = $profileEntirety->getUsernames();
-        dd($txt);
+        $this->deletePorfileEnitiyRelated($profileEntirety);
         $status          = $profileEntirety->deleteEntity($profileEntirety);
         $this->setOutput('status',$status);
         return $this;
@@ -203,6 +193,38 @@ class DeleteProfile extends AbstractService
                 $emailRepository->deleteEntity($email);
             }
         }
+    }
+
+    /**
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     */
+    protected function deleteProfileUsernamesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    {
+        $userNames = $profileEntirety->getUsernames();
+        if ($userNames){
+            $nameRepository = $this->di->make(IProfileUsernameRepository::class);
+            foreach ($userNames as $name){
+                $nameRepository->deleteEntity($name);
+            }
+        }
+    }
+
+    /**
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     */
+    protected function deletePorfileEnitiyRelated(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety): void
+    {
+        $this->deleteProfileJobsIfExistes($profileEntirety);
+        $this->deleteProfileNamesIfExistes($profileEntirety);
+        $this->deleteProfileAddressesIfExistes($profileEntirety);
+        $this->deleteProfileCriminalRecordsIfExistes($profileEntirety);
+        $this->deleteProfileSocialProfilesIfExistes($profileEntirety);
+        $this->deleteProfileLanguagesIfExistes($profileEntirety);
+        $this->deleteProfileSkillsIfExistes($profileEntirety);
+        $this->deleteProfileImagesIfExistes($profileEntirety);
+        $this->deleteProfileRelationshipsIfExistes($profileEntirety);
+        $this->deleteProfileEmailsIfExistes($profileEntirety);
+        $this->deleteProfileUsernamesIfExistes($profileEntirety);
     }
 
 }
