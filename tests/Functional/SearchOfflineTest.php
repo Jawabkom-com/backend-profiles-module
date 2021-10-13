@@ -10,6 +10,7 @@ use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
+use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class SearchOfflineTest extends AbstractTestCase
 {
@@ -54,5 +55,11 @@ class SearchOfflineTest extends AbstractTestCase
        $this->assertNotEmpty($result);
        $this->assertInstanceOf(IProfileRepository::class,$result[0]);
        $this->assertEquals($fakeProfiles[1]->getProfileId(),$result[0]->getProfileId());
+    }
+
+    public function testMissingFilter(){
+        $filter=[];
+        $this->expectException(MissingRequiredInputException::class);
+        $result = $this->searchOfflineByFilters->input('filters',$filter)->process()->output('result');
     }
 }
