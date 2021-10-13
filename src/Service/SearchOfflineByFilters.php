@@ -34,7 +34,7 @@ class SearchOfflineByFilters extends AbstractService
         $this->validate($filtersInput);
         $compositeFilters = $this->searchFiltersBuilder->setAllFilters($this->getInput('filters'))->build();
         $result = $this->repository->getByFilters($compositeFilters);
-        dd($result);
+        $this->setOutput('result',$result);
         return $this;
     }
 

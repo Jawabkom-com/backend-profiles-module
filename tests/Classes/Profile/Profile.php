@@ -261,7 +261,7 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
     {
         $builder = static::query();
         $this->filtersToWhereCondition($filterComposite, $builder);
-        return $builder->select('profiles.*')->get();
+        return $builder->select('profiles.*')->get()->all();
 
     }
 

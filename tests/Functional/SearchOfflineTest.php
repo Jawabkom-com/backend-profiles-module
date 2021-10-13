@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
 
+use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
@@ -27,7 +28,7 @@ class SearchOfflineTest extends AbstractTestCase
     }
 
     //Create New Profile
-    public function testFilterByEmail(){
+    public function testGetProfileWithFilter(){
         $dummyProfilesData = $this->generateBulkDummyData();
         $fakeProfiles   = [];
         foreach ($dummyProfilesData as $profileDummyData){
@@ -48,7 +49,10 @@ class SearchOfflineTest extends AbstractTestCase
         // 'age'         => $dummyProfilesData[1]['addresses'][0]['state'],
             'username'    => $dummyProfilesData[1]['usernames'][0]['username'],
         ];
-        $this->searchOfflineByFilters->input('filters',$filter)->process();
-
+       $result = $this->searchOfflineByFilters->input('filters',$filter)->process()->output('result');
+       $this->assertIsArray($result);
+       $this->assertNotEmpty($result);
+       $this->assertInstanceOf(IProfileRepository::class,$result[0]);
+       $this->assertEquals($fakeProfiles[1]->getProfileId(),$result[0]->getProfileId());
     }
 }
