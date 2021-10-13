@@ -95,7 +95,7 @@ class ProfileRelationship extends Model implements IProfileRelationshipEntity,IP
 
     public function createEntity(array $params = []): IProfileRelationshipEntity
     {
-        // TODO: Implement createEntity() method.
+        return app()->make(static::class)->fill($params);
     }
 
     public function deleteEntity(IEntity $entity): bool

@@ -107,7 +107,7 @@ class ProfileEducation extends Model implements IProfileEducationEntity,IProfile
 
     public function createEntity(array $params = []): IProfileEducationEntity
     {
-        // TODO: Implement createEntity() method.
+        return app()->make(static::class)->fill($params);
     }
 
     public function deleteEntity(IEntity $entity): bool

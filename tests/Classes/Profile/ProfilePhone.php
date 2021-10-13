@@ -178,7 +178,7 @@ class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRep
 
     public function createEntity(array $params = []): IProfilePhoneEntity
     {
-        // TODO: Implement createEntity() method.
+        return app()->make(static::class)->fill($params);
     }
 
     public function deleteEntity(IEntity $entity): bool

@@ -95,7 +95,7 @@ class ProfileName extends Model implements IProfileNameEntity,IProfileNameReposi
 
     public function createEntity(array $params = []): IProfileNameEntity
     {
-        // TODO: Implement createEntity() method.
+        return app()->make(static::class)->fill($params);
     }
 
     public function deleteEntity(IEntity $entity): bool

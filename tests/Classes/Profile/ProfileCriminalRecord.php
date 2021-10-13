@@ -95,7 +95,7 @@ class ProfileCriminalRecord extends Model implements IProfileCriminalRecordEntit
 
     public function createEntity(array $params = []): IProfileCriminalRecordEntity
     {
-        // TODO: Implement createEntity() method.
+        return app()->make(static::class)->fill($params);
     }
 
     public function deleteEntity(IEntity $entity): bool

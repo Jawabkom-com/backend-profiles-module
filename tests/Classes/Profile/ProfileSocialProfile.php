@@ -94,7 +94,7 @@ class ProfileSocialProfile extends Model implements IProfileSocialProfileEntity,
 
     public function createEntity(array $params = []): IProfileSocialProfileEntity
     {
-        // TODO: Implement createEntity() method.
+        return app()->make(static::class)->fill($params);
     }
 
     public function deleteEntity(IEntity $entity): bool

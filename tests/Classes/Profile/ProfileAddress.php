@@ -131,7 +131,7 @@ class ProfileAddress extends Model implements IProfileAddressEntity,IProfileAddr
 
     public function createEntity(array $params = []): IProfileAddressEntity
     {
-        // TODO: Implement createEntity() method.
+        return app()->make(static::class)->fill($params);
     }
 
     public function deleteEntity(IEntity $entity): bool

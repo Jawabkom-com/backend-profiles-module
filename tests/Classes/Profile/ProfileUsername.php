@@ -59,7 +59,7 @@ class ProfileUsername extends Model implements IProfileUsernameEntity,IProfileUs
 
     public function createEntity(array $params = []): IProfileUsernameEntity
     {
-        // TODO: Implement createEntity() method.
+        return app()->make(static::class)->fill($params);
     }
 
     public function deleteEntity(IEntity $entity): bool

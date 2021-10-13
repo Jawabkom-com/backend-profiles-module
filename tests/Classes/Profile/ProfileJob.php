@@ -107,7 +107,7 @@ class ProfileJob extends Model implements IProfileJobEntity,IProfileJobRepositor
 
     public function createEntity(array $params = []): IProfileJobEntity
     {
-        // TODO: Implement createEntity() method.
+        return app()->make(static::class)->fill($params);
     }
 
     public function deleteEntity(IEntity $entity): bool

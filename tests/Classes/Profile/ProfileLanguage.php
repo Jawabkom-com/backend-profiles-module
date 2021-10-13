@@ -59,7 +59,7 @@ class ProfileLanguage extends Model implements IProfileLanguageEntity,IProfileLa
 
     public function createEntity(array $params = []): IProfileLanguageEntity
     {
-        // TODO: Implement createEntity() method.
+        return app()->make(static::class)->fill($params);
     }
 
     public function deleteEntity(IEntity $entity): bool

@@ -71,7 +71,7 @@ class ProfileImage extends Model implements IProfileImageEntity,IProfileImageRep
 
     public function createEntity(array $params = []): IProfileImageEntity
     {
-        // TODO: Implement createEntity() method.
+        return app()->make(static::class)->fill($params);
     }
 
     public function deleteEntity(IEntity $entity): bool

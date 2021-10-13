@@ -83,7 +83,7 @@ class ProfileEmail extends Model implements IProfileEmailEntity,IProfileEmailRep
 
     public function createEntity(array $params = []): IProfileEmailEntity
     {
-        // TODO: Implement createEntity() method.
+        return app()->make(static::class)->fill($params);
     }
 
     public function deleteEntity(IEntity $entity): bool
