@@ -6,7 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilterComposite,
     Composite\Filters\AndFilterComposite,
     Composite\Filters\Filter,
-    DI};
+    DI,
+    Search\SearchRequest};
 use Jawabkom\Backend\Module\Profile\Contract\{IProfileAddressEntity,
     IProfileAddressRepository,
     IProfileCriminalRecordEntity,
@@ -34,7 +35,10 @@ use Jawabkom\Backend\Module\Profile\Contract\{IProfileAddressEntity,
     IProfileSocialProfileEntity,
     IProfileSocialProfileRepository,
     IProfileUsernameEntity,
-    IProfileUsernameRepository};
+    IProfileUsernameRepository,
+    ISearchFiltersBuilder,
+    ISearchRequestRepository};
+use Jawabkom\Backend\Module\Profile\SimpleSearchFiltersBuilder;
 use Jawabkom\Standard\Contract\IAndFilterComposite;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Contract\IFilter;
@@ -92,7 +96,9 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileRelationshipRepository::class        => ProfileRelationship::class,
             IProfileNameRepository::class                => ProfileName::class,
             IProfileNameEntity::class                    => ProfileName::class,
-            IFilter::class                               => Filter::class
+            IFilter::class                               => Filter::class,
+            ISearchFiltersBuilder::class                 => SimpleSearchFiltersBuilder::class,
+            ISearchRequestRepository::class              => SearchRequest::class
         ];
 
         foreach ($toBind as $interface => $implementation) {

@@ -10,7 +10,6 @@ use Jawabkom\Backend\Module\Profile\Exception\SearcherRegistryDoesNotExist;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
-use Ramsey\Uuid\Uuid;
 
 class SearchOnlineBySearchersChain extends AbstractService
 {
@@ -19,7 +18,11 @@ class SearchOnlineBySearchersChain extends AbstractService
     private ISearchFiltersBuilder $searchFiltersBuilder;
     private ISearchRequestRepository $searchRequestRepository;
 
-    public function __construct(IDependencyInjector $di, IProfileRepository $repository, SearcherRegistry $registry, ISearchFiltersBuilder $searchFiltersBuilder, ISearchRequestRepository $searchRequestRepository)
+    public function __construct(IDependencyInjector $di,
+                                IProfileRepository $repository,
+                                SearcherRegistry $registry,
+                                ISearchFiltersBuilder $searchFiltersBuilder,
+                                ISearchRequestRepository $searchRequestRepository)
     {
         parent::__construct($di);
         $this->repository = $repository;
