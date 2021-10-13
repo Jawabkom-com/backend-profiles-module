@@ -33,7 +33,7 @@ class SearchOnlineBySearchersChain extends AbstractService
     //
     public function process(): static
     {
-        $filter = $this->getInput('filter');
+        $filter = $this->getInput('filters');
         $searchersAliases = $this->getInput('searchersAliases', []);
         $this->validateSearchersChain($searchersAliases);
 
@@ -58,6 +58,10 @@ class SearchOnlineBySearchersChain extends AbstractService
                 if(count($profileEntities)) {
                     $this->setOutput('profiles', $profileEntities);
                     $this->setOutput('raw_result', $results);
+
+                    foreach($profileEntities as $profileEntity) {
+                        $this->repository->saveEntity($profileEntity);
+                    }
 
                     $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileEntities));
                     break;
@@ -91,7 +95,7 @@ class SearchOnlineBySearchersChain extends AbstractService
         $searchRequest = $this->searchRequestRepository->createEntity();
         $searchRequest->setHash($searchGroupHash);
         $searchRequest->setResultAliasSource($alias);
-        $searchRequest->setRequestSearchFilters($this->getInput('filter', []));
+        $searchRequest->setRequestSearchFilters($this->getInput('filters', []));
         $searchRequest->setRequestDateTime(new \DateTime());
         $searchRequest->setOtherParams($this->getInput('requestMeta', []));
         $searchRequest->setStatus('init');
