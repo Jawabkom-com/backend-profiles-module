@@ -49,7 +49,6 @@ class SearchOnlineBySearchersChain extends AbstractService
                     $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, false);
                     $searcher = $this->registry->getSearcher($alias);
                     $results = $searcher->search($this->searchFiltersBuilder->build());
-                    dd($results);
                 } else {
                     $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, true);
                     $results = $cachedResultsByAliases[$alias];
