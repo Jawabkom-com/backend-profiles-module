@@ -14,6 +14,6 @@ class TestSearcherMapper implements IProfileEntityMapper
      */
     public function map(mixed $searchResult): iterable
     {
-        // TODO: Implement map() method.
+        dd($searchResult);
     }
 }

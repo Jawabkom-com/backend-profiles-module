@@ -3,11 +3,12 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Classes\Searcher;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSearcher;
+use Jawabkom\Standard\Contract\IFilterComposite;
 
 class TestSearcherWithOneResult implements IProfileSearcher
 {
 
-    public function search(array $filters): mixed
+    public function search(IFilterComposite $filters): mixed
     {
         return json_decode(<<<JSON
 {

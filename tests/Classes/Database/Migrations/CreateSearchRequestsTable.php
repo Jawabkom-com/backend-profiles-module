@@ -18,7 +18,7 @@ class CreateSearchRequestsTable extends Migration
             $table->id();
             $table->string('hash')->index();
             $table->json('request_search_filters');
-            $table->json('request_search_results');
+            $table->json('request_search_results')->nullable();
             $table->dateTime('request_date_time')->index();
             $table->string('result_alias_source')->index();
             $table->boolean('is_from_cache')->index();

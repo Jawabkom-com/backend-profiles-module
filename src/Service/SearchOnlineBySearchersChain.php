@@ -39,11 +39,9 @@ class SearchOnlineBySearchersChain extends AbstractService
         $filter = $this->getInput('filters');
         $searchersAliases = $this->getInput('searchersAliases', []);
         $this->validateSearchersChain($searchersAliases);
-
         $this->searchFiltersBuilder->setAllFilters($filter)->trim();
         $searchGroupHash = sha1(json_encode($this->searchFiltersBuilder->buildAsArray()));
         $cachedResultsByAliases = $this->getCachedResultsByAliases($searchGroupHash);
-
         foreach($searchersAliases as $alias) {
             try {
                 // check if there's a result in the cache
@@ -51,6 +49,7 @@ class SearchOnlineBySearchersChain extends AbstractService
                     $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, false);
                     $searcher = $this->registry->getSearcher($alias);
                     $results = $searcher->search($this->searchFiltersBuilder->build());
+                    dd($results);
                 } else {
                     $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, true);
                     $results = $cachedResultsByAliases[$alias];

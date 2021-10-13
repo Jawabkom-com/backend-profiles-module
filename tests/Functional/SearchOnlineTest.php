@@ -47,7 +47,7 @@ class SearchOnlineTest extends AbstractTestCase
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
         $profiles = $onlineSearchService
             ->input('filters', ['first_name' => 'Ahmad'])
-            ->input('searchersAliases', ['searcher1'])
+            ->input('searchersAliases', ['pipl'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process()
             ->output('profiles');

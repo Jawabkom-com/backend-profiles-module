@@ -34,6 +34,9 @@ interface ISearchRequestEntity extends IEntity
     public function setStatus(string $status);
     public function getStatus():string;
 
+    public function setRequestMeta(array $meta);
+    public function getRequestMeta():array;
+
     public function addError(string $message);
 
     /**

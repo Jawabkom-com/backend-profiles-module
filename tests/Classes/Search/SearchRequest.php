@@ -10,8 +10,8 @@ use Jawabkom\Standard\Contract\IEntity;
 
 /**
  * @property string $hash
- * @property array $request_search_filters
- * @property array $request_search_results
+ * @property string $request_search_filters
+ * @property string $request_search_results
  * @property \DateTime $request_date_time
  * @property string $result_alias_source
  * @property bool $is_from_cache
@@ -29,7 +29,10 @@ class SearchRequest extends Model implements ISearchRequestEntity,ISearchRequest
       'result_alias_source',
       'is_from_cache',
       'other_params',
+      'requestMeta',
     ];
+    private string|false $requestMeta;
+
     public function deleteEntity(IEntity $entity): bool
     {
         // TODO: Implement deleteEntity() method.
@@ -47,22 +50,22 @@ class SearchRequest extends Model implements ISearchRequestEntity,ISearchRequest
     //need review
     public function setRequestSearchFilters(array $request)
     {
-        $this->request_search_filters = $request;
+        $this->request_search_filters = json_encode($request);
     }
 
     public function getRequestSearchFilters(): array
     {
-       return $this->request_search_filters;
+       return json_decode($this->request_search_filters);
     }
 
     public function setRequestSearchResults(array $result)
     {
-       $this->request_search_results = $result;
+       $this->request_search_results = json_encode($result);
     }
 
     public function getRequestSearchResults(): array
     {
-       return $this->request_search_results;
+       return json_decode($this->request_search_results);
     }
 
     public function setRequestDateTime(\DateTime $dateTime)
@@ -97,7 +100,7 @@ class SearchRequest extends Model implements ISearchRequestEntity,ISearchRequest
 
     public function setOtherParams(array $params)
     {
-        $this->other_params = $params;
+        $this->other_params = json_encode($params);
     }
 
     public function getOtherParams(): array
@@ -107,12 +110,12 @@ class SearchRequest extends Model implements ISearchRequestEntity,ISearchRequest
 
     public function saveEntity(IEntity|ISearchRequestEntity $entity): bool
     {
-        // TODO: Implement saveEntity() method.
+        return $entity->save();
     }
 
     public function createEntity(array $params = []): ISearchRequestEntity
     {
-        // TODO: Implement createEntity() method.
+       return app()->make(static::class)->fill($params);
     }
 
     public function setMatchesCount(int $count)
@@ -147,6 +150,16 @@ class SearchRequest extends Model implements ISearchRequestEntity,ISearchRequest
 
     public function getByHash(string $hash, string $status = 'done', bool $isFromCache = false): iterable
     {
-        // TODO: Implement getByHash() method.
+       return self::where('hash',$hash)->get();
+    }
+
+    public function setRequestMeta(array $meta)
+    {
+       $this->requestMeta = json_encode($meta);
+    }
+
+    public function getRequestMeta(): array
+    {
+       return json_decode($this->requestMeta);
     }
 }

@@ -2,11 +2,13 @@
 
 namespace Jawabkom\Backend\Module\Profile\Contract;
 
+use Jawabkom\Standard\Contract\IFilterComposite;
+
 interface IProfileSearcher
 {
     public function getHourlyRequestsLimit():int;
     public function getDailyRequestsLimit():int;
     public function getWeeklyRequestsLimit():int;
     public function getMonthlyRequestsLimit():int;
-    public function search(array $filters):mixed;
+    public function search(IFilterComposite $filters):mixed;
 }
