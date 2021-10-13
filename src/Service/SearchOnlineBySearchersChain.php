@@ -57,13 +57,11 @@ class SearchOnlineBySearchersChain extends AbstractService
                 $mapper = $this->registry->getMapper($alias);
                 $profileEntities = $mapper->map($results);
                 if(count($profileEntities)) {
-                    $this->setOutput('profiles', $profileEntities);
-                    $this->setOutput('raw_result', $results);
-
                     foreach($profileEntities as $profileEntity) {
                         $this->repository->saveEntity($profileEntity);
                     }
-
+                    $this->setOutput('profiles', $profileEntities);
+                    $this->setOutput('raw_result', $results);
                     $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileEntities));
                     break;
                 } else {

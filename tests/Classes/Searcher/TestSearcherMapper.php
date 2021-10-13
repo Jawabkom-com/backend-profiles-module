@@ -40,6 +40,7 @@ class TestSearcherMapper implements IProfileEntityMapper
        $personals = $searchResult['possible_persons']??[];
         if ($personals){
             $newProfileEntity = $this->di->make(IProfileRepository::class);
+            $profiles= [];
             foreach ($personals as $personal){
                 $this->profile = $newProfileEntity->createEntity();
                 $this->createNewProfile($personal);
@@ -53,8 +54,9 @@ class TestSearcherMapper implements IProfileEntityMapper
                 $this->addRelationshipsEntityIfExists($personal['relationships']??[]);
                 $this->addSocialMediaEntityIfExists($personal['user_ids']??[]);
                 $this->addImagesEntityIfExists($personal['images']??[]);
-                dd("stop");
+                $profiles[] = $this->profile;
             }
+            return $profiles;
         }
     }
 

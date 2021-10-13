@@ -53,6 +53,10 @@ class SearchOnlineTest extends AbstractTestCase
             ->output('profiles');
         $this->assertEquals(1, count($profiles));
         $this->assertInstanceOf(IProfileEntity::class, $profiles[0]);
+        $this->assertInstanceOf(IProfileRepository::class, $profiles[0]);
+        $this->assertDatabaseHas('profiles',[
+           'profile_id' => $profiles[0]->getProfileId()
+        ]);
     }
 
     public function testSingleSearcherWithMultiResult() {
