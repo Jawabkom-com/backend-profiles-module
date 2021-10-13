@@ -60,6 +60,24 @@ class SearchOnlineTest extends AbstractTestCase
     }
 
     public function testSingleSearcherWithMultiResult() {
+        $searcher = new TestSearcherWithMultiResults();
+        $mapper = new TestSearcherMapper();
+        $searcherRegistry = new SearcherRegistry();
+        $searcherRegistry->register('pipl', $searcher, $mapper);
+        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $profiles = $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahmad'])
+            ->input('searchersAliases', ['pipl'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process()
+            ->output('profiles');
+        $this->assertEquals(3, count($profiles));
+        $this->assertInstanceOf(IProfileEntity::class, $profiles[1]);
+        $this->assertInstanceOf(IProfileRepository::class, $profiles[1]);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profiles[1]->getProfileId()
+        ]);
 
     }
 

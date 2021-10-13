@@ -68,6 +68,7 @@ class SearchOnlineBySearchersChain extends AbstractService
                     $this->setEmptySearchRequestStatus($searchRequest);
                 }
             } catch (\Throwable $exception) {
+                dd($exception);
                 if(!isset($searchRequest))
                     throw $exception;
 
