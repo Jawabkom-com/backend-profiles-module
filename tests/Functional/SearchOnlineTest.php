@@ -46,15 +46,15 @@ class SearchOnlineTest extends AbstractTestCase
         $searcher = new TestSearcherWithOneResult();
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
-        $searcherRegistry->register('pipl', $searcher, $mapper);
+        $searcherRegistry->register('searcher1', $searcher, $mapper);
         /**@var $onlineSearchService SearchOnlineBySearchersChain*/
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
-        $profiles = $onlineSearchService
+        $outputs = $onlineSearchService
             ->input('filters', ['first_name' => 'Ahmad'])
-            ->input('searchersAliases', ['pipl'])
+            ->input('searchersAliases', ['searcher1'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
-            ->process()
-            ->output('profiles');
+            ->process();
+        $profiles = $outputs->output('profiles');
         $this->assertEquals(1, count($profiles));
         $this->assertInstanceOf(IProfileEntity::class, $profiles[0]);
         $this->assertInstanceOf(IProfileRepository::class, $profiles[0]);
@@ -67,15 +67,15 @@ class SearchOnlineTest extends AbstractTestCase
         $searcher = new TestSearcherWithMultiResults();
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
-        $searcherRegistry->register('pipl', $searcher, $mapper);
+        $searcherRegistry->register('searcher1', $searcher, $mapper);
         /**@var $onlineSearchService SearchOnlineBySearchersChain*/
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
-        $profiles = $onlineSearchService
+        $outputs = $onlineSearchService
             ->input('filters', ['first_name' => 'Ahmad'])
-            ->input('searchersAliases', ['pipl'])
+            ->input('searchersAliases', ['searcher1'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
-            ->process()
-            ->output('profiles');
+            ->process();
+        $profiles = $outputs->output('profiles');
         $this->assertEquals(3, count($profiles));
         $this->assertInstanceOf(IProfileEntity::class, $profiles[1]);
         $this->assertInstanceOf(IProfileRepository::class, $profiles[1]);
@@ -105,7 +105,6 @@ class SearchOnlineTest extends AbstractTestCase
     }
 
     public function testMultiSearchersWithResults_Zero_Exception_One() {
-     //   $this->expectError();
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
         $searcherRegistry->register('searcher1', new TestSearcherWithZeroResults(), $mapper);
@@ -121,16 +120,45 @@ class SearchOnlineTest extends AbstractTestCase
         $profiles = $outputs->output('profiles');
         $this->assertEquals('searcher3', $profiles[0]['data_source']);
         $this->assertCount(1, $profiles);
-        $this->assertCount(3, $outputs->output('search_requests'));
+        $this->assertCount(2, $outputs->output('search_requests'));
 
     }
 
     public function testMultiSearchersWithResults_Zero_Exception_Zero() {
-
+        $mapper = new TestSearcherMapper();
+        $searcherRegistry = new SearcherRegistry();
+        $searcherRegistry->register('searcher1', new TestSearcherWithZeroResults(), $mapper);
+        $searcherRegistry->register('searcher2', new TestSearcherWithException(), $mapper);
+        $searcherRegistry->register('searcher3', new TestSearcherWithZeroResults(), $mapper);
+        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $outputs = $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma111111'])
+            ->input('searchersAliases', ['searcher1' ,'searcher2', 'searcher3'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+        $profiles = $outputs->output('profiles');
+        $this->assertNull($profiles);
+        $this->assertCount(2, $outputs->output('search_requests'));
     }
 
     public function testMultiSearchersWithResults_Zero_Zero_Multi() {
-
+        $mapper = new TestSearcherMapper();
+        $searcherRegistry = new SearcherRegistry();
+        $searcherRegistry->register('searcher1', new TestSearcherWithZeroResults(), $mapper);
+        $searcherRegistry->register('searcher2', new TestSearcherWithZeroResults(), $mapper);
+        $searcherRegistry->register('searcher3', new TestSearcherWithMultiResults(), $mapper);
+        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $outputs = $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma111111'])
+            ->input('searchersAliases', ['searcher1' ,'searcher2', 'searcher3'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+        $profiles = $outputs->output('profiles');
+        $this->assertEquals('searcher3', $profiles[0]['data_source']);
+        $this->assertCount(3, $profiles);
+        $this->assertCount(3, $outputs->output('search_requests'));
     }
 
 

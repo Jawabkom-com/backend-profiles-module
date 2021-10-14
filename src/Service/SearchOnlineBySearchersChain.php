@@ -45,9 +45,8 @@ class SearchOnlineBySearchersChain extends AbstractService
         $searchRequests = [];
 
         foreach ($searchersAliases as $alias) {
+            $searchRequest = null; // reset the search request for each alias
             try {
-                $searchRequest = null; // reset the search request for each alias
-
                 // check if there's a result in the cache
                 $isFromCache = false;
                 if (!isset($cachedResultsByAliases[$alias])) {
@@ -58,7 +57,6 @@ class SearchOnlineBySearchersChain extends AbstractService
                     $results = $cachedResultsByAliases[$alias];
                 }
                 $searchRequests[] = $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, $isFromCache);
-
                 $mapper = $this->registry->getMapper($alias);
                 $profileEntities = $mapper->map($results);
                 if (count($profileEntities)) {
