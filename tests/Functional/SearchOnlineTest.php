@@ -120,7 +120,7 @@ class SearchOnlineTest extends AbstractTestCase
         $profiles = $outputs->output('profiles');
         $this->assertEquals('searcher3', $profiles[0]['data_source']);
         $this->assertCount(1, $profiles);
-        $this->assertCount(2, $outputs->output('search_requests'));
+        $this->assertCount(3, $outputs->output('search_requests'));
 
     }
 
@@ -139,7 +139,7 @@ class SearchOnlineTest extends AbstractTestCase
             ->process();
         $profiles = $outputs->output('profiles');
         $this->assertNull($profiles);
-        $this->assertCount(2, $outputs->output('search_requests'));
+        $this->assertCount(3, $outputs->output('search_requests'));
     }
 
     public function testMultiSearchersWithResults_Zero_Zero_Multi() {

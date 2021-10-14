@@ -45,18 +45,19 @@ class SearchOnlineBySearchersChain extends AbstractService
         $searchRequests = [];
 
         foreach ($searchersAliases as $alias) {
-            $searchRequest = null; // reset the search request for each alias
+
             try {
                 // check if there's a result in the cache
-                $isFromCache = false;
-                if (!isset($cachedResultsByAliases[$alias])) {
+                $isFromCache = isset($cachedResultsByAliases[$alias]);
+                $searchRequest = null; // reset the search request for each alias
+                $searchRequests[] = $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, $isFromCache);
+                if (!$isFromCache) {
                     $searcher = $this->registry->getSearcher($alias);
                     $results = $searcher->search($this->searchFiltersBuilder->build());
                 } else {
-                    $isFromCache = true;
                     $results = $cachedResultsByAliases[$alias];
                 }
-                $searchRequests[] = $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, $isFromCache);
+
                 $mapper = $this->registry->getMapper($alias);
                 $profileEntities = $mapper->map($results);
                 if (count($profileEntities)) {
@@ -70,7 +71,7 @@ class SearchOnlineBySearchersChain extends AbstractService
                     $this->setOutput('raw_result', $results);
                     break;
                 } else {
-                    $this->setEmptySearchRequestStatus($searchRequest);
+                    $this->setEmptySearchRequestStatus($searchRequest, $results);
                 }
             } catch (\Throwable $exception) {
                 if (!isset($searchRequest))
@@ -117,9 +118,9 @@ class SearchOnlineBySearchersChain extends AbstractService
         $this->searchRequestRepository->saveEntity($searchRequest);
     }
 
-    protected function setEmptySearchRequestStatus(ISearchRequestEntity $searchRequest): void
+    protected function setEmptySearchRequestStatus(ISearchRequestEntity $searchRequest, mixed $results): void
     {
-        $this->setSucceededSearchRequestStatus($searchRequest, [], 0);
+        $this->setSucceededSearchRequestStatus($searchRequest, $results, 0);
     }
 
     protected function setErrorSearchRequestStatus(ISearchRequestEntity $searchRequest, \Throwable $exception): void
