@@ -65,7 +65,7 @@ class SearchRequest extends Model implements ISearchRequestEntity,ISearchRequest
 
     public function getRequestSearchResults(): array
     {
-       return json_decode($this->request_search_results);
+        return json_decode($this->request_search_results,true);
     }
 
     public function setRequestDateTime(\DateTime $dateTime)

@@ -161,6 +161,27 @@ class SearchOnlineTest extends AbstractTestCase
         $this->assertCount(3, $outputs->output('search_requests'));
     }
 
+    public function testCheckSearchResultCached() {
+        $mapper = new TestSearcherMapper();
+        $searcherRegistry = new SearcherRegistry();
+        $searcherRegistry->register('searcher1', new TestSearcherWithZeroResults(), $mapper);
+        $searcherRegistry->register('searcher2', new TestSearcherWithZeroResults(), $mapper);
+        $searcherRegistry->register('searcher3', new TestSearcherWithMultiResults(), $mapper);
+        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma111111'])
+            ->input('searchersAliases', ['searcher1' ,'searcher2', 'searcher3'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+        $outputs = $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma111111'])
+            ->input('searchersAliases', ['searcher1' ,'searcher2', 'searcher3'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+        $this->assertTrue($outputs->output('search_requests')[0]['is_from_cache']);
+    }
+
 
 
 
