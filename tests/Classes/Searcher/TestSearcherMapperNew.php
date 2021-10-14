@@ -20,7 +20,7 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileAddEditMethods;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 
-class TestSearcherMapper implements IProfileEntityMapper
+class TestSearcherMapperNew implements IProfileEntityMapper
 {
     use ProfileAddEditMethods;
     private IDependencyInjector $di;
@@ -67,7 +67,7 @@ class TestSearcherMapper implements IProfileEntityMapper
     {
         $gender                       = $personal ['gender']['content']??'';
         $personalInput['gender']      = $gender;
-        $personalInput['data_source'] = 'searcher1';
+        $personalInput['data_source'] = 'newPipl';
         $this->fillProfileEntity($this->profile, $personalInput, true);
     }
 

@@ -13,8 +13,10 @@ use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherMapper;
+use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherMapperNew;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithMultiResults;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithOneResult;
+use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithZeroResults;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 use JetBrains\PhpStorm\Pure;
@@ -82,11 +84,41 @@ class SearchOnlineTest extends AbstractTestCase
     }
 
     public function testMultiSearchersWithResults_One_Multi_Zero() {
-
+        $searcher = new TestSearcherWithOneResult();
+        $mapper = new TestSearcherMapper();
+        $mapperNew = new TestSearcherMapperNew();
+        $searcherRegistry = new SearcherRegistry();
+        $searcherRegistry->register('searcher1', $searcher, $mapper);
+        $searcherRegistry->register('searcher2', $searcher, $mapperNew);
+        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $profiles = $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahmad'])
+            ->input('searchersAliases', ['searcher1' ,'searcher2'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process()
+            ->output('profiles');
+        $this->assertEquals('searcher1', $profiles[0]['data_source']);
+        $this->assertCount(1,$profiles);
     }
 
     public function testMultiSearchersWithResults_Zero_Exception_One() {
-
+     //   $this->expectError();
+        $searcher = new TestSearcherWithZeroResults();
+        $mapper = new TestSearcherMapper();
+        $mapperNew = new TestSearcherMapperNew();
+        $searcherRegistry = new SearcherRegistry();;
+        $searcherRegistry->register('pipl', $searcher, $mapper);
+        $searcherRegistry->register('newPipl', $searcher, $mapperNew);
+        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $profiles = $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma111111'])
+            ->input('searchersAliases', ['pipl' ,'newPipl'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process()
+            ->output('profiles');
+      //  $this->assertEquals('newPipl', $profiles[0]['data_source']);
     }
 
     public function testMultiSearchersWithResults_Zero_Exception_Zero() {
