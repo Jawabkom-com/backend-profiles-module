@@ -12,8 +12,10 @@ use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
+use Jawabkom\Backend\Module\Profile\Test\Classes\Search\SearchRequest;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherMapper;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherMapperNew;
+use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithException;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithMultiResults;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithOneResult;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithZeroResults;
@@ -84,41 +86,43 @@ class SearchOnlineTest extends AbstractTestCase
     }
 
     public function testMultiSearchersWithResults_One_Multi_Zero() {
-        $searcher = new TestSearcherWithOneResult();
         $mapper = new TestSearcherMapper();
-        $mapperNew = new TestSearcherMapperNew();
         $searcherRegistry = new SearcherRegistry();
-        $searcherRegistry->register('searcher1', $searcher, $mapper);
-        $searcherRegistry->register('searcher2', $searcher, $mapperNew);
+        $searcherRegistry->register('searcher1', new TestSearcherWithOneResult(), $mapper);
+        $searcherRegistry->register('searcher2', new TestSearcherWithMultiResults(), $mapper);
+        $searcherRegistry->register('searcher3', new TestSearcherWithZeroResults(), $mapper);
         /**@var $onlineSearchService SearchOnlineBySearchersChain*/
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
-        $profiles = $onlineSearchService
+        $outputs = $onlineSearchService
             ->input('filters', ['first_name' => 'Ahmad'])
-            ->input('searchersAliases', ['searcher1' ,'searcher2'])
+            ->input('searchersAliases', ['searcher1' ,'searcher2', 'searcher3'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
-            ->process()
-            ->output('profiles');
+            ->process();
+        $profiles = $outputs->output('profiles');
         $this->assertEquals('searcher1', $profiles[0]['data_source']);
-        $this->assertCount(1,$profiles);
+        $this->assertCount(1, $profiles);
+        $this->assertCount(1, $outputs->output('search_requests'));
     }
 
     public function testMultiSearchersWithResults_Zero_Exception_One() {
      //   $this->expectError();
-        $searcher = new TestSearcherWithZeroResults();
         $mapper = new TestSearcherMapper();
-        $mapperNew = new TestSearcherMapperNew();
-        $searcherRegistry = new SearcherRegistry();;
-        $searcherRegistry->register('pipl', $searcher, $mapper);
-        $searcherRegistry->register('newPipl', $searcher, $mapperNew);
+        $searcherRegistry = new SearcherRegistry();
+        $searcherRegistry->register('searcher1', new TestSearcherWithZeroResults(), $mapper);
+        $searcherRegistry->register('searcher2', new TestSearcherWithException(), $mapper);
+        $searcherRegistry->register('searcher3', new TestSearcherWithOneResult(), $mapper);
         /**@var $onlineSearchService SearchOnlineBySearchersChain*/
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
-        $profiles = $onlineSearchService
+        $outputs = $onlineSearchService
             ->input('filters', ['first_name' => 'Ahma111111'])
-            ->input('searchersAliases', ['pipl' ,'newPipl'])
+            ->input('searchersAliases', ['searcher1' ,'searcher2', 'searcher3'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
-            ->process()
-            ->output('profiles');
-      //  $this->assertEquals('newPipl', $profiles[0]['data_source']);
+            ->process();
+        $profiles = $outputs->output('profiles');
+        $this->assertEquals('searcher3', $profiles[0]['data_source']);
+        $this->assertCount(1, $profiles);
+        $this->assertCount(3, $outputs->output('search_requests'));
+
     }
 
     public function testMultiSearchersWithResults_Zero_Exception_Zero() {

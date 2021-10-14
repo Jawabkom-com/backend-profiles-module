@@ -67,7 +67,6 @@ class TestSearcherMapper implements IProfileEntityMapper
     {
         $gender                       = $personal ['gender']['content']??'';
         $personalInput['gender']      = $gender;
-        $personalInput['data_source'] = 'searcher1';
         $this->fillProfileEntity($this->profile, $personalInput, true);
     }
 

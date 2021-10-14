@@ -18,10 +18,10 @@ class SearchOnlineBySearchersChain extends AbstractService
     private ISearchFiltersBuilder $searchFiltersBuilder;
     private ISearchRequestRepository $searchRequestRepository;
 
-    public function __construct(IDependencyInjector $di,
-                                IProfileRepository $repository,
-                                SearcherRegistry $registry,
-                                ISearchFiltersBuilder $searchFiltersBuilder,
+    public function __construct(IDependencyInjector      $di,
+                                IProfileRepository       $repository,
+                                SearcherRegistry         $registry,
+                                ISearchFiltersBuilder    $searchFiltersBuilder,
                                 ISearchRequestRepository $searchRequestRepository)
     {
         parent::__construct($di);
@@ -42,39 +42,46 @@ class SearchOnlineBySearchersChain extends AbstractService
         $this->searchFiltersBuilder->setAllFilters($filter)->trim();
         $searchGroupHash = sha1(json_encode($this->searchFiltersBuilder->buildAsArray()));
         $cachedResultsByAliases = $this->getCachedResultsByAliases($searchGroupHash);
-        foreach($searchersAliases as $alias) {
+        $searchRequests = [];
+
+        foreach ($searchersAliases as $alias) {
             try {
+                $searchRequest = null; // reset the search request for each alias
+
                 // check if there's a result in the cache
-                if(!isset($cachedResultsByAliases[$alias])) {
-                    $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, false);
+                $isFromCache = false;
+                if (!isset($cachedResultsByAliases[$alias])) {
                     $searcher = $this->registry->getSearcher($alias);
                     $results = $searcher->search($this->searchFiltersBuilder->build());
                 } else {
-                    $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, true);
+                    $isFromCache = true;
                     $results = $cachedResultsByAliases[$alias];
                 }
+                $searchRequests[] = $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, $isFromCache);
 
                 $mapper = $this->registry->getMapper($alias);
                 $profileEntities = $mapper->map($results);
-                if(count($profileEntities)) {
-                    foreach($profileEntities as $profileEntity) {
-                        $this->repository->saveEntity($profileEntity);
-                    }
+                if (count($profileEntities)) {
+                    if (!$isFromCache)
+                        foreach ($profileEntities as $profileEntity) {
+                            $profileEntity->setDataSource($alias);
+                            $this->repository->saveEntity($profileEntity);
+                        }
+                    $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileEntities));
                     $this->setOutput('profiles', $profileEntities);
                     $this->setOutput('raw_result', $results);
-                    $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileEntities));
                     break;
                 } else {
                     $this->setEmptySearchRequestStatus($searchRequest);
                 }
             } catch (\Throwable $exception) {
-                dd($exception);
-                if(!isset($searchRequest))
+                if (!isset($searchRequest))
                     throw $exception;
 
                 $this->setErrorSearchRequestStatus($searchRequest, $exception);
             }
         }
+        $this->setOutput('search_requests', $searchRequests);
         return $this;
     }
 
@@ -117,11 +124,12 @@ class SearchOnlineBySearchersChain extends AbstractService
         $this->setSucceededSearchRequestStatus($searchRequest, [], 0);
     }
 
-    protected function setErrorSearchRequestStatus(ISearchRequestEntity $searchRequest, \Throwable $exception):void{
+    protected function setErrorSearchRequestStatus(ISearchRequestEntity $searchRequest, \Throwable $exception): void
+    {
         $searchRequest->setMatchesCount(0);
         $searchRequest->setStatus('error');
         $searchRequest->setRequestSearchResults([]);
-        $searchRequest->addError("Time: ".date('Y-m-d H:i:s').", File: {$exception->getFile()}, Line: {$exception->getLine()}, Message: {$exception->getMessage()}");
+        $searchRequest->addError("Time: " . date('Y-m-d H:i:s') . ", File: {$exception->getFile()}, Line: {$exception->getLine()}, Message: {$exception->getMessage()}");
         $this->searchRequestRepository->saveEntity($searchRequest);
     }
 
