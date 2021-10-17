@@ -4,6 +4,8 @@ namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
+use Jawabkom\Backend\Module\Profile\Contract\ISearchFiltersBuilder;
+use Jawabkom\Backend\Module\Profile\Contract\ISearchRequestRepository;
 use Jawabkom\Backend\Module\Profile\Exception\FilterNameDoesNotExistsException;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherRegistryDoesNotExist;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
@@ -49,7 +51,7 @@ class SearchOnlineTest extends AbstractTestCase
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
         $searcherRegistry->register('searcher1', $searcher, $mapper);
-        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        /**@var $onlineSearchService SearchOnlineBySearchersChain */
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
         $outputs = $onlineSearchService
             ->input('filters', ['first_name' => 'Ahmad'])
@@ -60,17 +62,18 @@ class SearchOnlineTest extends AbstractTestCase
         $this->assertEquals(1, count($profiles));
         $this->assertInstanceOf(IProfileEntity::class, $profiles[0]);
         $this->assertInstanceOf(IProfileRepository::class, $profiles[0]);
-        $this->assertDatabaseHas('profiles',[
-           'profile_id' => $profiles[0]->getProfileId()
+        $this->assertDatabaseHas('profiles', [
+            'profile_id' => $profiles[0]->getProfileId()
         ]);
     }
 
-    public function testSingleSearcherWithMultiResult() {
+    public function testSingleSearcherWithMultiResult()
+    {
         $searcher = new TestSearcherWithMultiResults();
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
         $searcherRegistry->register('searcher1', $searcher, $mapper);
-        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        /**@var $onlineSearchService SearchOnlineBySearchersChain */
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
         $outputs = $onlineSearchService
             ->input('filters', ['first_name' => 'Ahmad'])
@@ -81,23 +84,24 @@ class SearchOnlineTest extends AbstractTestCase
         $this->assertEquals(3, count($profiles));
         $this->assertInstanceOf(IProfileEntity::class, $profiles[1]);
         $this->assertInstanceOf(IProfileRepository::class, $profiles[1]);
-        $this->assertDatabaseHas('profiles',[
+        $this->assertDatabaseHas('profiles', [
             'profile_id' => $profiles[1]->getProfileId()
         ]);
 
     }
 
-    public function testMultiSearchersWithResults_One_Multi_Zero() {
+    public function testMultiSearchersWithResults_One_Multi_Zero()
+    {
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
         $searcherRegistry->register('searcher1', new TestSearcherWithOneResult(), $mapper);
         $searcherRegistry->register('searcher2', new TestSearcherWithMultiResults(), $mapper);
         $searcherRegistry->register('searcher3', new TestSearcherWithZeroResults(), $mapper);
-        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        /**@var $onlineSearchService SearchOnlineBySearchersChain */
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
         $outputs = $onlineSearchService
             ->input('filters', ['first_name' => 'Ahmad'])
-            ->input('searchersAliases', ['searcher1' ,'searcher2', 'searcher3'])
+            ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
         $profiles = $outputs->output('profiles');
@@ -106,17 +110,18 @@ class SearchOnlineTest extends AbstractTestCase
         $this->assertCount(1, $outputs->output('search_requests'));
     }
 
-    public function testMultiSearchersWithResults_Zero_Exception_One() {
+    public function testMultiSearchersWithResults_Zero_Exception_One()
+    {
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
         $searcherRegistry->register('searcher1', new TestSearcherWithZeroResults(), $mapper);
         $searcherRegistry->register('searcher2', new TestSearcherWithException(), $mapper);
         $searcherRegistry->register('searcher3', new TestSearcherWithOneResult(), $mapper);
-        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        /**@var $onlineSearchService SearchOnlineBySearchersChain */
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
         $outputs = $onlineSearchService
             ->input('filters', ['first_name' => 'Ahma111111'])
-            ->input('searchersAliases', ['searcher1' ,'searcher2', 'searcher3'])
+            ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
         $profiles = $outputs->output('profiles');
@@ -126,17 +131,18 @@ class SearchOnlineTest extends AbstractTestCase
 
     }
 
-    public function testMultiSearchersWithResults_Zero_Exception_Zero() {
+    public function testMultiSearchersWithResults_Zero_Exception_Zero()
+    {
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
         $searcherRegistry->register('searcher1', new TestSearcherWithZeroResults(), $mapper);
         $searcherRegistry->register('searcher2', new TestSearcherWithException(), $mapper);
         $searcherRegistry->register('searcher3', new TestSearcherWithZeroResults(), $mapper);
-        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        /**@var $onlineSearchService SearchOnlineBySearchersChain */
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
         $outputs = $onlineSearchService
             ->input('filters', ['first_name' => 'Ahma111111'])
-            ->input('searchersAliases', ['searcher1' ,'searcher2', 'searcher3'])
+            ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
         $profiles = $outputs->output('profiles');
@@ -144,17 +150,18 @@ class SearchOnlineTest extends AbstractTestCase
         $this->assertCount(3, $outputs->output('search_requests'));
     }
 
-    public function testMultiSearchersWithResults_Zero_Zero_Multi() {
+    public function testMultiSearchersWithResults_Zero_Zero_Multi()
+    {
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
         $searcherRegistry->register('searcher1', new TestSearcherWithZeroResults(), $mapper);
         $searcherRegistry->register('searcher2', new TestSearcherWithZeroResults(), $mapper);
         $searcherRegistry->register('searcher3', new TestSearcherWithMultiResults(), $mapper);
-        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        /**@var $onlineSearchService SearchOnlineBySearchersChain */
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
         $outputs = $onlineSearchService
             ->input('filters', ['first_name' => 'Ahma111111'])
-            ->input('searchersAliases', ['searcher1' ,'searcher2', 'searcher3'])
+            ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
         $profiles = $outputs->output('profiles');
@@ -163,89 +170,108 @@ class SearchOnlineTest extends AbstractTestCase
         $this->assertCount(3, $outputs->output('search_requests'));
     }
 
-    public function testCheckSearchResultCached() {
+    public function testCheckSearchResultCached()
+    {
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
         $searcherRegistry->register('searcher1', new TestSearcherWithZeroResults(), $mapper);
         $searcherRegistry->register('searcher2', new TestSearcherWithZeroResults(), $mapper);
         $searcherRegistry->register('searcher3', new TestSearcherWithMultiResults(), $mapper);
-        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        /**@var $onlineSearchService SearchOnlineBySearchersChain */
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
         $onlineSearchService
             ->input('filters', ['first_name' => 'Ahma111111'])
-            ->input('searchersAliases', ['searcher1' ,'searcher2', 'searcher3'])
+            ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
         $outputs = $onlineSearchService
             ->input('filters', ['first_name' => 'Ahma111111'])
-            ->input('searchersAliases', ['searcher1' ,'searcher2', 'searcher3'])
+            ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
         $this->assertTrue($outputs->output('search_requests')[0]['is_from_cache']);
     }
 
-    public function testAliasMissing() {
+    public function testAliasMissing()
+    {
         $this->expectException(SearcherRegistryDoesNotExist::class);
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
         $searcherRegistry->register('searcher1', new TestSearcherWithException(), $mapper);
         $searcherRegistry->register('searcher2', new TestSearcherWithException(), $mapper);
         $searcherRegistry->register('searcher3', new TestSearcherWithException(), $mapper);
-        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        /**@var $onlineSearchService SearchOnlineBySearchersChain */
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
         $onlineSearchService
             ->input('filters', ['first_name' => 'Ahma111111'])
-            ->input('searchersAliases', ['searcher4' ,'searcher5', 'searcher6'])
+            ->input('searchersAliases', ['searcher4', 'searcher5', 'searcher6'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
     }
 
-    public function testFilterMissing() {
+    public function testFilterMissing()
+    {
         $this->expectException(FilterNameDoesNotExistsException::class);
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
         $searcherRegistry->register('searcher1', new TestSearcherWithException(), $mapper);
         $searcherRegistry->register('searcher2', new TestSearcherWithException(), $mapper);
         $searcherRegistry->register('searcher3', new TestSearcherWithException(), $mapper);
-        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        /**@var $onlineSearchService SearchOnlineBySearchersChain */
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
         $onlineSearchService
             ->input('filters', [$this->faker->word => 'Ahma111111'])
-            ->input('searchersAliases', ['searcher1' ,'searcher2', 'searcher3'])
-            ->input('requestMeta','ed')
+            ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
+            ->input('requestMeta', 'ed')
             ->process();
     }
 
-    public function testFilterEmpty() {
+    public function testFilterEmpty()
+    {
         $this->expectException("Exception");
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
         $searcherRegistry->register('searcher1', new TestSearcherWithException(), $mapper);
         $searcherRegistry->register('searcher2', new TestSearcherWithException(), $mapper);
         $searcherRegistry->register('searcher3', new TestSearcherWithException(), $mapper);
-        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        /**@var $onlineSearchService SearchOnlineBySearchersChain */
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
         $onlineSearchService
             ->input('filters', [])
-            ->input('searchersAliases', ['searcher1' ,'searcher2', 'searcher3'])
-            ->input('requestMeta','ed')
+            ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
+            ->input('requestMeta', 'ed')
             ->process();
     }
 
-    public function testFilterEmpty111() {
+    public function testSearchWithInitRequestException()
+    {
+
+        $this->expectExceptionMessage('test exception');
+
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
         $searcherRegistry->register('searcher1', new TestSearcherWithException(), $mapper);
         $searcherRegistry->register('searcher2', new TestSearcherWithException(), $mapper);
         $searcherRegistry->register('searcher3', new TestSearcherWithException(), $mapper);
-        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
- //       $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
-        $onlineSearchService = $this->getMockBuilder(SearchOnlineBySearchersChain::class)->
-        setConstructorArgs(['registry' => $searcherRegistry , 'di'  => $this->di, ]);
+
+        $onlineSearchService = $this->getMockBuilder(SearchOnlineBySearchersChain::class)
+            ->setConstructorArgs([
+                'registry' => $searcherRegistry,
+                'di' => $this->di,
+                'repository' => $this->di->make(IProfileRepository::class),
+                'searchFiltersBuilder' => $this->di->make(ISearchFiltersBuilder::class),
+                'searchRequestRepository' => $this->di->make(ISearchRequestRepository::class)
+            ])
+            ->getMock()
+            ->method('initSearchRequest')
+            ->willThrowException(new \Exception('test exception'));
+
+        $onlineSearchService
+            ->input('filters', [])
+            ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
+            ->input('requestMeta', 'ed')
+            ->process();
     }
-
-
-
 
 
 }
