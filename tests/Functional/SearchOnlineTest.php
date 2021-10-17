@@ -232,6 +232,18 @@ class SearchOnlineTest extends AbstractTestCase
             ->process();
     }
 
+    public function testFilterEmpty111() {
+        $mapper = new TestSearcherMapper();
+        $searcherRegistry = new SearcherRegistry();
+        $searcherRegistry->register('searcher1', new TestSearcherWithException(), $mapper);
+        $searcherRegistry->register('searcher2', new TestSearcherWithException(), $mapper);
+        $searcherRegistry->register('searcher3', new TestSearcherWithException(), $mapper);
+        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+ //       $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService = $this->getMockBuilder(SearchOnlineBySearchersChain::class)->
+        setConstructorArgs(['registry' => $searcherRegistry , 'di'  => $this->di, ]);
+    }
+
 
 
 
