@@ -4,6 +4,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
+use Jawabkom\Backend\Module\Profile\Exception\SearcherRegistryDoesNotExist;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
 use Jawabkom\Backend\Module\Profile\Service\SearchOnlineBySearchersChain;
@@ -180,6 +181,22 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
         $this->assertTrue($outputs->output('search_requests')[0]['is_from_cache']);
+    }
+
+    public function testAliasMissing() {
+        $this->expectException(SearcherRegistryDoesNotExist::class);
+        $mapper = new TestSearcherMapper();
+        $searcherRegistry = new SearcherRegistry();
+        $searcherRegistry->register('searcher1', new TestSearcherWithException(), $mapper);
+        $searcherRegistry->register('searcher2', new TestSearcherWithException(), $mapper);
+        $searcherRegistry->register('searcher3', new TestSearcherWithException(), $mapper);
+        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma111111'])
+            ->input('searchersAliases', ['searcher4' ,'searcher5', 'searcher6'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
     }
 
 
