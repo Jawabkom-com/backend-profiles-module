@@ -23,6 +23,7 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithExcept
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithMultiResults;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithOneResult;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithZeroResults;
+use Jawabkom\Backend\Module\Profile\Test\Classes\SearchOnlineByChainException;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 use JetBrains\PhpStorm\Pure;
@@ -245,33 +246,19 @@ class SearchOnlineTest extends AbstractTestCase
 
     public function testSearchWithInitRequestException()
     {
-
-        $this->expectExceptionMessage('test exception');
-
+        $this->expectExceptionMessage("test exception");
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
         $searcherRegistry->register('searcher1', new TestSearcherWithException(), $mapper);
         $searcherRegistry->register('searcher2', new TestSearcherWithException(), $mapper);
         $searcherRegistry->register('searcher3', new TestSearcherWithException(), $mapper);
-
-        $onlineSearchService = $this->getMockBuilder(SearchOnlineBySearchersChain::class)
-            ->setConstructorArgs([
-                'registry' => $searcherRegistry,
-                'di' => $this->di,
-                'repository' => $this->di->make(IProfileRepository::class),
-                'searchFiltersBuilder' => $this->di->make(ISearchFiltersBuilder::class),
-                'searchRequestRepository' => $this->di->make(ISearchRequestRepository::class)
-            ])
-            ->getMock()
-            ->method('initSearchRequest')
-            ->willThrowException(new \Exception('test exception'));
-
+        /**@var $onlineSearchService SearchOnlineBySearchersChain */
+        $onlineSearchService = $this->di->make(SearchOnlineByChainException::class, ['registry' => $searcherRegistry]);
         $onlineSearchService
-            ->input('filters', [])
+            ->input('filters', ['first_name' => 'Ahma111111'])
             ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
             ->input('requestMeta', 'ed')
             ->process();
     }
-
 
 }
