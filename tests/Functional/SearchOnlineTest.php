@@ -209,13 +209,29 @@ class SearchOnlineTest extends AbstractTestCase
         $searcherRegistry->register('searcher3', new TestSearcherWithException(), $mapper);
         /**@var $onlineSearchService SearchOnlineBySearchersChain*/
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
-        $outputs = $onlineSearchService
+        $onlineSearchService
             ->input('filters', [$this->faker->word => 'Ahma111111'])
             ->input('searchersAliases', ['searcher1' ,'searcher2', 'searcher3'])
             ->input('requestMeta','ed')
             ->process();
-        $profiles = $outputs->output('profiles');
     }
+
+    public function testFilterEmpty() {
+        $this->expectException("Exception");
+        $mapper = new TestSearcherMapper();
+        $searcherRegistry = new SearcherRegistry();
+        $searcherRegistry->register('searcher1', new TestSearcherWithException(), $mapper);
+        $searcherRegistry->register('searcher2', new TestSearcherWithException(), $mapper);
+        $searcherRegistry->register('searcher3', new TestSearcherWithException(), $mapper);
+        /**@var $onlineSearchService SearchOnlineBySearchersChain*/
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService
+            ->input('filters', [])
+            ->input('searchersAliases', ['searcher1' ,'searcher2', 'searcher3'])
+            ->input('requestMeta','ed')
+            ->process();
+    }
+
 
 
 
