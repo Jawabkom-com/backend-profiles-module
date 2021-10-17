@@ -33,12 +33,12 @@ class ProfileInputValidator
      */
     public function validate(array $inputs)
     {
+        if(empty($inputs['data_source'])){
+            throw new MissingRequiredInputException('data_source* missing,is required');
+        }
         foreach ($inputs as $inputKey => $inputValue) {
             if(!in_array($inputKey, $this->structure)) {
                 throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
-            }
-            if($inputKey ==='data_source' && empty($inputValue)){
-               throw new MissingRequiredInputException('data_source* missing,is required');
             }
         }
     }
