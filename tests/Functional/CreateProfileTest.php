@@ -37,6 +37,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
+use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class CreateProfileTest extends AbstractTestCase
 {
@@ -423,6 +424,15 @@ class CreateProfileTest extends AbstractTestCase
         $this->expectException(InvalidInputStructure::class);
         $userData = $this->dummyBasicProfileData();
         $userData[$this->faker->word] =$this->faker->word;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckMissingRequiredDataSource(){
+        $this->expectException(MissingRequiredInputException::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData = array_splice($userData, 0, 3);
         $this->createProfile->input('profile',$userData)
             ->process()
             ->output('profile');

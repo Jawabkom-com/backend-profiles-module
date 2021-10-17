@@ -5,6 +5,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes\Provider;
 use Illuminate\Support\ServiceProvider;
 use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilterComposite,
     Composite\Filters\AndFilterComposite,
+    Composite\Filters\OrFilterComposite,
     Composite\Filters\Filter,
     DI,
     Search\SearchRequest};
@@ -40,6 +41,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{IProfileAddressEntity,
     ISearchRequestRepository};
 use Jawabkom\Backend\Module\Profile\SimpleSearchFiltersBuilder;
 use Jawabkom\Standard\Contract\IAndFilterComposite;
+use Jawabkom\Standard\Contract\IOrFilterComposite;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Contract\IFilter;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Profile\{Profile,
@@ -82,6 +84,7 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileEmailRepository::class               => ProfileEmail::class,
             IProfileEmailEntity::class                   => ProfileEmail::class,
             IAndFilterComposite::class                   => AndFilterComposite::class,
+            IOrFilterComposite::class                   =>  OrFilterComposite::class,
             IProfileImageRepository::class               => ProfileImage::class,
             IProfileImageEntity::class                   => ProfileImage::class,
             IProfileJobRepository::class                 => ProfileJob::class,

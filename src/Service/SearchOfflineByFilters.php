@@ -11,7 +11,6 @@ use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class SearchOfflineByFilters extends AbstractService
 {
-    use GetProfileTrait;
     protected IProfileRepository $repository;
     private SimpleSearchFiltersBuilder $searchFiltersBuilder;
 
