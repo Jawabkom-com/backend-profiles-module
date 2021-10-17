@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Profile\Validator;
 
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
+use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class ProfileInputValidator
 {
@@ -26,11 +27,18 @@ class ProfileInputValidator
         'data_source'
     ];
 
+    /**
+     * @throws InvalidInputStructure
+     * @throws MissingRequiredInputException
+     */
     public function validate(array $inputs)
     {
         foreach ($inputs as $inputKey => $inputValue) {
             if(!in_array($inputKey, $this->structure)) {
                 throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
+            }
+            if($inputKey ==='data_source' && empty($inputValue)){
+               throw new MissingRequiredInputException('data_source* missing,is required');
             }
         }
     }
