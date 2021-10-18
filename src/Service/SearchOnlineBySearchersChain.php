@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Profile\Service;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileSearcher;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchFiltersBuilder;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchRequestEntity;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchRequestRepository;
@@ -53,7 +54,11 @@ class SearchOnlineBySearchersChain extends AbstractService
                 $searchRequests[] = $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, $isFromCache);
                 if (!$isFromCache) {
                     $searcher = $this->registry->getSearcher($alias);
+                    // TODO: check search limits, and throw exception
+                    $this->assertSearcherLimit($searcher);
+
                     $results = $searcher->search($this->searchFiltersBuilder->build());
+                    // TODO: update searcher search limit
                 } else {
                     $results = $cachedResultsByAliases[$alias];
                 }
@@ -142,6 +147,11 @@ class SearchOnlineBySearchersChain extends AbstractService
             }
         }
         return $cachedResultsByAliases;
+    }
+
+    private function assertSearcherLimit(IProfileSearcher $searcher)
+    {
+        // 
     }
 
 }
