@@ -10,12 +10,11 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileImageRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileNameEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileNameRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileAddEditMethods;
@@ -62,8 +61,8 @@ class CreateProfile extends AbstractService
         //validate inputs
         $this->validateInputs();
         //create && save profile
-        $createNewProfileRecord = $this->createNewProfileRecord( $this->getInput('profile'));
-        $this->setOutput('profile',$createNewProfileRecord);
+        $createNewProfileRecord = $this->createNewProfileRecord($this->getInput('profile'));
+        $this->setOutput('profile', $createNewProfileRecord);
         return $this;
     }
 
@@ -72,21 +71,21 @@ class CreateProfile extends AbstractService
     //
     protected function validateInputs()
     {
-         $profile = $this->getInput('profile');
-         $this->validateProfileInputs($profile);
-         $this->validateNameInputs($profile['names']??[]);
-         $this->validatePhoneInputs($profile['phones']??[]);
-         $this->validateAddressInputs($profile['addresses']??[]);
-         $this->validateLanguageInputs($profile['languages']??[]);
-         $this->validateUsernameInputs($profile['usernames']??[]);
-         $this->validateEmailInputs($profile['emails']??[]);
-         $this->validateCriminalRecordsInputs($profile['criminal_records']??[]);
-         $this->validateEducationsInputs($profile['educations']??[]);
-         $this->validateImagesInputs($profile['images']??[]);
-         $this->validateJobsInputs($profile['jobs']??[]);
-         $this->validateRelationshipsInputs($profile['relationships']??[]);
-         $this->validateSkillsInputs($profile['skills']??[]);
-         $this->validateSocialProfilesInputs($profile['social_profiles']??[]);
+        $profile = $this->getInput('profile');
+        $this->validateProfileInputs($profile);
+        $this->validateNameInputs($profile['names'] ?? []);
+        $this->validatePhoneInputs($profile['phones'] ?? []);
+        $this->validateAddressInputs($profile['addresses'] ?? []);
+        $this->validateLanguageInputs($profile['languages'] ?? []);
+        $this->validateUsernameInputs($profile['usernames'] ?? []);
+        $this->validateEmailInputs($profile['emails'] ?? []);
+        $this->validateCriminalRecordsInputs($profile['criminal_records'] ?? []);
+        $this->validateEducationsInputs($profile['educations'] ?? []);
+        $this->validateImagesInputs($profile['images'] ?? []);
+        $this->validateJobsInputs($profile['jobs'] ?? []);
+        $this->validateRelationshipsInputs($profile['relationships'] ?? []);
+        $this->validateSkillsInputs($profile['skills'] ?? []);
+        $this->validateSocialProfilesInputs($profile['social_profiles'] ?? []);
     }
 
     protected function createNewProfileRecord($profileInputs): IProfileEntity
@@ -94,8 +93,8 @@ class CreateProfile extends AbstractService
         $profileEntity = $this->repository->createEntity();
         $this->fillProfileEntity($profileEntity, $profileInputs, true);
         foreach ($profileInputs as $profilePartKey => $profilePartInput) {
-            $processingMethodName = "process" . str_replace('_','',ucwords($profilePartKey,'_'));
-            if(method_exists($this, $processingMethodName)){
+            $processingMethodName = "process" . str_replace('_', '', ucwords($profilePartKey, '_'));
+            if (method_exists($this, $processingMethodName)) {
                 $this->$processingMethodName($profileEntity, $profilePartInput);
             }
         }
@@ -108,8 +107,9 @@ class CreateProfile extends AbstractService
     //
     protected function processNames(IProfileEntity $profileEntity, array $names)
     {
+        $repository = $this->di->make(IProfileNameRepository::class);
         foreach ($names as $name) {
-            $nameObj = $this->di->make(IProfileNameEntity::class);
+            $nameObj = $repository->createEntity();
             $this->fillNameEntity($profileEntity, $nameObj, $name);
             $profileEntity->addName($nameObj);
         }
@@ -117,108 +117,120 @@ class CreateProfile extends AbstractService
 
     protected function processAddresses(IProfileEntity $profileEntity, array $addresses)
     {
+        $repository = $this->di->make(IProfileAddressRepository::class);
         foreach ($addresses as $address) {
-            $addressObj = $this->di->make(IProfileAddressRepository::class);
-            $this->fillAddressEntity($profileEntity,$addressObj,$address);
+            $addressObj = $repository->createEntity();
+            $this->fillAddressEntity($profileEntity, $addressObj, $address);
             $profileEntity->addAddress($addressObj);
         }
     }
 
     protected function processCriminalRecords(IProfileEntity $profileEntity, array $criminalRecords)
     {
+        $repository = $this->di->make(IProfileCriminalRecordRepository::class);
         foreach ($criminalRecords as $criminalRecord) {
-            $criminalRecordObj = $this->di->make(IProfileCriminalRecordRepository::class);
-            $this->fillCriminalRecordEntity($profileEntity,$criminalRecordObj,$criminalRecord);
+            $criminalRecordObj = $repository->createEntity();
+            $this->fillCriminalRecordEntity($profileEntity, $criminalRecordObj, $criminalRecord);
             $profileEntity->addCriminalRecord($criminalRecordObj);
         }
     }
 
     protected function processEducations(IProfileEntity $profileEntity, array $educations)
     {
+        $repository = $this->di->make(IProfileEducationRepository::class);
         foreach ($educations as $education) {
-            $educationObj = $this->di->make(IProfileEducationRepository::class);
-            $this->fillEducationEntity($profileEntity,$educationObj,$education);
+            $educationObj = $repository->createEntity();
+            $this->fillEducationEntity($profileEntity, $educationObj, $education);
             $profileEntity->addEducation($educationObj);
         }
     }
 
     protected function processEmails(IProfileEntity $profileEntity, array $emails)
     {
+        $repository = $this->di->make(IProfileEmailRepository::class);
         foreach ($emails as $email) {
-            $emailObj = $this->di->make(IProfileEmailRepository::class);
-            $this->fillEmailEntity($profileEntity,$emailObj,$email);
+            $emailObj = $repository->createEntity();
+            $this->fillEmailEntity($profileEntity, $emailObj, $email);
             $profileEntity->addEmail($emailObj);
         }
     }
 
     protected function processImages(IProfileEntity $profileEntity, array $images)
     {
+        $repository = $this->di->make(IProfileImageRepository::class);
         foreach ($images as $image) {
-            $imageObj = $this->di->make(IProfileImageRepository::class);
-            $this->fillImageEntity($profileEntity,$imageObj,$image);
+            $imageObj = $repository->createEntity();
+            $this->fillImageEntity($profileEntity, $imageObj, $image);
             $profileEntity->addImage($imageObj);
         }
     }
 
     protected function processJobs(IProfileEntity $profileEntity, array $jobs)
     {
+        $repository = $this->di->make(IProfileJobRepository::class);
         foreach ($jobs as $job) {
-            $jobObj = $this->di->make(IProfileJobRepository::class);
-            $this->fillJobEntity($profileEntity,$jobObj,$job);
+            $jobObj = $repository->createEntity();
+            $this->fillJobEntity($profileEntity, $jobObj, $job);
             $profileEntity->addJob($jobObj);
         }
     }
 
     protected function processLanguages(IProfileEntity $profileEntity, array $languages)
     {
+        $repository = $this->di->make(IProfileLanguageRepository::class);
         foreach ($languages as $language) {
-            $languageObj = $this->di->make(IProfileLanguageRepository::class);
-            $this->fillLanguageEntity($profileEntity,$languageObj,$language);
+            $languageObj = $repository->createEntity();
+            $this->fillLanguageEntity($profileEntity, $languageObj, $language);
             $profileEntity->addLanguage($languageObj);
         }
     }
 
     protected function processPhones(IProfileEntity $profileEntity, array $phones)
     {
+        $repository = $this->di->make(IProfilePhoneRepository::class);
         foreach ($phones as $phone) {
-            $phoneObj = $this->di->make(IProfilePhoneRepository::class);
-            $this->fillPhoneEntity($profileEntity,$phoneObj,$phone);
+            $phoneObj = $repository->createEntity();
+            $this->fillPhoneEntity($profileEntity, $phoneObj, $phone);
             $profileEntity->addPhone($phoneObj);
         }
     }
 
     protected function processRelationships(IProfileEntity $profileEntity, array $relationships)
     {
+        $repository = $this->di->make(IProfileRelationshipRepository::class);
         foreach ($relationships as $relationship) {
-            $relationshipObj = $this->di->make(IProfileRelationshipRepository::class);
-            $this->fillRelationshipEntity($profileEntity,$relationshipObj,$relationship);
+            $relationshipObj = $repository->createEntity();
+            $this->fillRelationshipEntity($profileEntity, $relationshipObj, $relationship);
             $profileEntity->addRelationship($relationshipObj);
         }
     }
 
     protected function processSkills(IProfileEntity $profileEntity, array $skills)
     {
+        $repository = $this->di->make(IProfileSkillRepository::class);
         foreach ($skills as $skill) {
-            $skillObj = $this->di->make(IProfileSkillRepository::class);
-            $this->fillSkillEntity($profileEntity,$skillObj,$skill);
+            $skillObj = $repository->createEntity();
+            $this->fillSkillEntity($profileEntity, $skillObj, $skill);
             $profileEntity->addSkill($skillObj);
         }
     }
 
     protected function processSocialProfiles(IProfileEntity $profileEntity, array $socialProfiles)
     {
+        $repository = $this->di->make(IProfileSocialProfileRepository::class);
         foreach ($socialProfiles as $socialProfile) {
-            $socialProfileObj = $this->di->make(IProfileSocialProfileRepository::class);
-            $this->fillSocialProfileEntity($profileEntity,$socialProfileObj,$socialProfile);
+            $socialProfileObj = $repository->createEntity();
+            $this->fillSocialProfileEntity($profileEntity, $socialProfileObj, $socialProfile);
             $profileEntity->addSocialProfile($socialProfileObj);
         }
     }
 
     protected function processUsernames(IProfileEntity $profileEntity, array $usernames)
     {
+        $repository = $this->di->make(IProfileUsernameRepository::class);
         foreach ($usernames as $username) {
-            $usernameObj = $this->di->make(IProfileUsernameRepository::class);
-            $this->fillUsernameEntity($profileEntity,$usernameObj,$username);
+            $usernameObj = $repository->createEntity();
+            $this->fillUsernameEntity($profileEntity, $usernameObj, $username);
             $profileEntity->addUsername($usernameObj);
         }
     }
