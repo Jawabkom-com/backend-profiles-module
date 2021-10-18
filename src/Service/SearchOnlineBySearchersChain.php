@@ -163,7 +163,7 @@ class SearchOnlineBySearchersChain extends AbstractService
         $profileEntity->setStatusMonth(2);
         $profileEntity->setStatusYear(2021);
         $this->searcherStatusRepository->saveEntity($profileEntity);
-        dd($profileEntity);
+
      //   dd( $this->searcherStatusRepository->saveEntity($profileEntity));
 //
 //        $this->searcherStatusRepository->getSearcherRequestsCount($alias,date('Y'),1,1,1);

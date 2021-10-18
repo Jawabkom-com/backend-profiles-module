@@ -34,25 +34,26 @@ class AbstractTestCase extends TestCaseAlisa
             'driver' => 'sqlite',
             'database' => ':memory:'
         ]);
-        $classes =[
-           "CreateProfilesTable",
-           "CreateProfileAddressesTable",
-           "CreateProfileCriminalRecordsTable",
-           "CreateProfileEducationTable",
-           "CreateProfileEmailsTable",
-           "CreateProfileImagesTable",
-           "CreateProfileJobsTable",
-           "CreateProfileLanguagesTable",
-           "CreateProfileNamesTable",
-           "CreateProfilePhonesTable",
-           "CreateProfileRelationshipsTable",
-           "CreateProfileSkillsTable",
-           "CreateProfileSocialProfilesTable",
-           "CreateProfileUsernamesTable",
-           "CreateSearchRequestsTable",
+        $classes = [
+            "CreateProfilesTable",
+            "CreateProfileAddressesTable",
+            "CreateProfileCriminalRecordsTable",
+            "CreateProfileEducationTable",
+            "CreateProfileEmailsTable",
+            "CreateProfileImagesTable",
+            "CreateProfileJobsTable",
+            "CreateProfileLanguagesTable",
+            "CreateProfileNamesTable",
+            "CreateProfilePhonesTable",
+            "CreateProfileRelationshipsTable",
+            "CreateProfileSkillsTable",
+            "CreateProfileSocialProfilesTable",
+            "CreateProfileUsernamesTable",
+            "CreateSearchRequestsTable",
+            "CreateSearcherStatusesTable"
         ];
-        foreach($classes as $class){
-          $class ="\\Jawabkom\\Backend\\Module\\Profile\\Test\\Classes\\Database\\Migrations\\{$class}";
+        foreach ($classes as $class) {
+            $class = "\\Jawabkom\\Backend\\Module\\Profile\\Test\\Classes\\Database\\Migrations\\{$class}";
             (new $class)->up();
         }
 

@@ -277,7 +277,6 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
         $profiles = $outputs->output('profiles');
-        dd($profiles);
 
     }
 

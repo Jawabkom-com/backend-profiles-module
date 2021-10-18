@@ -89,6 +89,12 @@ class SearcherStatus extends Model implements ISearcherStatusEntity,ISearcherSta
 
     public function saveEntity(ISearcherStatusEntity|IEntity $entity): bool
     {
+        try {
+            dd($entity->save());
+        } catch( \Throwable $exception) {
+            dd($exception);
+        }
+
         return $entity->save();
     }
 
