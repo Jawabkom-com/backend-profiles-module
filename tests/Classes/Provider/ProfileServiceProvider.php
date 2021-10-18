@@ -8,6 +8,7 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilt
     Composite\Filters\OrFilterComposite,
     Composite\Filters\Filter,
     DI,
+    Search\SearcherStatus,
     Search\SearchRequest};
 use Jawabkom\Backend\Module\Profile\Contract\{IProfileAddressEntity,
     IProfileAddressRepository,
@@ -37,6 +38,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{IProfileAddressEntity,
     IProfileSocialProfileRepository,
     IProfileUsernameEntity,
     IProfileUsernameRepository,
+    ISearcherStatusRepository,
     ISearchFiltersBuilder,
     ISearchRequestRepository};
 use Jawabkom\Backend\Module\Profile\SimpleSearchFiltersBuilder;
@@ -101,7 +103,8 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileNameEntity::class                    => ProfileName::class,
             IFilter::class                               => Filter::class,
             ISearchFiltersBuilder::class                 => SimpleSearchFiltersBuilder::class,
-            ISearchRequestRepository::class              => SearchRequest::class
+            ISearchRequestRepository::class              => SearchRequest::class,
+            ISearcherStatusRepository::class              => SearcherStatus::class
         ];
 
         foreach ($toBind as $interface => $implementation) {

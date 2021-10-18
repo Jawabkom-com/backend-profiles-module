@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Classes\Search;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Jawabkom\Backend\Module\Profile\Contract\ISearcherStatusEntity;
 use Jawabkom\Backend\Module\Profile\Contract\ISearcherStatusRepository;
 use Jawabkom\Standard\Contract\IEntity;
@@ -51,7 +52,7 @@ class SearcherStatus extends Model implements ISearcherStatusEntity,ISearcherSta
         return $this->status_month;
     }
 
-    public function setStatusMount(int $month)
+    public function setStatusMonth(int $month)
     {
         $this->status_month = $month;
     }
@@ -88,7 +89,7 @@ class SearcherStatus extends Model implements ISearcherStatusEntity,ISearcherSta
 
     public function saveEntity(ISearcherStatusEntity|IEntity $entity): bool
     {
-        return (boolean)$entity->save();
+        return $entity->save();
     }
 
     public function createEntity(array $params = []): ISearcherStatusEntity
@@ -96,8 +97,9 @@ class SearcherStatus extends Model implements ISearcherStatusEntity,ISearcherSta
         return app()->make(static::class)->fill($params);
     }
 
-    public function getSearcherRequestsCount(string $alias, int $year, int $month = 0, int $day = 0, ?int $hour = null): int
+    public function getSearcherRequestsCount(string $alias, int $year, int $month = 0, int $day = 0, ?int $hour = null):int
     {
+        return $this->where('searcher_alias',$alias)->count();
         // TODO: Implement getSearcherRequestsCount() method.
     }
 

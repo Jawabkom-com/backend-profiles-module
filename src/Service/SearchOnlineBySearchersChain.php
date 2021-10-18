@@ -4,6 +4,7 @@ namespace Jawabkom\Backend\Module\Profile\Service;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSearcher;
+use Jawabkom\Backend\Module\Profile\Contract\ISearcherStatusRepository;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchFiltersBuilder;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchRequestEntity;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchRequestRepository;
@@ -18,18 +19,22 @@ class SearchOnlineBySearchersChain extends AbstractService
     private SearcherRegistry $registry;
     private ISearchFiltersBuilder $searchFiltersBuilder;
     private ISearchRequestRepository $searchRequestRepository;
+    private ISearcherStatusRepository $searcherStatusRepository;
 
     public function __construct(IDependencyInjector      $di,
                                 IProfileRepository       $repository,
                                 SearcherRegistry         $registry,
                                 ISearchFiltersBuilder    $searchFiltersBuilder,
-                                ISearchRequestRepository $searchRequestRepository)
+                                ISearchRequestRepository $searchRequestRepository,
+                                ISearcherStatusRepository $searcherStatusRepository,
+    )
     {
         parent::__construct($di);
         $this->repository = $repository;
         $this->registry = $registry;
         $this->searchFiltersBuilder = $searchFiltersBuilder;
         $this->searchRequestRepository = $searchRequestRepository;
+        $this->searcherStatusRepository = $searcherStatusRepository;
     }
 
     //
@@ -55,7 +60,7 @@ class SearchOnlineBySearchersChain extends AbstractService
                 if (!$isFromCache) {
                     $searcher = $this->registry->getSearcher($alias);
                     // TODO: check search limits, and throw exception
-                    $this->assertSearcherLimit($searcher);
+                    $this->assertSearcherLimit($searcher,$alias);
 
                     $results = $searcher->search($this->searchFiltersBuilder->build());
                     // TODO: update searcher search limit
@@ -149,9 +154,22 @@ class SearchOnlineBySearchersChain extends AbstractService
         return $cachedResultsByAliases;
     }
 
-    private function assertSearcherLimit(IProfileSearcher $searcher)
+    private function assertSearcherLimit(IProfileSearcher $searcher , string $alias)
     {
-        // 
+        $profileEntity = $this->searcherStatusRepository->createEntity();
+        $profileEntity->setSearcherAlias($alias);
+        $profileEntity->setCounter(1);
+        $profileEntity->setStatusDay(1);
+        $profileEntity->setStatusMonth(2);
+        $profileEntity->setStatusYear(2021);
+        $this->searcherStatusRepository->saveEntity($profileEntity);
+        dd($profileEntity);
+     //   dd( $this->searcherStatusRepository->saveEntity($profileEntity));
+//
+//        $this->searcherStatusRepository->getSearcherRequestsCount($alias,date('Y'),1,1,1);
+//        return;
+//        dd($alias);
+//        dd($searcher->getDailyRequestsLimit());
     }
 
 }

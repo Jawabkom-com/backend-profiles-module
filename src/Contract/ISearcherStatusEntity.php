@@ -13,7 +13,7 @@ interface ISearcherStatusEntity extends IEntity
     public function setStatusYear(int $year);
 
     public function getStatusMonth():int;
-    public function setStatusMount(int $month);
+    public function setStatusMonth(int $month);
 
     public function getStatusDay():int;
     public function setStatusDay(int $day);

@@ -261,4 +261,26 @@ class SearchOnlineTest extends AbstractTestCase
             ->process();
     }
 
+
+
+    public function testSingleSearcherWithOneResult1()
+    {
+        $searcher = new TestSearcherWithOneResult();
+        $mapper = new TestSearcherMapper();
+        $searcherRegistry = new SearcherRegistry();
+        $searcherRegistry->register('searcher1', $searcher, $mapper);
+        /**@var $onlineSearchService SearchOnlineBySearchersChain */
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $outputs = $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahmad'])
+            ->input('searchersAliases', ['searcher1'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+        $profiles = $outputs->output('profiles');
+        dd($profiles);
+
+    }
+
+
+
 }
