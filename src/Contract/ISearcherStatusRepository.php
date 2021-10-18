@@ -5,7 +5,7 @@ namespace Jawabkom\Backend\Module\Profile\Contract;
 use Jawabkom\Standard\Contract\IEntity;
 use Jawabkom\Standard\Contract\IRepository;
 
-interface ISearchStatusRepository extends IRepository
+interface ISearcherStatusRepository extends IRepository
 {
     public function saveEntity(ISearcherStatusEntity|IEntity $entity): bool;
 
