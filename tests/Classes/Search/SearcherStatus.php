@@ -89,12 +89,6 @@ class SearcherStatus extends Model implements ISearcherStatusEntity,ISearcherSta
 
     public function saveEntity(ISearcherStatusEntity|IEntity $entity): bool
     {
-        try {
-            dd($entity->save());
-        } catch( \Throwable $exception) {
-            dd($exception);
-        }
-
         return $entity->save();
     }
 
@@ -105,12 +99,30 @@ class SearcherStatus extends Model implements ISearcherStatusEntity,ISearcherSta
 
     public function getSearcherRequestsCount(string $alias, int $year, int $month = 0, int $day = 0, ?int $hour = null):int
     {
-        return $this->where('searcher_alias',$alias)->count();
-        // TODO: Implement getSearcherRequestsCount() method.
+        $builder = static::query();
+        $builder->where('searcher_alias',$alias)->where('status_year',$year);
+        if ($hour!=null)  $builder->where('status_hour',$hour);
+        if ($day!=0)  $builder->where('status_day',$day);
+        if ($month!=0)  $builder->where('status_month',$month);
+        return  $builder->count();
     }
 
-    public function increaseSearcherRequestsCount(string $alias, int $year, int $month, int $day, int $hour): bool
+    public function increaseSearcherRequestsCount(string $alias, int $year, int $month, int $day, int $hour): void
     {
-        // TODO: Implement increaseSearcherRequestsCount() method.
+          $this->where('searcher_alias',$alias)->where('status_year',$year)
+            ->where('status_hour',$hour)
+            ->where('status_day',$day)
+            ->where('status_month',$month)->update([
+                  'counter'=> DB::raw('counter+1')
+              ]);
+    }
+
+    public function getSearcherRequests(string $alias, int $year, int $month, int $day, int $hour): ?ISearcherStatusEntity
+    {
+        $builder = static::query();
+      return  $builder->where('searcher_alias',$alias)->where('status_year',$year)
+            ->where('status_hour',$hour)
+            ->where('status_day',$day)
+            ->where('status_month',$month)->first();
     }
 }

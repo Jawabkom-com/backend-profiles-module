@@ -7,6 +7,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchFiltersBuilder;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchRequestRepository;
 use Jawabkom\Backend\Module\Profile\Exception\FilterNameDoesNotExistsException;
+use Jawabkom\Backend\Module\Profile\Exception\SearcherExceededDailyLimit;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherRegistryDoesNotExist;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
@@ -19,6 +20,7 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Search\SearchRequest;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherMapper;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherMapperNew;
+use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithDailyLimit;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithException;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithMultiResults;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithOneResult;
@@ -263,21 +265,25 @@ class SearchOnlineTest extends AbstractTestCase
 
 
 
-    public function testSingleSearcherWithOneResult1()
+    public function testDailySearchLimit()
     {
-        $searcher = new TestSearcherWithOneResult();
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
-        $searcherRegistry->register('searcher1', $searcher, $mapper);
+        $searcherRegistry->register('searcher1', new TestSearcherWithDailyLimit(), $mapper);
         /**@var $onlineSearchService SearchOnlineBySearchersChain */
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
-        $outputs = $onlineSearchService
-            ->input('filters', ['first_name' => 'Ahmad'])
+        $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma111111'])
             ->input('searchersAliases', ['searcher1'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
-        $profiles = $outputs->output('profiles');
-
+        $outputs = $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma111ede111'])
+            ->input('searchersAliases', ['searcher1'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+     //   dd($outputs->output('search_requests'));
+        $this->assertTrue(true);
     }
 
 
