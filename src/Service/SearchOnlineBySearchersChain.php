@@ -11,11 +11,13 @@ use Jawabkom\Backend\Module\Profile\Contract\ISearchRequestRepository;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherExceededDailyLimit;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherRegistryDoesNotExist;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
+use Jawabkom\Backend\Module\Profile\Trait\ResponseFormattedTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 
 class SearchOnlineBySearchersChain extends AbstractService
 {
+    use  ResponseFormattedTrait;
     protected IProfileRepository $repository;
     private SearcherRegistry $registry;
     private ISearchFiltersBuilder $searchFiltersBuilder;
@@ -77,7 +79,8 @@ class SearchOnlineBySearchersChain extends AbstractService
                             $this->repository->saveEntity($profileEntity);
                         }
                     $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileEntities));
-                    $this->setOutput('profiles', $profileEntities);
+                    $responseFormatted = $this->formattedResponse($profileEntities);
+                    $this->setOutput('response', $responseFormatted);
                     $this->setOutput('raw_result', $results);
                     break;
                 } else {
