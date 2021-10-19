@@ -50,11 +50,14 @@ class SearchOfflineTest extends AbstractTestCase
         // 'age'         => $dummyProfilesData[1]['addresses'][0]['state'],
             'username'    => $dummyProfilesData[1]['usernames'][0]['username'],
         ];
-       $result = $this->searchOfflineByFilters->input('filters',$filter)->process()->output('result');
+       $result = $this->searchOfflineByFilters->input('filters',$filter)->process()->output('response');
        $this->assertIsArray($result);
        $this->assertNotEmpty($result);
-       $this->assertInstanceOf(IProfileRepository::class,$result[0]);
-       $this->assertEquals($fakeProfiles[1]->getProfileId(),$result[0]->getProfileId());
+       $this->assertEquals($fakeProfiles[1]->getProfileId(),$result[0]['profile_id']);
+       $this->assertIsArray($result[0]['jobs']);
+       $this->assertIsArray($result[0]['names']);
+       $this->assertIsArray($result[0]['emails']);
+       $this->assertIsArray($result[0]['usernames']);
     }
 
     public function testMissingFilter(){
