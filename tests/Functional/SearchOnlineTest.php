@@ -2,12 +2,10 @@
 
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
+use Illuminate\Support\Carbon;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
-use Jawabkom\Backend\Module\Profile\Contract\ISearchFiltersBuilder;
-use Jawabkom\Backend\Module\Profile\Contract\ISearchRequestRepository;
 use Jawabkom\Backend\Module\Profile\Exception\FilterNameDoesNotExistsException;
-use Jawabkom\Backend\Module\Profile\Exception\SearcherExceededDailyLimit;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherRegistryDoesNotExist;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
@@ -17,18 +15,14 @@ use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
-use Jawabkom\Backend\Module\Profile\Test\Classes\Search\SearchRequest;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherMapper;
-use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherMapperNew;
-use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithDailyLimit;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithException;
+use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithHourlyLimit;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithMultiResults;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithOneResult;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithZeroResults;
 use Jawabkom\Backend\Module\Profile\Test\Classes\SearchOnlineByChainException;
 use Jawabkom\Standard\Contract\IDependencyInjector;
-use Jawabkom\Standard\Exception\MissingRequiredInputException;
-use JetBrains\PhpStorm\Pure;
 
 class SearchOnlineTest extends AbstractTestCase
 {
@@ -264,16 +258,21 @@ class SearchOnlineTest extends AbstractTestCase
     }
 
 
-
     public function testDailySearchLimit()
     {
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
-        $searcherRegistry->register('searcher1', new TestSearcherWithDailyLimit(), $mapper);
+        $searcherRegistry->register('searcher1', new TestSearcherWithHourlyLimit(), $mapper);
         /**@var $onlineSearchService SearchOnlineBySearchersChain */
-        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry , 'currentDateTime' => Carbon::now()]);
+
         $onlineSearchService
-            ->input('filters', ['first_name' => 'Ahma111111'])
+            ->input('filters', ['first_name' => 'Ahmededa111111dd'])
+            ->input('searchersAliases', ['searcher1'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+        $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma111ede111jk'])
             ->input('searchersAliases', ['searcher1'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
@@ -282,10 +281,9 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('searchersAliases', ['searcher1'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
-     //   dd($outputs->output('search_requests'));
+      //  dd(count($outputs->output('search_requests')));
         $this->assertTrue(true);
     }
-
 
 
 }

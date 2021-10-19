@@ -104,25 +104,26 @@ class SearcherStatus extends Model implements ISearcherStatusEntity,ISearcherSta
         if ($hour!=null)  $builder->where('status_hour',$hour);
         if ($day!=0)  $builder->where('status_day',$day);
         if ($month!=0)  $builder->where('status_month',$month);
-        return  $builder->count();
+        return  $builder->sum('counter');
     }
 
     public function increaseSearcherRequestsCount(string $alias, int $year, int $month, int $day, int $hour): void
     {
-          $this->where('searcher_alias',$alias)->where('status_year',$year)
-            ->where('status_hour',$hour)
-            ->where('status_day',$day)
-            ->where('status_month',$month)->update([
+          $this->searcherQuery($alias , $year , $month , $day , $hour)->update([
                   'counter'=> DB::raw('counter+1')
               ]);
     }
 
     public function getSearcherRequests(string $alias, int $year, int $month, int $day, int $hour): ?ISearcherStatusEntity
     {
-        $builder = static::query();
-      return  $builder->where('searcher_alias',$alias)->where('status_year',$year)
+        return $this->searcherQuery($alias , $year , $month , $day , $hour)->first();
+    }
+
+    private function searcherQuery(string $alias, int $year, int $month, int $day, int $hour)
+    {
+        return $this->where('searcher_alias',$alias)->where('status_year',$year)
             ->where('status_hour',$hour)
             ->where('status_day',$day)
-            ->where('status_month',$month)->first();
+            ->where('status_month',$month);
     }
 }

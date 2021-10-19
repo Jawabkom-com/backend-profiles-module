@@ -2,6 +2,6 @@
 
 namespace Jawabkom\Backend\Module\Profile\Exception;
 
-class SearcherExceededDailyLimit extends \Exception
+class SearcherExceededAllowedRequestsLimit extends \Exception
 {
 }

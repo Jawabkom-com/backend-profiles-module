@@ -8,6 +8,7 @@ use Jawabkom\Backend\Module\Profile\Contract\ISearcherStatusRepository;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchFiltersBuilder;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchRequestEntity;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchRequestRepository;
+use Jawabkom\Backend\Module\Profile\Exception\SearcherExceededAllowedRequestsLimit;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherExceededDailyLimit;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherRegistryDoesNotExist;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
@@ -21,13 +22,15 @@ class SearchOnlineBySearchersChain extends AbstractService
     private ISearchFiltersBuilder $searchFiltersBuilder;
     private ISearchRequestRepository $searchRequestRepository;
     private ISearcherStatusRepository $searcherStatusRepository;
+    private \DateTime $currentDateTime;
 
-    public function __construct(IDependencyInjector      $di,
-                                IProfileRepository       $repository,
-                                SearcherRegistry         $registry,
-                                ISearchFiltersBuilder    $searchFiltersBuilder,
-                                ISearchRequestRepository $searchRequestRepository,
+    public function __construct(IDependencyInjector       $di,
+                                IProfileRepository        $repository,
+                                SearcherRegistry          $registry,
+                                ISearchFiltersBuilder     $searchFiltersBuilder,
+                                ISearchRequestRepository  $searchRequestRepository,
                                 ISearcherStatusRepository $searcherStatusRepository,
+                                \DateTime                 $currentDateTime
     )
     {
         parent::__construct($di);
@@ -36,6 +39,7 @@ class SearchOnlineBySearchersChain extends AbstractService
         $this->searchFiltersBuilder = $searchFiltersBuilder;
         $this->searchRequestRepository = $searchRequestRepository;
         $this->searcherStatusRepository = $searcherStatusRepository;
+        $this->currentDateTime = $currentDateTime;
     }
 
     //
@@ -59,14 +63,13 @@ class SearchOnlineBySearchersChain extends AbstractService
                 if (!$isFromCache) {
                     $searcher = $this->registry->getSearcher($alias);
                     // TODO: check search limits, and throw exception
-                    $this->assertSearcherLimit($searcher,$alias);
+             //       $this->assertSearcherLimit($searcher, $alias);
                     $results = $searcher->search($this->searchFiltersBuilder->build());
-                    $this->updateSearcherSearchLimit($alias);
+             //       $this->updateSearcherSearchLimit($alias);
                     // TODO: update searcher search limit
                 } else {
                     $results = $cachedResultsByAliases[$alias];
                 }
-
 
                 $mapper = $this->registry->getMapper($alias);
                 $profileEntities = $mapper->map($results);
@@ -79,18 +82,22 @@ class SearchOnlineBySearchersChain extends AbstractService
                     $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileEntities));
                     $this->setOutput('profiles', $profileEntities);
                     $this->setOutput('raw_result', $results);
+
                     break;
                 } else {
                     $this->setEmptySearchRequestStatus($searchRequest, $results);
                 }
+
             } catch (\Throwable $exception) {
-                if (!isset($searchRequest) )
+                if (!isset($searchRequest))
                     throw $exception;
 
                 $this->setErrorSearchRequestStatus($searchRequest, $exception);
             }
         }
         $this->setOutput('search_requests', $searchRequests);
+
+
         return $this;
     }
 
@@ -154,37 +161,45 @@ class SearchOnlineBySearchersChain extends AbstractService
         return $cachedResultsByAliases;
     }
 
-    protected function assertSearcherLimit(IProfileSearcher $searcher , string $alias)
+
+    protected function assertSearcherLimit(IProfileSearcher $searcher, string $alias)
     {
-        $getSearcherRequestsCount=  $this->searcherStatusRepository
-            ->getSearcherRequestsCount($alias,date('Y'),date('m'),date('d'),date('H'));
-        if ($getSearcherRequestsCount >= $searcher->getDailyRequestsLimit() && $searcher->getDailyRequestsLimit()!=0){
-            throw new SearcherExceededDailyLimit("Searcher Exceeded Daily Limit");
+        $perHourCount = $this->getSearcherRequestsCount($alias, $this->currentDateTime->format('Y'), $this->currentDateTime->format('m'), $this->currentDateTime->format('d'), $this->currentDateTime->format('H'));
+        if ($perHourCount >= $searcher->getHourlyRequestsLimit() && $searcher->getHourlyRequestsLimit() != 0) {
+            throw new SearcherExceededAllowedRequestsLimit("Searcher Exceeded Limit");
         }
-        return $getSearcherRequestsCount;
+        return $perHourCount;
     }
 
     private function updateSearcherSearchLimit(string $alias)
     {
-       $checkSearcherCreated= $this->searcherStatusRepository->getSearcherRequests($alias,date('Y'),date('m') ,date('d'),date('H'));
-       if (empty($checkSearcherCreated)){
-           $SearcherObj =   $this->createNewSearcherObj($alias);
-           $this->searcherStatusRepository->saveEntity($SearcherObj);
-       }
-       else
-           $this->searcherStatusRepository->increaseSearcherRequestsCount($alias,date('Y'),date('m') ,date('d'),date('H'));
+        $checkSearcherCreated = $this->searcherStatusRepository->getSearcherRequests($alias, $this->currentDateTime->format('Y'), $this->currentDateTime->format('m'), $this->currentDateTime->format('d'), $this->currentDateTime->format('H'));
+        if (empty($checkSearcherCreated)) {
+            $SearcherObj = $this->createNewSearcherObj($alias);
+            $this->searcherStatusRepository->saveEntity($SearcherObj);
+        } else
+            $this->searcherStatusRepository->increaseSearcherRequestsCount($alias, $this->currentDateTime->format('Y'), $this->currentDateTime->format('m'), $this->currentDateTime->format('d'), $this->currentDateTime->format('H'));
+    }
 
+    //
+    // LEVEL 2
+    //
+
+    protected function getSearcherRequestsCount(string $alias, int $year, int $month, int $day, int $hour)
+    {
+        return $this->searcherStatusRepository
+            ->getSearcherRequestsCount($alias, $year, $month, $day, $hour);
     }
 
     private function createNewSearcherObj($alias)
     {
         $searcherStatusEntity = $this->searcherStatusRepository->createEntity();
-        $searcherStatusEntity->setStatusHour(date('H'));
-        $searcherStatusEntity->setStatusDay(date('d'));
-        $searcherStatusEntity->setStatusMonth(date('m'));
-        $searcherStatusEntity->setStatusYear(date('Y'));
+        $searcherStatusEntity->setStatusHour($this->currentDateTime->format('H'));
+        $searcherStatusEntity->setStatusDay($this->currentDateTime->format('d'));
+        $searcherStatusEntity->setStatusMonth($this->currentDateTime->format('m'));
+        $searcherStatusEntity->setStatusYear($this->currentDateTime->format('Y'));
         $searcherStatusEntity->setSearcherAlias($alias);
-        $searcherStatusEntity->setCounter(0);
+        $searcherStatusEntity->setCounter(1);
         return $searcherStatusEntity;
     }
 
