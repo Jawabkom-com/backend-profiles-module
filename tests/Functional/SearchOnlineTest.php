@@ -267,10 +267,17 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('searchersAliases', ['searcher1'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
+        $searchRequests = $onlineSearchService->output('search_requests');
+        $this->assertEquals('done', $searchRequests[0]->getStatus());
 
-  
-
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService
+            ->input('filters', ['first_name' => 'Something New'])
+            ->input('searchersAliases', ['searcher1'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+        $searchRequests = $onlineSearchService->output('search_requests');
+        $this->assertEquals('error', $searchRequests[0]->getStatus());
+        $this->assertStringContainsString('SearcherExceededAllowedRequestsLimit', $searchRequests[0]->getErrors()[0]);
     }
-
-
 }

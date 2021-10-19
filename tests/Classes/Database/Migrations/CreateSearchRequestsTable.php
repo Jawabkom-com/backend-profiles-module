@@ -17,6 +17,9 @@ class CreateSearchRequestsTable extends Migration
         Schema::create('search_requests', function (Blueprint $table) {
             $table->id();
             $table->string('hash')->index();
+            $table->string('status')->index();
+            $table->integer('matches_count')->index();
+            $table->json('error_messages')->default('[]');
             $table->json('request_search_filters');
             $table->json('request_search_results')->nullable();
             $table->dateTime('request_date_time')->index();

@@ -127,6 +127,7 @@ class SearchOnlineBySearchersChain extends AbstractService
         $searchRequest->setOtherParams($this->getInput('requestMeta', []));
         $searchRequest->setStatus('init');
         $searchRequest->setIsFromCache($isFromCache);
+        $searchRequest->setMatchesCount(0);
         $this->searchRequestRepository->saveEntity($searchRequest);
         return $searchRequest;
     }
@@ -149,7 +150,7 @@ class SearchOnlineBySearchersChain extends AbstractService
         $searchRequest->setMatchesCount(0);
         $searchRequest->setStatus('error');
         $searchRequest->setRequestSearchResults([]);
-        $searchRequest->addError("Time: " . date('Y-m-d H:i:s') . ", File: {$exception->getFile()}, Line: {$exception->getLine()}, Message: {$exception->getMessage()}");
+        $searchRequest->addError("Time: " . date('Y-m-d H:i:s') . ", File: {$exception->getFile()}, Line: {$exception->getLine()}, Message: {$exception->getMessage()}, Type: ".get_class($exception));
         $this->searchRequestRepository->saveEntity($searchRequest);
     }
 
