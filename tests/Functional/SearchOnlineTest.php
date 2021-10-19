@@ -17,8 +17,10 @@ use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherMapper;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithDailyLimit;
+use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithDailyTwiceLimit;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithException;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithHourlyLimit;
+use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithMonthlyLimit;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithMultiResults;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithOneResult;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithZeroResults;
@@ -255,12 +257,18 @@ class SearchOnlineTest extends AbstractTestCase
     }
 
 
-    public function testDailySearchLimit()
+    public function testHourlySearchLimit()
     {
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
-        $searcherRegistry->register('searcher1', new TestSearcherWithDailyLimit(), $mapper);
+        $searcherRegistry->register('searcher1', new TestSearcherWithHourlyLimit(), $mapper);
         /**@var $onlineSearchService SearchOnlineBySearchersChain */
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma111111'])
+            ->input('searchersAliases', ['searcher1'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
         $onlineSearchService
             ->input('filters', ['first_name' => 'Ahma111111'])
@@ -280,4 +288,102 @@ class SearchOnlineTest extends AbstractTestCase
         $this->assertEquals('error', $searchRequests[0]->getStatus());
         $this->assertStringContainsString('SearcherExceededAllowedRequestsLimit', $searchRequests[0]->getErrors()[0]);
     }
+
+
+    public function testDailySearchLimit()
+    {
+        $mapper = new TestSearcherMapper();
+        $searcherRegistry = new SearcherRegistry();
+        $searcherRegistry->register('searcher1', new TestSearcherWithDailyLimit(), $mapper);
+        /**@var $onlineSearchService SearchOnlineBySearchersChain */
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma111111'])
+            ->input('searchersAliases', ['searcher1'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma111111'])
+            ->input('searchersAliases', ['searcher1'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+        $searchRequests = $onlineSearchService->output('search_requests');
+        $this->assertEquals('done', $searchRequests[0]->getStatus());
+
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService
+            ->input('filters', ['first_name' => 'Something New'])
+            ->input('searchersAliases', ['searcher1'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+        $searchRequests = $onlineSearchService->output('search_requests');
+        $this->assertEquals('error', $searchRequests[0]->getStatus());
+        $this->assertStringContainsString('SearcherExceededAllowedRequestsLimit', $searchRequests[0]->getErrors()[0]);
+    }
+
+    public function testDailySearchTwice()
+    {
+        $mapper = new TestSearcherMapper();
+        $searcherRegistry = new SearcherRegistry();
+        $searcherRegistry->register('searcher1', new TestSearcherWithDailyTwiceLimit(), $mapper);
+        /**@var $onlineSearchService SearchOnlineBySearchersChain */
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma11de1111'])
+            ->input('searchersAliases', ['searcher1'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma111111'])
+            ->input('searchersAliases', ['searcher1'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+        $searchRequests = $onlineSearchService->output('search_requests');
+        $this->assertEquals('done', $searchRequests[0]->getStatus());
+
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService
+            ->input('filters', ['first_name' => 'Something New'])
+            ->input('searchersAliases', ['searcher1'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+        $searchRequests = $onlineSearchService->output('search_requests');
+        $this->assertEquals('error', $searchRequests[0]->getStatus());
+        $this->assertStringContainsString('SearcherExceededAllowedRequestsLimit', $searchRequests[0]->getErrors()[0]);
+    }
+
+    public function testMonthlySearchLimit()
+    {
+        $mapper = new TestSearcherMapper();
+        $searcherRegistry = new SearcherRegistry();
+        $searcherRegistry->register('searcher1', new TestSearcherWithMonthlyLimit(), $mapper);
+        /**@var $onlineSearchService SearchOnlineBySearchersChain */
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma111111'])
+            ->input('searchersAliases', ['searcher1'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma111111'])
+            ->input('searchersAliases', ['searcher1'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+        $searchRequests = $onlineSearchService->output('search_requests');
+        $this->assertEquals('done', $searchRequests[0]->getStatus());
+
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService
+            ->input('filters', ['first_name' => 'Something New'])
+            ->input('searchersAliases', ['searcher1'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
+        $searchRequests = $onlineSearchService->output('search_requests');
+        $this->assertEquals('error', $searchRequests[0]->getStatus());
+        $this->assertStringContainsString('SearcherExceededAllowedRequestsLimit', $searchRequests[0]->getErrors()[0]);
+    }
+
 }

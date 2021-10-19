@@ -9,7 +9,6 @@ use Jawabkom\Backend\Module\Profile\Contract\ISearchFiltersBuilder;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchRequestEntity;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchRequestRepository;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherExceededAllowedRequestsLimit;
-use Jawabkom\Backend\Module\Profile\Exception\SearcherExceededDailyLimit;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherRegistryDoesNotExist;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
 use Jawabkom\Backend\Module\Profile\Trait\ResponseFormattedTrait;
@@ -181,7 +180,9 @@ class SearchOnlineBySearchersChain extends AbstractService
             $SearcherObj = $this->createNewSearcherObj($alias);
             $this->searcherStatusRepository->saveEntity($SearcherObj);
         } else
+        {
             $this->searcherStatusRepository->increaseSearcherRequestsCount($alias, $this->currentDateTime->format('Y'), $this->currentDateTime->format('m'), $this->currentDateTime->format('d'), $this->currentDateTime->format('H'));
+        }
     }
 
     //
