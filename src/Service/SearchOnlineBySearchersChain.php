@@ -19,6 +19,7 @@ use Jawabkom\Standard\Contract\IDependencyInjector;
 class SearchOnlineBySearchersChain extends AbstractService
 {
     use  ResponseFormattedTrait;
+
     protected IProfileRepository $repository;
     private SearcherRegistry $registry;
     private ISearchFiltersBuilder $searchFiltersBuilder;
@@ -65,9 +66,9 @@ class SearchOnlineBySearchersChain extends AbstractService
                 if (!$isFromCache) {
                     $searcher = $this->registry->getSearcher($alias);
                     // TODO: check search limits, and throw exception
-             //       $this->assertSearcherLimit($searcher, $alias);
+                    $this->assertSearcherLimit($searcher, $alias);
                     $results = $searcher->search($this->searchFiltersBuilder->build());
-             //       $this->updateSearcherSearchLimit($alias);
+                    $this->updateSearcherSearchLimit($alias);
                     // TODO: update searcher search limit
                 } else {
                     $results = $cachedResultsByAliases[$alias];
@@ -167,11 +168,9 @@ class SearchOnlineBySearchersChain extends AbstractService
 
     protected function assertSearcherLimit(IProfileSearcher $searcher, string $alias)
     {
-        $perHourCount = $this->getSearcherRequestsCount($alias, $this->currentDateTime->format('Y'), $this->currentDateTime->format('m'), $this->currentDateTime->format('d'), $this->currentDateTime->format('H'));
-        if ($perHourCount >= $searcher->getHourlyRequestsLimit() && $searcher->getHourlyRequestsLimit() != 0) {
-            throw new SearcherExceededAllowedRequestsLimit("Searcher Exceeded Limit");
-        }
-        return $perHourCount;
+        $this->perHourlyCheck($searcher, $alias);
+        $this->perDailyCheck($searcher, $alias);
+        $this->perMonthlyCheck($searcher, $alias);
     }
 
     private function updateSearcherSearchLimit(string $alias)
@@ -188,10 +187,29 @@ class SearchOnlineBySearchersChain extends AbstractService
     // LEVEL 2
     //
 
-    protected function getSearcherRequestsCount(string $alias, int $year, int $month, int $day, int $hour)
+    protected function perHourlyCheck(IProfileSearcher $searcher, string $alias)
     {
-        return $this->searcherStatusRepository
-            ->getSearcherRequestsCount($alias, $year, $month, $day, $hour);
+        $perHourCount = $this->getSearcherRequestsCount($alias, $this->currentDateTime->format('Y'), $this->currentDateTime->format('m'), $this->currentDateTime->format('d'), $this->currentDateTime->format('H'));
+        if ($perHourCount >= $searcher->getHourlyRequestsLimit() && $searcher->getHourlyRequestsLimit() != 0) {
+            throw new SearcherExceededAllowedRequestsLimit("Searcher Exceeded Limit");
+        }
+
+    }
+
+    protected function perDailyCheck(IProfileSearcher $searcher, string $alias)
+    {
+        $perDayCount = $this->getSearcherRequestsCount($alias, $this->currentDateTime->format('Y'), $this->currentDateTime->format('m'), $this->currentDateTime->format('d'),null);
+        if ($perDayCount >= $searcher->getDailyRequestsLimit() && $searcher->getDailyRequestsLimit() != 0) {
+            throw new SearcherExceededAllowedRequestsLimit("Searcher Exceeded Limit");
+        }
+    }
+
+    protected function perMonthlyCheck(IProfileSearcher $searcher, string $alias)
+    {
+        $perMonthCount = $this->getSearcherRequestsCount($alias, $this->currentDateTime->format('Y'), $this->currentDateTime->format('m'),0,null);
+        if ($perMonthCount >= $searcher->getMonthlyRequestsLimit() && $searcher->getMonthlyRequestsLimit() != 0) {
+            throw new SearcherExceededAllowedRequestsLimit("Searcher Exceeded Limit");
+        }
     }
 
     private function createNewSearcherObj($alias)
@@ -204,6 +222,15 @@ class SearchOnlineBySearchersChain extends AbstractService
         $searcherStatusEntity->setSearcherAlias($alias);
         $searcherStatusEntity->setCounter(1);
         return $searcherStatusEntity;
+    }
+
+    //
+    // LEVEL 3
+    //
+    protected function getSearcherRequestsCount($alias,$year,$month,$day,$hour)
+    {
+        return $this->searcherStatusRepository
+            ->getSearcherRequestsCount($alias, $year, $month, $day, $hour);
     }
 
 }

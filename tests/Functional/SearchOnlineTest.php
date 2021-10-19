@@ -16,6 +16,7 @@ use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherMapper;
+use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithDailyLimit;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithException;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithHourlyLimit;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Searcher\TestSearcherWithMultiResults;
@@ -258,27 +259,17 @@ class SearchOnlineTest extends AbstractTestCase
     {
         $mapper = new TestSearcherMapper();
         $searcherRegistry = new SearcherRegistry();
-        $searcherRegistry->register('searcher1', new TestSearcherWithHourlyLimit(), $mapper);
+        $searcherRegistry->register('searcher1', new TestSearcherWithDailyLimit(), $mapper);
         /**@var $onlineSearchService SearchOnlineBySearchersChain */
-        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry , 'currentDateTime' => Carbon::now()]);
+        $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
+        $onlineSearchService
+            ->input('filters', ['first_name' => 'Ahma111111'])
+            ->input('searchersAliases', ['searcher1'])
+            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
+            ->process();
 
-        $onlineSearchService
-            ->input('filters', ['first_name' => 'Ahmededa111111dd'])
-            ->input('searchersAliases', ['searcher1'])
-            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
-            ->process();
-        $onlineSearchService
-            ->input('filters', ['first_name' => 'Ahma111ede111jk'])
-            ->input('searchersAliases', ['searcher1'])
-            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
-            ->process();
-        $outputs = $onlineSearchService
-            ->input('filters', ['first_name' => 'Ahma111ede111'])
-            ->input('searchersAliases', ['searcher1'])
-            ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
-            ->process();
-      //  dd(count($outputs->output('search_requests')));
-        $this->assertTrue(true);
+  
+
     }
 
 
