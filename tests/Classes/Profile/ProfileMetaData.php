@@ -21,6 +21,14 @@ class ProfileMetaData extends Model implements IProfileMetaDataEntity,IProfileMe
       'meta_key',
       'meta_value',
     ];
+
+    protected $hidden =[
+        'id',
+        'profile_id',
+        'created_at',
+        'updated_at',
+    ];
+
     public function getProfileId(): int|string
     {
       return $this->profile_id;

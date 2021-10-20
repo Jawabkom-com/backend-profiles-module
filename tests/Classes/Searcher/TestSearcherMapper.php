@@ -2,6 +2,7 @@
 
 namespace Jawabkom\Backend\Module\Profile\Test\Classes\Searcher;
 
+use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
@@ -18,17 +19,23 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileAddEditMethods;
+use Jawabkom\Backend\Module\Profile\Trait\ProfileHashTrait;
+use Jawabkom\Backend\Module\Profile\Trait\ProfileToArrayTrait;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 
 class TestSearcherMapper implements IProfileEntityMapper
 {
     use ProfileAddEditMethods;
+    use ProfileToArrayTrait;
+    USE ProfileHashTrait;
     private IDependencyInjector $di;
-    private IProfileEntity $profile;
+    private IProfileRepository $repository;
+    private IArrayHashing $arrayHashing;
 
     public function __construct()
     {
         $this->di = new DI();
+        $this->arrayHashing = $this->di->make(IArrayHashing::class);
     }
 
     /**
@@ -40,9 +47,9 @@ class TestSearcherMapper implements IProfileEntityMapper
        $personals = $searchResult['possible_persons']??[];
         $profiles= [];
         if ($personals){
-            $newProfileEntity = $this->di->make(IProfileRepository::class);
+            $this->repository = $this->di->make(IProfileRepository::class);
             foreach ($personals as $personal){
-                $this->profile = $newProfileEntity->createEntity();
+                $this->profile = $this->repository->createEntity();
                 $this->createNewProfile($personal);
                 $this->addNamesEntityIfExists($personal['names']??[]);
                 $this->addJobsEntityIfExists($personal['jobs']??[]);
@@ -54,6 +61,7 @@ class TestSearcherMapper implements IProfileEntityMapper
                 $this->addRelationshipsEntityIfExists($personal['relationships']??[]);
                 $this->addSocialMediaEntityIfExists($personal['user_ids']??[]);
                 $this->addImagesEntityIfExists($personal['images']??[]);
+                $this->setProfileHash($this->profile);
                 $profiles[] = $this->profile;
             }
         }

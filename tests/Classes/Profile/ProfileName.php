@@ -28,6 +28,14 @@ class ProfileName extends Model implements IProfileNameEntity,IProfileNameReposi
       'last',
       'display',
     ];
+
+    protected $hidden =[
+        'id',
+        'profile_id',
+        'created_at',
+        'updated_at',
+    ];
+
     public function getProfileId(): int|string
     {
       return  $this->profile_id;

@@ -22,6 +22,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Backend\Module\Profile\Exception\ProfileEntityExists;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileAddEditMethods;
+use Jawabkom\Backend\Module\Profile\Trait\ProfileHashTrait;
 use Jawabkom\Backend\Module\Profile\Trait\ValidationInputsTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
@@ -30,6 +31,7 @@ class CreateProfile extends AbstractService
 {
     use ProfileAddEditMethods;
     use ValidationInputsTrait;
+    use ProfileHashTrait;
 
     protected IProfileRepository $repository;
     protected array $profileStructure = [
@@ -106,9 +108,9 @@ class CreateProfile extends AbstractService
                 $this->$processingMethodName($profileEntity, $profilePartInput);
             }
         }
-
         $this->setProfileHash($profileEntity);
-        $this->checkHashExist($profileEntity->hash);
+        $this->checkProfileIsExistBy($profileEntity->hash);
+
         $this->repository->saveEntity($profileEntity);
         return $profileEntity;
     }
@@ -117,10 +119,9 @@ class CreateProfile extends AbstractService
     // LEVEL 2
     //
 
-    protected function checkHashExist(string $hash)
+    protected function checkProfileIsExistBy(string $hash)
     {
-       $checkHashExist = $this->repository->getByHash($hash);
-       if (!empty($checkHashExist))
+       if ($this->repository->hashExist($hash))
            throw new ProfileEntityExists('Profile Entity Exist');
     }
 
@@ -262,12 +263,4 @@ class CreateProfile extends AbstractService
             $profileEntity->addMetaData($metaObj);
         }
     }
-
-    protected function setProfileHash(IProfileEntity $profileEntity)
-    {
-        $profileToArray = $profileEntity->toArray();
-        unset($profileToArray['hash']);
-        $profileEntity->setHash($this->arrayHashing->hash($profileToArray));
-    }
-
 }

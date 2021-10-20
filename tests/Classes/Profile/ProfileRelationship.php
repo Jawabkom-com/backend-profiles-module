@@ -28,6 +28,14 @@ class ProfileRelationship extends Model implements IProfileRelationshipEntity,IP
       'last_name',
       'person_id',
     ];
+
+    protected $hidden =[
+        'id',
+        'profile_id',
+        'created_at',
+        'updated_at',
+    ];
+
     public function getProfileId(): int|string
     {
         return $this->profile_id;

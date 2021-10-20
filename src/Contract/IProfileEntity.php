@@ -117,6 +117,7 @@ interface IProfileEntity extends IEntity
 
     public function addMetaData(IProfileMetaDataEntity $profileMetaDataEntity);
     public function getMetaData():iterable;
+    public function profileToArray(iterable $profile):array;
     public function toArray();
 
 }

@@ -25,6 +25,13 @@ class ProfileSkill extends Model implements IProfileSkillEntity,IProfileSkillRep
       'skill',
     ];
 
+    protected $hidden =[
+        'id',
+        'profile_id',
+        'created_at',
+        'updated_at',
+    ];
+
     public function getProfileId(): int|string
     {
        return $this->profile_id;

@@ -6,7 +6,6 @@ use Classes\Database\Factories\ProfileFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\DB;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationEntity;
@@ -23,7 +22,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
-use Jawabkom\Backend\Module\Profile\SimpleSearchFiltersBuilder;
+use Jawabkom\Backend\Module\Profile\Trait\ProfileToArrayTrait;
 use Jawabkom\Standard\Contract\IAbstractFilter;
 use Jawabkom\Standard\Contract\IAndFilterComposite;
 use Jawabkom\Standard\Contract\IEntity;
@@ -38,11 +37,12 @@ use Jawabkom\Standard\Contract\IOrFilterComposite;
  * @property string $place_of_birth
  * @property string $data_source
  * @property int|string $id
+ * @property string $hash
  */
 class Profile extends Model implements IProfileEntity, IProfileRepository
 {
     use HasFactory;
-
+    use ProfileToArrayTrait;
     protected $fillable = [
         'profile_id',
         'hash',
@@ -51,7 +51,9 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
         'place_of_birth',
         'data_source',
     ];
-
+    protected $hidden =[
+        'id'
+    ];
     public function setHash(string $hash)
     {
         $this->hash= $hash;
@@ -273,6 +275,7 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
         try {
             return (boolean)$entity->save();
         } catch (\Throwable $exception) {
+            dd($exception);
             return false;
         }
     }
@@ -382,9 +385,9 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
         return $this->where('profile_id', $profileId)->first();
     }
 
-    public function getByHash(string $hash): null|IEntity|IProfileEntity|IProfileRepository
+    public function hashExist(string $hash): bool
     {
-        return $this->where('hash', $hash)->first();
+      return $this->where('hash',$hash)->exists();
     }
 
     /**

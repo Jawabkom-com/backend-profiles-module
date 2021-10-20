@@ -22,6 +22,14 @@ class ProfileUsername extends Model implements IProfileUsernameEntity,IProfileUs
       'valid_since',
       'username',
     ];
+
+    protected $hidden =[
+        'id',
+        'profile_id',
+        'created_at',
+        'updated_at',
+    ];
+
     public function getProfileId(): int|string
     {
        return $this->profile_id;
