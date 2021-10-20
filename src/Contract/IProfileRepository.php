@@ -21,6 +21,7 @@ interface IProfileRepository extends IRepository {
      */
     public function getByFilters(IFilterComposite $filterComposite = null, array $orderBy = [], int $page = 1, int $perPage=0):iterable;
     public function getByProfileId(string|int $profileId):null|IEntity|IProfileEntity|IProfileRepository;
+    public function getByHash(string $hash):null|IEntity|IProfileEntity|IProfileRepository;
     public function deleteEntity(IProfileEntity|IEntity $entity):bool;
 
 }

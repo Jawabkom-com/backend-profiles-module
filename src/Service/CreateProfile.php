@@ -19,6 +19,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
+use Jawabkom\Backend\Module\Profile\Exception\ProfileEntityExists;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileAddEditMethods;
 use Jawabkom\Backend\Module\Profile\Trait\ValidationInputsTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
@@ -104,7 +105,7 @@ class CreateProfile extends AbstractService
         }
 
         $this->setProfileHash($profileEntity);
-        // todo: make sure there is no other profiles with the same hash
+        $this->checkHashExist($profileEntity->hash);
         $this->repository->saveEntity($profileEntity);
         return $profileEntity;
     }
@@ -112,6 +113,14 @@ class CreateProfile extends AbstractService
     //
     // LEVEL 2
     //
+
+    protected function checkHashExist(string $hash)
+    {
+       $checkHashExist = $this->repository->getByHash($hash);
+       if (!empty($checkHashExist))
+           throw new ProfileEntityExists('Profile Entity Exist');
+    }
+
     protected function processNames(IProfileEntity $profileEntity, array $names)
     {
         $repository = $this->di->make(IProfileNameRepository::class);

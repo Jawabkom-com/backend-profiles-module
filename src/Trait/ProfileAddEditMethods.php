@@ -25,7 +25,10 @@ trait ProfileAddEditMethods
         if($generateId) {
             $profileEntity->setProfileId(Uuid::uuid4());
         }
+        $profileEntity->setHash(sha1(Uuid::uuid4()));
+
         $profileEntity->setGender($inputs['gender'] ?? '');
+
         $profileEntity->setDataSource($inputs['data_source'] ?? '');
         $profileEntity->setPlaceOfBirth($inputs['place_of_birth'] ?? '');
         if(isset($inputs['date_of_birth']))

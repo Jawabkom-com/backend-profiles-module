@@ -44,11 +44,22 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
 
     protected $fillable = [
         'profile_id',
+        'hash',
         'gender',
         'date_of_birth',
         'place_of_birth',
         'data_source',
     ];
+
+    public function setHash(string $hash)
+    {
+        $this->hash= $hash;
+    }
+
+    public function getHash(): string
+    {
+        return $this->hash;
+    }
 
     public function getProfileId(): int|string
     {
@@ -355,6 +366,11 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
     public function getByProfileId(int|string $profileId): null|IEntity|IProfileEntity|IProfileRepository
     {
         return $this->where('profile_id', $profileId)->first();
+    }
+
+    public function getByHash(string $hash): null|IEntity|IProfileEntity|IProfileRepository
+    {
+        return $this->where('hash', $hash)->first();
     }
 
     /**

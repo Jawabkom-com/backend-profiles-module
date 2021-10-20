@@ -10,7 +10,8 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilt
     DI,
     Search\SearcherStatus,
     Search\SearchRequest};
-use Jawabkom\Backend\Module\Profile\Contract\{IProfileAddressEntity,
+use Jawabkom\Backend\Module\Profile\Contract\{IArrayHashing,
+    IProfileAddressEntity,
     IProfileAddressRepository,
     IProfileCriminalRecordEntity,
     IProfileCriminalRecordRepository,
@@ -41,6 +42,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{IProfileAddressEntity,
     ISearcherStatusRepository,
     ISearchFiltersBuilder,
     ISearchRequestRepository};
+use Jawabkom\Backend\Module\Profile\BasicArrayHashing;
 use Jawabkom\Backend\Module\Profile\SimpleSearchFiltersBuilder;
 use Jawabkom\Standard\Contract\IAndFilterComposite;
 use Jawabkom\Standard\Contract\IOrFilterComposite;
@@ -104,7 +106,8 @@ class ProfileServiceProvider extends ServiceProvider
             IFilter::class                               => Filter::class,
             ISearchFiltersBuilder::class                 => SimpleSearchFiltersBuilder::class,
             ISearchRequestRepository::class              => SearchRequest::class,
-            ISearcherStatusRepository::class              => SearcherStatus::class
+            ISearcherStatusRepository::class             => SearcherStatus::class,
+            IArrayHashing::class                         => BasicArrayHashing::class
         ];
 
         foreach ($toBind as $interface => $implementation) {
