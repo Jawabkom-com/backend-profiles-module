@@ -104,6 +104,7 @@ class CreateProfile extends AbstractService
         }
 
         $this->setProfileHash($profileEntity);
+        // todo: make sure there is no other profiles with the same hash
         $this->repository->saveEntity($profileEntity);
         return $profileEntity;
     }
