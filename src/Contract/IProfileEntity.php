@@ -21,6 +21,9 @@ interface IProfileEntity extends IEntity
     public function setDataSource(string $dataSource );
     public function getDataSource():string;
 
+    public function setHash(string $hash);
+    public function getHash():string;
+
     public function addName(IProfileNameEntity $IProfileEntityName);
 
     /**
@@ -111,5 +114,7 @@ interface IProfileEntity extends IEntity
      * @return IProfileCriminalRecordEntity[]
      */
     public function getCriminalRecords():iterable;
+
+    public function toArray();
 
 }
