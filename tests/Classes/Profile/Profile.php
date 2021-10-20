@@ -477,4 +477,13 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
         return ProfileFactory::new();
     }
 
+    public function setHash(string $hash)
+    {
+        // TODO: Implement setHash() method.
+    }
+
+    public function getHash(): string
+    {
+        // TODO: Implement getHash() method.
+    }
 }
