@@ -12,7 +12,9 @@ trait ProfileHashTrait
         $cloneProfileEntity = $profileEntity->replicate();
         $profileToArray = $this->repository->profileToArray($cloneProfileEntity);
         if (array_key_exists('hash',$profileToArray))unset($profileToArray['hash']);
-        $profileEntity->setHash($this->arrayHashing->hash($profileToArray));
+        if (array_key_exists('profile_id',$profileToArray))unset($profileToArray['profile_id']);
+        $hash = $this->arrayHashing->hash($profileToArray);
+        $profileEntity->setHash($hash);
     }
 
 }

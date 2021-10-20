@@ -98,6 +98,9 @@ class CreateProfile extends AbstractService
         $this->validateMetaDataInputs($profile['meta_data'] ?? []);
     }
 
+    /**
+     * @throws ProfileEntityExists
+     */
     protected function createNewProfileRecord($profileInputs): IProfileEntity
     {
         $profileEntity = $this->repository->createEntity();

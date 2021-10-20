@@ -32,6 +32,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
+use Jawabkom\Backend\Module\Profile\Exception\ProfileEntityExists;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
@@ -787,4 +788,20 @@ class CreateProfileTest extends AbstractTestCase
             'meta_key' => $meta[0]->getMetaKey()
         ]);
     }
+
+    public function testDuplicateProfileData(){
+
+        $userData = $this->dummyBasicProfileData();
+        $profileOne = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+        $this->expectException(ProfileEntityExists::class);
+        $profileTwo = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+/*        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);*/
+    }
+
 }
