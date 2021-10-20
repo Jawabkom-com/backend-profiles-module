@@ -90,6 +90,13 @@ trait DummyTrait
             'country'=>$this->faker->countryCode,
         ];
     }
+    private function dummyMetaData()
+    {
+        return [
+            'key'=>'email',
+            'value'=>$this->faker->email,
+        ];
+    }
 
     private function dummyjobsData()
     {
@@ -178,6 +185,7 @@ trait DummyTrait
         $userData['criminal_records'][] = $this->dummyCriminalRecordsData();
         $userData['addresses'][] = $this->dummyAddressData();
         $userData['names'][] = $this->dummyNamesData();
+        $userData['meta_data'][] = $this->dummyMetaData();
         return $userData;
     }
 

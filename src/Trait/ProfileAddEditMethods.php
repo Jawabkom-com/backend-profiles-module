@@ -10,6 +10,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileImageEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileMetaDataEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipEntity;
@@ -166,6 +167,12 @@ trait ProfileAddEditMethods
         $profileUsernameEntity->setProfileId($profileEntity->getProfileId());
         $profileUsernameEntity->setValidSince($username['valid_since'] ?? '');
         $profileUsernameEntity->setUsername($username['username'] ?? '');
+    }
+    protected function fillMetaDataEntity(IProfileEntity $profileEntity, IProfileMetaDataEntity $profileMetaDataEntity, array $meta)
+    {
+        $profileMetaDataEntity->setProfileId($profileEntity->getProfileId());
+        $profileMetaDataEntity->setMetaKey($meta['key'] ?? '');
+        $profileMetaDataEntity->setMetaValue($meta['value'] ?? '');
     }
 
 }

@@ -50,7 +50,8 @@ class AbstractTestCase extends TestCaseAlisa
             "CreateProfileSocialProfilesTable",
             "CreateProfileUsernamesTable",
             "CreateSearchRequestsTable",
-            "CreateSearcherStatusesTable"
+            "CreateSearcherStatusesTable",
+            "CreateProfileMetaDataTable",
         ];
         foreach ($classes as $class) {
             $class = "\\Jawabkom\\Backend\\Module\\Profile\\Test\\Classes\\Database\\Migrations\\{$class}";

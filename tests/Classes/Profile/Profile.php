@@ -15,6 +15,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileImageEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileMetaDataEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipEntity;
@@ -254,6 +255,19 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
         return $criminalRecord->isNotEmpty() ? $criminalRecord : [];
     }
 
+
+    public function addMetaData(IProfileMetaDataEntity $profileMetaDataEntity)
+    {
+       $profileMetaDataEntity->saveEntity($profileMetaDataEntity);
+    }
+
+    public function getMetaData(): iterable
+    {
+        $metaData = $this->metaData()->get();
+        return $metaData->isNotEmpty() ? $metaData : [];
+    }
+
+
     public function saveEntity(IProfileEntity|IEntity $entity): bool
     {
         try {
@@ -468,10 +482,14 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
         return $this->hasMany(ProfileSocialProfile::class, 'profile_id', 'profile_id');
     }
 
+    public function metaData(): HasMany
+    {
+        return $this->hasMany(ProfileMetaData::class, 'profile_id', 'profile_id');
+    }
+
     /*************************** Factory *********************************/
     protected static function newFactory(): ProfileFactory
     {
         return ProfileFactory::new();
     }
-
 }

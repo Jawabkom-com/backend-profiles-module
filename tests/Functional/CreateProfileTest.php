@@ -17,6 +17,8 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileJobEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileMetaDataEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileMetaDataRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
@@ -313,6 +315,32 @@ class CreateProfileTest extends AbstractTestCase
             'language' => $locals[0]->getLanguage()
         ]);
     }
+    public function testProfileWithMetaData(){
+
+        $userData = $this->dummyBasicProfileData();
+        $userData['meta_data'][] = $this->dummyMetaData();
+        $profile = $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+        $this->assertTrue(true);
+        $this->assertNotEmpty($profile);
+        $this->assertInstanceOf(IProfileRepository::class,$profile);
+        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertDatabaseHas('profiles',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+
+        $meta =$profile->getMetaData();
+        $this->assertNotEmpty($meta);
+        $this->assertInstanceOf(IProfileMetaDataRepository::class,$meta[0]);
+        $this->assertInstanceOf(IProfileMetaDataEntity::class,$meta[0]);
+        $this->assertDatabaseHas('profile_meta_data',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_meta_data',[
+            'meta_key' => $meta[0]->getMetaKey()
+        ]);
+    }
 
     public function testProfileWithJobs(){
 
@@ -569,6 +597,15 @@ class CreateProfileTest extends AbstractTestCase
             ->process()
             ->output('profile');
     }
+    public function testCheckInvalidProfileMetaDataInputStructure(){
+        $this->expectException(InvalidInputStructure::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['meta_data'][] = $this->dummyMetaData();
+        $userData['meta_data'][0][$this->faker->word]=$this->faker->word;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
 
 
     public function testCreateFullProfile(){
@@ -736,6 +773,18 @@ class CreateProfileTest extends AbstractTestCase
         ]);
         $this->assertDatabaseHas('profile_names',[
             'display' => $names[0]->getDisplay()
+        ]);
+
+        /*** Meta ***/
+        $meta =$profile->getMetaData();
+        $this->assertNotEmpty($meta);
+        $this->assertInstanceOf(IProfileMetaDataRepository::class,$meta[0]);
+        $this->assertInstanceOf(IProfileMetaDataEntity::class,$meta[0]);
+        $this->assertDatabaseHas('profile_meta_data',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_meta_data',[
+            'meta_key' => $meta[0]->getMetaKey()
         ]);
     }
 }
