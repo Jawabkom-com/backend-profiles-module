@@ -54,6 +54,7 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
     protected $hidden =[
         'id'
     ];
+
     public function setHash(string $hash)
     {
         $this->hash= $hash;
@@ -114,170 +115,10 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
         return $this->data_source;
     }
 
-    public function addName(IProfileNameEntity $IProfileEntityName)
-    {
-        $IProfileEntityName->saveEntity($IProfileEntityName);
-    }
-
-    public function getNames(): iterable
-    {
-        $names = $this->ProfileName()->get();
-        return $names->isNotEmpty() ? $names : [];
-    }
-
-    public function addPhone(IProfilePhoneEntity $IProfileEntityPhone)
-    {
-        return $IProfileEntityPhone->saveEntity($IProfileEntityPhone);
-    }
-
-    public function getPhones(): iterable
-    {
-        $phones = $this->profilePhone()->get();
-        return $phones->isNotEmpty() ? $phones : [];
-    }
-
-    public function addAddress(IProfileAddressEntity $IProfileEntityAddress)
-    {
-        $IProfileEntityAddress->saveEntity($IProfileEntityAddress);
-    }
-
-    public function getAddresses(): iterable
-    {
-        $addresses = $this->profileAddress()->get();
-        return $addresses->isNotEmpty() ? $addresses : [];
-    }
-
-    public function addUsername(IProfileUsernameEntity $IProfileEntityUsername)
-    {
-        $IProfileEntityUsername->saveEntity($IProfileEntityUsername);
-    }
-
-    public function getUsernames(): iterable
-    {
-        $usernames = $this->profileUsername()->get();
-        return $usernames->isNotEmpty() ? $usernames : [];
-    }
-
-    public function addEmail(IProfileEmailEntity $IProfileEntityEmail)
-    {
-        $IProfileEntityEmail->saveEntity($IProfileEntityEmail);
-    }
-
-    public function getEmails(): iterable
-    {
-        $emails = $this->profileEmail()->get();
-        return $emails->isNotEmpty() ? $emails : [];
-    }
-
-    public function addRelationship(IProfileRelationshipEntity $IProfileEntityRelationship)
-    {
-        $IProfileEntityRelationship->saveEntity($IProfileEntityRelationship);
-    }
-
-    public function getRelationships(): iterable
-    {
-        $relations = $this->profileRelationship()->get();
-        return $relations->isNotEmpty() ? $relations : [];
-    }
-
-    public function addSkill(IProfileSkillEntity $IProfileEntitySkill)
-    {
-        $IProfileEntitySkill->saveEntity($IProfileEntitySkill);
-    }
-
-    public function getSkills(): iterable
-    {
-        $skills = $this->profileSkill()->get();
-        return $skills->isNotEmpty() ? $skills : [];
-    }
-
-    public function addImage(IProfileImageEntity $IProfileEntityImage)
-    {
-        $IProfileEntityImage->saveEntity($IProfileEntityImage);
-    }
-
-    public function getImages(): iterable
-    {
-        $images = $this->profileImage()->get();
-        return $images->isNotEmpty() ? $images : [];
-    }
-
-    public function addLanguage(IProfileLanguageEntity $IProfileEntityLanguage)
-    {
-        $IProfileEntityLanguage->saveEntity($IProfileEntityLanguage);
-    }
-
-    public function getLanguages(): iterable
-    {
-        $languages = $this->profileLanguage()->get();
-        return $languages->isNotEmpty() ? $languages : [];
-    }
-
-    public function addJob(IProfileJobEntity $IProfileEntityJob)
-    {
-        $IProfileEntityJob->saveEntity($IProfileEntityJob);
-    }
-
-    public function getJobs(): iterable
-    {
-        $jobs = $this->profileJob()->get();
-        return $jobs->isNotEmpty() ? $jobs : [];
-    }
-
-    public function addEducation(IProfileEducationEntity $IProfileEntityEducation)
-    {
-        $IProfileEntityEducation->saveEntity($IProfileEntityEducation);
-    }
-
-    public function getEducations(): iterable
-    {
-        $educations = $this->profileEducation()->get();
-        return $educations->isNotEmpty() ? $educations : [];
-    }
-
-    public function addSocialProfile(IProfileSocialProfileEntity $IProfileEntitySocialProfile)
-    {
-        $IProfileEntitySocialProfile->saveEntity($IProfileEntitySocialProfile);
-    }
-
-    public function getSocialProfiles(): iterable
-    {
-        $socials = $this->profileSocialProfile()->get();
-        return $socials->isNotEmpty() ? $socials : [];
-    }
-
-    public function addCriminalRecord(IProfileCriminalRecordEntity $IProfileEntityCriminalRecord)
-    {
-        $IProfileEntityCriminalRecord->saveEntity($IProfileEntityCriminalRecord);
-    }
-
-    public function getCriminalRecords(): iterable
-    {
-        $criminalRecord = $this->profileCriminalRecord()->get();
-        return $criminalRecord->isNotEmpty() ? $criminalRecord : [];
-    }
-
-
-    public function addMetaData(IProfileMetaDataEntity $profileMetaDataEntity)
-    {
-       $profileMetaDataEntity->saveEntity($profileMetaDataEntity);
-    }
-
-    public function getMetaData(): iterable
-    {
-        $metaData = $this->metaData()->get();
-        return $metaData->isNotEmpty() ? $metaData : [];
-    }
-
 
     public function saveEntity(IProfileEntity|IEntity $entity): bool
     {
-        try {
-            return (boolean)$entity->save();
-        } catch (\Throwable $exception) {
-            dd($exception);
-            return false;
-        }
+        return $entity->save();
     }
 
     public function createEntity(array $params = []): IEntity|IProfileEntity
@@ -373,11 +214,7 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
 
     public function deleteEntity(IProfileEntity|IEntity $entity): bool
     {
-        try {
-            return (boolean)$entity->delete();
-        } catch (\Throwable $exception) {
-            return false;
-        }
+        return $entity->delete();
     }
 
     public function getByProfileId(int|string $profileId): null|IEntity|IProfileEntity|IProfileRepository

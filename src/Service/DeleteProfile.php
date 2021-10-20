@@ -45,10 +45,10 @@ class DeleteProfile extends AbstractService
     {
         $profileId = $this->getInput('profile_id');
         $this->validate($profileId);
-        $profileEntirety = $this->getProfileEntirety($profileId);
-        $this->deleteProfileEntityRelated($profileEntirety);
-        $status          = $profileEntirety->deleteEntity($profileEntirety);
-        $this->setOutput('status',$status);
+        $profileEntity = $this->getProfileEntirety($profileId);
+        $this->deleteProfileEntityRelated($profileEntity);
+        $status = $profileEntity->deleteEntity($profileEntity);
+        $this->setOutput('status', $status);
         return $this;
     }
 
@@ -60,204 +60,205 @@ class DeleteProfile extends AbstractService
     }
 
     /**
-     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntity
      */
-    protected function deleteProfileJobsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety): void
+    protected function deleteProfileJobsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $jobs = $profileEntirety->getJobs();
-        if ($jobs){
+        $jobs = $profileEntity->getJobs();
+        if ($jobs) {
             $jobRepository = $this->di->make(IProfileJobRepository::class);
-            foreach ($jobs as $job){
+            foreach ($jobs as $job) {
                 $jobRepository->deleteEntity($job);
             }
         }
     }
 
     /**
-     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntity
      */
-    protected function deleteProfileNamesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    protected function deleteProfileNamesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $names = $profileEntirety->getNames();
-        if ($names){
+        $names = $profileEntity->getNames();
+        if ($names) {
             $nameRepository = $this->di->make(IProfileNameRepository::class);
-            foreach ($names as $name){
+            foreach ($names as $name) {
                 $nameRepository->deleteEntity($name);
             }
         }
     }
 
     /**
-     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntity
      */
-    protected function deleteProfileAddressesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    protected function deleteProfileAddressesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $addresses = $profileEntirety->getAddresses();
-        if ($addresses){
+        $addresses = $profileEntity->getAddresses();
+        if ($addresses) {
             $addressRepository = $this->di->make(IProfileAddressRepository::class);
-            foreach ($addresses as $address){
+            foreach ($addresses as $address) {
                 $addressRepository->deleteEntity($address);
             }
         }
     }
+
     /**
-     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntity
      */
-    protected function deleteProfileCriminalRecordsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    protected function deleteProfileCriminalRecordsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $criminalRecords = $profileEntirety->getCriminalRecords();
-        if ($criminalRecords){
+        $criminalRecords = $profileEntity->getCriminalRecords();
+        if ($criminalRecords) {
             $criminalRecordRepository = $this->di->make(IProfileCriminalRecordRepository::class);
-            foreach ($criminalRecords as $criminalRecord){
+            foreach ($criminalRecords as $criminalRecord) {
                 $criminalRecordRepository->deleteEntity($criminalRecord);
             }
         }
     }
 
     /**
-     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntity
      */
-    protected function deleteProfileSocialProfilesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    protected function deleteProfileSocialProfilesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $socialProfiles = $profileEntirety->getSocialProfiles();
-        if ($socialProfiles){
+        $socialProfiles = $profileEntity->getSocialProfiles();
+        if ($socialProfiles) {
             $socialProfileRepository = $this->di->make(IProfileSocialProfileRepository::class);
-            foreach ($socialProfiles as $socialProfile){
+            foreach ($socialProfiles as $socialProfile) {
                 $socialProfileRepository->deleteEntity($socialProfile);
             }
         }
     }
 
     /**
-     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntity
      */
-    protected function deleteProfileLanguagesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    protected function deleteProfileLanguagesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $languages = $profileEntirety->getLanguages();
-        if ($languages){
+        $languages = $profileEntity->getLanguages();
+        if ($languages) {
             $languageRepository = $this->di->make(IProfileLanguageRepository::class);
-            foreach ($languages as $language){
+            foreach ($languages as $language) {
                 $languageRepository->deleteEntity($language);
             }
         }
     }
 
     /**
-     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntity
      */
-    protected function deleteProfileSkillsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    protected function deleteProfileSkillsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $skills = $profileEntirety->getSkills();
-        if ($skills){
+        $skills = $profileEntity->getSkills();
+        if ($skills) {
             $skillRepository = $this->di->make(IProfileSkillRepository::class);
-            foreach ($skills as $skill){
+            foreach ($skills as $skill) {
                 $skillRepository->deleteEntity($skill);
             }
         }
     }
 
     /**
-     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntity
      */
-    protected function deleteProfileImagesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    protected function deleteProfileImagesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $images = $profileEntirety->getImages();
-        if ($images){
+        $images = $profileEntity->getImages();
+        if ($images) {
             $imageRepository = $this->di->make(IProfileImageRepository::class);
-            foreach ($images as $image){
+            foreach ($images as $image) {
                 $imageRepository->deleteEntity($image);
             }
         }
     }
 
     /**
-     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntity
      */
-    protected function deleteProfileRelationshipsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    protected function deleteProfileRelationshipsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $relationships = $profileEntirety->getRelationships();
-        if ($relationships){
+        $relationships = $profileEntity->getRelationships();
+        if ($relationships) {
             $relationshipRepository = $this->di->make(IProfileRelationshipRepository::class);
-            foreach ($relationships as $relationship){
+            foreach ($relationships as $relationship) {
                 $relationshipRepository->deleteEntity($relationship);
             }
         }
     }
 
     /**
-     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntity
      */
-    protected function deleteProfileEmailsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    protected function deleteProfileEmailsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $emails = $profileEntirety->getEmails();
-        if ($emails){
+        $emails = $profileEntity->getEmails();
+        if ($emails) {
             $emailRepository = $this->di->make(IProfileEmailRepository::class);
-            foreach ($emails as $email){
+            foreach ($emails as $email) {
                 $emailRepository->deleteEntity($email);
             }
         }
     }
 
     /**
-     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntity
      */
-    protected function deleteProfileUsernamesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    protected function deleteProfileUsernamesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $userNames = $profileEntirety->getUsernames();
-        if ($userNames){
+        $userNames = $profileEntity->getUsernames();
+        if ($userNames) {
             $nameRepository = $this->di->make(IProfileUsernameRepository::class);
-            foreach ($userNames as $name){
+            foreach ($userNames as $name) {
                 $nameRepository->deleteEntity($name);
             }
         }
     }
 
     /**
-     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntity
      */
-    protected function deleteProfilePhonesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    protected function deleteProfilePhonesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $phones = $profileEntirety->getPhones();
-        if ($phones){
+        $phones = $profileEntity->getPhones();
+        if ($phones) {
             $phoneRepository = $this->di->make(IProfilePhoneEntity::class);
-            foreach ($phones as $phone){
+            foreach ($phones as $phone) {
                 $phoneRepository->deleteEntity($phone);
             }
         }
     }
 
     /**
-     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntity
      */
-    protected function deleteProfileEducationsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety):void
+    protected function deleteProfileEducationsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $educations = $profileEntirety->getEducations();
-        if ($educations){
+        $educations = $profileEntity->getEducations();
+        if ($educations) {
             $educationRepository = $this->di->make(IProfileEducationRepository::class);
-            foreach ($educations as $education){
+            foreach ($educations as $education) {
                 $educationRepository->deleteEntity($education);
             }
         }
     }
 
     /**
-     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntirety
+     * @param IProfileEntity|IProfileRepository|IEntity|null $profileEntity
      */
-    protected function deleteProfileEntityRelated(IProfileEntity|IProfileRepository|IEntity|null $profileEntirety): void
+    protected function deleteProfileEntityRelated(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $this->deleteProfileJobsIfExistes($profileEntirety);
-        $this->deleteProfileNamesIfExistes($profileEntirety);
-        $this->deleteProfileAddressesIfExistes($profileEntirety);
-        $this->deleteProfileCriminalRecordsIfExistes($profileEntirety);
-        $this->deleteProfileSocialProfilesIfExistes($profileEntirety);
-        $this->deleteProfileLanguagesIfExistes($profileEntirety);
-        $this->deleteProfileSkillsIfExistes($profileEntirety);
-        $this->deleteProfileImagesIfExistes($profileEntirety);
-        $this->deleteProfileRelationshipsIfExistes($profileEntirety);
-        $this->deleteProfileEmailsIfExistes($profileEntirety);
-        $this->deleteProfileUsernamesIfExistes($profileEntirety);
-        $this->deleteProfilePhonesIfExistes($profileEntirety);
-        $this->deleteProfileEducationsIfExistes($profileEntirety);
+        $this->deleteProfileJobsIfExistes($profileEntity);
+        $this->deleteProfileNamesIfExistes($profileEntity);
+        $this->deleteProfileAddressesIfExistes($profileEntity);
+        $this->deleteProfileCriminalRecordsIfExistes($profileEntity);
+        $this->deleteProfileSocialProfilesIfExistes($profileEntity);
+        $this->deleteProfileLanguagesIfExistes($profileEntity);
+        $this->deleteProfileSkillsIfExistes($profileEntity);
+        $this->deleteProfileImagesIfExistes($profileEntity);
+        $this->deleteProfileRelationshipsIfExistes($profileEntity);
+        $this->deleteProfileEmailsIfExistes($profileEntity);
+        $this->deleteProfileUsernamesIfExistes($profileEntity);
+        $this->deleteProfilePhonesIfExistes($profileEntity);
+        $this->deleteProfileEducationsIfExistes($profileEntity);
     }
 
     /**
@@ -267,11 +268,11 @@ class DeleteProfile extends AbstractService
      */
     protected function getProfileEntirety(mixed $profileId): IEntity|IProfileRepository|IProfileEntity
     {
-        $profileEntirety = $this->repository->getByProfileId($profileId);
-            if (empty($profileEntirety)){
-                throw new EntityNotExists("Profile ID not exists");
-            }
-        return $profileEntirety;
+        $profileEntity = $this->repository->getByProfileId($profileId);
+        if (empty($profileEntity)) {
+            throw new EntityNotExists("Profile ID not exists");
+        }
+        return $profileEntity;
     }
 
 }

@@ -2,8 +2,6 @@
 
 namespace Jawabkom\Backend\Module\Profile\Service;
 
-use Jawabkom\Backend\Module\Profile\BasicArrayHashing;
-use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationRepository;
@@ -26,6 +24,7 @@ use Jawabkom\Backend\Module\Profile\Trait\ProfileHashTrait;
 use Jawabkom\Backend\Module\Profile\Trait\ValidationInputsTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
+use Ramsey\Uuid\Uuid;
 
 class CreateProfile extends AbstractService
 {
@@ -53,13 +52,11 @@ class CreateProfile extends AbstractService
         'data_source',
         'meta_data',
     ];
-    private IArrayHashing $arrayHashing;
 
-    public function __construct(IDependencyInjector $di, IProfileRepository $repository, IArrayHashing $arrayHashing)
+    public function __construct(IDependencyInjector $di, IProfileRepository $repository)
     {
         parent::__construct($di);
         $this->repository = $repository;
-        $this->arrayHashing = $arrayHashing;
     }
 
     //
@@ -104,7 +101,8 @@ class CreateProfile extends AbstractService
     protected function createNewProfileRecord($profileInputs): IProfileEntity
     {
         $profileEntity = $this->repository->createEntity();
-        $this->fillProfileEntity($profileEntity, $profileInputs, true);
+        $profileEntity->setProfileId(Uuid::uuid4());
+        $this->fillProfileEntity($profileEntity, $profileInputs);
         foreach ($profileInputs as $profilePartKey => $profilePartInput) {
             $processingMethodName = "process" . str_replace('_', '', ucwords($profilePartKey, '_'));
             if (method_exists($this, $processingMethodName)) {
@@ -112,8 +110,7 @@ class CreateProfile extends AbstractService
             }
         }
         $this->setProfileHash($profileEntity);
-        $this->checkProfileIsExistBy($profileEntity->hash);
-
+        $this->assertProfileHashDoesNotExists( $profileEntity->getHash() );
         $this->repository->saveEntity($profileEntity);
         return $profileEntity;
     }
@@ -121,20 +118,13 @@ class CreateProfile extends AbstractService
     //
     // LEVEL 2
     //
-
-    protected function checkProfileIsExistBy(string $hash)
-    {
-       if ($this->repository->hashExist($hash))
-           throw new ProfileEntityExists('Profile Entity Exist');
-    }
-
     protected function processNames(IProfileEntity $profileEntity, array $names)
     {
         $repository = $this->di->make(IProfileNameRepository::class);
         foreach ($names as $name) {
             $nameObj = $repository->createEntity();
             $this->fillNameEntity($profileEntity, $nameObj, $name);
-            $profileEntity->addName($nameObj);
+            $repository->saveEntity($nameObj);
         }
     }
 
@@ -144,7 +134,7 @@ class CreateProfile extends AbstractService
         foreach ($addresses as $address) {
             $addressObj = $repository->createEntity();
             $this->fillAddressEntity($profileEntity, $addressObj, $address);
-            $profileEntity->addAddress($addressObj);
+            $repository->saveEntity($addressObj);
         }
     }
 
@@ -154,7 +144,7 @@ class CreateProfile extends AbstractService
         foreach ($criminalRecords as $criminalRecord) {
             $criminalRecordObj = $repository->createEntity();
             $this->fillCriminalRecordEntity($profileEntity, $criminalRecordObj, $criminalRecord);
-            $profileEntity->addCriminalRecord($criminalRecordObj);
+            $repository->saveEntity($criminalRecordObj);
         }
     }
 
@@ -164,7 +154,7 @@ class CreateProfile extends AbstractService
         foreach ($educations as $education) {
             $educationObj = $repository->createEntity();
             $this->fillEducationEntity($profileEntity, $educationObj, $education);
-            $profileEntity->addEducation($educationObj);
+            $repository->saveEntity($educationObj);
         }
     }
 
@@ -174,7 +164,7 @@ class CreateProfile extends AbstractService
         foreach ($emails as $email) {
             $emailObj = $repository->createEntity();
             $this->fillEmailEntity($profileEntity, $emailObj, $email);
-            $profileEntity->addEmail($emailObj);
+            $repository->saveEntity($emailObj);
         }
     }
 
@@ -184,7 +174,7 @@ class CreateProfile extends AbstractService
         foreach ($images as $image) {
             $imageObj = $repository->createEntity();
             $this->fillImageEntity($profileEntity, $imageObj, $image);
-            $profileEntity->addImage($imageObj);
+            $repository->saveEntity($imageObj);
         }
     }
 
@@ -194,7 +184,7 @@ class CreateProfile extends AbstractService
         foreach ($jobs as $job) {
             $jobObj = $repository->createEntity();
             $this->fillJobEntity($profileEntity, $jobObj, $job);
-            $profileEntity->addJob($jobObj);
+            $repository->saveEntity($jobObj);
         }
     }
 
@@ -204,7 +194,7 @@ class CreateProfile extends AbstractService
         foreach ($languages as $language) {
             $languageObj = $repository->createEntity();
             $this->fillLanguageEntity($profileEntity, $languageObj, $language);
-            $profileEntity->addLanguage($languageObj);
+            $repository->saveEntity($languageObj);
         }
     }
 
@@ -214,7 +204,7 @@ class CreateProfile extends AbstractService
         foreach ($phones as $phone) {
             $phoneObj = $repository->createEntity();
             $this->fillPhoneEntity($profileEntity, $phoneObj, $phone);
-            $profileEntity->addPhone($phoneObj);
+            $repository->saveEntity($phoneObj);
         }
     }
 
@@ -224,7 +214,7 @@ class CreateProfile extends AbstractService
         foreach ($relationships as $relationship) {
             $relationshipObj = $repository->createEntity();
             $this->fillRelationshipEntity($profileEntity, $relationshipObj, $relationship);
-            $profileEntity->addRelationship($relationshipObj);
+            $repository->saveEntity($relationshipObj);
         }
     }
 
@@ -234,7 +224,7 @@ class CreateProfile extends AbstractService
         foreach ($skills as $skill) {
             $skillObj = $repository->createEntity();
             $this->fillSkillEntity($profileEntity, $skillObj, $skill);
-            $profileEntity->addSkill($skillObj);
+            $repository->saveEntity($skillObj);
         }
     }
 
@@ -244,7 +234,7 @@ class CreateProfile extends AbstractService
         foreach ($socialProfiles as $socialProfile) {
             $socialProfileObj = $repository->createEntity();
             $this->fillSocialProfileEntity($profileEntity, $socialProfileObj, $socialProfile);
-            $profileEntity->addSocialProfile($socialProfileObj);
+            $repository->saveEntity($socialProfileObj);
         }
     }
 
@@ -254,16 +244,17 @@ class CreateProfile extends AbstractService
         foreach ($usernames as $username) {
             $usernameObj = $repository->createEntity();
             $this->fillUsernameEntity($profileEntity, $usernameObj, $username);
-            $profileEntity->addUsername($usernameObj);
+            $repository->saveEntity($usernameObj);
         }
     }
+
     protected function processMetaData(IProfileEntity $profileEntity, array $meta)
     {
         $repository = $this->di->make(IProfileMetaDataRepository::class);
         foreach ($meta as $value) {
             $metaObj = $repository->createEntity();
             $this->fillMetaDataEntity($profileEntity, $metaObj, $value);
-            $profileEntity->addMetaData($metaObj);
+            $repository->saveEntity($metaObj);
         }
     }
 }

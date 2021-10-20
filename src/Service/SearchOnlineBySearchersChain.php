@@ -11,13 +11,13 @@ use Jawabkom\Backend\Module\Profile\Contract\ISearchRequestRepository;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherExceededAllowedRequestsLimit;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherRegistryDoesNotExist;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
-use Jawabkom\Backend\Module\Profile\Trait\ResponseFormattedTrait;
+use Jawabkom\Backend\Module\Profile\Trait\ProfileHashTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 
 class SearchOnlineBySearchersChain extends AbstractService
 {
-    use  ResponseFormattedTrait;
+    use  ProfileHashTrait;
 
     protected IProfileRepository $repository;
     private SearcherRegistry $registry;
@@ -53,6 +53,7 @@ class SearchOnlineBySearchersChain extends AbstractService
         $searchersAliases = $this->getInput('searchersAliases', []);
         $this->validateSearchersChain($searchersAliases);
         $this->searchFiltersBuilder->setAllFilters($filter)->trim();
+
         $searchGroupHash = sha1(json_encode($this->searchFiltersBuilder->buildAsArray()));
         $cachedResultsByAliases = $this->getCachedResultsByAliases($searchGroupHash);
         $searchRequests = [];
@@ -62,27 +63,15 @@ class SearchOnlineBySearchersChain extends AbstractService
                 $isFromCache = isset($cachedResultsByAliases[$alias]);
                 $searchRequest = null; // reset the search request for each alias
                 $searchRequests[] = $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, $isFromCache);
-                if (!$isFromCache) {
-                    $searcher = $this->registry->getSearcher($alias);
-                    // TODO: check search limits, and throw exception
-                    $this->assertSearcherLimit($searcher, $alias);
-                    $results = $searcher->search($this->searchFiltersBuilder->build());
-                    $this->updateSearcherSearchLimit($alias);
-                    // TODO: update searcher search limit
-                } else {
-                    $results = $cachedResultsByAliases[$alias];
-                }
+                $results = $this->getSearchResults($isFromCache, $alias, $cachedResultsByAliases);
 
-                $mapper = $this->registry->getMapper($alias);
-                $profileEntities = $mapper->map($results);
+                $profileEntities = $this->mapResultsToProfileEntities($alias, $results);
                 if (count($profileEntities)) {
-                    if (!$isFromCache)
-                        foreach ($profileEntities as $profileEntity) {
-                            $profileEntity->setDataSource($alias);
-                            $this->repository->saveEntity($profileEntity);
-                        }
+                    //if (!$isFromCache)
+                    $this->saveResultsMappedProfile($profileEntities, $alias);
                     $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileEntities));
                     $responseFormatted = $this->formattedResponse($profileEntities);
+
                     $this->setOutput('response', $responseFormatted);
                     $this->setOutput('raw_result', $results);
 
@@ -99,8 +88,6 @@ class SearchOnlineBySearchersChain extends AbstractService
             }
         }
         $this->setOutput('search_requests', $searchRequests);
-
-
         return $this;
     }
 
@@ -149,7 +136,7 @@ class SearchOnlineBySearchersChain extends AbstractService
         $searchRequest->setMatchesCount(0);
         $searchRequest->setStatus('error');
         $searchRequest->setRequestSearchResults([]);
-        $searchRequest->addError("Time: " . date('Y-m-d H:i:s') . ", File: {$exception->getFile()}, Line: {$exception->getLine()}, Message: {$exception->getMessage()}, Type: ".get_class($exception));
+        $searchRequest->addError("Time: " . date('Y-m-d H:i:s') . ", File: {$exception->getFile()}, Line: {$exception->getLine()}, Message: {$exception->getMessage()}, Type: " . get_class($exception));
         $this->searchRequestRepository->saveEntity($searchRequest);
     }
 
@@ -179,8 +166,7 @@ class SearchOnlineBySearchersChain extends AbstractService
         if (empty($checkSearcherCreated)) {
             $SearcherObj = $this->createNewSearcherObj($alias);
             $this->searcherStatusRepository->saveEntity($SearcherObj);
-        } else
-        {
+        } else {
             $this->searcherStatusRepository->increaseSearcherRequestsCount($alias, $this->currentDateTime->format('Y'), $this->currentDateTime->format('m'), $this->currentDateTime->format('d'), $this->currentDateTime->format('H'));
         }
     }
@@ -200,7 +186,7 @@ class SearchOnlineBySearchersChain extends AbstractService
 
     protected function perDailyCheck(IProfileSearcher $searcher, string $alias)
     {
-        $perDayCount = $this->getSearcherRequestsCount($alias, $this->currentDateTime->format('Y'), $this->currentDateTime->format('m'), $this->currentDateTime->format('d'),null);
+        $perDayCount = $this->getSearcherRequestsCount($alias, $this->currentDateTime->format('Y'), $this->currentDateTime->format('m'), $this->currentDateTime->format('d'), null);
         if ($perDayCount >= $searcher->getDailyRequestsLimit() && $searcher->getDailyRequestsLimit() != 0) {
             throw new SearcherExceededAllowedRequestsLimit("Searcher Exceeded Limit");
         }
@@ -208,7 +194,7 @@ class SearchOnlineBySearchersChain extends AbstractService
 
     protected function perMonthlyCheck(IProfileSearcher $searcher, string $alias)
     {
-        $perMonthCount = $this->getSearcherRequestsCount($alias, $this->currentDateTime->format('Y'), $this->currentDateTime->format('m'),0,null);
+        $perMonthCount = $this->getSearcherRequestsCount($alias, $this->currentDateTime->format('Y'), $this->currentDateTime->format('m'), 0, null);
         if ($perMonthCount >= $searcher->getMonthlyRequestsLimit() && $searcher->getMonthlyRequestsLimit() != 0) {
             throw new SearcherExceededAllowedRequestsLimit("Searcher Exceeded Limit");
         }
@@ -229,10 +215,40 @@ class SearchOnlineBySearchersChain extends AbstractService
     //
     // LEVEL 3
     //
-    protected function getSearcherRequestsCount($alias,$year,$month,$day,$hour)
+    protected function getSearcherRequestsCount($alias, $year, $month, $day, $hour)
     {
         return $this->searcherStatusRepository
             ->getSearcherRequestsCount($alias, $year, $month, $day, $hour);
+    }
+
+    protected function getSearchResults(bool $isFromCache, mixed $alias, $cachedResultsByAliases): mixed
+    {
+        if (!$isFromCache) {
+            $searcher = $this->registry->getSearcher($alias);
+            $this->assertSearcherLimit($searcher, $alias);
+            $results = $searcher->search($this->searchFiltersBuilder->build());
+            $this->updateSearcherSearchLimit($alias);
+        } else {
+            $results = $cachedResultsByAliases[$alias];
+        }
+        return $results;
+    }
+
+    protected function mapResultsToProfileEntities(mixed $alias, mixed $results): iterable
+    {
+        $mapper = $this->registry->getMapper($alias);
+        $profileEntities = $mapper->map($results);
+        return $profileEntities;
+    }
+
+    protected function saveResultsMappedProfile(iterable $profileEntities, mixed $alias): void
+    {
+        foreach ($profileEntities as $profileEntity) {
+            $profileEntity->setDataSource($alias);
+            $this->setProfileHash($profileEntity);
+            if( !$this->repository->hashExist($profileEntity->getHash()) )
+                $this->repository->saveEntity($profileEntity);
+        }
     }
 
 }

@@ -21,12 +21,8 @@ use Ramsey\Uuid\Uuid;
 
 trait ProfileAddEditMethods
 {
-    protected function fillProfileEntity(IProfileEntity $profileEntity, array $inputs, bool $generateId = true)
+    protected function fillProfileEntity(IProfileEntity $profileEntity, array $inputs)
     {
-        if($generateId) {
-            $profileEntity->setProfileId(Uuid::uuid4());
-        }
-
         $profileEntity->setGender($inputs['gender'] ?? '');
         $profileEntity->setDataSource($inputs['data_source'] ?? '');
         $profileEntity->setPlaceOfBirth($inputs['place_of_birth'] ?? '');
