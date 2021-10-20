@@ -2,6 +2,8 @@
 
 namespace Jawabkom\Backend\Module\Profile\Service;
 
+use Jawabkom\Backend\Module\Profile\BasicArrayHashing;
+use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationRepository;
@@ -48,11 +50,13 @@ class CreateProfile extends AbstractService
         'data_source',
         'meta_data',
     ];
+    private IArrayHashing $arrayHashing;
 
-    public function __construct(IDependencyInjector $di, IProfileRepository $repository)
+    public function __construct(IDependencyInjector $di, IProfileRepository $repository, IArrayHashing $arrayHashing)
     {
         parent::__construct($di);
         $this->repository = $repository;
+        $this->arrayHashing = $arrayHashing;
     }
 
     //
@@ -101,6 +105,9 @@ class CreateProfile extends AbstractService
                 $this->$processingMethodName($profileEntity, $profilePartInput);
             }
         }
+
+        $this->setProfileHash($profileEntity);
+        // todo: make sure there is no other profiles with the same hash
         $this->repository->saveEntity($profileEntity);
         return $profileEntity;
     }
@@ -247,5 +254,11 @@ class CreateProfile extends AbstractService
         }
     }
 
+    protected function setProfileHash(IProfileEntity $profileEntity)
+    {
+        $profileToArray = $profileEntity->toArray();
+        unset($profileToArray['hash']);
+        $profileEntity->setHash($this->arrayHashing->hash($profileToArray));
+    }
 
 }
