@@ -24,7 +24,8 @@ class ProfileInputValidator
         'gender',
         'date_of_birth',
         'place_of_birth',
-        'data_source'
+        'data_source',
+        'meta_data',
     ];
 
     /**

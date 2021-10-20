@@ -112,4 +112,6 @@ interface IProfileEntity extends IEntity
      */
     public function getCriminalRecords():iterable;
 
+    public function addMetaData(IProfileMetaDataEntity $profileMetaDataEntity);
+    public function getMetaData():iterable;
 }

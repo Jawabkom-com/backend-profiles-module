@@ -11,6 +11,7 @@ use Jawabkom\Backend\Module\Profile\Validator\ProfileImagesInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileJobsInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileLanguagesInputValidator;
+use Jawabkom\Backend\Module\Profile\Validator\ProfileMetaDataInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileNamesInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfilePhonesInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileRelationshipsInputValidator;
@@ -128,6 +129,14 @@ trait ValidationInputsTrait
          if ($socialProfiles){
             $validator = $this->di->make(ProfileSocialProfilesInputValidator::class);
             $validator->validate($socialProfiles);
+         }
+    }
+
+    private function validateMetaDataInputs(array $metaData)
+    {
+         if ($metaData){
+            $validator = $this->di->make(ProfileMetaDataInputValidator::class);
+            $validator->validate($metaData);
          }
     }
 

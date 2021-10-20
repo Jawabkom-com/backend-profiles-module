@@ -10,6 +10,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileImageRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileMetaDataRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
@@ -44,7 +45,8 @@ class CreateProfile extends AbstractService
         'gender',
         'date_of_birth',
         'place_of_birth',
-        'data_source'
+        'data_source',
+        'meta_data',
     ];
 
     public function __construct(IDependencyInjector $di, IProfileRepository $repository)
@@ -86,6 +88,7 @@ class CreateProfile extends AbstractService
         $this->validateRelationshipsInputs($profile['relationships'] ?? []);
         $this->validateSkillsInputs($profile['skills'] ?? []);
         $this->validateSocialProfilesInputs($profile['social_profiles'] ?? []);
+        $this->validateMetaDataInputs($profile['meta_data'] ?? []);
     }
 
     protected function createNewProfileRecord($profileInputs): IProfileEntity
@@ -232,6 +235,15 @@ class CreateProfile extends AbstractService
             $usernameObj = $repository->createEntity();
             $this->fillUsernameEntity($profileEntity, $usernameObj, $username);
             $profileEntity->addUsername($usernameObj);
+        }
+    }
+    protected function processMetaData(IProfileEntity $profileEntity, array $meta)
+    {
+        $repository = $this->di->make(IProfileMetaDataRepository::class);
+        foreach ($meta as $value) {
+            $metaObj = $repository->createEntity();
+            $this->fillMetaDataEntity($profileEntity, $metaObj, $value);
+            $profileEntity->addMetaData($metaObj);
         }
     }
 

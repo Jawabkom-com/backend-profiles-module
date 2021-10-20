@@ -25,6 +25,8 @@ use Jawabkom\Backend\Module\Profile\Contract\{IProfileAddressEntity,
     IProfileJobRepository,
     IProfileLanguageEntity,
     IProfileLanguageRepository,
+    IProfileMetaDataEntity,
+    IProfileMetaDataRepository,
     IProfileNameEntity,
     IProfileNameRepository,
     IProfilePhoneEntity,
@@ -54,6 +56,7 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\Profile\{Profile,
     ProfileImage,
     ProfileJob,
     ProfileLanguage,
+    ProfileMetaData,
     ProfileName,
     ProfilePhone,
     ProfileRelationship,
@@ -104,7 +107,9 @@ class ProfileServiceProvider extends ServiceProvider
             IFilter::class                               => Filter::class,
             ISearchFiltersBuilder::class                 => SimpleSearchFiltersBuilder::class,
             ISearchRequestRepository::class              => SearchRequest::class,
-            ISearcherStatusRepository::class              => SearcherStatus::class
+            ISearcherStatusRepository::class             => SearcherStatus::class,
+            IProfileMetaDataRepository::class            => ProfileMetaData::class,
+            IProfileMetaDataEntity::class                => ProfileMetaData::class,
         ];
 
         foreach ($toBind as $interface => $implementation) {
