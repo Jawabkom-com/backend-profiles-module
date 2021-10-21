@@ -23,5 +23,4 @@ interface IProfileEntity extends IEntity
 
     public function setHash(string $hash);
     public function getHash():string;
-
 }
