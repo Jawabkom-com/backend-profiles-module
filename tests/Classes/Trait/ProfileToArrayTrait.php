@@ -1,6 +1,6 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Profile\Trait;
+namespace Jawabkom\Backend\Module\Profile\Test\Classes\Trait;
 
 trait ProfileToArrayTrait
 {

@@ -6,23 +6,9 @@ use Classes\Database\Factories\ProfileFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileImageEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileJobEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileMetaDataEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileNameEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
-use Jawabkom\Backend\Module\Profile\Trait\ProfileToArrayTrait;
+use Jawabkom\Backend\Module\Profile\Test\Classes\Trait\ProfileToArrayTrait;
 use Jawabkom\Standard\Contract\IAbstractFilter;
 use Jawabkom\Standard\Contract\IAndFilterComposite;
 use Jawabkom\Standard\Contract\IEntity;
@@ -118,6 +104,10 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
 
     public function saveEntity(IProfileEntity|IEntity $entity): bool
     {
+      // $x = new static($entity->toArray());
+      //  return $x->save();
+      //  unset($entity->names);
+      //  unset($entity->phones);
         return $entity->save();
     }
 

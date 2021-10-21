@@ -14,12 +14,12 @@ trait ProfileHashTrait
 
     protected function setProfileHash(IProfileEntity $profileEntity)
     {
-        if(!$this->profileToArrayMapper)
+        if(empty($this->profileToArrayMapper))
             $this->profileToArrayMapper = $this->di->make(IProfileEntityToArrayMapper::class);
-        if(!$this->arrayHashing)
+        if(empty($this->arrayHashing))
             $this->arrayHashing = $this->di->make(IArrayHashing::class);
-
-        $profileAsArray = $this->profileToArrayMapper->map($profileEntity);
+        $profileArray = clone $profileEntity;
+        $profileAsArray = $this->profileToArrayMapper->map($profileArray);
         unset($profileAsArray['profile_id']);
         unset($profileAsArray['hash']);
         $hash = $this->arrayHashing->hash($profileAsArray);

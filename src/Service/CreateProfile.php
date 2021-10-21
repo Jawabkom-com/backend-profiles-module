@@ -110,7 +110,7 @@ class CreateProfile extends AbstractService
             }
         }
         $this->setProfileHash($profileEntity);
-        $this->assertProfileHashDoesNotExists( $profileEntity->getHash() );
+        $this->assertProfileHashDoesNotExists($profileEntity->getHash());
         $this->repository->saveEntity($profileEntity);
         return $profileEntity;
     }
