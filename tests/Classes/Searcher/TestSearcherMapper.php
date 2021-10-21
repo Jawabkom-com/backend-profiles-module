@@ -22,20 +22,18 @@ use Jawabkom\Backend\Module\Profile\Trait\ProfileAddEditMethods;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileHashTrait;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileToArrayTrait;
 use Jawabkom\Standard\Contract\IDependencyInjector;
+use Ramsey\Uuid\Uuid;
 
 class TestSearcherMapper implements IProfileEntityMapper
 {
     use ProfileAddEditMethods;
-    use ProfileToArrayTrait;
-    USE ProfileHashTrait;
+    use ProfileHashTrait;
     private IDependencyInjector $di;
     private IProfileRepository $repository;
-    private IArrayHashing $arrayHashing;
 
     public function __construct()
     {
         $this->di = new DI();
-        $this->arrayHashing = $this->di->make(IArrayHashing::class);
     }
 
     /**
@@ -75,7 +73,8 @@ class TestSearcherMapper implements IProfileEntityMapper
     {
         $gender                       = $personal ['gender']['content']??'';
         $personalInput['gender']      = $gender;
-        $this->fillProfileEntity($this->profile, $personalInput, true);
+        $this->profile->setProfileId(Uuid::uuid4());
+        $this->fillProfileEntity($this->profile, $personalInput);
     }
 
     private function addNamesEntityIfExists(iterable $names)

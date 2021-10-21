@@ -12,7 +12,6 @@ use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class SearchOfflineByFilters extends AbstractService
 {
-    use ResponseFormattedTrait;
     protected IProfileRepository $repository;
     private SimpleSearchFiltersBuilder $searchFiltersBuilder;
 
@@ -35,8 +34,7 @@ class SearchOfflineByFilters extends AbstractService
         $this->validate($filtersInput);
         $compositeFilters = $this->searchFiltersBuilder->setAllFilters($this->getInput('filters'))->build();
         $results   = $this->repository->getByFilters($compositeFilters);
-        $response = $this->formattedResponse($results);
-        $this->setOutput('response',$response);
+        $this->setOutput('result',$results);
         return $this;
     }
 

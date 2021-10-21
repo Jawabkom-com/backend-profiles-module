@@ -3,7 +3,6 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
 
-use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
@@ -50,14 +49,11 @@ class SearchOfflineTest extends AbstractTestCase
         // 'age'         => $dummyProfilesData[1]['addresses'][0]['state'],
             'username'    => $dummyProfilesData[1]['usernames'][0]['username'],
         ];
-       $result = $this->searchOfflineByFilters->input('filters',$filter)->process()->output('response');
+       $result = $this->searchOfflineByFilters->input('filters',$filter)->process()->output('result');
        $this->assertIsArray($result);
        $this->assertNotEmpty($result);
        $this->assertEquals($fakeProfiles[1]->getProfileId(),$result[0]['profile_id']);
-       $this->assertIsArray($result[0]['jobs']);
-       $this->assertIsArray($result[0]['names']);
-       $this->assertIsArray($result[0]['emails']);
-       $this->assertIsArray($result[0]['usernames']);
+       $this->assertIsArray($result[0]->getJobs()->toArray());
     }
 
     public function testMissingFilter(){

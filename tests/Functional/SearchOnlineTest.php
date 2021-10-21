@@ -2,9 +2,6 @@
 
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
-use Illuminate\Support\Carbon;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Exception\FilterNameDoesNotExistsException;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherRegistryDoesNotExist;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
@@ -58,7 +55,7 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('searchersAliases', ['searcher1'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
-        $profiles = $outputs->output('response');
+        $profiles = $outputs->output('result');
         $this->assertEquals(1, count($profiles));
         $this->assertDatabaseHas('profiles', [
             'profile_id' => $profiles[0]['profile_id']
@@ -78,7 +75,7 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('searchersAliases', ['searcher1'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
-        $profiles = $outputs->output('response');
+        $profiles = $outputs->output('result');
         $this->assertEquals(3, count($profiles));
         $this->assertDatabaseHas('profiles', [
             'profile_id' => $profiles[1]['profile_id']
@@ -100,7 +97,7 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
-        $profiles = $outputs->output('response');
+        $profiles = $outputs->output('result');
         $this->assertEquals('searcher1', $profiles[0]['data_source']);
         $this->assertCount(1, $profiles);
         $this->assertCount(1, $outputs->output('search_requests'));
@@ -120,7 +117,7 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
-        $profiles = $outputs->output('response');
+        $profiles = $outputs->output('result');
         $this->assertEquals('searcher3', $profiles[0]['data_source']);
         $this->assertCount(1, $profiles);
         $this->assertCount(3, $outputs->output('search_requests'));
@@ -160,7 +157,7 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
-        $profiles = $outputs->output('response');
+        $profiles = $outputs->output('result');
         $this->assertEquals('searcher3', $profiles[0]['data_source']);
         $this->assertCount(3, $profiles);
         $this->assertCount(3, $outputs->output('search_requests'));

@@ -70,11 +70,8 @@ class SearchOnlineBySearchersChain extends AbstractService
                     //if (!$isFromCache)
                     $this->saveResultsMappedProfile($profileEntities, $alias);
                     $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileEntities));
-                    $responseFormatted = $this->formattedResponse($profileEntities);
-
-                    $this->setOutput('response', $responseFormatted);
+                    $this->setOutput('result', $profileEntities);
                     $this->setOutput('raw_result', $results);
-
                     break;
                 } else {
                     $this->setEmptySearchRequestStatus($searchRequest, $results);
@@ -83,7 +80,6 @@ class SearchOnlineBySearchersChain extends AbstractService
             } catch (\Throwable $exception) {
                 if (!isset($searchRequest))
                     throw $exception;
-
                 $this->setErrorSearchRequestStatus($searchRequest, $exception);
             }
         }
