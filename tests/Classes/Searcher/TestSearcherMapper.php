@@ -17,6 +17,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileUuidFactory;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileAddEditMethods;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileHashTrait;
@@ -73,7 +74,8 @@ class TestSearcherMapper implements IProfileEntityMapper
     {
         $gender                       = $personal ['gender']['content']??'';
         $personalInput['gender']      = $gender;
-        $this->profile->setProfileId(Uuid::uuid4());
+        $uuidFactory = $this->di->make(IProfileUuidFactory::class);
+        $this->profile->setProfileId($uuidFactory->generate());
         $this->fillProfileEntity($this->profile, $personalInput);
     }
 

@@ -18,6 +18,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileUuidFactory;
 use Jawabkom\Backend\Module\Profile\Exception\ProfileEntityExists;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileAddEditMethods;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileHashTrait;
@@ -101,7 +102,8 @@ class CreateProfile extends AbstractService
     protected function createNewProfileRecord($profileInputs): IProfileEntity
     {
         $profileEntity = $this->repository->createEntity();
-        $profileEntity->setProfileId(Uuid::uuid4());
+        $uuidFactory = $this->di->make(IProfileUuidFactory::class);
+        $profileEntity->setProfileId($uuidFactory->generate());
         $this->fillProfileEntity($profileEntity, $profileInputs);
         foreach ($profileInputs as $profilePartKey => $profilePartInput) {
             $processingMethodName = "process" . str_replace('_', '', ucwords($profilePartKey, '_'));
