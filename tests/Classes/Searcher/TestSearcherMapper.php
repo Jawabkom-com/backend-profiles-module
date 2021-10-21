@@ -4,6 +4,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes\Searcher;
 
 use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityMapper;
@@ -44,27 +45,28 @@ class TestSearcherMapper implements IProfileEntityMapper
     public function map(mixed $searchResult): iterable
     {
        $personals = $searchResult['possible_persons']??[];
-        $profiles= [];
+        $composites= [];
         if ($personals){
             $this->repository = $this->di->make(IProfileRepository::class);
             foreach ($personals as $personal){
+                $composite  = $this->di->make(IProfileComposite::class);
                 $this->profile = $this->repository->createEntity();
                 $this->createNewProfile($personal);
-                $this->addNamesEntityIfExists($personal['names']??[]);
-                $this->addJobsEntityIfExists($personal['jobs']??[]);
-                $this->addUserNamesEntityIfExists($personal['usernames']??[]);
-                $this->addPhonesEntityIfExists($personal['phones']??[]);
-                $this->addLanguagesEntityIfExists($personal['languages']??[]);
-                $this->addAddressesEntityIfExists($personal['addresses']??[]);
-                $this->addEducationsEntityIfExists($personal['educations']??[]);
-                $this->addRelationshipsEntityIfExists($personal['relationships']??[]);
-                $this->addSocialMediaEntityIfExists($personal['user_ids']??[]);
-                $this->addImagesEntityIfExists($personal['images']??[]);
+                $this->addNamesEntityIfExists($personal['names']??[],$composite);
+                $this->addJobsEntityIfExists($personal['jobs']??[],$composite);
+                $this->addUserNamesEntityIfExists($personal['usernames']??[],$composite);
+                $this->addPhonesEntityIfExists($personal['phones']??[],$composite);
+                $this->addLanguagesEntityIfExists($personal['languages']??[],$composite);
+                $this->addAddressesEntityIfExists($personal['addresses']??[],$composite);
+                $this->addEducationsEntityIfExists($personal['educations']??[],$composite);
+                $this->addRelationshipsEntityIfExists($personal['relationships']??[],$composite);
+                $this->addSocialMediaEntityIfExists($personal['user_ids']??[],$composite);
+                $this->addImagesEntityIfExists($personal['images']??[],$composite);
                 $this->setProfileHash($this->profile);
-                $profiles[] = $this->profile;
+                $composites[] = $composite;
             }
         }
-        return $profiles;
+        return $composites;
     }
 
     /**
@@ -79,7 +81,7 @@ class TestSearcherMapper implements IProfileEntityMapper
         $this->fillProfileEntity($this->profile, $personalInput);
     }
 
-    private function addNamesEntityIfExists(iterable $names)
+    private function addNamesEntityIfExists(iterable $names,$composite)
     {
         $nameRepository = $this->di->make(IProfileNameRepository::class);
             foreach ($names as $name){
@@ -89,11 +91,12 @@ class TestSearcherMapper implements IProfileEntityMapper
                $nameInput['last']   = $name['last']??'';
                $nameInput['prefix'] = $name['prefix']??'';
                $this->fillNameEntity($this->profile,$newNameEntity,$nameInput);
-               $nameRepository->saveEntity($newNameEntity);
+               $composite->addName($newNameEntity);
+             //  $nameRepository->saveEntity($newNameEntity);
         }
     }
 
-    private function addJobsEntityIfExists(iterable $jobs)
+    private function addJobsEntityIfExists(iterable $jobs,$composite)
     {
         $jobRepository = $this->di->make(IProfileJobRepository::class);
         foreach ($jobs as $job){
@@ -105,11 +108,12 @@ class TestSearcherMapper implements IProfileEntityMapper
                 $jobInput['organization'] = $job['organization']??'';
                 $jobInput['industry']     = $job['industry']??'';
                 $this->fillJobEntity($this->profile,$newJobEntity,$jobInput);
-                $jobRepository->saveEntity($newJobEntity);
+                $composite->addJob($newJobEntity);
+              //  $jobRepository->saveEntity($newJobEntity);
         }
     }
 
-    private function addUserNamesEntityIfExists(iterable $usernames)
+    private function addUserNamesEntityIfExists(iterable $usernames,$composite)
     {
         $usernameRepository = $this->di->make(IProfileUsernameRepository::class);
         foreach ($usernames as $username){
@@ -117,7 +121,8 @@ class TestSearcherMapper implements IProfileEntityMapper
             $usernameInput['valid_since']  =  \DateTime::createFromFormat('Y-m-d', $username['@valid_since']);
             $usernameInput['username']     = $username['content']??'';
             $this->fillUsernameEntity($this->profile,$newUserNameEntity,$usernameInput);
-            $usernameRepository->saveEntity($newUserNameEntity);
+            $composite->addUsername($username);
+      //      $usernameRepository->saveEntity($newUserNameEntity);
         }
 
     }

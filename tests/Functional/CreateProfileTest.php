@@ -801,6 +801,7 @@ class CreateProfileTest extends AbstractTestCase
         $this->assertDatabaseHas('profile_meta_data',[
             'meta_key' => $meta[0]->getMetaKey()
         ]);
+        dd($result);
     }
 
     public function testDuplicateProfileData(){
