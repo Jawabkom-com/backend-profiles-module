@@ -316,10 +316,82 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
     {
         return $this->hasMany(ProfileMetaData::class, 'profile_id', 'profile_id');
     }
+    /************************** GET Entities *************************************/
+    public function getNames(): iterable
+    {
+        return $this->profileName()->get();
+    }
+
+    public function getPhones(): iterable
+    {
+       return $this->profilePhone()->get();
+    }
+
+    public function getAddresses(): iterable
+    {
+       return $this->profileAddress()->get();
+    }
+
+    public function getUsernames(): iterable
+    {
+        return $this->profileUsername()->get();
+    }
+
+    public function getEmails(): iterable
+    {
+      return $this->profileEmail()->get();
+    }
+
+    public function getRelationships(): iterable
+    {
+       return $this->profileRelationship()->get();
+    }
+
+    public function getSkills(): iterable
+    {
+       return $this->profileSkill()->get();
+    }
+
+    public function getImages(): iterable
+    {
+      return $this->profileImage()->get();
+    }
+
+    public function getLanguages(): iterable
+    {
+      return $this->profileLanguage()->get();
+    }
+
+    public function getJobs(): iterable
+    {
+      return $this->profileJob()->get();
+    }
+
+    public function getEducations(): iterable
+    {
+     return $this->profileEducation()->get();
+    }
+
+    public function getSocialProfiles(): iterable
+    {
+       return $this->profileSocialProfile()->get();
+    }
+
+    public function getCriminalRecords(): iterable
+    {
+     return $this->profileCriminalRecord()->get();
+    }
+
+    public function getMetaData(): iterable
+    {
+       return $this->metaData()->get();
+    }
+
 
     /*************************** Factory *********************************/
     protected static function newFactory(): ProfileFactory
     {
         return ProfileFactory::new();
     }
+
 }

@@ -66,7 +66,7 @@ class DeleteProfile extends AbstractService
      */
     protected function deleteProfileJobsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $jobs = $profileEntity->profileJob()->get();
+        $jobs = $profileEntity->getJobs();
         if ($jobs) {
             $jobRepository = $this->di->make(IProfileJobRepository::class);
             foreach ($jobs as $job) {
@@ -80,7 +80,7 @@ class DeleteProfile extends AbstractService
      */
     protected function deleteProfileNamesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $names = $profileEntity->profileName()->get();
+        $names = $profileEntity->getNames();
         if ($names) {
             $nameRepository = $this->di->make(IProfileNameRepository::class);
             foreach ($names as $name) {
@@ -94,7 +94,7 @@ class DeleteProfile extends AbstractService
      */
     protected function deleteProfileAddressesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $addresses = $profileEntity->profileAddress()->get();
+        $addresses = $profileEntity->getAddresses();
         if ($addresses) {
             $addressRepository = $this->di->make(IProfileAddressRepository::class);
             foreach ($addresses as $address) {
@@ -108,7 +108,7 @@ class DeleteProfile extends AbstractService
      */
     protected function deleteProfileCriminalRecordsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $criminalRecords = $profileEntity->profileCriminalRecord()->get();
+        $criminalRecords = $profileEntity->getCriminalRecords();
         if ($criminalRecords) {
             $criminalRecordRepository = $this->di->make(IProfileCriminalRecordRepository::class);
             foreach ($criminalRecords as $criminalRecord) {
@@ -122,7 +122,7 @@ class DeleteProfile extends AbstractService
      */
     protected function deleteProfileSocialProfilesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $socialProfiles = $profileEntity->profileSocialProfile()->get();
+        $socialProfiles = $profileEntity->getSocialProfiles();
         if ($socialProfiles) {
             $socialProfileRepository = $this->di->make(IProfileSocialProfileRepository::class);
             foreach ($socialProfiles as $socialProfile) {
@@ -136,7 +136,7 @@ class DeleteProfile extends AbstractService
      */
     protected function deleteProfileLanguagesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $languages = $profileEntity->profileLanguage()->get();
+        $languages = $profileEntity->getLanguages();
         if ($languages) {
             $languageRepository = $this->di->make(IProfileLanguageRepository::class);
             foreach ($languages as $language) {
@@ -150,7 +150,7 @@ class DeleteProfile extends AbstractService
      */
     protected function deleteProfileSkillsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $skills = $profileEntity->profileSkill()->get();
+        $skills = $profileEntity->getSkills();
         if ($skills) {
             $skillRepository = $this->di->make(IProfileSkillRepository::class);
             foreach ($skills as $skill) {
@@ -164,7 +164,7 @@ class DeleteProfile extends AbstractService
      */
     protected function deleteProfileImagesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $images = $profileEntity->profileImage()->get();
+        $images = $profileEntity->getImages();
         if ($images) {
             $imageRepository = $this->di->make(IProfileImageRepository::class);
             foreach ($images as $image) {
@@ -178,7 +178,7 @@ class DeleteProfile extends AbstractService
      */
     protected function deleteProfileRelationshipsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $relationships = $profileEntity->profileRelationship()->get();
+        $relationships = $profileEntity->getRelationships();
         if ($relationships) {
             $relationshipRepository = $this->di->make(IProfileRelationshipRepository::class);
             foreach ($relationships as $relationship) {
@@ -192,7 +192,7 @@ class DeleteProfile extends AbstractService
      */
     protected function deleteProfileEmailsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $emails = $profileEntity->profileEmail()->get();
+        $emails = $profileEntity->getEmails();
         if ($emails) {
             $emailRepository = $this->di->make(IProfileEmailRepository::class);
             foreach ($emails as $email) {
@@ -206,7 +206,7 @@ class DeleteProfile extends AbstractService
      */
     protected function deleteProfileUsernamesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $userNames = $profileEntity->profileUsername()->get();
+        $userNames = $profileEntity->getUsernames();
         if ($userNames) {
             $nameRepository = $this->di->make(IProfileUsernameRepository::class);
             foreach ($userNames as $name) {
@@ -220,7 +220,7 @@ class DeleteProfile extends AbstractService
      */
     protected function deleteProfilePhonesIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $phones = $profileEntity->profilePhone()->get();
+        $phones = $profileEntity->getPhones();
         if ($phones) {
             $phoneRepository = $this->di->make(IProfilePhoneEntity::class);
             foreach ($phones as $phone) {
@@ -234,7 +234,7 @@ class DeleteProfile extends AbstractService
      */
     protected function deleteProfileEducationsIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $educations = $profileEntity->profileEducation()->get();
+        $educations = $profileEntity->getEducations();
         if ($educations) {
             $educationRepository = $this->di->make(IProfileEducationRepository::class);
             foreach ($educations as $education) {
@@ -245,7 +245,7 @@ class DeleteProfile extends AbstractService
 
     protected function deleteProfileMetaDataIfExistes(IProfileEntity|IProfileRepository|IEntity|null $profileEntity): void
     {
-        $meta = $profileEntity->metaData()->get();
+        $meta = $profileEntity->getMetaData();
         if ($meta) {
             $metaRepository = $this->di->make(IProfileMetaDataRepository::class);
             foreach ($meta as $value) {

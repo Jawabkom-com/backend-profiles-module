@@ -63,16 +63,15 @@ class DeleteProfileTest extends AbstractTestCase
         $profile = $this->createProfile->input('profile',$userData)
                                        ->process()
                                        ->output('profile');
-        $this->assertTrue(true);
         $this->assertNotEmpty($profile);
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
+
         $this->assertDatabaseHas('profiles',[
             'profile_id' => $profile->getProfileId()
         ]);
-
-        $profileId = $profile->getProfileId();
-        $deleteStatus =  $this->deleteProfile->input('profile_id',$profileId)->process()->output('status');
+        $profileId    = $profile->getProfileId();
+        $deleteStatus = $this->deleteProfile->input('profile_id',$profileId)->process()->output('status');
         $this->assertTrue($deleteStatus);
     }
 
@@ -90,7 +89,7 @@ class DeleteProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
         /***phone***/
-        $phones =$profile->getPhones();
+       $phones =$profile->getPhones();
         $this->assertNotEmpty($phones);
         $this->assertInstanceOf(IProfilePhoneRepository::class,$phones[0]);
         $this->assertInstanceOf(IProfilePhoneRepository::class,$phones[0]);
@@ -249,7 +248,7 @@ class DeleteProfileTest extends AbstractTestCase
                                                     ->output('status');
         $this->assertTrue($profileDeletedStatus);
         //test Missing
-        $this->assertDatabaseMissing('profiles',[
+       $this->assertDatabaseMissing('profiles',[
             'profile_id' => $profileId
         ]);
         $this->assertDatabaseMissing('profile_names',[
