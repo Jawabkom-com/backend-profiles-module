@@ -13,6 +13,7 @@ interface IProfileComposite
      * @return IProfileNameEntity[]
      */
     public function getNames(): iterable;
+    public function setNames(iterable $names);
 
     public function addPhone(IProfilePhoneEntity $IProfileEntityPhone);
 
@@ -20,6 +21,7 @@ interface IProfileComposite
      * @return IProfilePhoneEntity[]
      */
     public function getPhones(): iterable;
+    public function setPhones(iterable $phones);
 
     public function addAddress(IProfileAddressEntity $IProfileEntityAddress);
 
@@ -27,6 +29,7 @@ interface IProfileComposite
      * @return IProfileAddressEntity[]
      */
     public function getAddresses(): iterable;
+    public function setAddresses(iterable $addresses);
 
     public function addUsername(IProfileUsernameEntity $IProfileEntityUsername);
 
@@ -34,6 +37,7 @@ interface IProfileComposite
      * @return IProfileNameEntity[]
      */
     public function getUsernames(): iterable;
+    public function setUsernames(iterable $usernames);
 
     public function addEmail(IProfileEmailEntity $IProfileEntityEmail);
 
@@ -41,6 +45,7 @@ interface IProfileComposite
      * @return IProfileEmailEntity[]
      */
     public function getEmails(): iterable;
+    public function setEmails(iterable $emails);
 
     public function addRelationship(IProfileRelationshipEntity $IProfileEntityRelationship);
 
@@ -55,6 +60,7 @@ interface IProfileComposite
      * @return IProfileSkillEntity[]
      */
     public function getSkills(): iterable;
+    public function setSkills(iterable $skills);
 
     public function addImage(IProfileImageEntity $IProfileEntityImage);
 
@@ -62,6 +68,7 @@ interface IProfileComposite
      * @return IProfileImageEntity[]
      */
     public function getImages(): iterable;
+    public function setImages(iterable $images);
 
     public function addLanguage(IProfileLanguageEntity $IProfileEntityLanguage);
 
@@ -69,6 +76,7 @@ interface IProfileComposite
      * @return IProfileLanguageEntity[]
      */
     public function getLanguages(): iterable;
+    public function setLanguages(iterable $languages);
 
     public function addJob(IProfileJobEntity $IProfileEntityJob);
 
@@ -76,6 +84,7 @@ interface IProfileComposite
      * @return IProfileJobEntity[]
      */
     public function getJobs(): iterable;
+    public function setJobs(iterable $jobs);
 
     public function addEducation(IProfileEducationEntity $IProfileEntityEducation);
 
@@ -83,6 +92,7 @@ interface IProfileComposite
      * @return IProfileEducationEntity[]
      */
     public function getEducations(): iterable;
+    public function setEducations(iterable $educations);
 
     public function addSocialProfile(IProfileSocialProfileEntity $IProfileEntitySocialProfile);
 
@@ -90,6 +100,7 @@ interface IProfileComposite
      * @return IProfileSocialProfileEntity[]
      */
     public function getSocialProfiles(): iterable;
+    public function setSocialProfiles(iterable $SocialProfiles);
 
     public function addCriminalRecord(IProfileCriminalRecordEntity $IProfileEntityCriminalRecord);
 
@@ -97,6 +108,7 @@ interface IProfileComposite
      * @return IProfileCriminalRecordEntity[]
      */
     public function getCriminalRecords(): iterable;
+    public function setCriminalRecords(iterable $criminalRecords);
 
     public function addMetaData(IProfileMetaDataEntity $profileMetaDataEntity);
 
@@ -104,4 +116,5 @@ interface IProfileComposite
      * @return IProfileMetaDataEntity[]
      */
     public function getMetaData(): iterable;
+    public function setMetaData(iterable $metaData);
 }

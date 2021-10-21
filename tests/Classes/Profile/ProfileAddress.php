@@ -144,4 +144,9 @@ class ProfileAddress extends Model implements IProfileAddressEntity,IProfileAddr
     {
         return $entity->delete();
     }
+
+    public function getByProfileId(): iterable
+    {
+      // $this->
+    }
 }

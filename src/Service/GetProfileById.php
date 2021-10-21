@@ -28,7 +28,7 @@ use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Ramsey\Uuid\Uuid;
 
-class CreateProfile extends AbstractService
+class GetProfileById extends AbstractService
 {
     use ProfileAddEditMethods;
     use ValidationInputsTrait;
@@ -56,7 +56,7 @@ class CreateProfile extends AbstractService
         $profileEntity = $this->repository->getByProfileId($this->getInput('profile_id'));
         $profileComposite->setProfile($profileEntity);
         // get names and fill it in the composite object
-        $names = $this->profileNameRepository->getByProfileId($profileId);
+        $names = $profileEntity->getNames();
         $profileComposite->setNames($names);
 
         // get addresses ...

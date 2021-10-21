@@ -60,11 +60,12 @@ class CreateProfileTest extends AbstractTestCase
     public function testCreateBasicProfile(){
 
         $userData = $this->dummyBasicProfileData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
                                        ->process()
-                                       ->output('profile');
+                                       ->output('result');
         $this->assertTrue(true);
-        $this->assertNotEmpty($profile);
+        $this->assertNotEmpty($result);
+        $profile = $result->getProfile();
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
         $this->assertDatabaseHas('profiles',[
@@ -78,23 +79,23 @@ class CreateProfileTest extends AbstractTestCase
 
         $userData = $this->dummyBasicProfileData();
         $userData['phones'][] = $this->dummyPhoneData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
+            ->output('result');
         $this->assertTrue(true);
-        $this->assertNotEmpty($profile);
-        $this->assertInstanceOf(IProfileRepository::class,$profile);
-        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertNotEmpty($result);
+        $this->assertInstanceOf(IProfileRepository::class,$result->getProfile());
+        $this->assertInstanceOf(IProfileEntity::class,$result->getProfile());
         $this->assertDatabaseHas('profiles',[
-            'profile_id' => $profile->getProfileId()
+            'profile_id' => $result->getProfile()->getProfileId()
         ]);
 
-        $phones =$profile->profilePhone;
+        $phones =$result->getPhones();
         $this->assertNotEmpty($phones);
         $this->assertInstanceOf(IProfilePhoneRepository::class,$phones[0]);
         $this->assertInstanceOf(IProfilePhoneEntity::class,$phones[0]);
         $this->assertDatabaseHas('profile_phones',[
-            'profile_id' => $profile->getProfileId()
+            'profile_id' => $result->getProfile()->getProfileId()
         ]);
         $this->assertDatabaseHas('profile_phones',[
             'original_number' => $phones[0]->getOriginalNumber()
@@ -105,18 +106,19 @@ class CreateProfileTest extends AbstractTestCase
 
         $userData = $this->dummyBasicProfileData();
         $userData['names'][] = $this->dummyNamesData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
+            ->output('result');
         $this->assertTrue(true);
-        $this->assertNotEmpty($profile);
+        $this->assertNotEmpty($result);
+        $profile = $result->getProfile();
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
         $this->assertDatabaseHas('profiles',[
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $names =$profile->profileName;
+        $names =$result->getNames();
         $this->assertNotEmpty($names);
         $this->assertInstanceOf(IProfileNameRepository::class,$names[0]);
         $this->assertInstanceOf(IProfileNameEntity::class,$names[0]);
@@ -132,26 +134,27 @@ class CreateProfileTest extends AbstractTestCase
 
         $userData = $this->dummyBasicProfileData();
         $userData['addresses'][] = $this->dummyAddressData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
+            ->output('result');
         $this->assertTrue(true);
-        $this->assertNotEmpty($profile);
+        $this->assertNotEmpty($result);
+        $profile = $result->getProfile();
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
         $this->assertDatabaseHas('profiles',[
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $names =$profile->profileAddress;
-        $this->assertNotEmpty($names);
-        $this->assertInstanceOf(IProfileAddressRepository::class,$names[0]);
-        $this->assertInstanceOf(IProfileAddressEntity::class,$names[0]);
+        $this->assertNotEmpty($result);
+        $addresses = $profile->getAddresses();
+        $this->assertInstanceOf(IProfileAddressRepository::class,$addresses[0]);
+        $this->assertInstanceOf(IProfileAddressEntity::class,$addresses[0]);
         $this->assertDatabaseHas('profile_addresses',[
             'profile_id' => $profile->getProfileId()
         ]);
         $this->assertDatabaseHas('profile_addresses',[
-            'country' => $names[0]->getCountry()
+            'country' => $addresses[0]->getCountry()
         ]);
     }
 
@@ -159,18 +162,19 @@ class CreateProfileTest extends AbstractTestCase
 
         $userData = $this->dummyBasicProfileData();
         $userData['usernames'][] = $this->dummyUsernamesData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
+            ->output('result');
         $this->assertTrue(true);
-        $this->assertNotEmpty($profile);
+        $this->assertNotEmpty($result);
+        $profile = $result->getProfile();
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
         $this->assertDatabaseHas('profiles',[
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $usernames =$profile->profileUsername;
+        $usernames =$result->getUsernames();
         $this->assertNotEmpty($usernames);
         $this->assertInstanceOf(IProfileUsernameRepository::class,$usernames[0]);
         $this->assertInstanceOf(IProfileUsernameEntity::class,$usernames[0]);
@@ -186,18 +190,19 @@ class CreateProfileTest extends AbstractTestCase
 
         $userData = $this->dummyBasicProfileData();
         $userData['emails'][] = $this->dummyEmailsData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
+            ->output('result');
         $this->assertTrue(true);
-        $this->assertNotEmpty($profile);
+        $this->assertNotEmpty($result);
+        $profile = $result->getProfile();
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
         $this->assertDatabaseHas('profiles',[
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $emails =$profile->profileEmail;
+        $emails =$profile->getEmails();
         $this->assertNotEmpty($emails);
         $this->assertInstanceOf(IProfileEmailRepository::class,$emails[0]);
         $this->assertInstanceOf(IProfileEmailEntity::class,$emails[0]);
@@ -213,11 +218,12 @@ class CreateProfileTest extends AbstractTestCase
 
         $userData = $this->dummyBasicProfileData();
         $userData['relationships'][] = $this->dummyRelationshipsData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
+            ->output('result');
         $this->assertTrue(true);
-        $this->assertNotEmpty($profile);
+        $this->assertNotEmpty($result);
+        $profile = $result->getProfile();
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
         $this->assertDatabaseHas('profiles',[
@@ -240,11 +246,12 @@ class CreateProfileTest extends AbstractTestCase
 
         $userData = $this->dummyBasicProfileData();
         $userData['skills'][] = $this->dummySkillsData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
+            ->output('result');
         $this->assertTrue(true);
-        $this->assertNotEmpty($profile);
+        $this->assertNotEmpty($result);
+        $profile = $result->getProfile();
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
         $this->assertDatabaseHas('profiles',[
@@ -267,19 +274,21 @@ class CreateProfileTest extends AbstractTestCase
 
         $userData = $this->dummyBasicProfileData();
         $userData['images'][] = $this->dummyImagesData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
+            ->output('result');
         $this->assertTrue(true);
-        $this->assertNotEmpty($profile);
+        $this->assertNotEmpty($result);
+        $profile = $result->getProfile();
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
         $this->assertDatabaseHas('profiles',[
             'profile_id' => $profile->getProfileId()
         ]);
 
+        $this->assertNotEmpty($result);
+        $profile = $result->getProfile();
         $images =$profile->profileImage;
-        $this->assertNotEmpty($images);
         $this->assertInstanceOf(IProfileImageRepository::class,$images[0]);
         $this->assertInstanceOf(IProfileImageEntity::class,$images[0]);
         $this->assertDatabaseHas('profile_images',[
@@ -294,11 +303,12 @@ class CreateProfileTest extends AbstractTestCase
 
         $userData = $this->dummyBasicProfileData();
         $userData['languages'][] = $this->dummyLanguagesData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
+            ->output('result');
         $this->assertTrue(true);
-        $this->assertNotEmpty($profile);
+        $this->assertNotEmpty($result);
+        $profile = $result->getProfile();
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
         $this->assertDatabaseHas('profiles',[
@@ -320,11 +330,12 @@ class CreateProfileTest extends AbstractTestCase
 
         $userData = $this->dummyBasicProfileData();
         $userData['meta_data'][] = $this->dummyMetaData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
+            ->output('result');
         $this->assertTrue(true);
-        $this->assertNotEmpty($profile);
+        $this->assertNotEmpty($result);
+        $profile = $result->getProfile();
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
         $this->assertDatabaseHas('profiles',[
@@ -347,11 +358,11 @@ class CreateProfileTest extends AbstractTestCase
 
         $userData = $this->dummyBasicProfileData();
         $userData['jobs'][] = $this->dummyjobsData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
-        $this->assertTrue(true);
-        $this->assertNotEmpty($profile);
+            ->output('result');
+        $this->assertNotEmpty($result);
+        $profile = $result->getProfile();
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
         $this->assertDatabaseHas('profiles',[
@@ -374,11 +385,12 @@ class CreateProfileTest extends AbstractTestCase
 
         $userData = $this->dummyBasicProfileData();
         $userData['educations'][] = $this->dummyEducationsData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
+            ->output('result');
         $this->assertTrue(true);
-        $this->assertNotEmpty($profile);
+        $this->assertNotEmpty($result);
+        $profile = $result->getProfile();
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
         $this->assertDatabaseHas('profiles',[
@@ -401,11 +413,11 @@ class CreateProfileTest extends AbstractTestCase
 
         $userData = $this->dummyBasicProfileData();
         $userData['social_profiles'][] = $this->dummysSocialProfilesData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
-        $this->assertTrue(true);
-        $this->assertNotEmpty($profile);
+            ->output('result');
+        $this->assertNotEmpty($result);
+        $profile = $result->getProfile();
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
         $this->assertDatabaseHas('profiles',[
@@ -428,11 +440,12 @@ class CreateProfileTest extends AbstractTestCase
 
         $userData = $this->dummyBasicProfileData();
         $userData['criminal_records'][] = $this->dummyCriminalRecordsData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
+            ->output('result');
         $this->assertTrue(true);
-        $this->assertNotEmpty($profile);
+        $this->assertNotEmpty($result);
+        $profile = $result->getProfile();
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
         $this->assertDatabaseHas('profiles',[
@@ -611,11 +624,12 @@ class CreateProfileTest extends AbstractTestCase
 
     public function testCreateFullProfile(){
         $userData = $this->dummyFullProfileData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
+            ->output('result');
         $this->assertTrue(true);
-        $this->assertNotEmpty($profile);
+        $this->assertNotEmpty($result);
+        $profile = $result->getProfile();
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
         $this->assertDatabaseHas('profiles',[

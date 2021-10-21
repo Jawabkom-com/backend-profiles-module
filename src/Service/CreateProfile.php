@@ -26,7 +26,6 @@ use Jawabkom\Backend\Module\Profile\Trait\ProfileHashTrait;
 use Jawabkom\Backend\Module\Profile\Trait\ValidationInputsTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
-use Ramsey\Uuid\Uuid;
 
 class CreateProfile extends AbstractService
 {
@@ -71,7 +70,7 @@ class CreateProfile extends AbstractService
         //create && save profile
         $profileComposite = $this->di->make(IProfileComposite::class);
         $this->createNewProfileRecord($this->getInput('profile'), $profileComposite);
-        $this->setOutput('profile', $profileComposite);
+        $this->setOutput('result', $profileComposite);
         return $this;
     }
 
@@ -116,7 +115,7 @@ class CreateProfile extends AbstractService
         $this->setProfileHash($profileEntity);
         $this->assertProfileHashDoesNotExists($profileEntity->getHash());
         $this->repository->saveEntity($profileEntity);
-        $profileComposite->setProfile($profileEntity);;
+        $profileComposite->setProfile($profileEntity);
     }
 
     //

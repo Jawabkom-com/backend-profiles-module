@@ -7,6 +7,7 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilt
     Composite\Filters\AndFilterComposite,
     Composite\Filters\OrFilterComposite,
     Composite\Filters\Filter,
+    Composite\ProfileComposite,
     DI,
     ProfileEntityToArrayMapper,
     ProfileUuidFactory,
@@ -15,6 +16,7 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilt
 use Jawabkom\Backend\Module\Profile\Contract\{IArrayHashing,
     IProfileAddressEntity,
     IProfileAddressRepository,
+    IProfileComposite,
     IProfileCriminalRecordEntity,
     IProfileCriminalRecordRepository,
     IProfileEducationEntity,
@@ -118,7 +120,8 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileMetaDataEntity::class                => ProfileMetaData::class,
             IArrayHashing::class                         => BasicArrayHashing::class,
             IProfileEntityToArrayMapper::class           => ProfileEntityToArrayMapper::class,
-            IProfileUuidFactory::class                   => ProfileUuidFactory::class
+            IProfileUuidFactory::class                   => ProfileUuidFactory::class,
+            IProfileComposite::class                     => ProfileComposite::class
         ];
 
         foreach ($toBind as $interface => $implementation) {
