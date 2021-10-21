@@ -64,13 +64,12 @@ class SearchOnlineBySearchersChain extends AbstractService
                 $searchRequest = null; // reset the search request for each alias
                 $searchRequests[] = $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, $isFromCache);
                 $results = $this->getSearchResults($isFromCache, $alias, $cachedResultsByAliases);
-
-                $profileEntities = $this->mapResultsToProfileEntities($alias, $results);
-                if (count($profileEntities)) {
+                $profileComposites = $this->mapResultsToProfileComposites($alias, $results);
+                if (count($profileComposites)) {
                     //if (!$isFromCache)
-                    $this->saveResultsMappedProfile($profileEntities, $alias);
-                    $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileEntities));
-                    $this->setOutput('result', $profileEntities);
+                    $this->saveResultsMappedProfile($profileComposites, $alias);
+                    $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileComposites));
+                    $this->setOutput('result', $profileComposites);
                     $this->setOutput('raw_result', $results);
                     break;
                 } else {
@@ -78,6 +77,7 @@ class SearchOnlineBySearchersChain extends AbstractService
                 }
 
             } catch (\Throwable $exception) {
+                dd($exception);
                 if (!isset($searchRequest))
                     throw $exception;
                 $this->setErrorSearchRequestStatus($searchRequest, $exception);
@@ -230,11 +230,10 @@ class SearchOnlineBySearchersChain extends AbstractService
         return $results;
     }
 
-    protected function mapResultsToProfileEntities(mixed $alias, mixed $results): iterable
+    protected function mapResultsToProfileComposites(mixed $alias, mixed $results): iterable
     {
         $mapper = $this->registry->getMapper($alias);
-        $profileEntities = $mapper->map($results);
-        return $profileEntities;
+        return $mapper->map($results);
     }
 
     protected function saveResultsMappedProfile(iterable $profileEntities, mixed $alias): void

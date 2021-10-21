@@ -63,6 +63,7 @@ class TestSearcherMapper implements IProfileEntityMapper
                 $this->addSocialMediaEntityIfExists($personal['user_ids']??[],$composite);
                 $this->addImagesEntityIfExists($personal['images']??[],$composite);
                 $this->setProfileHash($this->profile);
+                $composite->setProfile($this->profile);
                 $composites[] = $composite;
             }
         }
@@ -121,13 +122,13 @@ class TestSearcherMapper implements IProfileEntityMapper
             $usernameInput['valid_since']  =  \DateTime::createFromFormat('Y-m-d', $username['@valid_since']);
             $usernameInput['username']     = $username['content']??'';
             $this->fillUsernameEntity($this->profile,$newUserNameEntity,$usernameInput);
-            $composite->addUsername($username);
+            $composite->addUsername($newUserNameEntity);
       //      $usernameRepository->saveEntity($newUserNameEntity);
         }
 
     }
 
-    private function addPhonesEntityIfExists(iterable $phones)
+    private function addPhonesEntityIfExists(iterable $phones,$composite)
     {
         $phoneRepository = $this->di->make(IProfilePhoneRepository::class);
         foreach ($phones as $phone){
@@ -145,11 +146,12 @@ class TestSearcherMapper implements IProfileEntityMapper
             $phoneInput['purpose']              = $phone['purpose']??'';
             $phoneInput['industry']             = $phone['industry']??'';
             $this->fillPhoneEntity($this->profile,$newPhoneEntity,$phoneInput);
-            $phoneRepository->saveEntity($newPhoneEntity);
+            $composite->addPhone($newPhoneEntity);
+            //$phoneRepository->saveEntity($newPhoneEntity);
         }
     }
 
-    private function addLanguagesEntityIfExists(iterable $languages)
+    private function addLanguagesEntityIfExists(iterable $languages,$composite)
     {
         $languageRepository = $this->di->make(IProfileLanguageRepository::class);
         foreach ($languages as $language){
@@ -157,12 +159,13 @@ class TestSearcherMapper implements IProfileEntityMapper
             $languageInput['language']    = $language['language']??'';
             $languageInput['country']     = $language['region']??'';
             $this->fillLanguageEntity($this->profile,$languageEntity,$languageInput);
-            $languageRepository->saveEntity($languageEntity);
+            $composite->addLanguage($languageEntity);
+            //$languageRepository->saveEntity($languageEntity);
         }
 
     }
 
-    private function addAddressesEntityIfExists(iterable $addresses)
+    private function addAddressesEntityIfExists(iterable $addresses,$composite)
     {
         $addressRepository = $this->di->make(IProfileAddressRepository::class);
         foreach ($addresses as $address){
@@ -176,12 +179,13 @@ class TestSearcherMapper implements IProfileEntityMapper
             $addressInput['building_number']  = $address['building_number']??'';
             $addressInput['display']          = $address['display']??'';
             $this->fillAddressEntity($this->profile,$addressEntity,$addressInput);
-            $addressRepository->saveEntity($addressEntity);
+            $composite->addAddress($addressEntity);
+           // $addressRepository->saveEntity($addressEntity);
         }
 
     }
 
-    private function addEducationsEntityIfExists(iterable $educations)
+    private function addEducationsEntityIfExists(iterable $educations,$composite)
     {
         $educationRepository = $this->di->make(IProfileEducationRepository::class);
         foreach ($educations as $education){
@@ -193,12 +197,13 @@ class TestSearcherMapper implements IProfileEntityMapper
             $addressInput['degree']              = $address['degree']??'';
             $addressInput['major']           = $address['major']??'';
             $this->fillEducationEntity($this->profile,$educationEntity,$educationInput);
-            $educationRepository->saveEntity($educationEntity);
+            $composite->addEducation($educationEntity);
+          //  $educationRepository->saveEntity($educationEntity);
         }
 
     }
 
-    private function addRelationshipsEntityIfExists(iterable $relationships)
+    private function addRelationshipsEntityIfExists(iterable $relationships,$composite)
     {
         $relationshipRepository = $this->di->make(IProfileRelationshipRepository::class);
         foreach ($relationships as $relationship){
@@ -209,12 +214,13 @@ class TestSearcherMapper implements IProfileEntityMapper
             $relationshipInput['last_name']        = $relationship['names'][0]['last']??'';
             $relationshipInput['person_id']        = $relationship['person_id']??'';
             $this->fillRelationshipEntity($this->profile,$relationshipEntity,$relationshipInput);
-            $relationshipRepository->saveEntity($relationshipEntity);
+            $composite->addRelationship($relationshipEntity);
+         //   $relationshipRepository->saveEntity($relationshipEntity);
         }
 
     }
 
-    private function addSocialMediaEntityIfExists(iterable $socials)
+    private function addSocialMediaEntityIfExists(iterable $socials,$composite)
     {
         $socialRepository = $this->di->make(IProfileSocialProfileRepository::class);
         foreach ($socials as $social){
@@ -225,12 +231,13 @@ class TestSearcherMapper implements IProfileEntityMapper
             $socialInput['username']   = $social['@username']??'';
             $socialInput['account_id'] = explode('@',$social['content'])[0]??'';
             $this->fillSocialProfileEntity($this->profile,$socialEntity,$socialInput);
-            $socialRepository->saveEntity($socialEntity);
+            $composite->addSocialProfile($socialEntity);
+            //$socialRepository->saveEntity($socialEntity);
         }
 
     }
 
-    private function addImagesEntityIfExists(iterable $images)
+    private function addImagesEntityIfExists(iterable $images,$composite)
     {
         $imageRepository = $this->di->make(IProfileImageRepository::class);
         foreach ($images as $image){
@@ -239,7 +246,8 @@ class TestSearcherMapper implements IProfileEntityMapper
             $socialInput['original_url']        = $social['original_url']??'';
             $socialInput['local_path']        = $social['local_path']??'';
             $this->fillImageEntity($this->profile,$imageEntity,$socialInput);
-            $imageRepository->saveEntity($imageEntity);
+            $composite->addImage($imageEntity);
+            //$imageRepository->saveEntity($imageEntity);
         }
     }
 }
