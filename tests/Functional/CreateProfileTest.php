@@ -89,7 +89,7 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $phones =$profile->getPhones();
+        $phones =$profile->profilePhone;
         $this->assertNotEmpty($phones);
         $this->assertInstanceOf(IProfilePhoneRepository::class,$phones[0]);
         $this->assertInstanceOf(IProfilePhoneEntity::class,$phones[0]);
@@ -116,7 +116,7 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $names =$profile->getNames();
+        $names =$profile->profileName;
         $this->assertNotEmpty($names);
         $this->assertInstanceOf(IProfileNameRepository::class,$names[0]);
         $this->assertInstanceOf(IProfileNameEntity::class,$names[0]);
@@ -143,7 +143,7 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $names =$profile->getAddresses();
+        $names =$profile->profileAddress;
         $this->assertNotEmpty($names);
         $this->assertInstanceOf(IProfileAddressRepository::class,$names[0]);
         $this->assertInstanceOf(IProfileAddressEntity::class,$names[0]);
@@ -170,7 +170,7 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $usernames =$profile->getUsernames();
+        $usernames =$profile->profileUsername;
         $this->assertNotEmpty($usernames);
         $this->assertInstanceOf(IProfileUsernameRepository::class,$usernames[0]);
         $this->assertInstanceOf(IProfileUsernameEntity::class,$usernames[0]);
@@ -197,7 +197,7 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $emails =$profile->getEmails();
+        $emails =$profile->profileEmail;
         $this->assertNotEmpty($emails);
         $this->assertInstanceOf(IProfileEmailRepository::class,$emails[0]);
         $this->assertInstanceOf(IProfileEmailEntity::class,$emails[0]);
@@ -224,7 +224,7 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $relations =$profile->getRelationships();
+        $relations =$profile->profileRelationship;
         $this->assertNotEmpty($relations);
         $this->assertInstanceOf(IProfileRelationshipRepository::class,$relations[0]);
         $this->assertInstanceOf(IProfileRelationshipEntity::class,$relations[0]);
@@ -251,7 +251,7 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $skills =$profile->getSkills();
+        $skills =$profile->profileSkill;
         $this->assertNotEmpty($skills);
         $this->assertInstanceOf(IProfileSkillRepository::class,$skills[0]);
         $this->assertInstanceOf(IProfileSkillEntity::class,$skills[0]);
@@ -278,7 +278,7 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $images =$profile->getImages();
+        $images =$profile->profileImage;
         $this->assertNotEmpty($images);
         $this->assertInstanceOf(IProfileImageRepository::class,$images[0]);
         $this->assertInstanceOf(IProfileImageEntity::class,$images[0]);
@@ -305,7 +305,7 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $locals =$profile->getLanguages();
+        $locals =$profile->profileLanguage;
         $this->assertNotEmpty($locals);
         $this->assertInstanceOf(IProfileLanguageRepository::class,$locals[0]);
         $this->assertInstanceOf(IProfileLanguageEntity::class,$locals[0]);
@@ -331,7 +331,7 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $meta =$profile->getMetaData();
+        $meta =$profile->metaData;
         $this->assertNotEmpty($meta);
         $this->assertInstanceOf(IProfileMetaDataRepository::class,$meta[0]);
         $this->assertInstanceOf(IProfileMetaDataEntity::class,$meta[0]);
@@ -358,7 +358,7 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $jobs =$profile->getJobs();
+        $jobs =$profile->profileJob;
         $this->assertNotEmpty($jobs);
         $this->assertInstanceOf(IProfileJobRepository::class,$jobs[0]);
         $this->assertInstanceOf(IProfileJobEntity::class,$jobs[0]);
@@ -385,7 +385,7 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $educations =$profile->getEducations();
+        $educations =$profile->profileEducation;
         $this->assertNotEmpty($educations);
         $this->assertInstanceOf(IProfileEducationRepository::class,$educations[0]);
         $this->assertInstanceOf(IProfileEducationEntity::class,$educations[0]);
@@ -412,7 +412,7 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $socials =$profile->getSocialProfiles();
+        $socials =$profile->profileSocialProfile;
         $this->assertNotEmpty($socials);
         $this->assertInstanceOf(IProfileSocialProfileRepository::class,$socials[0]);
         $this->assertInstanceOf(IProfileSocialProfileEntity::class,$socials[0]);
@@ -439,7 +439,7 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
 
-        $records =$profile->getCriminalRecords();
+        $records =$profile->profileCriminalRecord;
         $this->assertNotEmpty($records);
         $this->assertInstanceOf(IProfileCriminalRecordRepository::class,$records[0]);
         $this->assertInstanceOf(IProfileCriminalRecordEntity::class,$records[0]);
@@ -622,7 +622,7 @@ class CreateProfileTest extends AbstractTestCase
             'profile_id' => $profile->getProfileId()
         ]);
             /***phone***/
-        $phones =$profile->getPhones();
+        $phones =$profile->profilePhone;
         $this->assertNotEmpty($phones);
         $this->assertInstanceOf(IProfilePhoneRepository::class,$phones[0]);
         $this->assertInstanceOf(IProfilePhoneEntity::class,$phones[0]);
@@ -633,7 +633,7 @@ class CreateProfileTest extends AbstractTestCase
             'original_number' => $phones[0]->getOriginalNumber()
         ]);
             /***username***/
-        $usernames =$profile->getUsernames();
+        $usernames =$profile->profileUsername;
         $this->assertNotEmpty($usernames);
         $this->assertInstanceOf(IProfileUsernameRepository::class,$usernames[0]);
         $this->assertInstanceOf(IProfileUsernameEntity::class,$usernames[0]);
@@ -645,7 +645,7 @@ class CreateProfileTest extends AbstractTestCase
         ]);
 
         /*** emails ***/
-        $emails =$profile->getEmails();
+        $emails =$profile->profileEmail;
         $this->assertNotEmpty($emails);
         $this->assertInstanceOf(IProfileEmailRepository::class,$emails[0]);
         $this->assertInstanceOf(IProfileEmailEntity::class,$emails[0]);
@@ -657,7 +657,7 @@ class CreateProfileTest extends AbstractTestCase
         ]);
 
         /*** Relationships ***/
-        $relations =$profile->getRelationships();
+        $relations =$profile->profileRelationship;
         $this->assertNotEmpty($relations);
         $this->assertInstanceOf(IProfileRelationshipRepository::class,$relations[0]);
         $this->assertInstanceOf(IProfileRelationshipEntity::class,$relations[0]);
@@ -669,7 +669,7 @@ class CreateProfileTest extends AbstractTestCase
         ]);
 
         /*** skills ***/
-        $skills =$profile->getSkills();
+        $skills =$profile->profileSkill;
         $this->assertNotEmpty($skills);
         $this->assertInstanceOf(IProfileSkillRepository::class,$skills[0]);
         $this->assertInstanceOf(IProfileSkillEntity::class,$skills[0]);
@@ -681,7 +681,7 @@ class CreateProfileTest extends AbstractTestCase
         ]);
 
         /*** images ***/
-        $images =$profile->getImages();
+        $images =$profile->profileImage;
         $this->assertNotEmpty($images);
         $this->assertInstanceOf(IProfileImageRepository::class,$images[0]);
         $this->assertInstanceOf(IProfileImageEntity::class,$images[0]);
@@ -693,7 +693,7 @@ class CreateProfileTest extends AbstractTestCase
         ]);
 
         /*** Languages ***/
-        $locals =$profile->getLanguages();
+        $locals =$profile->profileLanguage;
         $this->assertNotEmpty($locals);
         $this->assertInstanceOf(IProfileLanguageRepository::class,$locals[0]);
         $this->assertInstanceOf(IProfileLanguageEntity::class,$locals[0]);
@@ -705,7 +705,7 @@ class CreateProfileTest extends AbstractTestCase
         ]);
 
         /*** jobs ***/
-        $jobs =$profile->getJobs();
+        $jobs =$profile->profileJob;
         $this->assertNotEmpty($jobs);
         $this->assertInstanceOf(IProfileJobRepository::class,$jobs[0]);
         $this->assertInstanceOf(IProfileJobEntity::class,$jobs[0]);
@@ -717,7 +717,7 @@ class CreateProfileTest extends AbstractTestCase
         ]);
 
         /*** Educations ***/
-        $educations =$profile->getEducations();
+        $educations =$profile->profileEducation;
         $this->assertNotEmpty($educations);
         $this->assertInstanceOf(IProfileEducationRepository::class,$educations[0]);
         $this->assertInstanceOf(IProfileEducationEntity::class,$educations[0]);
@@ -729,7 +729,7 @@ class CreateProfileTest extends AbstractTestCase
         ]);
 
         /*** SocialProfiles ***/
-        $socials =$profile->getSocialProfiles();
+        $socials =$profile->profileSocialProfile;
         $this->assertNotEmpty($socials);
         $this->assertInstanceOf(IProfileSocialProfileRepository::class,$socials[0]);
         $this->assertInstanceOf(IProfileSocialProfileEntity::class,$socials[0]);
@@ -741,7 +741,7 @@ class CreateProfileTest extends AbstractTestCase
         ]);
 
         /*** CriminalRecords ***/
-        $records =$profile->getCriminalRecords();
+        $records =$profile->profileCriminalRecord;
         $this->assertNotEmpty($records);
         $this->assertInstanceOf(IProfileCriminalRecordRepository::class,$records[0]);
         $this->assertInstanceOf(IProfileCriminalRecordEntity::class,$records[0]);
@@ -753,7 +753,7 @@ class CreateProfileTest extends AbstractTestCase
         ]);
 
         /*** Address ***/
-        $names =$profile->getAddresses();
+        $names =$profile->profileAddress;
         $this->assertNotEmpty($names);
         $this->assertInstanceOf(IProfileAddressRepository::class,$names[0]);
         $this->assertInstanceOf(IProfileAddressEntity::class,$names[0]);
@@ -765,7 +765,7 @@ class CreateProfileTest extends AbstractTestCase
         ]);
 
         /*** Name ***/
-        $names =$profile->getNames();
+        $names =$profile->profileName;
         $this->assertNotEmpty($names);
         $this->assertInstanceOf(IProfileNameRepository::class,$names[0]);
         $this->assertInstanceOf(IProfileNameEntity::class,$names[0]);
@@ -777,7 +777,7 @@ class CreateProfileTest extends AbstractTestCase
         ]);
 
         /*** Meta ***/
-        $meta =$profile->getMetaData();
+        $meta =$profile->metaData;
         $this->assertNotEmpty($meta);
         $this->assertInstanceOf(IProfileMetaDataRepository::class,$meta[0]);
         $this->assertInstanceOf(IProfileMetaDataEntity::class,$meta[0]);
