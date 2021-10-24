@@ -9,10 +9,10 @@ interface IProfileUsernameEntity extends IEntity
     public function getProfileId():int|string;
     public function setProfileId(int|string $id);
 
-    public function setValidSince(\DateTime $validSince);
-    public function getValidSince():\DateTime;
+    public function setValidSince(?\DateTime $validSince);
+    public function getValidSince():?\DateTime;
 
-    public function setUsername(string $username);
-    public function getUsername():string;
+    public function setUsername(?string $username);
+    public function getUsername():?string;
 
 }
