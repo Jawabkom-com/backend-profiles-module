@@ -50,82 +50,82 @@ class ProfileAddress extends Model implements IProfileAddressEntity,IProfileAddr
         $this->profile_id = $id;
     }
 
-    public function setValidSince(\DateTime $validSince)
+    public function setValidSince(?\DateTime $validSince)
     {
         $this->valid_since = $validSince;
     }
 
-    public function getValidSince(): \DateTime
+    public function getValidSince():? \DateTime
     {
        return $this->valid_since;
     }
 
-    public function setCountry(string $country)
+    public function setCountry(?string $country)
     {
        $this->country = $country;
     }
 
-    public function getCountry(): string
+    public function getCountry():? string
     {
         return $this->country;
     }
 
-    public function setState(string $state)
+    public function setState(?string $state)
     {
        $this->state = $state;
     }
 
-    public function getState(): string
+    public function getState():? string
     {
         return $this->state;
     }
 
-    public function setCity(string $city)
+    public function setCity(?string $city)
     {
        $this->city = $city;
     }
 
-    public function getCity(): string
+    public function getCity():? string
     {
         return $this->city;
     }
 
-    public function setZip(string $zip)
+    public function setZip(?string $zip)
     {
        $this->zip = $zip;
     }
 
-    public function getZip(): string
+    public function getZip():? string
     {
         return $this->zip;
     }
 
-    public function setStreet(string $street)
+    public function setStreet(?string $street)
     {
        $this->street = $street;
     }
 
-    public function getStreet(): string
+    public function getStreet():? string
     {
         return $this->street;
     }
 
-    public function setBuildingNumber(string $buildingNumber)
+    public function setBuildingNumber(?string $buildingNumber)
     {
        $this->building_number = $buildingNumber;
     }
 
-    public function getBuildingNumber(): string
+    public function getBuildingNumber():? string
     {
         return $this->building_number;
     }
 
-    public function setDisplay(string $display)
+    public function setDisplay(?string $display)
     {
        $this->display = $display;
     }
 
-    public function getDisplay(): string
+    public function getDisplay():? string
     {
         return $this->display;
     }

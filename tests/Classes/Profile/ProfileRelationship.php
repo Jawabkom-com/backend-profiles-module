@@ -46,52 +46,52 @@ class ProfileRelationship extends Model implements IProfileRelationshipEntity,IP
        return $this->profile_id = $id;
     }
 
-    public function setValidSince(\DateTime $validSince)
+    public function setValidSince(?\DateTime $validSince)
     {
         return $this->valid_since = $validSince;
     }
 
-    public function getValidSince(): \DateTime
+    public function getValidSince():? \DateTime
     {
        return $this->valid_since;
     }
 
-    public function setType(string $type)
+    public function setType(?string $type)
     {
         $this->type = $type;
     }
 
-    public function getType(): string
+    public function getType():? string
     {
        return $this->type;
     }
 
-    public function setFirstName(string $firstName)
+    public function setFirstName(?string $firstName)
     {
        $this->first_name = $firstName;
     }
 
-    public function getFirstName(): string
+    public function getFirstName():? string
     {
        return $this->first_name;
     }
 
-    public function setLastName(string $lastName)
+    public function setLastName(?string $lastName)
     {
         $this->last_name = $lastName;
     }
 
-    public function getLastName(): string
+    public function getLastName():? string
     {
        return $this->last_name;
     }
 
-    public function setPersonId(string $personId)
+    public function setPersonId(?string $personId)
     {
        $this->person_id = $personId;
     }
 
-    public function getPersonId(): string
+    public function getPersonId():? string
     {
       return $this->person_id;
     }

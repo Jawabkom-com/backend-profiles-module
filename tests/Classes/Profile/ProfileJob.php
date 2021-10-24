@@ -48,37 +48,37 @@ class ProfileJob extends Model implements IProfileJobEntity,IProfileJobRepositor
        $this->profile_id = $id;
     }
 
-    public function setValidSince(\DateTime $validSince)
+    public function setValidSince(?\DateTime $validSince)
     {
         $this->valid_since = $validSince;
     }
 
-    public function getValidSince(): \DateTime
+    public function getValidSince():? \DateTime
     {
        return $this->valid_since;
     }
 
-    public function setFrom(string $from)
+    public function setFrom(?string $from)
     {
        $this->from = $from;
     }
 
-    public function getFrom(): string
+    public function getFrom():? string
     {
        return $this->from;
     }
 
-    public function setTo(string $to)
+    public function setTo(?string $to)
     {
        $this->to = $to;
     }
 
-    public function getTo(): string
+    public function getTo():? string
     {
         return $this->to;
     }
 
-    public function setTitle(string $title)
+    public function setTitle(?string $title)
     {
        $this->title = $title;
     }
@@ -88,22 +88,22 @@ class ProfileJob extends Model implements IProfileJobEntity,IProfileJobRepositor
         return $this->title;
     }
 
-    public function setOrganization(string $organization)
+    public function setOrganization(?string $organization)
     {
        $this->organization = $organization;
     }
 
-    public function getOrganization(): string
+    public function getOrganization():? string
     {
        return  $this->organization;
     }
 
-    public function setIndustry(string $industry)
+    public function setIndustry(?string $industry)
     {
        $this->industry = $industry;
     }
 
-    public function getIndustry(): string
+    public function getIndustry():? string
     {
         return  $this->industry;
     }

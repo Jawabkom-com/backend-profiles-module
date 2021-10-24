@@ -42,15 +42,14 @@ class ProfileInputValidator
             if(!in_array($inputKey, $this->structure)) {
                 throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
             }
-
             switch ($inputKey) {
                 case 'place_of_birth':
-                    if(strlen($inputValue) !== 2) {
+                    if(!is_null($inputValue) && strlen($inputValue) !== 2) {
                         throw new InvalidInputValue('place_of_birth input value must be a valid country code.');
                     }
                     break;
                 case 'gender':
-                    if(!in_array($inputValue, ['male', 'female'])) {
+                    if(!is_null($inputValue) && !in_array($inputValue, ['male', 'female'])) {
                         throw new InvalidInputValue('gender input value must be either mail or femail.');
                     }
                     break;

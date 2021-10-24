@@ -40,22 +40,22 @@ class ProfileUsername extends Model implements IProfileUsernameEntity,IProfileUs
        $this->profile_id = $id;
     }
 
-    public function setValidSince(\DateTime $validSince)
+    public function setValidSince(?\DateTime $validSince)
     {
         $this->valid_since = $validSince;
     }
 
-    public function getValidSince(): \DateTime
+    public function getValidSince():? \DateTime
     {
       return $this->valid_since;
     }
 
-    public function setUsername(string $username)
+    public function setUsername(?string $username)
     {
        $this->username = $username;
     }
 
-    public function getUsername(): string
+    public function getUsername():? string
     {
       return $this->username;
     }

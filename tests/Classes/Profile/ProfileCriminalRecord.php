@@ -46,52 +46,52 @@ class ProfileCriminalRecord extends Model implements IProfileCriminalRecordEntit
         $this->profile_id = $id;
     }
 
-    public function setCaseNumber(string $caseNumber)
+    public function setCaseNumber(?string $caseNumber)
     {
        $this->case_number = $caseNumber;
     }
 
-    public function getCaseNumber(): string
+    public function getCaseNumber():? string
     {
         return $this->case_number;
     }
 
-    public function setCaseType(string $caseType)
+    public function setCaseType(?string $caseType)
     {
         $this->case_type = $caseType;
     }
 
-    public function getCaseType(): string
+    public function getCaseType():? string
     {
         return $this->case_type;
     }
 
-    public function setCaseYear(string $caseYear)
+    public function setCaseYear(?string $caseYear)
     {
         $this->case_year = $caseYear;
     }
 
-    public function getCaseYear(): string
+    public function getCaseYear():? string
     {
         return $this->case_year;
     }
 
-    public function setCaseStatus(string $caseStatus)
+    public function setCaseStatus(?string $caseStatus)
     {
        $this->case_status = $caseStatus;
     }
 
-    public function getCaseStatus(): string
+    public function getCaseStatus():? string
     {
        return $this->case_status;
     }
 
-    public function setDisplay(string $display)
+    public function setDisplay(?string $display)
     {
       $this->display = $display;
     }
 
-    public function getDisplay(): string
+    public function getDisplay():? string
     {
        return $this->display;
     }

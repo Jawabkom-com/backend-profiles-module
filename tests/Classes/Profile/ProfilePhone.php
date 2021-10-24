@@ -22,6 +22,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property string $carrier
  * @property string $purpose
  * @property string $industry
+ * @property \DateTime|null $valid_since
  */
 class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRepository
 {
@@ -39,6 +40,7 @@ class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRep
       'disposable_phone',
       'carrier',
       'purpose',
+      'industry',
       'industry',
     ];
 
@@ -69,112 +71,112 @@ class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRep
         return $this->updated_at;
     }
 
-    public function setType(string $type)
+    public function setType(?string $type)
     {
      $this->type = $type;
     }
 
-    public function getType(): string
+    public function getType():? string
     {
        return $this->type;
     }
 
-    public function setDoNotCallFlag(bool $doNotCallFlag)
+    public function setDoNotCallFlag(?bool $doNotCallFlag)
     {
        $this->do_not_call_flag = $doNotCallFlag;
     }
 
-    public function getDoNotCallFlag(): bool
+    public function getDoNotCallFlag():? bool
     {
         return $this->do_not_call_flag;
     }
 
-    public function setCountryCode(string $countryCode)
+    public function setCountryCode(?string $countryCode)
     {
        $this->country_code = $countryCode;
     }
 
-    public function getCountryCode(): string
+    public function getCountryCode():? string
     {
        return $this->country_code;
     }
 
-    public function setOriginalNumber(string $originalNumber)
+    public function setOriginalNumber(?string $originalNumber)
     {
         $this->original_number = $originalNumber;
     }
 
-    public function getOriginalNumber(): string
+    public function getOriginalNumber():? string
     {
         return $this->original_number;
     }
 
-    public function setFormattedNumber(string $formattedNumber)
+    public function setFormattedNumber(?string $formattedNumber)
     {
       $this->formatted_number = $formattedNumber;
     }
 
-    public function getFormattedNumber(): string
+    public function getFormattedNumber():? string
     {
      return $this->formatted_number;
     }
 
-    public function setValidPhone(bool $validPhone)
+    public function setValidPhone(?bool $validPhone)
     {
        $this->valid_phone = $validPhone;
     }
 
-    public function getValidPhone(): bool
+    public function getValidPhone():? bool
     {
        return $this->valid_phone;
     }
 
-    public function setRiskyPhone(bool $riskyPhone)
+    public function setRiskyPhone(?bool $riskyPhone)
     {
         $this->risky_phone = $riskyPhone;
     }
 
-    public function getRiskyPhone(): bool
+    public function getRiskyPhone():? bool
     {
       return  $this->risky_phone;
     }
 
-    public function setDisposablePhone(bool $disposablePhone)
+    public function setDisposablePhone(?bool $disposablePhone)
     {
        $this->disposable_phone = $disposablePhone;
     }
 
-    public function getDisposablePhone(): bool
+    public function getDisposablePhone():? bool
     {
         return $this->disposable_phone;
     }
 
-    public function setCarrier(string $carrier)
+    public function setCarrier(?string $carrier)
     {
        $this->carrier = $carrier;
     }
 
-    public function getCarrier(): string
+    public function getCarrier():? string
     {
       return $this->carrier;
     }
 
-    public function setPurpose(string $purpose)
+    public function setPurpose(?string $purpose)
     {
       $this->purpose = $purpose;
     }
 
-    public function getPurpose(): string
+    public function getPurpose():? string
     {
         return  $this->purpose;
     }
 
-    public function setIndustry(string $industry)
+    public function setIndustry(?string $industry)
     {
         $this->industry = $industry;
     }
 
-    public function getIndustry(): string
+    public function getIndustry():? string
     {
        return $this->industry;
     }
@@ -192,5 +194,15 @@ class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRep
     public function deleteEntity(IEntity $entity): bool
     {
        return $entity->delete();
+    }
+
+    public function setValidSince(?\DateTime $validSince)
+    {
+       $this->valid_since = $validSince;
+    }
+
+    public function getValidSince(): ?\DateTime
+    {
+        return $this->valid_since;
     }
 }

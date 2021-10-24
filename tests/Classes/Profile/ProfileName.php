@@ -46,52 +46,52 @@ class ProfileName extends Model implements IProfileNameEntity,IProfileNameReposi
        $this->profile_id = $id;
     }
 
-    public function setPrefix(string $prefix)
+    public function setPrefix(?string $prefix)
     {
         $this->prefix = $prefix;
     }
 
-    public function getPrefix(): string
+    public function getPrefix():? string
     {
        return $this->prefix;
     }
 
-    public function setFirst(string $first)
+    public function setFirst(?string $first)
     {
         $this->first = $first;
     }
 
-    public function getFirst(): string
+    public function getFirst():? string
     {
        return  $this->first;
     }
 
-    public function setMiddle(string $middle)
+    public function setMiddle(?string $middle)
     {
        $this->middle = $middle;
     }
 
-    public function getMiddle(): string
+    public function getMiddle():? string
     {
       return $this->middle;
     }
 
-    public function setLast(string $last)
+    public function setLast(?string $last)
     {
        $this->last = $last;
     }
 
-    public function getLast(): string
+    public function getLast():? string
     {
        return $this->last;
     }
 
-    public function setDisplay(string $display)
+    public function setDisplay(?string $display)
     {
        $this->display = $display;
     }
 
-    public function getDisplay(): string
+    public function getDisplay():? string
     {
        return $this->display;
     }

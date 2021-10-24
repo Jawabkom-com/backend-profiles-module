@@ -44,7 +44,7 @@ class ProfileEmail extends Model implements IProfileEmailEntity,IProfileEmailRep
         $this->profile_id = $id;
     }
 
-    public function setValidSince(\DateTime $validSince)
+    public function setValidSince(?\DateTime $validSince)
     {
        $this->valid_since = $validSince;
     }
@@ -54,7 +54,7 @@ class ProfileEmail extends Model implements IProfileEmailEntity,IProfileEmailRep
       return $this->valid_since;
     }
 
-    public function setEmail(string $email)
+    public function setEmail(?string $email)
     {
        $this->email = $email;
     }
@@ -64,17 +64,17 @@ class ProfileEmail extends Model implements IProfileEmailEntity,IProfileEmailRep
        return $this->email;
     }
 
-    public function setEspDomain(string $espDomain)
+    public function setEspDomain(?string $espDomain)
     {
         $this->esp_domain = $espDomain;
     }
 
-    public function getEspDomain(): string
+    public function getEspDomain():? string
     {
         return $this->esp_domain;
     }
 
-    public function setType(string $type)
+    public function setType(?string $type)
     {
        $this->type = $type;
     }

@@ -41,12 +41,12 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
         'id'
     ];
 
-    public function setHash(string $hash)
+    public function setHash(?string $hash)
     {
         $this->hash= $hash;
     }
 
-    public function getHash(): string
+    public function getHash():? string
     {
         return $this->hash;
     }
@@ -61,42 +61,42 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
         $this->profile_id = $id;
     }
 
-    public function setGender(string $gender)
+    public function setGender(?string $gender)
     {
         $this->gender = $gender;
     }
 
-    public function getGender(): string
+    public function getGender():? string
     {
         return $this->gender;
     }
 
-    public function setDateOfBirth(\DateTime $dateOfBirth)
+    public function setDateOfBirth(?\DateTime $dateOfBirth)
     {
         $this->date_of_birth = $dateOfBirth;
     }
 
-    public function getDateOfBirth(): \DateTime
+    public function getDateOfBirth():? \DateTime
     {
         return $this->date_of_birth;
     }
 
-    public function setPlaceOfBirth(string $placeOfBirth)
+    public function setPlaceOfBirth(?string $placeOfBirth)
     {
         $this->place_of_birth = $placeOfBirth;
     }
 
-    public function getPlaceOfBirth(): string
+    public function getPlaceOfBirth():? string
     {
         return $this->place_of_birth;
     }
 
-    public function setDataSource(string $dataSource)
+    public function setDataSource(?string $dataSource)
     {
         $this->data_source = $dataSource;
     }
 
-    public function getDataSource(): string
+    public function getDataSource():? string
     {
         return $this->data_source;
     }

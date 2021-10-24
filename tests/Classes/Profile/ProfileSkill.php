@@ -42,17 +42,17 @@ class ProfileSkill extends Model implements IProfileSkillEntity,IProfileSkillRep
        $this->profile_id = $id;
     }
 
-    public function setValidSince(\DateTime $validSince)
+    public function setValidSince(?\DateTime $validSince)
     {
         $this->valid_since = $validSince;
     }
 
-    public function getValidSince(): \DateTime
+    public function getValidSince():? \DateTime
     {
       return $this->valid_since;
     }
 
-    public function setLevel(string $level)
+    public function setLevel(?string $level)
     {
        $this->level = $level;
     }
@@ -62,12 +62,12 @@ class ProfileSkill extends Model implements IProfileSkillEntity,IProfileSkillRep
      return $this->level;
     }
 
-    public function setSkill(string $skill)
+    public function setSkill(?string $skill)
     {
        $this->skill = $skill;
     }
 
-    public function getSkill(): string
+    public function getSkill():? string
     {
        return $this->skill;
     }

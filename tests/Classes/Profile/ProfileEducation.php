@@ -48,37 +48,37 @@ class ProfileEducation extends Model implements IProfileEducationEntity,IProfile
         $this->profile_id = $id;
     }
 
-    public function setValidSince(\DateTime $validSince)
+    public function setValidSince(?\DateTime $validSince)
     {
        $this->valid_since = $validSince;
     }
 
-    public function getValidSince(): \DateTime
+    public function getValidSince():? \DateTime
     {
         return $this->valid_since;
     }
 
-    public function setFrom(string $from)
+    public function setFrom(?string $from)
     {
        $this->from = $from;
     }
 
-    public function getFrom(): string
+    public function getFrom():? string
     {
       return  $this->from;
     }
 
-    public function setTo(string $to)
+    public function setTo(?string $to)
     {
         $this->to = $to;
     }
 
-    public function getTo(): string
+    public function getTo():? string
     {
        return $this->to;
     }
 
-    public function setSchool(string $school)
+    public function setSchool(?string $school)
     {
         $this->school = $school;
     }
@@ -88,22 +88,22 @@ class ProfileEducation extends Model implements IProfileEducationEntity,IProfile
       return $this->school;
     }
 
-    public function setDegree(string $degree)
+    public function setDegree(?string $degree)
     {
         $this->degree = $degree;
     }
 
-    public function getDegree(): string
+    public function getDegree():? string
     {
         return  $this->degree;
     }
 
-    public function setMajor(string $major)
+    public function setMajor(?string $major)
     {
         $this->major = $major;
     }
 
-    public function getMajor(): string
+    public function getMajor():? string
     {
       return $this->major;
     }

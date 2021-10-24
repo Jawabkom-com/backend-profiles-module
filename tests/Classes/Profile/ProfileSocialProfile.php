@@ -45,52 +45,52 @@ class ProfileSocialProfile extends Model implements IProfileSocialProfileEntity,
       $this->profile_id = $id;
     }
 
-    public function setValidSince(\DateTime $validSince)
+    public function setValidSince(?\DateTime $validSince)
     {
         $this->valid_since = $validSince;
     }
 
-    public function getValidSince(): \DateTime
+    public function getValidSince():? \DateTime
     {
       return $this->valid_since;
     }
 
-    public function setUrl(string $url)
+    public function setUrl(?string $url)
     {
        $this->url = $url;
     }
 
-    public function getUrl(): string
+    public function getUrl():? string
     {
        return $this->url;
     }
 
-    public function setType(string $type)
+    public function setType(?string $type)
     {
         $this->type = $type;
     }
 
-    public function getType(): string
+    public function getType():? string
     {
        return $this->type;
     }
 
-    public function setUsername(string $username)
+    public function setUsername(?string $username)
     {
         $this->username = $username;
     }
 
-    public function getUsername(): string
+    public function getUsername():? string
     {
         return $this->username;
     }
 
-    public function setAccountId(string $accountId)
+    public function setAccountId(?string $accountId)
     {
        $this->account_id = $accountId;
     }
 
-    public function getAccountId(): string
+    public function getAccountId():? string
     {
         return $this->account_id;
     }

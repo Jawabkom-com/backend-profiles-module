@@ -2,7 +2,6 @@
 
 namespace Jawabkom\Backend\Module\Profile\Test\Classes\Searcher;
 
-use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationRepository;
@@ -16,15 +15,12 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUuidFactory;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileAddEditMethods;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileHashTrait;
-use Jawabkom\Backend\Module\Profile\Trait\ProfileToArrayTrait;
 use Jawabkom\Standard\Contract\IDependencyInjector;
-use Ramsey\Uuid\Uuid;
 
 class TestSearcherMapper implements IProfileEntityMapper
 {
@@ -32,6 +28,7 @@ class TestSearcherMapper implements IProfileEntityMapper
     use ProfileHashTrait;
     private IDependencyInjector $di;
     private IProfileRepository $repository;
+    private \Jawabkom\Standard\Contract\IEntity|IProfileEntity $profile;
 
     public function __construct()
     {
@@ -102,7 +99,7 @@ class TestSearcherMapper implements IProfileEntityMapper
         $jobRepository = $this->di->make(IProfileJobRepository::class);
         foreach ($jobs as $job){
                 $newJobEntity             = $jobRepository->createEntity();
-                $jobInput['valid_since']  =  \DateTime::createFromFormat('Y-m-d', $job['@valid_since']);
+                $jobInput['valid_since']  =  $job['@valid_since'];
                 $jobInput['from']         = $job['date_range']['start']??'';
                 $jobInput['to']           = $job['end']??'';
                 $jobInput['title']        = $job['title']??'';
@@ -119,7 +116,7 @@ class TestSearcherMapper implements IProfileEntityMapper
         $usernameRepository = $this->di->make(IProfileUsernameRepository::class);
         foreach ($usernames as $username){
             $newUserNameEntity             = $usernameRepository->createEntity();
-            $usernameInput['valid_since']  =  \DateTime::createFromFormat('Y-m-d', $username['@valid_since']);
+            $usernameInput['valid_since']  =  $username['@valid_since'];
             $usernameInput['username']     = $username['content']??'';
             $this->fillUsernameEntity($this->profile,$newUserNameEntity,$usernameInput);
             $composite->addUsername($newUserNameEntity);
@@ -133,7 +130,7 @@ class TestSearcherMapper implements IProfileEntityMapper
         $phoneRepository = $this->di->make(IProfilePhoneRepository::class);
         foreach ($phones as $phone){
             $newPhoneEntity                     = $phoneRepository->createEntity();
-            $phoneInput['valid_since']          =  \DateTime::createFromFormat('Y-m-d', $phone['@valid_since']);
+            $phoneInput['valid_since']          = $phone['@valid_since'];
             $phoneInput['type']                 = $phone['@type']??'';
             $phoneInput['do_not_call_flag']     = $phone['do_not_call_flag']??false;
             $phoneInput['country_code']         = $phone['country_code']??'';
@@ -170,7 +167,7 @@ class TestSearcherMapper implements IProfileEntityMapper
         $addressRepository = $this->di->make(IProfileAddressRepository::class);
         foreach ($addresses as $address){
             $addressEntity                    = $addressRepository->createEntity();
-            $addressInput['valid_since']      = \DateTime::createFromFormat('Y-m-d', $address['@valid_since']);
+            $addressInput['valid_since']      = $address['@valid_since'];
             $addressInput['country']          = $address['country']??'';
             $addressInput['state']            = $address['state']??'';
             $addressInput['city']             = $address['city']??'';
@@ -190,7 +187,7 @@ class TestSearcherMapper implements IProfileEntityMapper
         $educationRepository = $this->di->make(IProfileEducationRepository::class);
         foreach ($educations as $education){
             $educationEntity                    = $educationRepository->createEntity();
-            $educationInput['valid_since']      = \DateTime::createFromFormat('Y-m-d', $education['@valid_since']);
+            $educationInput['valid_since']      = $education['@valid_since'];
             $addressInput['from']          = $education['date_range']['start']??'';
             $addressInput['to']          = $education['date_range']['end']??'';
             $addressInput['school']             = $address['school']??'';
@@ -208,7 +205,7 @@ class TestSearcherMapper implements IProfileEntityMapper
         $relationshipRepository = $this->di->make(IProfileRelationshipRepository::class);
         foreach ($relationships as $relationship){
             $relationshipEntity               = $relationshipRepository->createEntity();
-            $relationshipInput['valid_since'] = \DateTime::createFromFormat('Y-m-d', $relationship['@valid_since']);
+            $relationshipInput['valid_since'] = $relationship['@valid_since'];
             $relationshipInput['type']        = $relationship['@type']??'';
             $relationshipInput['first_name']        = $relationship['names'][0]['first']??'';
             $relationshipInput['last_name']        = $relationship['names'][0]['last']??'';
@@ -225,7 +222,7 @@ class TestSearcherMapper implements IProfileEntityMapper
         $socialRepository = $this->di->make(IProfileSocialProfileRepository::class);
         foreach ($socials as $social){
             $socialEntity              = $socialRepository->createEntity();
-            $socialInput['valid_since']= \DateTime::createFromFormat('Y-m-d', $social['@valid_since']);
+            $socialInput['valid_since']= $social['@valid_since'];
             $socialInput['url']        = $social['url']??'';
             $socialInput['type']       = explode('@',$social['content'])[1]??'';
             $socialInput['username']   = $social['@username']??'';
@@ -242,7 +239,7 @@ class TestSearcherMapper implements IProfileEntityMapper
         $imageRepository = $this->di->make(IProfileImageRepository::class);
         foreach ($images as $image){
             $imageEntity              = $imageRepository->createEntity();
-            $socialInput['valid_since']= \DateTime::createFromFormat('Y-m-d', $image['@valid_since']);
+            $socialInput['valid_since']= $image['@valid_since'];
             $socialInput['original_url']        = $social['original_url']??'';
             $socialInput['local_path']        = $social['local_path']??'';
             $this->fillImageEntity($this->profile,$imageEntity,$socialInput);

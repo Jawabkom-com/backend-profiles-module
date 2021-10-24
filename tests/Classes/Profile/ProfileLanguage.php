@@ -41,22 +41,22 @@ class ProfileLanguage extends Model implements IProfileLanguageEntity,IProfileLa
        $this->profile_id = $id;
     }
 
-    public function setLanguage(string $language)
+    public function setLanguage(?string $language)
     {
         $this->language = $language;
     }
 
-    public function getLanguage(): string
+    public function getLanguage():? string
     {
         return $this->language;
     }
 
-    public function setCountry(string $country)
+    public function setCountry(?string $country)
     {
         $this->country = $country;
     }
 
-    public function getCountry(): string
+    public function getCountry():? string
     {
         return  $this->country;
     }

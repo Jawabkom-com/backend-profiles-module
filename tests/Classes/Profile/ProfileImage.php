@@ -42,32 +42,32 @@ class ProfileImage extends Model implements IProfileImageEntity,IProfileImageRep
        $this->profile_id = $id;
     }
 
-    public function setOriginalUrl(string $originalUrl)
+    public function setOriginalUrl(?string $originalUrl)
     {
        $this->original_url = $originalUrl;
     }
 
-    public function getOriginalUrl(): string
+    public function getOriginalUrl():? string
     {
       return $this->original_url;
     }
 
-    public function setLocalPath(string $localPath)
+    public function setLocalPath(?string $localPath)
     {
        $this->local_path = $localPath;
     }
 
-    public function getLocalPath(): string
+    public function getLocalPath():? string
     {
        return $this->local_path;
     }
 
-    public function setValidSince(\DateTime $validSince)
+    public function setValidSince(?\DateTime $validSince)
     {
         $this->valid_since = $validSince;
     }
 
-    public function getValidSince(): \DateTime
+    public function getValidSince():? \DateTime
     {
        return  $this->valid_since;
     }
