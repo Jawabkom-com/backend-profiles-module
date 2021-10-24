@@ -112,7 +112,7 @@ class CreateProfile extends AbstractService
                 $this->$processingMethodName($profileEntity, $profilePartInput, $profileComposite);
             }
         }
-        $this->setProfileHash($profileEntity);
+        $this->setProfileHash($profileInputs,$profileEntity);
         $this->assertProfileHashDoesNotExists($profileEntity->getHash());
         $this->repository->saveEntity($profileEntity);
         $profileComposite->setProfile($profileEntity);

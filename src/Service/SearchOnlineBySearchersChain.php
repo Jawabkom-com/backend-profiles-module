@@ -2,12 +2,14 @@
 
 namespace Jawabkom\Backend\Module\Profile\Service;
 
+use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSearcher;
 use Jawabkom\Backend\Module\Profile\Contract\ISearcherStatusRepository;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchFiltersBuilder;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchRequestEntity;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchRequestRepository;
+use Jawabkom\Backend\Module\Profile\Exception\ProfileEntityExists;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherExceededAllowedRequestsLimit;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherRegistryDoesNotExist;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
@@ -25,6 +27,7 @@ class SearchOnlineBySearchersChain extends AbstractService
     private ISearchRequestRepository $searchRequestRepository;
     private ISearcherStatusRepository $searcherStatusRepository;
     private \DateTime $currentDateTime;
+    private CreateProfile $createProfileService;
 
     public function __construct(IDependencyInjector       $di,
                                 IProfileRepository        $repository,
@@ -32,7 +35,8 @@ class SearchOnlineBySearchersChain extends AbstractService
                                 ISearchFiltersBuilder     $searchFiltersBuilder,
                                 ISearchRequestRepository  $searchRequestRepository,
                                 ISearcherStatusRepository $searcherStatusRepository,
-                                \DateTime                 $currentDateTime
+                                \DateTime                 $currentDateTime,
+                                CreateProfile             $createProfileService
     )
     {
         parent::__construct($di);
@@ -42,6 +46,7 @@ class SearchOnlineBySearchersChain extends AbstractService
         $this->searchRequestRepository = $searchRequestRepository;
         $this->searcherStatusRepository = $searcherStatusRepository;
         $this->currentDateTime = $currentDateTime;
+        $this->createProfileService = $createProfileService;
     }
 
     //
@@ -67,9 +72,9 @@ class SearchOnlineBySearchersChain extends AbstractService
                 $resultsFormatted = $this->mapResults($alias, $results);
                 if (count($resultsFormatted)) {
                     //if (!$isFromCache)
-                    $this->saveResultsMapped($resultsFormatted, $alias);
-                    $this->setSucceededSearchRequestStatus($searchRequest, $results, count($resultsFormatted));
-                    $this->setOutput('result', $resultsFormatted);
+                    $savedProfileComposites = $this->saveResultsMapped($resultsFormatted, $alias);
+                    $this->setSucceededSearchRequestStatus($searchRequest, $results, count($savedProfileComposites));
+                    $this->setOutput('result', $savedProfileComposites);
                     $this->setOutput('raw_result', $results);
                     break;
                 } else {
@@ -77,7 +82,6 @@ class SearchOnlineBySearchersChain extends AbstractService
                 }
 
             } catch (\Throwable $exception) {
-                dd($exception);
                 if (!isset($searchRequest))
                     throw $exception;
                 $this->setErrorSearchRequestStatus($searchRequest, $exception);
@@ -236,11 +240,24 @@ class SearchOnlineBySearchersChain extends AbstractService
         return $mapper->map($results);
     }
 
-    protected function saveResultsMapped(iterable $formattedResults, mixed $alias): void
+    /**
+     * @param IProfileComposite[] $profileComposites
+     * @param mixed $alias
+     */
+    protected function saveResultsMapped(iterable $arrayMapperComposites, mixed $alias): array
     {
-        foreach ($formattedResults as $result) {
-         
+        $savedProfileComposites = [];
+        foreach ($arrayMapperComposites as $mapperComposite) {
+            $mapperComposite->setMetaData($alias);
+            try {
+                $savedProfileComposites[] = $this->createProfileService->input('profile',$mapperComposite->getPersonal())
+                                                                       ->process()
+                                                                       ->output('result');
+            } catch (ProfileEntityExists $exception) {
+                //skip
+            }
         }
+        return $savedProfileComposites;
     }
 
 }

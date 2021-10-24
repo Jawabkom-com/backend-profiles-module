@@ -55,11 +55,10 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('searchersAliases', ['searcher1'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
-        $profiles = $outputs->output('result');
-        dd($profiles);
-        $this->assertEquals(1, count($profiles));
-        $this->assertDatabaseHas('profiles', [
-            'profile_id' => $profiles[0]['profile_id']
+        $result = $outputs->output('result');
+        $this->assertEquals(1, count($result));
+       $this->assertDatabaseHas('profiles', [
+            'profile_id' => $result[0]->getProfile()->getProfileId()
         ]);
     }
 
@@ -76,10 +75,10 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('searchersAliases', ['searcher1'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
-        $profiles = $outputs->output('result');
-        $this->assertEquals(3, count($profiles));
+        $result = $outputs->output('result');
+        $this->assertEquals(3, count($result));
         $this->assertDatabaseHas('profiles', [
-            'profile_id' => $profiles[1]['profile_id']
+            'profile_id' => $result[0]->getProfile()->getProfileId()
         ]);
 
     }
@@ -98,9 +97,9 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
-        $profiles = $outputs->output('result');
-        $this->assertEquals('searcher1', $profiles[0]['data_source']);
-        $this->assertCount(1, $profiles);
+        $result = $outputs->output('result');
+        $this->assertEquals('searcher1', $result[0]->getProfile()->getDataSource());
+        $this->assertCount(1, $result);
         $this->assertCount(1, $outputs->output('search_requests'));
     }
 
@@ -118,9 +117,9 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
-        $profiles = $outputs->output('result');
-        $this->assertEquals('searcher3', $profiles[0]['data_source']);
-        $this->assertCount(1, $profiles);
+        $result = $outputs->output('result');
+        $this->assertEquals('searcher3', $result[0]->getProfile()->getDataSource());
+        $this->assertCount(1, $result);
         $this->assertCount(3, $outputs->output('search_requests'));
 
     }
@@ -139,8 +138,8 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
-        $profiles = $outputs->output('profiles');
-        $this->assertNull($profiles);
+        $result = $outputs->output('result');
+        $this->assertNull($result);
         $this->assertCount(3, $outputs->output('search_requests'));
     }
 
@@ -158,9 +157,9 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('searchersAliases', ['searcher1', 'searcher2', 'searcher3'])
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
-        $profiles = $outputs->output('result');
-        $this->assertEquals('searcher3', $profiles[0]['data_source']);
-        $this->assertCount(3, $profiles);
+        $result = $outputs->output('result');
+        $this->assertEquals('searcher3', $result[0]->getProfile()->getDataSource());
+        $this->assertCount(3, $result);
         $this->assertCount(3, $outputs->output('search_requests'));
     }
 

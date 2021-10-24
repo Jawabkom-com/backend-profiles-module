@@ -85,8 +85,8 @@ class ResultToArrayMapper implements IResultToArrayMapper
         $this->personal['criminal_records'][] = $criminalRecord;
     }
 
-   public function addMetaData(iterable $meta)
+   public function setMetaData(string $meta)
     {
-      $this->personal['meta_data'][] = $meta;
+      $this->personal['data_source'] = $meta;
     }
 }

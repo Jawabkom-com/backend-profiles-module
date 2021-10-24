@@ -2,35 +2,15 @@
 
 namespace Jawabkom\Backend\Module\Profile\Test\Classes\Searcher;
 
-use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileImageRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileNameRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileUuidFactory;
 use Jawabkom\Backend\Module\Profile\Contract\IResultToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
-use Jawabkom\Backend\Module\Profile\Trait\ProfileAddEditMethods;
-use Jawabkom\Backend\Module\Profile\Trait\ProfileHashTrait;
-use Jawabkom\Backend\Module\Profile\Trait\ProfileToArrayTrait;
 use Jawabkom\Standard\Contract\IDependencyInjector;
-use Ramsey\Uuid\Uuid;
 
 class TestSearcherMapper implements IProfileEntityMapper
 {
-    use ProfileAddEditMethods;
-    use ProfileHashTrait;
     private IDependencyInjector $di;
     private IProfileRepository $repository;
 
@@ -62,7 +42,7 @@ class TestSearcherMapper implements IProfileEntityMapper
                 $this->addRelationshipsEntityIfExists($personal['relationships']??[],$arrayMapper);
                 $this->addSocialMediaEntityIfExists($personal['user_ids']??[],$arrayMapper);
                 $this->addImagesEntityIfExists($personal['images']??[],$arrayMapper);
-                $resultFormatted[] = $arrayMapper->getPersonal();
+                $resultFormatted[] = $arrayMapper;
             }
         }
         return $resultFormatted;
@@ -82,7 +62,8 @@ class TestSearcherMapper implements IProfileEntityMapper
     private function addJobsEntityIfExists(iterable $jobs,$composite)
     {
         foreach ($jobs as $job){
-                $jobInput['valid_since']  = $job['@valid_since']??'';
+                $valid = empty($job['@valid_since'])?new \DateTime():\DateTime::createFromFormat('Y-m-d', $job['@valid_since']);
+                $jobInput['valid_since']  = $valid;
                 $jobInput['from']         = $job['date_range']['start']??'';
                 $jobInput['to']           = $job['end']??'';
                 $jobInput['title']        = $job['title']??'';
@@ -95,7 +76,8 @@ class TestSearcherMapper implements IProfileEntityMapper
     private function addUserNamesEntityIfExists(iterable $usernames,$composite)
     {
         foreach ($usernames as $username){
-            $usernameInput['valid_since']  = $username['@valid_since']??'';
+            $valid = empty($username['@valid_since'])?new \DateTime():\DateTime::createFromFormat('Y-m-d', $username['@valid_since']);
+            $usernameInput['valid_since']  = $valid;
             $usernameInput['username']     = $username['content']??'';
             $composite->setUsername($usernameInput);
         }
@@ -105,7 +87,7 @@ class TestSearcherMapper implements IProfileEntityMapper
     private function addPhonesEntityIfExists(iterable $phones,$composite)
     {
         foreach ($phones as $phone){
-            $phoneInput['valid_since']          = $phone['@valid_since']??'';
+       //     $phoneInput['valid_since']          = $phone['@valid_since']??'';
             $phoneInput['type']                 = $phone['@type']??'';
             $phoneInput['do_not_call_flag']     = $phone['do_not_call_flag']??false;
             $phoneInput['country_code']         = $phone['country_code']??'';
@@ -134,7 +116,8 @@ class TestSearcherMapper implements IProfileEntityMapper
     private function addAddressesEntityIfExists(iterable $addresses,$composite)
     {
         foreach ($addresses as $address){
-            $addressInput['valid_since']      = $address['@valid_since']??'';
+            $valid = empty($address['@valid_since'])?new \DateTime():\DateTime::createFromFormat('Y-m-d', $address['@valid_since']);
+            $addressInput['valid_since']      = $valid;
             $addressInput['country']          = $address['country']??'';
             $addressInput['state']            = $address['state']??'';
             $addressInput['city']             = $address['city']??'';
@@ -150,21 +133,23 @@ class TestSearcherMapper implements IProfileEntityMapper
     private function addEducationsEntityIfExists(iterable $educations,$composite)
     {
         foreach ($educations as $education){
-            $educationInput['valid_since']   = $education['@valid_since']??'';
-            $addressInput['from']            = $education['date_range']['start']??'';
-            $addressInput['to']              = $education['date_range']['end']??'';
-            $addressInput['school']          = $address['school']??'';
-            $addressInput['degree']          = $address['degree']??'';
-            $addressInput['major']           = $address['major']??'';
-            $composite->setEducation($addressInput);
+            if (is_string($education['@valid_since']))
+            $valid = empty($education['@valid_since'])?new \DateTime() :\DateTime::createFromFormat('Y-m-d', $education['@valid_since']);
+            $educationInput['valid_since']   = $valid;
+            $educationInput['from']            = $education['date_range']['start']??'';
+            $educationInput['to']              = $education['date_range']['end']??'';
+            $educationInput['school']          = $education['school']??'';
+            $educationInput['degree']          = $education['degree']??'';
+            $educationInput['major']           = $education['major']??'';
+            $composite->setEducation($educationInput);
         }
-
     }
 
     private function addRelationshipsEntityIfExists(iterable $relationships,$composite)
     {
         foreach ($relationships as $relationship){
-            $relationshipInput['valid_since'] = $relationship['@valid_since']??'';
+            $valid = empty($relationship['@valid_since'])?new \DateTime():\DateTime::createFromFormat('Y-m-d', $relationship['@valid_since']);
+            $relationshipInput['valid_since'] = $valid;
             $relationshipInput['type']        = $relationship['@type']??'';
             $relationshipInput['first_name']  = $relationship['names'][0]['first']??'';
             $relationshipInput['last_name']   = $relationship['names'][0]['last']??'';
@@ -177,7 +162,8 @@ class TestSearcherMapper implements IProfileEntityMapper
     private function addSocialMediaEntityIfExists(iterable $socials,$composite)
     {
         foreach ($socials as $social){
-            $socialInput['valid_since']= $social['@valid_since']??'';
+            $valid = empty($social['@valid_since'])?new \DateTime():\DateTime::createFromFormat('Y-m-d', $social['@valid_since']);
+            $socialInput['valid_since']= $valid;
             $socialInput['url']        = $social['url']??'';
             $socialInput['type']       = explode('@',$social['content'])[1]??'';
             $socialInput['username']   = $social['@username']??'';
@@ -190,10 +176,11 @@ class TestSearcherMapper implements IProfileEntityMapper
     private function addImagesEntityIfExists(iterable $images,$composite)
     {
         foreach ($images as $image){
-            $image['valid_since']         = $image['@valid_since']??'';
-            $image['original_url']        = $image['original_url']??'';
-            $image['local_path']          = $image['local_path']??'';
-            $composite->setImage($image);
+            $valid = empty($image['@valid_since'])?new \DateTime():\DateTime::createFromFormat('Y-m-d', $image['@valid_since']);
+            $imageInput['valid_since']        = $valid;
+            $imageInput['original_url']        = $image['original_url']??'';
+            $imageInput['local_path']          = $image['local_path']??'';
+            $composite->setImage($imageInput);
         }
     }
 }

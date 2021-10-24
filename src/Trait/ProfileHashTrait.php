@@ -4,25 +4,19 @@ namespace Jawabkom\Backend\Module\Profile\Trait;
 
 use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Exception\ProfileEntityExists;
 
 trait ProfileHashTrait
 {
-    protected ?IProfileEntityToArrayMapper $profileToArrayMapper;
     protected ?IArrayHashing $arrayHashing;
 
-    protected function setProfileHash(IProfileEntity $profileEntity)
+    protected function setProfileHash(array $profileInput,IProfileEntity $profileEntity)
     {
-        if(empty($this->profileToArrayMapper))
-            $this->profileToArrayMapper = $this->di->make(IProfileEntityToArrayMapper::class);
         if(empty($this->arrayHashing))
             $this->arrayHashing = $this->di->make(IArrayHashing::class);
-        $profileArray = clone $profileEntity;
-        $profileAsArray = $this->profileToArrayMapper->map($profileArray);
-        unset($profileAsArray['profile_id']);
-        unset($profileAsArray['hash']);
-        $hash = $this->arrayHashing->hash($profileAsArray);
+        unset($profileInput['profile_id']);
+        unset($profileInput['hash']);
+        $hash = $this->arrayHashing->hash($profileInput);
         $profileEntity->setHash($hash);
     }
 
