@@ -57,7 +57,7 @@ class SearchOnlineTest extends AbstractTestCase
             ->process();
         $result = $outputs->output('result');
         $this->assertEquals(1, count($result));
-       $this->assertDatabaseHas('profiles', [
+        $this->assertDatabaseHas('profiles', [
             'profile_id' => $result[0]->getProfile()->getProfileId()
         ]);
     }

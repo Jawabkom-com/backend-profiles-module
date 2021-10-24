@@ -14,7 +14,7 @@ trait DummyTrait
         return [
             'gender' => 'male',
             'date_of_birth' => Carbon::now()->subYears(20),
-            'place_of_birth' => 'palestine',
+            'place_of_birth' => $this->faker->countryCode,
             'data_source' => 'facebook',
         ];
     }
@@ -61,7 +61,6 @@ trait DummyTrait
             'type'=>'friend',
             'first_name'=>$this->faker->firstName,
             'last_name'=>$this->faker->lastName,
-            'person_id'=>$this->faker->randomKey,
         ];
     }
 
@@ -78,7 +77,6 @@ trait DummyTrait
     {
         return [
             'original_url'=>$this->faker->imageUrl,
-            'local_path'=>$this->faker->imageUrl,
             'valid_since'=>Carbon::now()
         ];
     }
@@ -152,7 +150,6 @@ trait DummyTrait
             'first'=>$this->faker->firstName,
             'middle'=>$this->faker->firstName,
             'last'=>$this->faker->lastName,
-            'display'=>$this->faker->lastName.' '.$this->faker->lastName,
         ];
     }
 
@@ -160,7 +157,7 @@ trait DummyTrait
     {
         return [
             'valid_since'=>Carbon::now(),
-            'country' => $this->faker->country(),
+            'country' => $this->faker->countryCode(),
             'state'=>$this->faker->word,
             'city'=>$this->faker->city,
             'zip'=>$this->faker->phoneNumber,

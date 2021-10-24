@@ -32,9 +32,9 @@ class ProfilePhonesInputValidator
 
                 switch ($inputKey) {
                     case 'country_code':
-                        if(strlen($inputValue) !== 2) {
+/*                        if(strlen($inputValue) !== 2) {
                             throw new InvalidInputValue('country_code input value must be a valid country code.');
-                        }
+                        }*/
                         break;
 
                     case 'do_not_call_flag':

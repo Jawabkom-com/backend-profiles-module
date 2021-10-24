@@ -179,7 +179,6 @@ class TestSearcherMapper implements IProfileEntityMapper
             $valid = empty($image['@valid_since'])?new \DateTime():\DateTime::createFromFormat('Y-m-d', $image['@valid_since']);
             $imageInput['valid_since']        = $valid;
             $imageInput['original_url']        = $image['original_url']??'';
-            $imageInput['local_path']          = $image['local_path']??'';
             $composite->setImage($imageInput);
         }
     }
