@@ -2,15 +2,34 @@
 
 namespace Jawabkom\Backend\Module\Profile\Test\Classes\Searcher;
 
+use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityMapper;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileImageRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileNameRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IResultToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileUuidFactory;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
+use Jawabkom\Backend\Module\Profile\Trait\ProfileAddEditMethods;
+use Jawabkom\Backend\Module\Profile\Trait\ProfileHashTrait;
+use Jawabkom\Backend\Module\Profile\Trait\ProfileToArrayTrait;
 use Jawabkom\Standard\Contract\IDependencyInjector;
+use Ramsey\Uuid\Uuid;
 
 class TestSearcherMapper implements IProfileEntityMapper
 {
+    use ProfileAddEditMethods;
+    use ProfileHashTrait;
     private IDependencyInjector $di;
     private IProfileRepository $repository;
 
@@ -26,68 +45,95 @@ class TestSearcherMapper implements IProfileEntityMapper
     public function map(mixed $searchResult): iterable
     {
        $personals = $searchResult['possible_persons']??[];
-        $resultFormatted= [];
+        $composites= [];
         if ($personals){
+            $this->repository = $this->di->make(IProfileRepository::class);
             foreach ($personals as $personal){
-                $arrayMapper  = $this->di->make(IResultToArrayMapper::class);
-                $gender                       = $personal ['gender']['content']??'';
-                $arrayMapper->setGender($gender);
-                $this->addNamesEntityIfExists($personal['names']??[],$arrayMapper);
-                $this->addJobsEntityIfExists($personal['jobs']??[],$arrayMapper);
-                $this->addUserNamesEntityIfExists($personal['usernames']??[],$arrayMapper);
-                $this->addPhonesEntityIfExists($personal['phones']??[],$arrayMapper);
-                $this->addLanguagesEntityIfExists($personal['languages']??[],$arrayMapper);
-                $this->addAddressesEntityIfExists($personal['addresses']??[],$arrayMapper);
-                $this->addEducationsEntityIfExists($personal['educations']??[],$arrayMapper);
-                $this->addRelationshipsEntityIfExists($personal['relationships']??[],$arrayMapper);
-                $this->addSocialMediaEntityIfExists($personal['user_ids']??[],$arrayMapper);
-                $this->addImagesEntityIfExists($personal['images']??[],$arrayMapper);
-                $resultFormatted[] = $arrayMapper;
+                $composite  = $this->di->make(IProfileComposite::class);
+                $this->profile = $this->repository->createEntity();
+                $this->createNewProfile($personal);
+                $this->addNamesEntityIfExists($personal['names']??[],$composite);
+                $this->addJobsEntityIfExists($personal['jobs']??[],$composite);
+                $this->addUserNamesEntityIfExists($personal['usernames']??[],$composite);
+                $this->addPhonesEntityIfExists($personal['phones']??[],$composite);
+                $this->addLanguagesEntityIfExists($personal['languages']??[],$composite);
+                $this->addAddressesEntityIfExists($personal['addresses']??[],$composite);
+                $this->addEducationsEntityIfExists($personal['educations']??[],$composite);
+                $this->addRelationshipsEntityIfExists($personal['relationships']??[],$composite);
+                $this->addSocialMediaEntityIfExists($personal['user_ids']??[],$composite);
+                $this->addImagesEntityIfExists($personal['images']??[],$composite);
+                $this->setProfileHash($this->profile);
+                $composite->setProfile($this->profile);
+                $composites[] = $composite;
             }
         }
-        return $resultFormatted;
+        return $composites;
+    }
+
+    /**
+     * @param $content
+     */
+    protected function createNewProfile($personal): void
+    {
+        $gender                       = $personal ['gender']['content']??'';
+        $personalInput['gender']      = $gender;
+        $uuidFactory = $this->di->make(IProfileUuidFactory::class);
+        $this->profile->setProfileId($uuidFactory->generate());
+        $this->fillProfileEntity($this->profile, $personalInput);
     }
 
     private function addNamesEntityIfExists(iterable $names,$composite)
     {
+        $nameRepository = $this->di->make(IProfileNameRepository::class);
             foreach ($names as $name){
+               $newNameEntity =  $nameRepository->createEntity();
                $nameInput['first']  = $name['first']??'';
                $nameInput['middle'] = $name['middle']??'';
                $nameInput['last']   = $name['last']??'';
                $nameInput['prefix'] = $name['prefix']??'';
-               $composite->setName($nameInput);
+               $this->fillNameEntity($this->profile,$newNameEntity,$nameInput);
+               $composite->addName($newNameEntity);
+             //  $nameRepository->saveEntity($newNameEntity);
         }
     }
 
     private function addJobsEntityIfExists(iterable $jobs,$composite)
     {
+        $jobRepository = $this->di->make(IProfileJobRepository::class);
         foreach ($jobs as $job){
-                $valid = empty($job['@valid_since'])?new \DateTime():\DateTime::createFromFormat('Y-m-d', $job['@valid_since']);
-                $jobInput['valid_since']  = $valid;
+                $newJobEntity             = $jobRepository->createEntity();
+                $jobInput['valid_since']  =  \DateTime::createFromFormat('Y-m-d', $job['@valid_since']);
                 $jobInput['from']         = $job['date_range']['start']??'';
                 $jobInput['to']           = $job['end']??'';
                 $jobInput['title']        = $job['title']??'';
                 $jobInput['organization'] = $job['organization']??'';
                 $jobInput['industry']     = $job['industry']??'';
-                $composite->setJob($jobInput);
+                $this->fillJobEntity($this->profile,$newJobEntity,$jobInput);
+                $composite->addJob($newJobEntity);
+              //  $jobRepository->saveEntity($newJobEntity);
         }
     }
 
     private function addUserNamesEntityIfExists(iterable $usernames,$composite)
     {
+        $usernameRepository = $this->di->make(IProfileUsernameRepository::class);
         foreach ($usernames as $username){
-            $valid = empty($username['@valid_since'])?new \DateTime():\DateTime::createFromFormat('Y-m-d', $username['@valid_since']);
-            $usernameInput['valid_since']  = $valid;
+            $newUserNameEntity             = $usernameRepository->createEntity();
+            $usernameInput['valid_since']  =  \DateTime::createFromFormat('Y-m-d', $username['@valid_since']);
             $usernameInput['username']     = $username['content']??'';
-            $composite->setUsername($usernameInput);
+            $this->fillUsernameEntity($this->profile,$newUserNameEntity,$usernameInput);
+            $composite->addUsername($newUserNameEntity);
+      //      $usernameRepository->saveEntity($newUserNameEntity);
         }
 
     }
 
     private function addPhonesEntityIfExists(iterable $phones,$composite)
     {
+        $phoneRepository = $this->di->make(IProfilePhoneRepository::class);
         foreach ($phones as $phone){
-       //     $phoneInput['valid_since']          = $phone['@valid_since']??'';
+            $newPhoneEntity                     = $phoneRepository->createEntity();
+            $phoneInput['valid_since']          =  \DateTime::createFromFormat('Y-m-d', $phone['@valid_since']);
             $phoneInput['type']                 = $phone['@type']??'';
             $phoneInput['do_not_call_flag']     = $phone['do_not_call_flag']??false;
             $phoneInput['country_code']         = $phone['country_code']??'';
@@ -99,25 +145,32 @@ class TestSearcherMapper implements IProfileEntityMapper
             $phoneInput['carrier']              = $phone['carrier']??'';
             $phoneInput['purpose']              = $phone['purpose']??'';
             $phoneInput['industry']             = $phone['industry']??'';
-            $composite->setPhone($phoneInput);
+            $this->fillPhoneEntity($this->profile,$newPhoneEntity,$phoneInput);
+            $composite->addPhone($newPhoneEntity);
+            //$phoneRepository->saveEntity($newPhoneEntity);
         }
     }
 
     private function addLanguagesEntityIfExists(iterable $languages,$composite)
     {
+        $languageRepository = $this->di->make(IProfileLanguageRepository::class);
         foreach ($languages as $language){
+            $languageEntity               = $languageRepository->createEntity();
             $languageInput['language']    = $language['language']??'';
             $languageInput['country']     = $language['region']??'';
-            $composite->setLanguage($languageInput);
+            $this->fillLanguageEntity($this->profile,$languageEntity,$languageInput);
+            $composite->addLanguage($languageEntity);
+            //$languageRepository->saveEntity($languageEntity);
         }
 
     }
 
     private function addAddressesEntityIfExists(iterable $addresses,$composite)
     {
+        $addressRepository = $this->di->make(IProfileAddressRepository::class);
         foreach ($addresses as $address){
-            $valid = empty($address['@valid_since'])?new \DateTime():\DateTime::createFromFormat('Y-m-d', $address['@valid_since']);
-            $addressInput['valid_since']      = $valid;
+            $addressEntity                    = $addressRepository->createEntity();
+            $addressInput['valid_since']      = \DateTime::createFromFormat('Y-m-d', $address['@valid_since']);
             $addressInput['country']          = $address['country']??'';
             $addressInput['state']            = $address['state']??'';
             $addressInput['city']             = $address['city']??'';
@@ -125,61 +178,76 @@ class TestSearcherMapper implements IProfileEntityMapper
             $addressInput['street']           = $address['street']??'';
             $addressInput['building_number']  = $address['building_number']??'';
             $addressInput['display']          = $address['display']??'';
-            $composite->setAddress($addressInput);
+            $this->fillAddressEntity($this->profile,$addressEntity,$addressInput);
+            $composite->addAddress($addressEntity);
+           // $addressRepository->saveEntity($addressEntity);
         }
 
     }
 
     private function addEducationsEntityIfExists(iterable $educations,$composite)
     {
+        $educationRepository = $this->di->make(IProfileEducationRepository::class);
         foreach ($educations as $education){
-            if (is_string($education['@valid_since']))
-            $valid = empty($education['@valid_since'])?new \DateTime() :\DateTime::createFromFormat('Y-m-d', $education['@valid_since']);
-            $educationInput['valid_since']   = $valid;
-            $educationInput['from']            = $education['date_range']['start']??'';
-            $educationInput['to']              = $education['date_range']['end']??'';
-            $educationInput['school']          = $education['school']??'';
-            $educationInput['degree']          = $education['degree']??'';
-            $educationInput['major']           = $education['major']??'';
-            $composite->setEducation($educationInput);
+            $educationEntity                    = $educationRepository->createEntity();
+            $educationInput['valid_since']      = \DateTime::createFromFormat('Y-m-d', $education['@valid_since']);
+            $addressInput['from']          = $education['date_range']['start']??'';
+            $addressInput['to']          = $education['date_range']['end']??'';
+            $addressInput['school']             = $address['school']??'';
+            $addressInput['degree']              = $address['degree']??'';
+            $addressInput['major']           = $address['major']??'';
+            $this->fillEducationEntity($this->profile,$educationEntity,$educationInput);
+            $composite->addEducation($educationEntity);
+          //  $educationRepository->saveEntity($educationEntity);
         }
+
     }
 
     private function addRelationshipsEntityIfExists(iterable $relationships,$composite)
     {
+        $relationshipRepository = $this->di->make(IProfileRelationshipRepository::class);
         foreach ($relationships as $relationship){
-            $valid = empty($relationship['@valid_since'])?new \DateTime():\DateTime::createFromFormat('Y-m-d', $relationship['@valid_since']);
-            $relationshipInput['valid_since'] = $valid;
+            $relationshipEntity               = $relationshipRepository->createEntity();
+            $relationshipInput['valid_since'] = \DateTime::createFromFormat('Y-m-d', $relationship['@valid_since']);
             $relationshipInput['type']        = $relationship['@type']??'';
-            $relationshipInput['first_name']  = $relationship['names'][0]['first']??'';
-            $relationshipInput['last_name']   = $relationship['names'][0]['last']??'';
-            $relationshipInput['person_id']   = $relationship['person_id']??'';
-            $composite->setRelationship($relationshipInput);
+            $relationshipInput['first_name']        = $relationship['names'][0]['first']??'';
+            $relationshipInput['last_name']        = $relationship['names'][0]['last']??'';
+            $relationshipInput['person_id']        = $relationship['person_id']??'';
+            $this->fillRelationshipEntity($this->profile,$relationshipEntity,$relationshipInput);
+            $composite->addRelationship($relationshipEntity);
+         //   $relationshipRepository->saveEntity($relationshipEntity);
         }
 
     }
 
     private function addSocialMediaEntityIfExists(iterable $socials,$composite)
     {
+        $socialRepository = $this->di->make(IProfileSocialProfileRepository::class);
         foreach ($socials as $social){
-            $valid = empty($social['@valid_since'])?new \DateTime():\DateTime::createFromFormat('Y-m-d', $social['@valid_since']);
-            $socialInput['valid_since']= $valid;
+            $socialEntity              = $socialRepository->createEntity();
+            $socialInput['valid_since']= \DateTime::createFromFormat('Y-m-d', $social['@valid_since']);
             $socialInput['url']        = $social['url']??'';
             $socialInput['type']       = explode('@',$social['content'])[1]??'';
             $socialInput['username']   = $social['@username']??'';
             $socialInput['account_id'] = explode('@',$social['content'])[0]??'';
-            $composite->setSocialProfile($socialInput);
+            $this->fillSocialProfileEntity($this->profile,$socialEntity,$socialInput);
+            $composite->addSocialProfile($socialEntity);
+            //$socialRepository->saveEntity($socialEntity);
         }
 
     }
 
     private function addImagesEntityIfExists(iterable $images,$composite)
     {
+        $imageRepository = $this->di->make(IProfileImageRepository::class);
         foreach ($images as $image){
-            $valid = empty($image['@valid_since'])?new \DateTime():\DateTime::createFromFormat('Y-m-d', $image['@valid_since']);
-            $imageInput['valid_since']        = $valid;
-            $imageInput['original_url']        = $image['original_url']??'';
-            $composite->setImage($imageInput);
+            $imageEntity              = $imageRepository->createEntity();
+            $socialInput['valid_since']= \DateTime::createFromFormat('Y-m-d', $image['@valid_since']);
+            $socialInput['original_url']        = $social['original_url']??'';
+            $socialInput['local_path']        = $social['local_path']??'';
+            $this->fillImageEntity($this->profile,$imageEntity,$socialInput);
+            $composite->addImage($imageEntity);
+            //$imageRepository->saveEntity($imageEntity);
         }
     }
 }

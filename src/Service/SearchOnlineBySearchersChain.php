@@ -69,12 +69,22 @@ class SearchOnlineBySearchersChain extends AbstractService
                 $searchRequest = null; // reset the search request for each alias
                 $searchRequests[] = $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, $isFromCache);
                 $results = $this->getSearchResults($isFromCache, $alias, $cachedResultsByAliases);
+<<<<<<< HEAD
                 $resultsFormatted = $this->mapResults($alias, $results);
                 if (count($resultsFormatted)) {
                     //if (!$isFromCache)
                     $savedProfileComposites = $this->saveResultsMapped($resultsFormatted, $alias);
                     $this->setSucceededSearchRequestStatus($searchRequest, $results, count($savedProfileComposites));
                     $this->setOutput('result', $savedProfileComposites);
+=======
+
+                $profileEntities = $this->mapResultsToProfileEntities($alias, $results);
+                if (count($profileEntities)) {
+                    //if (!$isFromCache)
+                    $this->saveResultsMappedProfile($profileEntities, $alias);
+                    $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileEntities));
+                    $this->setOutput('result', $profileEntities);
+>>>>>>> parent of f3e697f (fixs)
                     $this->setOutput('raw_result', $results);
                     break;
                 } else {
@@ -234,10 +244,15 @@ class SearchOnlineBySearchersChain extends AbstractService
         return $results;
     }
 
+<<<<<<< HEAD
     protected function mapResults(mixed $alias, mixed $results): iterable
+=======
+    protected function mapResultsToProfileEntities(mixed $alias, mixed $results): iterable
+>>>>>>> parent of f3e697f (fixs)
     {
         $mapper = $this->registry->getMapper($alias);
-        return $mapper->map($results);
+        $profileEntities = $mapper->map($results);
+        return $profileEntities;
     }
 
     /**
