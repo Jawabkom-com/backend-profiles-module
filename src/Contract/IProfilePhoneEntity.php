@@ -9,11 +9,8 @@ interface IProfilePhoneEntity extends IEntity
     public function getProfileId():int|string;
     public function setProfileId(int|string $id);
 
-    public function setCreatedAt(\DateTime $createdAt);
-    public function getCreatedAt():\DateTime;
-
-    public function setUpdatedAt(\DateTime $updatedAt);
-    public function getUpdatedAt():\DateTime;
+    public function setValidSince(\DateTime $validSince);
+    public function getValidSince():\DateTime;
 
     public function setType(string $type);
     public function getType():string;
