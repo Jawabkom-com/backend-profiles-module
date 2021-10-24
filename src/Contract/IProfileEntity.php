@@ -24,22 +24,4 @@ interface IProfileEntity extends IEntity
     public function setHash(string $hash);
     public function getHash():string;
 
-    public function getNames():iterable;
-    public function getPhones():iterable;
-    public function getAddresses():iterable;
-    public function getUsernames():iterable;
-    public function getEmails():iterable;
-    public function getRelationships():iterable;
-    public function getSkills():iterable;
-    public function getImages():iterable;
-    public function getLanguages():iterable;
-    public function getJobs():iterable;
-    public function getEducations():iterable;
-    public function getSocialProfiles():iterable;
-    public function getCriminalRecords():iterable;
-    public function getMetaData():iterable;
-
-    public function profileToArray(iterable $profile):array;
-    public function toArray();
-
 }
