@@ -14,6 +14,12 @@ class ResultToArrayMapper implements IResultToArrayMapper
         $this->personal['gender'] = $gender;
     }
 
+
+    public function setDataSource(string $dataSource)
+    {
+        $this->personal['data_source'] = $dataSource;
+    }
+
     public function getPersonal():array
     {
         return $this->personal;
@@ -37,7 +43,7 @@ class ResultToArrayMapper implements IResultToArrayMapper
         $this->personal['usernames'][] = $username;
     }
 
-    public function addEmail(iterable $email)
+    public function setEmail(iterable $email)
     {
         $this->personal['emails'][] = $email;
     }
@@ -48,7 +54,7 @@ class ResultToArrayMapper implements IResultToArrayMapper
     }
 
 
-    public function addSkill(iterable $skill)
+    public function setSkill(iterable $skill)
     {
         $this->personal['skills'][] = $skill;
     }
@@ -85,8 +91,8 @@ class ResultToArrayMapper implements IResultToArrayMapper
         $this->personal['criminal_records'][] = $criminalRecord;
     }
 
-   public function setMetaData(string $meta)
+   public function setMetaData(array $meta)
     {
-      $this->personal['data_source'] = $meta;
+      $this->personal['meta_data'][] = $meta;
     }
 }

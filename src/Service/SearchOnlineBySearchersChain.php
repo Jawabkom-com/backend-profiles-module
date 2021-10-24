@@ -248,7 +248,7 @@ class SearchOnlineBySearchersChain extends AbstractService
     {
         $savedProfileComposites = [];
         foreach ($arrayMapperComposites as $mapperComposite) {
-            $mapperComposite->setMetaData($alias);
+            $mapperComposite->setDataSource($alias);
             try {
                 $savedProfileComposites[] = $this->createProfileService->input('profile',$mapperComposite->getPersonal())
                                                                        ->process()
