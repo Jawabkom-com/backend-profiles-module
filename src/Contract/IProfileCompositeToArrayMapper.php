@@ -5,5 +5,5 @@ namespace Jawabkom\Backend\Module\Profile\Contract;
 
 interface IProfileCompositeToArrayMapper
 {
-    public function map(IProfileComposite $profileComposite):array;
+    public function map(iterable $results):array;
 }

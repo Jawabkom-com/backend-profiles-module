@@ -56,6 +56,7 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
         $profiles = $outputs->output('result');
+        dd($profiles);
         $this->assertEquals(1, count($profiles));
         $this->assertDatabaseHas('profiles', [
             'profile_id' => $profiles[0]['profile_id']

@@ -64,12 +64,12 @@ class SearchOnlineBySearchersChain extends AbstractService
                 $searchRequest = null; // reset the search request for each alias
                 $searchRequests[] = $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, $isFromCache);
                 $results = $this->getSearchResults($isFromCache, $alias, $cachedResultsByAliases);
-                $profileComposites = $this->mapResultsToProfileComposites($alias, $results);
-                if (count($profileComposites)) {
+                $resultsFormatted = $this->mapResults($alias, $results);
+                if (count($resultsFormatted)) {
                     //if (!$isFromCache)
-                    $this->saveResultsMappedProfile($profileComposites, $alias);
-                    $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileComposites));
-                    $this->setOutput('result', $profileComposites);
+                    $this->saveResultsMapped($resultsFormatted, $alias);
+                    $this->setSucceededSearchRequestStatus($searchRequest, $results, count($resultsFormatted));
+                    $this->setOutput('result', $resultsFormatted);
                     $this->setOutput('raw_result', $results);
                     break;
                 } else {
@@ -230,19 +230,16 @@ class SearchOnlineBySearchersChain extends AbstractService
         return $results;
     }
 
-    protected function mapResultsToProfileComposites(mixed $alias, mixed $results): iterable
+    protected function mapResults(mixed $alias, mixed $results): iterable
     {
         $mapper = $this->registry->getMapper($alias);
         return $mapper->map($results);
     }
 
-    protected function saveResultsMappedProfile(iterable $profileEntities, mixed $alias): void
+    protected function saveResultsMapped(iterable $formattedResults, mixed $alias): void
     {
-        foreach ($profileEntities as $profileEntity) {
-            $profileEntity->setDataSource($alias);
-            $this->setProfileHash($profileEntity);
-            if( !$this->repository->hashExist($profileEntity->getHash()) )
-                $this->repository->saveEntity($profileEntity);
+        foreach ($formattedResults as $result) {
+         
         }
     }
 

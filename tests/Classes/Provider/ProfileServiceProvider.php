@@ -11,6 +11,7 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilt
     DI,
     ProfileEntityToArrayMapper,
     ProfileUuidFactory,
+    ResultToArrayMapper,
     Search\SearcherStatus,
     Search\SearchRequest};
 use Jawabkom\Backend\Module\Profile\Contract\{IArrayHashing,
@@ -47,6 +48,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{IArrayHashing,
     IProfileUsernameEntity,
     IProfileUsernameRepository,
     IProfileUuidFactory,
+    IResultToArrayMapper,
     ISearcherStatusRepository,
     ISearchFiltersBuilder,
     ISearchRequestRepository};
@@ -119,7 +121,7 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileMetaDataRepository::class            => ProfileMetaData::class,
             IProfileMetaDataEntity::class                => ProfileMetaData::class,
             IArrayHashing::class                         => BasicArrayHashing::class,
-            IProfileEntityToArrayMapper::class           => ProfileEntityToArrayMapper::class,
+            IResultToArrayMapper::class                  => ResultToArrayMapper::class,
             IProfileUuidFactory::class                   => ProfileUuidFactory::class,
             IProfileComposite::class                     => ProfileComposite::class
         ];
