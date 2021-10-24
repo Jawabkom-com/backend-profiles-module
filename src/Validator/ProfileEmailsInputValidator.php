@@ -7,7 +7,6 @@ use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 class ProfileEmailsInputValidator
 {
     protected array $structure = [
-        'profile_id',
         'valid_since',
         'email',
         'esp_domain',
