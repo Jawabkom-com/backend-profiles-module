@@ -254,7 +254,6 @@ class SearchOnlineBySearchersChain extends AbstractService
                                                                        ->process()
                                                                        ->output('result');
             } catch (ProfileEntityExists $exception) {
-                dd($exception);
                 //skip
             }
         }
