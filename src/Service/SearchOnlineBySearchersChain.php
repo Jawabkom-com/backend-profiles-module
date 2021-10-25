@@ -85,6 +85,7 @@ class SearchOnlineBySearchersChain extends AbstractService
                 }
 
             } catch (\Throwable $exception) {
+                dd($exception);
                 if (!isset($searchRequest))
                     throw $exception;
                 $this->setErrorSearchRequestStatus($searchRequest, $exception);
@@ -255,6 +256,7 @@ class SearchOnlineBySearchersChain extends AbstractService
             try {
                 $savedProfileComposites[] = $this->createProfileService->input('profile',$this->profileCompositeToArrayMapper->map($profileComposite))->process()->output('result');
             } catch (ProfileEntityExists $exception) {
+                dd($exception);
                 // skip
             }
         }
