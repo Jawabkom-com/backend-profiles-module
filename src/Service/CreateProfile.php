@@ -67,7 +67,6 @@ class CreateProfile extends AbstractService
         $profileComposite->getProfile()->setProfileId($uuidFactory->generate());
         $profileComposite->getProfile()->setHash($hash);
         $this->persistProfileComposite($profileComposite);
-
         return $profileComposite;
     }
 }
