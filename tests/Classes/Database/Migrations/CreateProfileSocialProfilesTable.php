@@ -17,11 +17,11 @@ class CreateProfileSocialProfilesTable extends Migration
         Schema::create('profile_social_profiles', function (Blueprint $table) {
             $table->id();
             $table->string('profile_id')->index();
-            $table->dateTime('valid_since')->index();
-            $table->string('url');
-            $table->string('type')->index();
-            $table->string('username')->index();
-            $table->string('account_id')->index();
+            $table->dateTime('valid_since')->nullable()->index();
+            $table->string('url')->nullable();
+            $table->string('type')->nullable()->index();
+            $table->string('username')->nullable()->index();
+            $table->string('account_id')->nullable()->index();
             $table->timestamps();
         });
     }

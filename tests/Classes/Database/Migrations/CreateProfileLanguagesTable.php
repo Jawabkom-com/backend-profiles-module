@@ -17,8 +17,8 @@ class CreateProfileLanguagesTable extends Migration
         Schema::create('profile_languages', function (Blueprint $table) {
             $table->id();
             $table->string('profile_id')->index();
-            $table->string('language')->index();
-            $table->string('country')->index();
+            $table->string('language')->nullable()->index();
+            $table->string('country')->nullable()->index();
             $table->timestamps();
         });
     }

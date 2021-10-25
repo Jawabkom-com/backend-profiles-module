@@ -17,11 +17,11 @@ class CreateProfileNamesTable extends Migration
         Schema::create('profile_names', function (Blueprint $table) {
             $table->id();
             $table->string('profile_id')->index();
-            $table->string('prefix');
-            $table->string('first')->index();
-            $table->string('middle')->index();
-            $table->string('last')->index();
-            $table->string('display');
+            $table->string('prefix')->nullable();
+            $table->string('first')->nullable()->index();
+            $table->string('middle')->nullable()->index();
+            $table->string('last')->nullable()->index();
+            $table->string('display')->nullable();
             $table->timestamps();
         });
     }

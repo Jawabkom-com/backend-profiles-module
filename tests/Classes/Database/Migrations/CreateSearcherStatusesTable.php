@@ -17,11 +17,11 @@ class CreateSearcherStatusesTable extends Migration
         Schema::create('searcher_statuses', function (Blueprint $table) {
             $table->id();
             $table->string('searcher_alias')->index();
-            $table->integer('status_hour')->index();
-            $table->integer('status_day');
-            $table->integer('status_month');
-            $table->integer('status_year');
-            $table->integer('counter');
+            $table->integer('status_hour')->nullable()->index();
+            $table->integer('status_day')->nullable();
+            $table->integer('status_month')->nullable();
+            $table->integer('status_year')->nullable();
+            $table->integer('counter')->nullable();
             $table->timestamps();
         });
     }

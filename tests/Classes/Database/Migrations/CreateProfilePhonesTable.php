@@ -17,17 +17,18 @@ class CreateProfilePhonesTable extends Migration
         Schema::create('profile_phones', function (Blueprint $table) {
             $table->id();
             $table->string('profile_id')->index();
-            $table->string('type')->index();
-            $table->boolean('do_not_call_flag')->index();
-            $table->string('country_code')->index();
-            $table->string('original_number')->index();
-            $table->string('formatted_number')->index();
-            $table->boolean('valid_phone');
-            $table->boolean('risky_phone');
-            $table->boolean('disposable_phone');
-            $table->string('carrier')->index();
-            $table->string('purpose')->index();
-            $table->string('industry')->index();
+            $table->string('type')->nullable()->index();
+            $table->boolean('do_not_call_flag')->nullable()->index();
+            $table->string('valid_since')->nullable()->index();
+            $table->string('country_code')->nullable()->index();
+            $table->string('original_number')->nullable()->index();
+            $table->string('formatted_number')->nullable()->index();
+            $table->boolean('valid_phone')->nullable();
+            $table->boolean('risky_phone')->nullable();
+            $table->boolean('disposable_phone')->nullable();
+            $table->string('carrier')->nullable()->index();
+            $table->string('purpose')->nullable()->index();
+            $table->string('industry')->nullable()->index();
             $table->timestamps();
         });
     }

@@ -16,8 +16,8 @@ class CreateProfileMetaDataTable extends Migration
         Schema::create('profile_meta_data', function (Blueprint $table) {
             $table->id();
             $table->string('profile_id')->index();
-            $table->string('meta_key')->index();
-            $table->string('meta_value')->index();
+            $table->string('meta_key')->nullable()->index();
+            $table->string('meta_value')->nullable()->index();
             $table->timestamps();
         });
     }

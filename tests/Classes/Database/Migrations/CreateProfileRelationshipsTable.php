@@ -17,11 +17,11 @@ class CreateProfileRelationshipsTable extends Migration
         Schema::create('profile_relationships', function (Blueprint $table) {
             $table->id();
             $table->string('profile_id')->index();
-            $table->dateTime('valid_since')->index();
-            $table->string('type')->index();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('person_id')->index();
+            $table->dateTime('valid_since')->nullable()->index();
+            $table->string('type')->nullable()->index();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('person_id')->nullable()->index();
             $table->timestamps();
         });
     }

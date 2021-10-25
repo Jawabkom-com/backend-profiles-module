@@ -17,12 +17,12 @@ class CreateProfileJobsTable extends Migration
         Schema::create('profile_jobs', function (Blueprint $table) {
             $table->id();
             $table->string('profile_id')->index();
-            $table->dateTime('valid_since')->index();
-            $table->string('from');
+            $table->dateTime('valid_since')->nullable()->index();
+            $table->string('from')->nullable();
             $table->string('to')->nullable();
-            $table->string('title');
-            $table->string('organization')->index();
-            $table->string('industry')->index();
+            $table->string('title')->nullable();
+            $table->string('organization')->nullable()->index();
+            $table->string('industry')->nullable()->index();
             $table->timestamps();
         });
     }

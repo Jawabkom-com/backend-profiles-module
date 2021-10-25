@@ -17,11 +17,11 @@ class CreateProfileCriminalRecordsTable extends Migration
         Schema::create('profile_criminal_records', function (Blueprint $table) {
             $table->id();
             $table->string('profile_id')->index();
-            $table->string('case_number')->index();
-            $table->string('case_type')->index();
-            $table->string('case_year')->index();
-            $table->string('case_status')->index();
-            $table->string('display');
+            $table->string('case_number')->nullable()->index();
+            $table->string('case_type')->nullable()->index();
+            $table->string('case_year')->nullable()->index();
+            $table->string('case_status')->nullable()->index();
+            $table->string('display')->nullable();
             $table->timestamps();
         });
     }

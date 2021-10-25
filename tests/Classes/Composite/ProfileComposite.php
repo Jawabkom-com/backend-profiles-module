@@ -45,7 +45,7 @@ class ProfileComposite implements IProfileComposite
 
     public function getProfile(): IProfileEntity
     {
-       return $this->profile;
+       return $this->profile??[];
     }
 
     public function addName(IProfileNameEntity $IProfileEntityName)
@@ -55,7 +55,7 @@ class ProfileComposite implements IProfileComposite
 
     public function getNames(): iterable
     {
-        return $this->names;
+        return $this->names??[];
     }
 
     public function addPhone(IProfilePhoneEntity $IProfileEntityPhone)
@@ -65,7 +65,7 @@ class ProfileComposite implements IProfileComposite
 
     public function getPhones(): iterable
     {
-        return  $this->phones;
+        return  $this->phones??[];
     }
 
     public function addAddress(IProfileAddressEntity $IProfileEntityAddress)
@@ -75,7 +75,7 @@ class ProfileComposite implements IProfileComposite
 
     public function getAddresses(): iterable
     {
-        return $this->addresses;
+        return $this->addresses??[];
     }
 
     public function addUsername(IProfileUsernameEntity $IProfileEntityUsername)
@@ -85,7 +85,7 @@ class ProfileComposite implements IProfileComposite
 
     public function getUsernames(): iterable
     {
-        return $this->usernames;
+        return $this->usernames??[];
     }
 
     public function addEmail(IProfileEmailEntity $IProfileEntityEmail)
@@ -95,7 +95,7 @@ class ProfileComposite implements IProfileComposite
 
     public function getEmails(): iterable
     {
-       return $this->emails;
+       return $this->emails??[];
     }
 
     public function addRelationship(IProfileRelationshipEntity $IProfileEntityRelationship)
@@ -105,7 +105,7 @@ class ProfileComposite implements IProfileComposite
 
     public function getRelationships(): iterable
     {
-        return $this->relationships;
+        return $this->relationships??[];
     }
 
     public function addSkill(IProfileSkillEntity $IProfileEntitySkill)
@@ -115,7 +115,7 @@ class ProfileComposite implements IProfileComposite
 
     public function getSkills(): iterable
     {
-       return $this->skills;
+       return $this->skills??[];
     }
 
     public function addImage(IProfileImageEntity $IProfileEntityImage)
@@ -125,7 +125,7 @@ class ProfileComposite implements IProfileComposite
 
     public function getImages(): iterable
     {
-        return $this->images;
+        return $this->images??[];
     }
 
     public function addLanguage(IProfileLanguageEntity $IProfileEntityLanguage)
@@ -135,7 +135,7 @@ class ProfileComposite implements IProfileComposite
 
     public function getLanguages(): iterable
     {
-     return $this->languages;
+     return $this->languages??[];
     }
 
     public function addJob(IProfileJobEntity $IProfileEntityJob)
@@ -145,7 +145,7 @@ class ProfileComposite implements IProfileComposite
 
     public function getJobs(): iterable
     {
-        return $this->jobs;
+        return $this->jobs??[];
     }
 
     public function addEducation(IProfileEducationEntity $IProfileEntityEducation)
@@ -155,7 +155,7 @@ class ProfileComposite implements IProfileComposite
 
     public function getEducations(): iterable
     {
-      return $this->educations;
+      return $this->educations??[];
     }
 
     public function addSocialProfile(IProfileSocialProfileEntity $IProfileEntitySocialProfile)
@@ -165,7 +165,7 @@ class ProfileComposite implements IProfileComposite
 
     public function getSocialProfiles(): iterable
     {
-       return $this->socialProfiles;
+       return $this->socialProfiles??[];
     }
 
     public function addCriminalRecord(IProfileCriminalRecordEntity $IProfileEntityCriminalRecord)
@@ -175,7 +175,7 @@ class ProfileComposite implements IProfileComposite
 
     public function getCriminalRecords(): iterable
     {
-      return  $this->criminalRecords;
+      return  $this->criminalRecords??[];
     }
 
     public function addMetaData(IProfileMetaDataEntity $profileMetaDataEntity)
@@ -185,7 +185,7 @@ class ProfileComposite implements IProfileComposite
 
     public function getMetaData(): iterable
     {
-        return $this->metaData;
+        return $this->metaData??[];
     }
 
     public function setNames(iterable $names)

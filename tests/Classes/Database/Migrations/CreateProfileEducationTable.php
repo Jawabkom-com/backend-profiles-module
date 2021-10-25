@@ -17,12 +17,12 @@ class CreateProfileEducationTable extends Migration
         Schema::create('profile_education', function (Blueprint $table) {
             $table->id();
             $table->string('profile_id')->index();
-            $table->dateTime('valid_since')->index();
-            $table->string('from');
-            $table->string('to');
-            $table->string('school')->index();
-            $table->string('degree')->index();
-            $table->string('major');
+            $table->dateTime('valid_since')->nullable()->index();
+            $table->string('from')->nullable();
+            $table->string('to')->nullable();
+            $table->string('school')->nullable()->index();
+            $table->string('degree')->nullable()->index();
+            $table->string('major')->nullable();
             $table->timestamps();
         });
     }

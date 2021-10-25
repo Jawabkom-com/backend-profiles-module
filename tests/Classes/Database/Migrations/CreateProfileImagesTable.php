@@ -17,9 +17,9 @@ class CreateProfileImagesTable extends Migration
         Schema::create('profile_images', function (Blueprint $table) {
             $table->id();
             $table->string('profile_id')->index();
-            $table->string('original_url');
-            $table->string('local_path');
-            $table->dateTime('valid_since')->index();
+            $table->string('original_url')->nullable();
+            $table->string('local_path')->nullable();
+            $table->dateTime('valid_since')->nullable()->index();
             $table->timestamps();
         });
     }

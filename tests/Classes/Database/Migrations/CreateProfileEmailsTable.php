@@ -17,10 +17,10 @@ class CreateProfileEmailsTable extends Migration
         Schema::create('profile_emails', function (Blueprint $table) {
             $table->id();
             $table->string('profile_id')->index();
-            $table->dateTime('valid_since')->index();
-            $table->string('email')->index();
-            $table->string('esp_domain')->index();
-            $table->string('type')->index();
+            $table->dateTime('valid_since')->nullable()->index();
+            $table->string('email')->nullable()->index();
+            $table->string('esp_domain')->nullable()->index();
+            $table->string('type')->nullable()->index();
             $table->timestamps();
         });
     }

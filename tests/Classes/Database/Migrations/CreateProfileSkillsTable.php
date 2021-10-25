@@ -17,9 +17,9 @@ class CreateProfileSkillsTable extends Migration
         Schema::create('profile_skills', function (Blueprint $table) {
             $table->id();
             $table->string('profile_id')->index();
-            $table->dateTime('valid_since')->index();
-            $table->string('level');
-            $table->string('skill')->index();
+            $table->dateTime('valid_since')->nullable()->index();
+            $table->string('level')->nullable();
+            $table->string('skill')->nullable()->index();
             $table->timestamps();
         });
     }

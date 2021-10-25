@@ -17,7 +17,6 @@ use Jawabkom\Backend\Module\Profile\SearcherRegistry;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileHashTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
-use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
 
 class SearchOnlineBySearchersChain extends AbstractService
 {

@@ -17,7 +17,7 @@ class CreateProfilesTable extends Migration
             $table->id();
             $table->string('hash')->index();
             $table->string('profile_id')->unique();
-            $table->string('gender')->index();
+            $table->string('gender')->nullable()->index();
             $table->string('date_of_birth')->nullable()->index();
             $table->string('place_of_birth')->nullable()->index();
             $table->string('data_source')->index();

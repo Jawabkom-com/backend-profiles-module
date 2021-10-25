@@ -17,8 +17,8 @@ class CreateProfileUsernamesTable extends Migration
         Schema::create('profile_usernames', function (Blueprint $table) {
             $table->id();
             $table->string('profile_id')->index();
-            $table->dateTime('valid_since')->index();
-            $table->string('username')->index();
+            $table->dateTime('valid_since')->nullable()->index();
+            $table->string('username')->nullable()->index();
             $table->timestamps();
         });
     }

@@ -17,14 +17,14 @@ class CreateProfileAddressesTable extends Migration
         Schema::create('profile_addresses', function (Blueprint $table) {
             $table->id();
             $table->string('profile_id')->index();
-            $table->dateTime('valid_since')->index();
-            $table->string('country')->index();
-            $table->string('state')->index();
-            $table->string('city');
-            $table->string('zip')->index();
-            $table->string('street');
-            $table->string('building_number');
-            $table->string('display')->index();
+            $table->dateTime('valid_since')->nullable()->index();
+            $table->string('country')->nullable()->index();
+            $table->string('state')->nullable()->index();
+            $table->string('city')->nullable();
+            $table->string('zip')->nullable()->index();
+            $table->string('street')->nullable();
+            $table->string('building_number')->nullable();
+            $table->string('display')->nullable()->index();
             $table->timestamps();
         });
     }
