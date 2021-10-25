@@ -13,6 +13,7 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilt
     Search\SearcherStatus,
     Search\SearchRequest};
 use Jawabkom\Backend\Module\Profile\Contract\{IArrayHashing,
+    IArrayToProfileCompositeMapper,
     IProfileAddressEntity,
     IProfileAddressRepository,
     IProfileComposite,
@@ -49,6 +50,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{IArrayHashing,
     ISearcherStatusRepository,
     ISearchFiltersBuilder,
     ISearchRequestRepository,
+    Mapper\IArrayToProfileEntityMapper,
     Mapper\IProfileAddressEntityToArrayMapper,
     Mapper\IProfileCriminalRecordEntityToArrayMapper,
     Mapper\IProfileEducationEntityToArrayMapper,
@@ -65,6 +67,8 @@ use Jawabkom\Backend\Module\Profile\Contract\{IArrayHashing,
     Mapper\IProfileSocialProfileEntityToArrayMapper,
     Mapper\IProfileUsernameEntityToArrayMapper};
 use Jawabkom\Backend\Module\Profile\BasicArrayHashing;
+use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileEntityMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfileCompositeMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ProfileCompositeToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileAddressEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileEducationEntityToArrayMapper;
@@ -165,7 +169,9 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileSkillEntityToArrayMapper::class     => ProfileSkillEntityToArrayMapper::class,
             IProfileSocialProfileEntityToArrayMapper::class => ProfileSocialProfileEntityToArrayMapper::class,
             IProfileUsernameEntityToArrayMapper::class => ProfileUsernameEntityToArrayMapper::class,
-            IProfileAddressEntityToArrayMapper::class   => ProfileAddressEntityToArrayMapper::class
+            IProfileAddressEntityToArrayMapper::class   => ProfileAddressEntityToArrayMapper::class,
+            IArrayToProfileCompositeMapper::class       => ArrayToProfileCompositeMapper::class,
+            IArrayToProfileEntityMapper::class          => ArrayToProfileEntityMapper::class
         ];
 
         foreach ($toBind as $interface => $implementation) {

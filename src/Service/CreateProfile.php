@@ -2,6 +2,7 @@
 
 namespace Jawabkom\Backend\Module\Profile\Service;
 
+use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
 use Jawabkom\Backend\Module\Profile\Contract\IArrayToProfileCompositeMapper;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
@@ -56,7 +57,8 @@ class CreateProfile extends AbstractService
     protected function createNewProfileRecord($profileInputs): IProfileComposite
     {
         // create profile hash
-        $hash = $this->arrayHashing->hash($profileInputs, true);
+        $arrayHashing = $this->di->make(IArrayHashing::class);
+        $hash = $arrayHashing->hash($profileInputs, true);
         $this->assertProfileHashDoesNotExists($hash);
 
         // create composite

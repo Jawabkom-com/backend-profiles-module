@@ -252,4 +252,9 @@ class ProfileComposite implements IProfileComposite
     {
         // TODO: Implement setMetaData() method.
     }
+
+    public function setRelationships(iterable $relationships)
+    {
+        // TODO: Implement setRelationships() method.
+    }
 }

@@ -207,7 +207,7 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
         return $entity->delete();
     }
 
-    public function getByProfileId(int|string $profileId): null|IEntity|IProfileEntity|IProfileRepository
+    public function getByProfileId(int|string $profileId): null|IProfileRepository
     {
         return $this->where('profile_id', $profileId)->first();
     }
