@@ -8,14 +8,14 @@ class ProfileEntityToArrayMapper implements IProfileEntityToArrayMapper
 
     public function map(IProfileEntity $profileEntity,$withProfileId): array
     {
-        $toReturn = [
-            'gender' => $profileEntity->getGender(),
-            'date_of_birth' => $profileEntity->getDateOfBirth(),
-            'place_of_birth' => $profileEntity->getPlaceOfBirth(),
-            'data_source' => $profileEntity->getDataSource(),
-        ];
+        $toReturn =[];
         if ($withProfileId)
             $toReturn['profile_id'] = $profileEntity->getProfileId();
+
+            $toReturn['gender'] = $profileEntity->getGender();
+            $toReturn['date_of_birth'] = $profileEntity->getDateOfBirth();
+            $toReturn['place_of_birth'] = $profileEntity->getPlaceOfBirth();
+            $toReturn['data_source'] = $profileEntity->getDataSource();
         return $toReturn;
     }
 }
