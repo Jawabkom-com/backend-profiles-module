@@ -54,7 +54,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{IArrayHashing,
     ISearchFiltersBuilder,
     ISearchRequestRepository};
 use Jawabkom\Backend\Module\Profile\BasicArrayHashing;
-use Jawabkom\Backend\Module\Profile\ProfileCompositeToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ProfileCompositeToArrayMapper;
 use Jawabkom\Backend\Module\Profile\SimpleSearchFiltersBuilder;
 use Jawabkom\Standard\Contract\IAndFilterComposite;
 use Jawabkom\Standard\Contract\IOrFilterComposite;

@@ -1,10 +1,9 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Profile;
+namespace Jawabkom\Backend\Module\Profile\Mapper;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCompositeToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityToArrayMapper;
 
 class ProfileCompositeToArrayMapper implements IProfileCompositeToArrayMapper
 {
