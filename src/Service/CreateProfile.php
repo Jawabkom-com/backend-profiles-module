@@ -126,7 +126,8 @@ class CreateProfile extends AbstractService
         $repository = $this->di->make(IProfileNameRepository::class);
         foreach ($names as $name) {
             $nameObj = $repository->createEntity();
-            $this->fillNameEntity($profileEntity, $nameObj, $name);
+            $this->fillNameEntity($nameObj, $name);
+            $nameObj->setProfileId($profileEntity->getProfileId());
             $repository->saveEntity($nameObj);
             $profileComposite->addName($nameObj);
         }
@@ -137,7 +138,8 @@ class CreateProfile extends AbstractService
         $repository = $this->di->make(IProfileAddressRepository::class);
         foreach ($addresses as $address) {
             $addressObj = $repository->createEntity();
-            $this->fillAddressEntity($profileEntity, $addressObj, $address);
+            $this->fillAddressEntity($addressObj, $address);
+            $addressObj->setProfileId($profileEntity->getProfileId());
             $repository->saveEntity($addressObj);
             $profileComposite->addAddress($addressObj);
         }
@@ -148,7 +150,8 @@ class CreateProfile extends AbstractService
         $repository = $this->di->make(IProfileCriminalRecordRepository::class);
         foreach ($criminalRecords as $criminalRecord) {
             $criminalRecordObj = $repository->createEntity();
-            $this->fillCriminalRecordEntity($profileEntity, $criminalRecordObj, $criminalRecord);
+            $this->fillCriminalRecordEntity($criminalRecordObj, $criminalRecord);
+            $criminalRecordObj->setProfileId($profileEntity->getProfileId());
             $repository->saveEntity($criminalRecordObj);
             $profileComposite->addCriminalRecord($criminalRecordObj);
         }
@@ -159,7 +162,8 @@ class CreateProfile extends AbstractService
         $repository = $this->di->make(IProfileEducationRepository::class);
         foreach ($educations as $education) {
             $educationObj = $repository->createEntity();
-            $this->fillEducationEntity($profileEntity, $educationObj, $education);
+            $this->fillEducationEntity($educationObj, $education);
+            $educationObj->setProfileId($profileEntity->getProfileId());
             $repository->saveEntity($educationObj);
             $profileComposite->addEducation($educationObj);
         }
@@ -170,7 +174,8 @@ class CreateProfile extends AbstractService
         $repository = $this->di->make(IProfileEmailRepository::class);
         foreach ($emails as $email) {
             $emailObj = $repository->createEntity();
-            $this->fillEmailEntity($profileEntity, $emailObj, $email);
+            $this->fillEmailEntity($emailObj, $email);
+            $emailObj->setProfileId($profileEntity->getProfileId());
             $repository->saveEntity($emailObj);
             $profileComposite->addEmail($emailObj);
         }
@@ -181,7 +186,8 @@ class CreateProfile extends AbstractService
         $repository = $this->di->make(IProfileImageRepository::class);
         foreach ($images as $image) {
             $imageObj = $repository->createEntity();
-            $this->fillImageEntity($profileEntity, $imageObj, $image);
+            $this->fillImageEntity($imageObj, $image);
+            $imageObj->setProfileId($profileEntity->getProfileId());
             $repository->saveEntity($imageObj);
             $profileComposite->addImage($imageObj);
         }
@@ -192,7 +198,8 @@ class CreateProfile extends AbstractService
         $repository = $this->di->make(IProfileJobRepository::class);
         foreach ($jobs as $job) {
             $jobObj = $repository->createEntity();
-            $this->fillJobEntity($profileEntity, $jobObj, $job);
+            $this->fillJobEntity($jobObj, $job);
+            $jobObj->setProfileId($profileEntity->getProfileId());
             $repository->saveEntity($jobObj);
             $profileComposite->addJob($jobObj);
         }
@@ -203,7 +210,8 @@ class CreateProfile extends AbstractService
         $repository = $this->di->make(IProfileLanguageRepository::class);
         foreach ($languages as $language) {
             $languageObj = $repository->createEntity();
-            $this->fillLanguageEntity($profileEntity, $languageObj, $language);
+            $this->fillLanguageEntity($languageObj, $language);
+            $languageObj->setProfileId($profileEntity->getProfileId());
             $repository->saveEntity($languageObj);
             $profileComposite->addLanguage($languageObj);
         }
@@ -214,7 +222,8 @@ class CreateProfile extends AbstractService
         $repository = $this->di->make(IProfilePhoneRepository::class);
         foreach ($phones as $phone) {
             $phoneObj = $repository->createEntity();
-            $this->fillPhoneEntity($profileEntity, $phoneObj, $phone);
+            $this->fillPhoneEntity($phoneObj, $phone);
+            $phoneObj->setProfileId($profileEntity->getProfileId());
             $repository->saveEntity($phoneObj);
             $profileComposite->addPhone($phoneObj);
         }
@@ -225,7 +234,8 @@ class CreateProfile extends AbstractService
         $repository = $this->di->make(IProfileRelationshipRepository::class);
         foreach ($relationships as $relationship) {
             $relationshipObj = $repository->createEntity();
-            $this->fillRelationshipEntity($profileEntity, $relationshipObj, $relationship);
+            $this->fillRelationshipEntity($relationshipObj, $relationship);
+            $relationshipObj->setProfileId($profileEntity->getProfileId());
             $repository->saveEntity($relationshipObj);
             $profileComposite->addRelationship($relationshipObj);
         }
@@ -236,7 +246,8 @@ class CreateProfile extends AbstractService
         $repository = $this->di->make(IProfileSkillRepository::class);
         foreach ($skills as $skill) {
             $skillObj = $repository->createEntity();
-            $this->fillSkillEntity($profileEntity, $skillObj, $skill);
+            $this->fillSkillEntity($skillObj, $skill);
+            $skillObj->setProfileId($profileEntity->getProfileId());
             $repository->saveEntity($skillObj);
             $profileComposite->addSkill($skillObj);
         }
@@ -247,7 +258,8 @@ class CreateProfile extends AbstractService
         $repository = $this->di->make(IProfileSocialProfileRepository::class);
         foreach ($socialProfiles as $socialProfile) {
             $socialProfileObj = $repository->createEntity();
-            $this->fillSocialProfileEntity($profileEntity, $socialProfileObj, $socialProfile);
+            $this->fillSocialProfileEntity($socialProfileObj, $socialProfile);
+            $socialProfileObj->setProfileId($profileEntity->getProfileId());
             $repository->saveEntity($socialProfileObj);
             $profileComposite->addSocialProfile($socialProfileObj);
         }
@@ -258,7 +270,8 @@ class CreateProfile extends AbstractService
         $repository = $this->di->make(IProfileUsernameRepository::class);
         foreach ($usernames as $username) {
             $usernameObj = $repository->createEntity();
-            $this->fillUsernameEntity($profileEntity, $usernameObj, $username);
+            $this->fillUsernameEntity($usernameObj, $username);
+            $usernameObj->setProfileId($profileEntity->getProfileId());
             $repository->saveEntity($usernameObj);
             $profileComposite->addUsername($usernameObj);
         }
@@ -269,7 +282,8 @@ class CreateProfile extends AbstractService
         $repository = $this->di->make(IProfileMetaDataRepository::class);
         foreach ($meta as $value) {
             $metaObj = $repository->createEntity();
-            $this->fillMetaDataEntity($profileEntity, $metaObj, $value);
+            $this->fillMetaDataEntity($metaObj, $value);
+            $metaObj->setProfileId($profileEntity->getProfileId());
             $repository->saveEntity($metaObj);
             $profileComposite->addMetaData($metaObj);
         }

@@ -88,7 +88,7 @@ class TestSearcherMapper implements IProfileEntityMapper
                $nameInput['middle'] = $name['middle']??'';
                $nameInput['last']   = $name['last']??'';
                $nameInput['prefix'] = $name['prefix']??'';
-               $this->fillNameEntity($this->profile,$newNameEntity,$nameInput);
+               $this->fillNameEntity($newNameEntity,$nameInput);
                $composite->addName($newNameEntity);
              //  $nameRepository->saveEntity($newNameEntity);
         }
@@ -105,7 +105,7 @@ class TestSearcherMapper implements IProfileEntityMapper
                 $jobInput['title']        = $job['title']??'';
                 $jobInput['organization'] = $job['organization']??'';
                 $jobInput['industry']     = $job['industry']??'';
-                $this->fillJobEntity($this->profile,$newJobEntity,$jobInput);
+                $this->fillJobEntity($newJobEntity,$jobInput);
                 $composite->addJob($newJobEntity);
               //  $jobRepository->saveEntity($newJobEntity);
         }
@@ -118,7 +118,7 @@ class TestSearcherMapper implements IProfileEntityMapper
             $newUserNameEntity             = $usernameRepository->createEntity();
             $usernameInput['valid_since']  =  $username['@valid_since'];
             $usernameInput['username']     = $username['content']??'';
-            $this->fillUsernameEntity($this->profile,$newUserNameEntity,$usernameInput);
+            $this->fillUsernameEntity($newUserNameEntity,$usernameInput);
             $composite->addUsername($newUserNameEntity);
       //      $usernameRepository->saveEntity($newUserNameEntity);
         }
@@ -142,7 +142,7 @@ class TestSearcherMapper implements IProfileEntityMapper
             $phoneInput['carrier']              = $phone['carrier']??'';
             $phoneInput['purpose']              = $phone['purpose']??'';
             $phoneInput['industry']             = $phone['industry']??'';
-            $this->fillPhoneEntity($this->profile,$newPhoneEntity,$phoneInput);
+            $this->fillPhoneEntity($newPhoneEntity,$phoneInput);
             $composite->addPhone($newPhoneEntity);
             //$phoneRepository->saveEntity($newPhoneEntity);
         }
@@ -155,7 +155,7 @@ class TestSearcherMapper implements IProfileEntityMapper
             $languageEntity               = $languageRepository->createEntity();
             $languageInput['language']    = $language['language']??'';
             $languageInput['country']     = $language['region']??'';
-            $this->fillLanguageEntity($this->profile,$languageEntity,$languageInput);
+            $this->fillLanguageEntity($languageEntity,$languageInput);
             $composite->addLanguage($languageEntity);
             //$languageRepository->saveEntity($languageEntity);
         }
@@ -175,7 +175,7 @@ class TestSearcherMapper implements IProfileEntityMapper
             $addressInput['street']           = $address['street']??'';
             $addressInput['building_number']  = $address['building_number']??'';
             $addressInput['display']          = $address['display']??'';
-            $this->fillAddressEntity($this->profile,$addressEntity,$addressInput);
+            $this->fillAddressEntity($addressEntity,$addressInput);
             $composite->addAddress($addressEntity);
            // $addressRepository->saveEntity($addressEntity);
         }
@@ -193,7 +193,7 @@ class TestSearcherMapper implements IProfileEntityMapper
             $addressInput['school']             = $address['school']??'';
             $addressInput['degree']              = $address['degree']??'';
             $addressInput['major']           = $address['major']??'';
-            $this->fillEducationEntity($this->profile,$educationEntity,$educationInput);
+            $this->fillEducationEntity($educationEntity,$educationInput);
             $composite->addEducation($educationEntity);
           //  $educationRepository->saveEntity($educationEntity);
         }
@@ -210,7 +210,7 @@ class TestSearcherMapper implements IProfileEntityMapper
             $relationshipInput['first_name']        = $relationship['names'][0]['first']??'';
             $relationshipInput['last_name']        = $relationship['names'][0]['last']??'';
             $relationshipInput['person_id']        = $relationship['person_id']??'';
-            $this->fillRelationshipEntity($this->profile,$relationshipEntity,$relationshipInput);
+            $this->fillRelationshipEntity($relationshipEntity,$relationshipInput);
             $composite->addRelationship($relationshipEntity);
          //   $relationshipRepository->saveEntity($relationshipEntity);
         }
@@ -227,7 +227,7 @@ class TestSearcherMapper implements IProfileEntityMapper
             $socialInput['type']       = explode('@',$social['content'])[1]??'';
             $socialInput['username']   = $social['@username']??'';
             $socialInput['account_id'] = explode('@',$social['content'])[0]??'';
-            $this->fillSocialProfileEntity($this->profile,$socialEntity,$socialInput);
+            $this->fillSocialProfileEntity($socialEntity,$socialInput);
             $composite->addSocialProfile($socialEntity);
             //$socialRepository->saveEntity($socialEntity);
         }
@@ -242,7 +242,7 @@ class TestSearcherMapper implements IProfileEntityMapper
             $socialInput['valid_since']= $image['@valid_since'];
             $socialInput['original_url']        = $social['original_url']??'';
             $socialInput['local_path']        = $social['local_path']??'';
-            $this->fillImageEntity($this->profile,$imageEntity,$socialInput);
+            $this->fillImageEntity($imageEntity,$socialInput);
             $composite->addImage($imageEntity);
             //$imageRepository->saveEntity($imageEntity);
         }

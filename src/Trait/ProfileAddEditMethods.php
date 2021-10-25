@@ -29,9 +29,8 @@ trait ProfileAddEditMethods
 
     }
 
-    protected function fillNameEntity(IProfileEntity $profileEntity, IProfileNameEntity $profileNameEntity, array $name)
+    protected function fillNameEntity(IProfileNameEntity $profileNameEntity, array $name)
     {
-        $profileNameEntity->setProfileId($profileEntity->getProfileId());
         $profileNameEntity->setFirst($name['first'] ?? null);
         $profileNameEntity->setMiddle($name['middle'] ?? null);
         $profileNameEntity->setLast($name['last'] ?? null);
@@ -40,9 +39,8 @@ trait ProfileAddEditMethods
         $profileNameEntity->setDisplay($displayName);
     }
 
-    protected function fillAddressEntity(IProfileEntity $profileEntity, IProfileAddressEntity $profileAddressEntity, array $address)
+    protected function fillAddressEntity(IProfileAddressEntity $profileAddressEntity, array $address)
     {
-        $profileAddressEntity->setProfileId($profileEntity->getProfileId());
         $profileAddressEntity->setValidSince(!empty($address['valid_since']) ? new \DateTime($address['valid_since']) : null);
         $profileAddressEntity->setCountry($address['country'] ?? null);
         $profileAddressEntity->setState($address['state'] ?? null);
@@ -53,9 +51,8 @@ trait ProfileAddEditMethods
         $profileAddressEntity->setDisplay($address['display'] ?? null);
     }
 
-    protected function fillCriminalRecordEntity(IProfileEntity $profileEntity, IProfileCriminalRecordEntity $profileCriminalRecordEntity, array $criminalRecord)
+    protected function fillCriminalRecordEntity(IProfileCriminalRecordEntity $profileCriminalRecordEntity, array $criminalRecord)
     {
-        $profileCriminalRecordEntity->setProfileId($profileEntity->getProfileId());
         $profileCriminalRecordEntity->setCaseNumber($criminalRecord['case_number'] ?? null);
         $profileCriminalRecordEntity->setCaseType($criminalRecord['case_type'] ?? null);
         $profileCriminalRecordEntity->setCaseYear($criminalRecord['case_year'] ?? null);
@@ -63,9 +60,8 @@ trait ProfileAddEditMethods
         $profileCriminalRecordEntity->setDisplay($criminalRecord['display'] ?? null);
     }
 
-    protected function fillEducationEntity(IProfileEntity $profileEntity, IProfileEducationEntity $profileEducationEntity, array $education)
+    protected function fillEducationEntity(IProfileEducationEntity $profileEducationEntity, array $education)
     {
-        $profileEducationEntity->setProfileId($profileEntity->getProfileId());
         $profileEducationEntity->setValidSince(!empty($education['valid_since']) ? new \DateTime($education['valid_since']) : null);
         $profileEducationEntity->setFrom($education['from'] ?? null);
         $profileEducationEntity->setTo($education['to'] ?? null);
@@ -74,26 +70,23 @@ trait ProfileAddEditMethods
         $profileEducationEntity->setMajor($education['major'] ?? null);;
     }
 
-    protected function fillEmailEntity(IProfileEntity $profileEntity, IProfileEmailEntity $profileEmailEntity, array $email)
+    protected function fillEmailEntity(IProfileEmailEntity $profileEmailEntity, array $email)
     {
-        $profileEmailEntity->setProfileId($profileEntity->getProfileId());
         $profileEmailEntity->setValidSince(!empty($email['valid_since']) ? new \DateTime($email['valid_since']) : null);
         $profileEmailEntity->setEmail($email['email'] ?? null);
         $profileEmailEntity->setEspDomain($email['esp_domain'] ?? null);
         $profileEmailEntity->setType($email['type'] ?? null);
     }
 
-    protected function fillImageEntity(IProfileEntity $profileEntity, IProfileImageEntity $profileImageEntity, array $image)
+    protected function fillImageEntity(IProfileImageEntity $profileImageEntity, array $image)
     {
-        $profileImageEntity->setProfileId($profileEntity->getProfileId());
         $profileImageEntity->setOriginalUrl($image['original_url'] ?? null);
         $profileImageEntity->setLocalPath($image['local_path'] ?? null);
         $profileImageEntity->setValidSince(!empty($image['valid_since']) ? new \DateTime($image['valid_since']) : null);
     }
 
-    protected function fillJobEntity(IProfileEntity $profileEntity, IProfileJobEntity $profileJobEntity, array $job)
+    protected function fillJobEntity(IProfileJobEntity $profileJobEntity, array $job)
     {
-        $profileJobEntity->setProfileId($profileEntity->getProfileId());
         $profileJobEntity->setValidSince(!empty($job['valid_since']) ? new \DateTime($job['valid_since']) : null);
         $profileJobEntity->setFrom($job['from'] ?? null);
         $profileJobEntity->setTo($job['to'] ?? null);
@@ -102,17 +95,15 @@ trait ProfileAddEditMethods
         $profileJobEntity->setIndustry($job['industry'] ?? null);
     }
 
-    protected function fillLanguageEntity(IProfileEntity $profileEntity, IProfileLanguageEntity $profileLanguageEntity, array $language)
+    protected function fillLanguageEntity(IProfileLanguageEntity $profileLanguageEntity, array $language)
     {
-        $profileLanguageEntity->setProfileId($profileEntity->getProfileId());
         $profileLanguageEntity->setLanguage($language['language'] ?? null);
         $profileLanguageEntity->setCountry($job['country'] ?? null);
     }
 
-    protected function fillPhoneEntity(IProfileEntity $profileEntity, IProfilePhoneEntity $profilePhoneEntity, array $phone)
+    protected function fillPhoneEntity(IProfilePhoneEntity $profilePhoneEntity, array $phone)
     {
         $profilePhoneEntity->setValidSince(!empty($phone['valid_since']) ? new \DateTime($phone['valid_since']) : null);
-        $profilePhoneEntity->setProfileId($profileEntity->getProfileId());
         $profilePhoneEntity->setType($phone['type'] ?? null);
         $profilePhoneEntity->setDoNotCallFlag($phone['do_not_call_flag'] ?? null);
         $profilePhoneEntity->setCountryCode($phone['country_code'] ?? null);
@@ -126,9 +117,8 @@ trait ProfileAddEditMethods
         $profilePhoneEntity->setIndustry($phone['industry'] ?? null);
     }
 
-    protected function fillRelationshipEntity(IProfileEntity $profileEntity, IProfileRelationshipEntity $profileRelationshipEntity, array $relationship)
+    protected function fillRelationshipEntity(IProfileRelationshipEntity $profileRelationshipEntity, array $relationship)
     {
-        $profileRelationshipEntity->setProfileId($profileEntity->getProfileId());
         $profileRelationshipEntity->setValidSince(!empty($relationship['valid_since']) ? new \DateTime($relationship['valid_since']) : null);
         $profileRelationshipEntity->setType($relationship['type'] ?? null);
         $profileRelationshipEntity->setFirstName($relationship['first_name'] ?? null);
@@ -136,17 +126,15 @@ trait ProfileAddEditMethods
         $profileRelationshipEntity->setPersonId($relationship['person_id'] ?? null);
     }
 
-    protected function fillSkillEntity(IProfileEntity $profileEntity, IProfileSkillEntity $profileSkillEntity, array $skill)
+    protected function fillSkillEntity(IProfileSkillEntity $profileSkillEntity, array $skill)
     {
-        $profileSkillEntity->setProfileId($profileEntity->getProfileId());
         $profileSkillEntity->setValidSince(!empty($skill['valid_since']) ? new \DateTime($skill['valid_since']) : null);
         $profileSkillEntity->setLevel($skill['level'] ?? null);
         $profileSkillEntity->setSkill($skill['skill'] ?? null);
     }
 
-    protected function fillSocialProfileEntity(IProfileEntity $profileEntity, IProfileSocialProfileEntity $profileSocialProfileEntity, array $socialProfile)
+    protected function fillSocialProfileEntity(IProfileSocialProfileEntity $profileSocialProfileEntity, array $socialProfile)
     {
-        $profileSocialProfileEntity->setProfileId($profileEntity->getProfileId());
         $profileSocialProfileEntity->setValidSince(!empty($socialProfile['valid_since']) ? new \DateTime($socialProfile['valid_since']) : null);
         $profileSocialProfileEntity->setUrl($socialProfile['url'] ?? null);
         $profileSocialProfileEntity->setType($socialProfile['type'] ?? null);
@@ -154,16 +142,14 @@ trait ProfileAddEditMethods
         $profileSocialProfileEntity->setAccountId($socialProfile['account_id'] ?? null);
     }
 
-    protected function fillUsernameEntity(IProfileEntity $profileEntity, IProfileUsernameEntity $profileUsernameEntity, array $username)
+    protected function fillUsernameEntity(IProfileUsernameEntity $profileUsernameEntity, array $username)
     {
-        $profileUsernameEntity->setProfileId($profileEntity->getProfileId());
         $profileUsernameEntity->setValidSince(!empty($username['valid_since']) ? new \DateTime($username['valid_since']) : null);
         $profileUsernameEntity->setUsername($username['username'] ?? null);
     }
 
-    protected function fillMetaDataEntity(IProfileEntity $profileEntity, IProfileMetaDataEntity $profileMetaDataEntity, array $meta)
+    protected function fillMetaDataEntity(IProfileMetaDataEntity $profileMetaDataEntity, array $meta)
     {
-        $profileMetaDataEntity->setProfileId($profileEntity->getProfileId());
         $profileMetaDataEntity->setMetaKey($meta['key'] ?? null);
         $profileMetaDataEntity->setMetaValue($meta['value'] ?? null);
     }
