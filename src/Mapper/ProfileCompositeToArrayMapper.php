@@ -44,7 +44,6 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
             'criminal_records' => $this->mapCriminalRecords($profileComposite->getCriminalRecords()),
             'meta_data' => $this->mapMetaData($profileComposite->getMetaData()),
         ];
-       dd(array_merge($this->mapProfile($profileComposite->getProfile(),$withProfileId),$toReturn));
       return array_merge($this->mapProfile($profileComposite->getProfile(),$withProfileId),$toReturn);
     }
 
