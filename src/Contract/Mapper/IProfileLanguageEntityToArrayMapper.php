@@ -2,7 +2,9 @@
 
 namespace Jawabkom\Backend\Module\Profile\Contract\Mapper;
 
-interface IProfileEntityToArrayMapper
+use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageEntity;
+
+interface IProfileLanguageEntityToArrayMapper
 {
-    public function map(IProfileEntity $profile):array;
+    public function map(IProfileLanguageEntity $languageEntity):array;
 }

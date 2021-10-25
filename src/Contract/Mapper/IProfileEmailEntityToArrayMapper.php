@@ -2,7 +2,10 @@
 
 namespace Jawabkom\Backend\Module\Profile\Contract\Mapper;
 
-interface IProfileEntityToArrayMapper
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
+
+interface IProfileEmailEntityToArrayMapper
 {
-    public function map(IProfileEntity $profile):array;
+    public function map(IProfileEmailEntity $emailEntity):array;
+
 }
