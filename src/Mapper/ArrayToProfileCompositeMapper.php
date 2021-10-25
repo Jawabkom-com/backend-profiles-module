@@ -39,25 +39,6 @@ class ArrayToProfileCompositeMapper extends AbstractMapper implements IArrayToPr
         $this->mapSocialProfiles($profile, $profileComposite);
         $this->mapCriminalRecords($profile, $profileComposite);
         $this->mapMetaData($profile, $profileComposite);
-
-//        'addresses',
-//        'usernames',
-//        'emails',
-//        'relationships',
-//        'skills',
-//        'images',
-//        'languages',
-//        'jobs',
-//        'educations',
-//        'social_profiles',
-//        'criminal_records',
-//        'gender',
-//        'date_of_birth',
-//        'place_of_birth',
-//        'data_source',
-//        'meta_data',
-
-
         return $profileComposite;
     }
 
