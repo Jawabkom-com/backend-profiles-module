@@ -168,4 +168,23 @@ trait CreateProfileTrait
             $repository->saveEntity($metaObj);
         }
     }
+
+    protected function persistProfileComposite(IProfileComposite $profileComposite): void
+    {
+        $this->repository->saveEntity($profileComposite->getProfile());
+        $this->persistAddresses($profileComposite);
+        $this->persistCriminalRecords($profileComposite);
+        $this->persistEducations($profileComposite);
+        $this->persistEmails($profileComposite);
+        $this->persistImages($profileComposite);
+        $this->persistJobs($profileComposite);
+        $this->persistLanguages($profileComposite);
+        $this->persistMetaData($profileComposite);
+        $this->persistNames($profileComposite);
+        $this->persistPhones($profileComposite);
+        $this->persistRelationships($profileComposite);
+        $this->persistSkills($profileComposite);
+        $this->persistSocialProfiles($profileComposite);
+        $this->persistUsernames($profileComposite);
+    }
 }

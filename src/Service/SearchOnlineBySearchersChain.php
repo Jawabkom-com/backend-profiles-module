@@ -2,10 +2,12 @@
 
 namespace Jawabkom\Backend\Module\Profile\Service;
 
+use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCompositeToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSearcher;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileUuidFactory;
 use Jawabkom\Backend\Module\Profile\Contract\ISearcherStatusRepository;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchFiltersBuilder;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchRequestEntity;
@@ -14,6 +16,7 @@ use Jawabkom\Backend\Module\Profile\Exception\ProfileEntityExists;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherExceededAllowedRequestsLimit;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherRegistryDoesNotExist;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
+use Jawabkom\Backend\Module\Profile\Trait\CreateProfileTrait;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileHashTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
@@ -21,6 +24,7 @@ use Jawabkom\Standard\Contract\IDependencyInjector;
 class SearchOnlineBySearchersChain extends AbstractService
 {
     use  ProfileHashTrait;
+    use CreateProfileTrait;
 
     protected IProfileRepository $repository;
     private SearcherRegistry $registry;
@@ -30,6 +34,7 @@ class SearchOnlineBySearchersChain extends AbstractService
     private \DateTime $currentDateTime;
     private CreateProfile $createProfileService;
     private IProfileCompositeToArrayMapper $profileCompositeToArrayMapper;
+    private IProfileCompositeFacade $profileCompositeFacade;
 
     public function __construct(IDependencyInjector       $di,
                                 IProfileRepository        $repository,
@@ -38,7 +43,8 @@ class SearchOnlineBySearchersChain extends AbstractService
                                 ISearchRequestRepository  $searchRequestRepository,
                                 ISearcherStatusRepository $searcherStatusRepository,
                                 \DateTime                 $currentDateTime,
-                                IProfileCompositeToArrayMapper $profileCompositeToArrayMapper
+                                IProfileCompositeToArrayMapper $profileCompositeToArrayMapper,
+                                IProfileCompositeFacade $profileCompositeFacade
     )
     {
         parent::__construct($di);
@@ -50,6 +56,7 @@ class SearchOnlineBySearchersChain extends AbstractService
         $this->currentDateTime = $currentDateTime;
         $this->profileCompositeToArrayMapper = $profileCompositeToArrayMapper;
         $this->createProfileService   = $this->di->make(CreateProfile::class);
+        $this->profileCompositeFacade = $profileCompositeFacade;
     }
 
     //
@@ -247,18 +254,32 @@ class SearchOnlineBySearchersChain extends AbstractService
      * @param IProfileComposite[] $profileComposites
      * @param mixed $alias
      */
-    protected function saveResultsMappedProfile(iterable $profileComposites, mixed $alias): array
+    protected function saveResultsMappedProfile(array &$profileComposites, mixed $alias): void
     {
-        $savedProfileComposites = [];
-        foreach ($profileComposites as $profileComposite) {
+        foreach ($profileComposites as $inx => $profileComposite) {
             $profileComposite->getProfile()->setDataSource($alias);
+            $aProfile = $this->profileCompositeToArrayMapper->map($profileComposite);
+
+            // validate
+            $this->validateProfileInputs($aProfile);
+
+            // create hash
+            $hash = $this->arrayHashing->hash($aProfile, true);
             try {
-                $savedProfileComposites[] = $this->createProfileService->input('profile',$this->profileCompositeToArrayMapper->map($profileComposite))->process()->output('result');
+
+                $this->assertProfileHashDoesNotExists($hash);
+                $profileComposite->getProfile()->setHash($hash);
+
+                // create profile id
+                $uuidFactory = $this->di->make(IProfileUuidFactory::class);
+                $profileComposite->getProfile()->setProfileId($uuidFactory->generate());
+
+                // save
+                $this->persistProfileComposite($profileComposite);
             } catch (ProfileEntityExists $exception) {
-                // skip
+                $profileComposites[$inx] = $this->profileCompositeFacade->getCompositeByProfileId($this->repository->getByHash($hash)->getProfileId());
             }
         }
-        return $savedProfileComposites;
     }
 
 }

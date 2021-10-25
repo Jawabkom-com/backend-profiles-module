@@ -2,6 +2,8 @@
 
 namespace Jawabkom\Backend\Module\Profile\Contract;
 
+use phpDocumentor\Reflection\Types\Iterable_;
+
 interface IProfileComposite
 {
     public function setProfile(IProfileEntity $profileEntity);
@@ -53,6 +55,8 @@ interface IProfileComposite
      * @return IProfileRelationshipEntity[]
      */
     public function getRelationships(): iterable;
+
+    public function setRelationships(iterable $relationships);
 
     public function addSkill(IProfileSkillEntity $IProfileEntitySkill);
 

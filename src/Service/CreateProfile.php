@@ -35,10 +35,13 @@ class CreateProfile extends AbstractService
     public function process(): static
     {
         $profileInputs = $this->getInput('profile');
+
         //validate inputs
         $this->validateInputs($profileInputs);
+
         //create && save profile
         $profileComposite = $this->createNewProfileRecord($profileInputs);
+
         $this->setOutput('result', $profileComposite);
         return $this;
     }
@@ -65,27 +68,4 @@ class CreateProfile extends AbstractService
 
         return $profileComposite;
     }
-
-    //
-    // LEVEL 2
-    //
-    protected function persistProfileComposite(IProfileComposite $profileComposite): void
-    {
-        $this->repository->saveEntity($profileComposite->getProfile());
-        $this->persistAddresses($profileComposite);
-        $this->persistCriminalRecords($profileComposite);
-        $this->persistEducations($profileComposite);
-        $this->persistEmails($profileComposite);
-        $this->persistImages($profileComposite);
-        $this->persistJobs($profileComposite);
-        $this->persistLanguages($profileComposite);
-        $this->persistMetaData($profileComposite);
-        $this->persistNames($profileComposite);
-        $this->persistPhones($profileComposite);
-        $this->persistRelationships($profileComposite);
-        $this->persistSkills($profileComposite);
-        $this->persistSocialProfiles($profileComposite);
-        $this->persistUsernames($profileComposite);
-    }
-
 }
