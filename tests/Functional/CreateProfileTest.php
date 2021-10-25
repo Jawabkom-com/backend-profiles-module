@@ -111,11 +111,10 @@ class CreateProfileTest extends AbstractTestCase
             ->output('result');
         $this->assertTrue(true);
         $this->assertNotEmpty($result);
-        $profile = $result->getProfile();
-        $this->assertInstanceOf(IProfileRepository::class,$profile);
-        $this->assertInstanceOf(IProfileEntity::class,$profile);
+        $this->assertInstanceOf(IProfileRepository::class,$result->getProfile());
+        $this->assertInstanceOf(IProfileEntity::class,$result->getProfile());
         $this->assertDatabaseHas('profiles',[
-            'profile_id' => $profile->getProfileId()
+            'profile_id' => $result->getProfile()->getProfileId()
         ]);
 
         $names =$result->getNames();
@@ -123,7 +122,7 @@ class CreateProfileTest extends AbstractTestCase
         $this->assertInstanceOf(IProfileNameRepository::class,$names[0]);
         $this->assertInstanceOf(IProfileNameEntity::class,$names[0]);
         $this->assertDatabaseHas('profile_names',[
-            'profile_id' => $profile->getProfileId()
+            'profile_id' => $result->getProfile()->getProfileId()
         ]);
         $this->assertDatabaseHas('profile_names',[
             'display' => $names[0]->getDisplay()
