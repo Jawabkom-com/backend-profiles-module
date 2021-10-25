@@ -1,9 +1,10 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Profile\Mapper;
+namespace Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressEntity;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileAddressEntityMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\AbstractMapper;
 
 class ArrayToProfileAddressEntityMapper extends AbstractMapper implements IArrayToProfileAddressEntityMapper
 {

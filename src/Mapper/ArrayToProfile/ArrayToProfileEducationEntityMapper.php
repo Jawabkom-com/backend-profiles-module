@@ -1,9 +1,10 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Profile\Mapper;
+namespace Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationEntity;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileEducationEntityMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\AbstractMapper;
 
 class ArrayToProfileEducationEntityMapper extends AbstractMapper implements IArrayToProfileEducationEntityMapper
 {

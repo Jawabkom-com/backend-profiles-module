@@ -16,7 +16,7 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
     public function map(IProfileComposite $profileComposite): array
     {
         $toReturn = [
-            'phones' => $this->wrapPhonesResult($profileComposite->getPhones()),
+            'phones' => $this->mapPhones($profileComposite->getPhones()),
             'addresses' => $this->wrapResult($profileComposite->getAddresses()),
             'usernames' => $this->wrapResult($profileComposite->getUsernames()),
             'emails' => $this->wrapResult($profileComposite->getEmails()),
@@ -33,14 +33,15 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
       return array_merge($profileComposite->getProfile()->toArray(),$toReturn);
     }
 
-    public function wrapPhonesResult(iterable $phones)
+    public function mapPhones(iterable $phones)
     {
         $toReturn = [];
-        foreach ($phones as $phone) {
-          $phoneEntityToArrayMapper = $this->di->make(IProfilePhoneEntityToArrayMapper::class);
-            $toReturn[] = $phoneEntityToArrayMapper->map($phone);
+        if($phones) {
+            $phoneEntityToArrayMapper = $this->di->make(IProfilePhoneEntityToArrayMapper::class);
+            foreach ($phones as $phone) {
+                $toReturn[] = $phoneEntityToArrayMapper->map($phone);
+            }
         }
-        dd($toReturn);
         return $toReturn;
     }
 }
