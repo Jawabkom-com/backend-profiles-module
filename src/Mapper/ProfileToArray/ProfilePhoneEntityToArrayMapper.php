@@ -20,6 +20,7 @@ class ProfilePhoneEntityToArrayMapper implements IProfilePhoneEntityToArrayMappe
           'carrier'=>$phoneEntity->getCarrier(),
           'purpose'=>$phoneEntity->getPurpose(),
           'industry'=>$phoneEntity->getIndustry(),
+          'valid_since'=>$phoneEntity->getValidSince()?->format('Y-m-d H:m:i')
       ];
     }
 }

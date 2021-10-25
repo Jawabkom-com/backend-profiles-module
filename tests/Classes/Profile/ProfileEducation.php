@@ -83,7 +83,7 @@ class ProfileEducation extends Model implements IProfileEducationEntity,IProfile
         $this->school = $school;
     }
 
-    public function getSchool(): string
+    public function getSchool():? string
     {
       return $this->school;
     }
