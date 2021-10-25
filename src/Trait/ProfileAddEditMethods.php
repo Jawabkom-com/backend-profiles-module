@@ -98,7 +98,7 @@ trait ProfileAddEditMethods
     protected function fillLanguageEntity(IProfileLanguageEntity $profileLanguageEntity, array $language)
     {
         $profileLanguageEntity->setLanguage($language['language'] ?? null);
-        $profileLanguageEntity->setCountry($job['country'] ?? null);
+        $profileLanguageEntity->setCountry($language['country'] ?? null);
     }
 
     protected function fillPhoneEntity(IProfilePhoneEntity $profilePhoneEntity, array $phone)
