@@ -9,7 +9,7 @@ class ProfileSkillEntityToArrayMapper implements IProfileSkillEntityToArrayMappe
     public function map(IProfileSkillEntity $skillEntity): array
     {
         return [
-            'valid_since'=>$skillEntity->getValidSince(),
+            'valid_since'=>$skillEntity->getValidSince()?->format('Y-m-d H:m:i'),
             'level'=>$skillEntity->getLevel(),
             'skill'=>$skillEntity->getSkill(),
         ];

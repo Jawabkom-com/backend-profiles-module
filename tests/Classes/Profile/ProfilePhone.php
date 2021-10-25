@@ -41,7 +41,7 @@ class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRep
       'carrier',
       'purpose',
       'industry',
-      'industry',
+      'valid_since',
     ];
 
     protected $hidden =[

@@ -9,7 +9,7 @@ class ProfileUsernameEntityToArrayMapper implements IProfileUsernameEntityToArra
     public function map(IProfileUsernameEntity $usernameEntity): array
     {
        return [
-           'valid_since'=>$usernameEntity->getValidSince(),
+           'valid_since'=>$usernameEntity->getValidSince()?->format('Y-m-d H:m:i'),
            'username'=>$usernameEntity->getUsername(),
        ];
     }

@@ -9,9 +9,7 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilt
     Composite\Filters\Filter,
     Composite\ProfileComposite,
     DI,
-    ProfileEntityToArray,
     ProfileUuidFactory,
-    ResultToArrayMapper,
     Search\SearcherStatus,
     Search\SearchRequest};
 use Jawabkom\Backend\Module\Profile\Contract\{IArrayHashing,
@@ -26,7 +24,6 @@ use Jawabkom\Backend\Module\Profile\Contract\{IArrayHashing,
     IProfileEmailEntity,
     IProfileEmailRepository,
     IProfileEntity,
-    IProfileEntityToArrayMapper,
     IProfileImageEntity,
     IProfileImageRepository,
     IProfileJobEntity,
@@ -52,10 +49,37 @@ use Jawabkom\Backend\Module\Profile\Contract\{IArrayHashing,
     ISearcherStatusRepository,
     ISearchFiltersBuilder,
     ISearchRequestRepository,
-    Mapper\IProfilePhoneEntityToArrayMapper};
+    Mapper\IProfileAddressEntityToArrayMapper,
+    Mapper\IProfileCriminalRecordEntityToArrayMapper,
+    Mapper\IProfileEducationEntityToArrayMapper,
+    Mapper\IProfileEmailEntityToArrayMapper,
+    Mapper\IProfileEntityToArrayMapper,
+    Mapper\IProfileImageEntityToArrayMapper,
+    Mapper\IProfileJobEntityToArrayMapper,
+    Mapper\IProfileLanguageEntityToArrayMapper,
+    Mapper\IProfileMetaDataEntityToArrayMapper,
+    Mapper\IProfileNameEntityToArrayMapper,
+    Mapper\IProfilePhoneEntityToArrayMapper,
+    Mapper\IProfileRelationshipEntityToArrayMapper,
+    Mapper\IProfileSkillEntityToArrayMapper,
+    Mapper\IProfileSocialProfileEntityToArrayMapper,
+    Mapper\IProfileUsernameEntityToArrayMapper};
 use Jawabkom\Backend\Module\Profile\BasicArrayHashing;
 use Jawabkom\Backend\Module\Profile\Mapper\ProfileCompositeToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileAddressEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileEducationEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileEmailEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileImageEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileJobEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileLanguageEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileMetaDataEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileNameEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfilePhoneEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileRelationshipEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileSkillEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileSocialProfileEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileUsernameEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\SimpleSearchFiltersBuilder;
 use Jawabkom\Standard\Contract\IAndFilterComposite;
 use Jawabkom\Standard\Contract\IOrFilterComposite;
@@ -127,8 +151,21 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileUuidFactory::class                   => ProfileUuidFactory::class,
             IProfileComposite::class                     => ProfileComposite::class,
             IProfileCompositeToArrayMapper::class       => ProfileCompositeToArrayMapper::class,
-            IProfileEntityToArrayMapper::class          => ProfileEntityToArray::class,
-            IProfilePhoneEntityToArrayMapper::class     => ProfilePhoneEntityToArrayMapper::class
+            IProfileCriminalRecordEntityToArrayMapper::class=> ProfileCompositeToArrayMapper::class,
+            IProfileEducationEntityToArrayMapper::class => ProfileEducationEntityToArrayMapper::class,
+            IProfileEmailEntityToArrayMapper::class => ProfileEmailEntityToArrayMapper::class,
+            IProfileEntityToArrayMapper::class      => ProfileEntityToArrayMapper::class,
+            IProfileImageEntityToArrayMapper::class => ProfileImageEntityToArrayMapper::class,
+            IProfileJobEntityToArrayMapper::class       => ProfileJobEntityToArrayMapper::class,
+            IProfileLanguageEntityToArrayMapper::class  => ProfileLanguageEntityToArrayMapper::class,
+            IProfileMetaDataEntityToArrayMapper::class  => ProfileMetaDataEntityToArrayMapper::class,
+            IProfileNameEntityToArrayMapper::class      => ProfileNameEntityToArrayMapper::class,
+            IProfilePhoneEntityToArrayMapper::class     => ProfilePhoneEntityToArrayMapper::class,
+            IProfileRelationshipEntityToArrayMapper::class=> ProfileRelationshipEntityToArrayMapper::class,
+            IProfileSkillEntityToArrayMapper::class     => ProfileSkillEntityToArrayMapper::class,
+            IProfileSocialProfileEntityToArrayMapper::class => ProfileSocialProfileEntityToArrayMapper::class,
+            IProfileUsernameEntityToArrayMapper::class => ProfileUsernameEntityToArrayMapper::class,
+            IProfileAddressEntityToArrayMapper::class   => ProfileAddressEntityToArrayMapper::class
         ];
 
         foreach ($toBind as $interface => $implementation) {

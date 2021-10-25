@@ -6,14 +6,16 @@ use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileEntityToArrayMapper;
 class ProfileEntityToArrayMapper implements IProfileEntityToArrayMapper
 {
 
-    public function map(IProfileEntity $profileEntity): array
+    public function map(IProfileEntity $profileEntity,$withProfileId): array
     {
-        return [
-            'profile_id' => $profileEntity->getProfileId(),
+        $toReturn = [
             'gender' => $profileEntity->getGender(),
             'date_of_birth' => $profileEntity->getDateOfBirth(),
             'place_of_birth' => $profileEntity->getPlaceOfBirth(),
             'data_source' => $profileEntity->getDataSource(),
         ];
+        if ($withProfileId)
+            $toReturn['profile_id'] = $profileEntity->getProfileId();
+        return $toReturn;
     }
 }

@@ -9,7 +9,7 @@ class ProfileEmailEntityToArrayMapper implements IProfileEmailEntityToArrayMappe
     public function map(IProfileEmailEntity $emailEntity): array
     {
       return [
-          'valid_since' => $emailEntity->getValidSince(),
+          'valid_since' => $emailEntity->getValidSince()?->format('Y-m-d H:m:i'),
           'email' => $emailEntity->getEmail(),
           'esp_domain' => $emailEntity->getEspDomain(),
           'type' => $emailEntity->getType(),

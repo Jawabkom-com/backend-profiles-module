@@ -9,7 +9,7 @@ class ProfileEducationEntityToArrayMapper implements IProfileEducationEntityToAr
     public function map(IProfileEducationEntity $educationEntity): array
     {
        return [
-           'valid_since' => $educationEntity->getValidSince(),
+           'valid_since' => $educationEntity->getValidSince()?->format('Y-m-d H:m:i'),
            'from' => $educationEntity->getFrom(),
            'to' => $educationEntity->getTo(),
            'school' => $educationEntity->getSchool(),
