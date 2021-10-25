@@ -10,4 +10,6 @@ interface IProfileAddressRepository extends IRepository
     public function saveEntity(IProfileAddressEntity|IEntity $entity): bool;
 
     public function createEntity(array $params = []): IProfileAddressEntity;
+
+    public function getByProfileId(string $profileId):?iterable;
 }

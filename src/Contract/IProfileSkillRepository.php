@@ -10,4 +10,6 @@ interface IProfileSkillRepository extends IRepository
     public function saveEntity(IProfileSkillEntity|IEntity $entity): bool;
 
     public function createEntity(array $params = []): IProfileSkillEntity;
+
+    public function getByProfileId(string $profileId):?iterable;
 }

@@ -10,4 +10,6 @@ interface IProfileLanguageRepository extends IRepository
     public function saveEntity(IProfileLanguageEntity|IEntity $entity): bool;
 
     public function createEntity(array $params = []): IProfileLanguageEntity;
+
+    public function getByProfileId(string $profileId):?iterable;
 }

@@ -10,4 +10,6 @@ interface IProfileCriminalRecordRepository extends IRepository
     public function saveEntity(IProfileCriminalRecordEntity|IEntity $entity): bool;
 
     public function createEntity(array $params = []): IProfileCriminalRecordEntity;
+
+    public function getByProfileId(string $profileId):?iterable;
 }

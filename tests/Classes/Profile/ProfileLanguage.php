@@ -75,4 +75,9 @@ class ProfileLanguage extends Model implements IProfileLanguageEntity,IProfileLa
     {
        return $entity->delete();
     }
+    public function getByProfileId(string $profileId): ?iterable
+    {
+        return $this->where('profile_id',$profileId)->get();
+    }
+
 }

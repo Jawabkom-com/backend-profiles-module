@@ -122,4 +122,10 @@ class ProfileJob extends Model implements IProfileJobEntity,IProfileJobRepositor
     {
       return $entity->delete();
     }
+
+    public function getByProfileId(string $profileId): ?iterable
+    {
+        return $this->where('profile_id',$profileId)->get();
+    }
+
 }

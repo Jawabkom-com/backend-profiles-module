@@ -10,4 +10,6 @@ interface IProfileJobRepository extends IRepository
     public function saveEntity(IProfileJobEntity|IEntity $entity): bool;
 
     public function createEntity(array $params = []): IProfileJobEntity;
+
+    public function getByProfileId(string $profileId):?iterable;
 }

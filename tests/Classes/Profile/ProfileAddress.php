@@ -145,8 +145,8 @@ class ProfileAddress extends Model implements IProfileAddressEntity,IProfileAddr
         return $entity->delete();
     }
 
-    public function getByProfileId(): iterable
+    public function getByProfileId(string $profileId): ?iterable
     {
-      // $this->
+       return $this->where('profile_id',$profileId)->get();
     }
 }

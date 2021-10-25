@@ -205,4 +205,9 @@ class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRep
     {
         return $this->valid_since;
     }
+    public function getByProfileId(string $profileId): ?iterable
+    {
+        return $this->where('profile_id',$profileId)->get();
+    }
+
 }

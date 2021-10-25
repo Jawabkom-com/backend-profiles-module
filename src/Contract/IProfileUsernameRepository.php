@@ -10,4 +10,5 @@ interface IProfileUsernameRepository extends IRepository
     public function saveEntity(IProfileUsernameEntity|IEntity $entity): bool;
 
     public function createEntity(array $params = []): IProfileUsernameEntity;
+    public function getByProfileId(string $profileId):?iterable;
 }

@@ -109,4 +109,9 @@ class ProfileSocialProfile extends Model implements IProfileSocialProfileEntity,
     {
       return $entity->delete();
     }
+    public function getByProfileId(string $profileId): ?iterable
+    {
+        return $this->where('profile_id',$profileId)->get();
+    }
+
 }

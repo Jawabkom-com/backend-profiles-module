@@ -9,5 +9,6 @@ interface IProfileMetaDataRepository extends IRepository
 {
     public function saveEntity(IProfileMetaDataEntity|IEntity $entity): bool;
     public function createEntity(array $params = []): IProfileMetaDataEntity;
+    public function getByProfileId(string $profileId):?iterable;
 
 }

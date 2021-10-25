@@ -74,4 +74,9 @@ class ProfileUsername extends Model implements IProfileUsernameEntity,IProfileUs
     {
       return $entity->delete();
     }
+
+    public function getByProfileId(string $profileId): ?iterable
+    {
+        return $this->where('profile_id',$profileId)->get();
+    }
 }

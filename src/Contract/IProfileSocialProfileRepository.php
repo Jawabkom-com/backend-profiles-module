@@ -10,4 +10,6 @@ interface IProfileSocialProfileRepository extends IRepository
     public function saveEntity(IProfileSocialProfileEntity|IEntity $entity): bool;
 
     public function createEntity(array $params = []): IProfileSocialProfileEntity;
+
+    public function getByProfileId(string $profileId):?iterable;
 }
