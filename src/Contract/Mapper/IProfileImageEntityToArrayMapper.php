@@ -2,7 +2,9 @@
 
 namespace Jawabkom\Backend\Module\Profile\Contract\Mapper;
 
-interface IProfileEntityToArrayMapper
+use Jawabkom\Backend\Module\Profile\Contract\IProfileImageEntity;
+
+interface IProfileImageEntityToArrayMapper
 {
-    public function map(IProfileEntity $profile):array;
+    public function map(IProfileImageEntity $imageEntity):array;
 }
