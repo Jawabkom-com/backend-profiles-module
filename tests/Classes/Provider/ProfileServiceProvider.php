@@ -49,12 +49,13 @@ use Jawabkom\Backend\Module\Profile\Contract\{IArrayHashing,
     IProfileUsernameEntity,
     IProfileUsernameRepository,
     IProfileUuidFactory,
-    IResultToArrayMapper,
     ISearcherStatusRepository,
     ISearchFiltersBuilder,
-    ISearchRequestRepository};
+    ISearchRequestRepository,
+    Mapper\IProfilePhoneEntityToArrayMapper};
 use Jawabkom\Backend\Module\Profile\BasicArrayHashing;
 use Jawabkom\Backend\Module\Profile\Mapper\ProfileCompositeToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfilePhoneEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\SimpleSearchFiltersBuilder;
 use Jawabkom\Standard\Contract\IAndFilterComposite;
 use Jawabkom\Standard\Contract\IOrFilterComposite;
@@ -123,11 +124,11 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileMetaDataRepository::class            => ProfileMetaData::class,
             IProfileMetaDataEntity::class                => ProfileMetaData::class,
             IArrayHashing::class                         => BasicArrayHashing::class,
-            IResultToArrayMapper::class                  => ResultToArrayMapper::class,
             IProfileUuidFactory::class                   => ProfileUuidFactory::class,
             IProfileComposite::class                     => ProfileComposite::class,
             IProfileCompositeToArrayMapper::class       => ProfileCompositeToArrayMapper::class,
-            IProfileEntityToArrayMapper::class          => ProfileEntityToArray::class
+            IProfileEntityToArrayMapper::class          => ProfileEntityToArray::class,
+            IProfilePhoneEntityToArrayMapper::class     => ProfilePhoneEntityToArrayMapper::class
         ];
 
         foreach ($toBind as $interface => $implementation) {

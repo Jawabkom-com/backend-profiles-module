@@ -4,8 +4,9 @@ namespace Jawabkom\Backend\Module\Profile\Mapper;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCompositeToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfilePhoneEntityToArrayMapper;
 
-class ProfileCompositeToArrayMapper implements IProfileCompositeToArrayMapper
+class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCompositeToArrayMapper
 {
 
     /**
@@ -15,7 +16,7 @@ class ProfileCompositeToArrayMapper implements IProfileCompositeToArrayMapper
     public function map(IProfileComposite $profileComposite): array
     {
         $toReturn = [
-            'phones' => $this->wrapResult($profileComposite->getPhones()),
+            'phones' => $this->wrapPhonesResult($profileComposite->getPhones()),
             'addresses' => $this->wrapResult($profileComposite->getAddresses()),
             'usernames' => $this->wrapResult($profileComposite->getUsernames()),
             'emails' => $this->wrapResult($profileComposite->getEmails()),
@@ -32,18 +33,14 @@ class ProfileCompositeToArrayMapper implements IProfileCompositeToArrayMapper
       return array_merge($profileComposite->getProfile()->toArray(),$toReturn);
     }
 
-    public function wrapResult(iterable $results)
+    public function wrapPhonesResult(iterable $phones)
     {
         $toReturn = [];
-        foreach ($results as $result) {
-            $resultArray =$result->toArray();
-            unset($resultArray['local_path']);
-            unset($resultArray['person_id']);
-           if (key_exists('valid_since',$resultArray)){
-               $resultArray['valid_since'] = $resultArray['valid_since']->format('Y-m-d h:m:i');
-           }
-            $toReturn[] = $resultArray;
+        foreach ($phones as $phone) {
+          $phoneEntityToArrayMapper = $this->di->make(IProfilePhoneEntityToArrayMapper::class);
+            $toReturn[] = $phoneEntityToArrayMapper->map($phone);
         }
+        dd($toReturn);
         return $toReturn;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-
+namespace Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileUsernameEntityToArrayMapper;
 
