@@ -18,6 +18,8 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileJobEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileMetaDataEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileMetaDataRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
@@ -60,9 +62,10 @@ class DeleteProfileTest extends AbstractTestCase
     public function testDeleteProfile(){
 
         $userData = $this->dummyFullProfileData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
                                        ->process()
-                                       ->output('profile');
+                                       ->output('result');
+        $profile = $result->getProfile();
         $this->assertNotEmpty($profile);
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
@@ -78,10 +81,10 @@ class DeleteProfileTest extends AbstractTestCase
     //create delete full profile
     public function testDeleteFullProfile(){
         $userData = $this->dummyFullProfileData();
-        $profile = $this->createProfile->input('profile',$userData)
+        $result = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
-        $this->assertTrue(true);
+            ->output('result');
+        $profile = $result->getProfile();
         $this->assertNotEmpty($profile);
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
@@ -230,6 +233,21 @@ class DeleteProfileTest extends AbstractTestCase
         $this->assertDatabaseHas('profile_addresses',[
             'country' => $names[0]->getCountry()
         ]);
+
+
+        /*** Meta Data ***/
+        $meta_data =$profile->getMetaData();
+        $this->assertNotEmpty($meta_data);
+        $this->assertInstanceOf(IProfileMetaDataRepository::class,$meta_data[0]);
+        $this->assertInstanceOf(IProfileMetaDataEntity::class,$meta_data[0]);
+        $this->assertDatabaseHas('profile_meta_data',[
+            'profile_id' => $profile->getProfileId()
+        ]);
+        $this->assertDatabaseHas('profile_meta_data',[
+            'meta_key' => $meta_data[0]->getMetaKey()
+        ]);
+
+
 
         /*** Name ***/
         $names =$profile->getNames();
