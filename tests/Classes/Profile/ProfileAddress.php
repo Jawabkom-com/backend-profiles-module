@@ -57,7 +57,7 @@ class ProfileAddress extends Model implements IProfileAddressEntity,IProfileAddr
 
     public function getValidSince():? \DateTime
     {
-       return $this->valid_since? new \DateTime($this->valid_since):null;
+        return $this->valid_since?(is_string($this->valid_since)?new \DateTime($this->valid_since):$this->valid_since):null;
     }
 
     public function setCountry(?string $country)

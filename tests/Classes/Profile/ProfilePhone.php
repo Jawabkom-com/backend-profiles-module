@@ -203,7 +203,7 @@ class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRep
 
     public function getValidSince(): ?\DateTime
     {
-        return $this->valid_since? new \DateTime($this->valid_since):null;
+        return $this->valid_since?(is_string($this->valid_since)?new \DateTime($this->valid_since):$this->valid_since):null;
     }
     public function getByProfileId(string $profileId): ?iterable
     {

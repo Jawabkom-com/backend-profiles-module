@@ -28,7 +28,7 @@ class ProfileAddressesInputValidator
 
                 switch ($inputKey) {
                     case 'country':
-                        if(strlen($inputValue) !== 2) {
+                        if($inputValue && strlen($inputValue) !== 2) {
                             throw new InvalidInputValue('country input value must be a valid country code.');
                         }
                         break;

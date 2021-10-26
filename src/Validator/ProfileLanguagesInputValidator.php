@@ -19,7 +19,7 @@ class ProfileLanguagesInputValidator
 
                 switch ($inputKey) {
                     case 'language':
-                        if(strlen($inputValue) !== 2) {
+                        if($inputValue && strlen($inputValue) !== 2) {
                             throw new InvalidInputValue('language input value must be a valid language code.');
                         }
                         break;

@@ -79,7 +79,7 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
 
     public function getDateOfBirth():? \DateTime
     {
-        return $this->date_of_birth?new \DateTime($this->date_of_birth):null;
+        return $this->date_of_birth?is_string($this->date_of_birth)?new \DateTime($this->date_of_birth):$this->date_of_birth:null;
     }
 
     public function setPlaceOfBirth(?string $placeOfBirth)
