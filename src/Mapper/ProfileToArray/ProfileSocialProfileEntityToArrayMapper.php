@@ -9,7 +9,7 @@ class ProfileSocialProfileEntityToArrayMapper implements IProfileSocialProfileEn
     public function map(IProfileSocialProfileEntity $socialProfileEntity): array
     {
        return [
-           'valid_since' => $socialProfileEntity->getValidSince()?->format('Y-m-d H:m:i'),
+           'valid_since' => $socialProfileEntity->getValidSince()?->format('Y-m-d'),
            'url' => $socialProfileEntity->getUrl(),
            'type' => $socialProfileEntity->getType(),
            'username' => $socialProfileEntity->getUsername(),

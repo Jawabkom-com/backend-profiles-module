@@ -11,7 +11,7 @@ class ProfileAddressEntityToArrayMapper implements IProfileAddressEntityToArrayM
     public function map(IProfileAddressEntity $profile): array
     {
         return [
-            'valid_since' => $profile->getValidSince()?->format('Y-m-d H:m:i'),
+            'valid_since' => $profile->getValidSince()?->format('Y-m-d'),
             'country'   => $profile->getCountry(),
             'state' => $profile->getState(),
             'city'  =>$profile->getCity(),

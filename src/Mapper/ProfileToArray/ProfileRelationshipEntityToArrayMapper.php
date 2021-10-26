@@ -9,7 +9,7 @@ class ProfileRelationshipEntityToArrayMapper implements IProfileRelationshipEnti
     public function map(IProfileRelationshipEntity $profileRelationshipEntity): array
     {
       return  [
-          'valid_since' => $profileRelationshipEntity->getValidSince()?->format('Y-m-d H:m:i'),
+          'valid_since' => $profileRelationshipEntity->getValidSince()?->format('Y-m-d'),
           'type' => $profileRelationshipEntity->getType(),
           'first_name' => $profileRelationshipEntity->getFirstName(),
           'last_name' => $profileRelationshipEntity->getLastName(),

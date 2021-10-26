@@ -11,7 +11,7 @@ class ProfileImageEntityToArrayMapper implements IProfileImageEntityToArrayMappe
        return [
            'original_url' => $imageEntity->getOriginalUrl(),
            'local_path' => $imageEntity->getLocalPath(),
-           'valid_since' => $imageEntity->getValidSince()?->format('Y-m-d H:m:i'),
+           'valid_since' => $imageEntity->getValidSince()?->format('Y-m-d'),
        ];
     }
 }
