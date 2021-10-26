@@ -12,7 +12,7 @@ class ProfileEntityToArrayMapper implements IProfileEntityToArrayMapper
         if ($withProfileId)
             $toReturn['profile_id'] = $profileEntity->getProfileId();
 
-            $toReturn['gender'] = $profileEntity->getGender() == '' ? 'male' :$profileEntity->getGender() ;
+            $toReturn['gender'] = $profileEntity->getGender();
             $toReturn['date_of_birth'] = $profileEntity->getDateOfBirth()?->format('Y-m-d');
             $toReturn['place_of_birth'] = $profileEntity->getPlaceOfBirth();
             $toReturn['data_source'] = $profileEntity->getDataSource();
