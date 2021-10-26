@@ -1,7 +1,6 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Profile;
-
+namespace Jawabkom\Backend\Module\Profile\Facade;
 
 use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;

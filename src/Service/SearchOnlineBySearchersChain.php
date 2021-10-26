@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Profile\Service;
 
 use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
+use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCompositeToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
@@ -68,7 +69,6 @@ class SearchOnlineBySearchersChain extends AbstractService
         $searchersAliases = $this->getInput('searchersAliases', []);
         $this->validateSearchersChain($searchersAliases);
         $this->searchFiltersBuilder->setAllFilters($filter)->trim();
-
         $searchGroupHash = sha1(json_encode($this->searchFiltersBuilder->buildAsArray()));
         $cachedResultsByAliases = $this->getCachedResultsByAliases($searchGroupHash);
         $searchRequests = [];
@@ -82,9 +82,9 @@ class SearchOnlineBySearchersChain extends AbstractService
                 $profileComposites = $this->mapResultsToProfileComposites($alias, $results);
                 if (count($profileComposites)) {
                     //if (!$isFromCache)
-                    $savedProfileComposites = $this->saveResultsMappedProfile($profileComposites, $alias);
-                    $this->setSucceededSearchRequestStatus($searchRequest, $results, count($savedProfileComposites));
-                    $this->setOutput('result', $savedProfileComposites);
+                    $this->saveResultsMappedProfile($profileComposites, $alias);
+                    $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileComposites));
+                    $this->setOutput('result', $profileComposites);
                     $this->setOutput('raw_result', $results);
                     break;
                 } else {
@@ -262,9 +262,9 @@ class SearchOnlineBySearchersChain extends AbstractService
 
             // validate
             $this->validateProfileInputs($aProfile);
-
             // create hash
-            $hash = $this->arrayHashing->hash($aProfile, true);
+            $arrayHashing = $this->di->make(IArrayHashing::class);
+            $hash = $arrayHashing->hash($aProfile, true);
             try {
 
                 $this->assertProfileHashDoesNotExists($hash);
@@ -273,7 +273,6 @@ class SearchOnlineBySearchersChain extends AbstractService
                 // create profile id
                 $uuidFactory = $this->di->make(IProfileUuidFactory::class);
                 $profileComposite->getProfile()->setProfileId($uuidFactory->generate());
-
                 // save
                 $this->persistProfileComposite($profileComposite);
             } catch (ProfileEntityExists $exception) {

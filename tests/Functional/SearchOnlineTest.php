@@ -56,7 +56,6 @@ class SearchOnlineTest extends AbstractTestCase
             ->input('requestMeta', ['searcher_user_id' => 10, 'tracking_uuid' => 'test-uuid'])
             ->process();
         $result = $outputs->output('result');
-        dd($result);
         $this->assertEquals(1, count($result));
         $this->assertDatabaseHas('profiles', [
             'profile_id' => $result[0]->getProfile()->getProfileId()
@@ -275,7 +274,6 @@ class SearchOnlineTest extends AbstractTestCase
             ->process();
         $searchRequests = $onlineSearchService->output('search_requests');
         $this->assertEquals('done', $searchRequests[0]->getStatus());
-
         $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class, ['registry' => $searcherRegistry]);
         $onlineSearchService
             ->input('filters', ['first_name' => 'Something New'])

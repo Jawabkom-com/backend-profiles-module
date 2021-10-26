@@ -212,6 +212,12 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
         return $this->where('profile_id', $profileId)->first();
     }
 
+    public function getByHash(string $hash): ?IProfileRepository
+    {
+        return $this->where('hash', $hash)->first();
+    }
+
+
     public function hashExist(string $hash): bool
     {
       return $this->where('hash',$hash)->exists();

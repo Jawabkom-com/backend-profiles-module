@@ -12,6 +12,7 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilt
     ProfileUuidFactory,
     Search\SearcherStatus,
     Search\SearchRequest};
+use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 use Jawabkom\Backend\Module\Profile\Contract\{IArrayHashing,
     IArrayToProfileCompositeMapper,
     IProfileAddressEntity,
@@ -81,6 +82,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{IArrayHashing,
     Mapper\IProfileSocialProfileEntityToArrayMapper,
     Mapper\IProfileUsernameEntityToArrayMapper};
 use Jawabkom\Backend\Module\Profile\BasicArrayHashing;
+use Jawabkom\Backend\Module\Profile\Facade\ProfileCompositeFacade;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileEntityMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileAddressEntityMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileCriminalRecordEntityMapper;
@@ -214,6 +216,7 @@ class ProfileServiceProvider extends ServiceProvider
             IArrayToProfileSkillEntityMapper::class         => ArrayToProfileSkillEntityMapper::class,
             IArrayToProfileSocialProfileEntityMapper::class => ArrayToProfileSocialProfileEntityMapper::class,
             IArrayToProfileUsernameEntityMapper::class      => ArrayToProfileUsernameEntityMapper::class,
+            IProfileCompositeFacade::class                  => ProfileCompositeFacade::class
         ];
 
         foreach ($toBind as $interface => $implementation) {
