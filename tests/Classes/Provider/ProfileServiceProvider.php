@@ -101,6 +101,7 @@ use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileUsername
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfileCompositeMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ProfileCompositeToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileAddressEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileCriminalRecordEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileEducationEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileEmailEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileEntityToArrayMapper;
@@ -185,7 +186,7 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileUuidFactory::class                      => ProfileUuidFactory::class,
             IProfileComposite::class                        => ProfileComposite::class,
             IProfileCompositeToArrayMapper::class           => ProfileCompositeToArrayMapper::class,
-            IProfileCriminalRecordEntityToArrayMapper::class=> ProfileCompositeToArrayMapper::class,
+            IProfileCriminalRecordEntityToArrayMapper::class=> ProfileCriminalRecordEntityToArrayMapper::class,
             IProfileEducationEntityToArrayMapper::class     => ProfileEducationEntityToArrayMapper::class,
             IProfileEmailEntityToArrayMapper::class         => ProfileEmailEntityToArrayMapper::class,
             IProfileEntityToArrayMapper::class              => ProfileEntityToArrayMapper::class,

@@ -49,9 +49,9 @@ class ProfileEmail extends Model implements IProfileEmailEntity,IProfileEmailRep
        $this->valid_since = $validSince;
     }
 
-    public function getValidSince(): \DateTime
+    public function getValidSince():? \DateTime
     {
-      return $this->valid_since;
+        return $this->valid_since? new \DateTime($this->valid_since):null;
     }
 
     public function setEmail(?string $email)

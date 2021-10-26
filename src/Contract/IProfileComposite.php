@@ -104,7 +104,7 @@ interface IProfileComposite
      * @return IProfileSocialProfileEntity[]
      */
     public function getSocialProfiles(): iterable;
-    public function setSocialProfiles(iterable $SocialProfiles);
+    public function setSocialProfiles(iterable $socialProfiles);
 
     public function addCriminalRecord(IProfileCriminalRecordEntity $IProfileEntityCriminalRecord);
 

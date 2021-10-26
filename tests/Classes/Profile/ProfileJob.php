@@ -55,7 +55,7 @@ class ProfileJob extends Model implements IProfileJobEntity,IProfileJobRepositor
 
     public function getValidSince():? \DateTime
     {
-       return $this->valid_since;
+        return $this->valid_since? new \DateTime($this->valid_since):null;
     }
 
     public function setFrom(?string $from)

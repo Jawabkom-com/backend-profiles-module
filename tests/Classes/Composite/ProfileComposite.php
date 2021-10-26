@@ -23,20 +23,20 @@ class ProfileComposite implements IProfileComposite
 {
 
     private IProfileEntity $profile;
-    private array $names;
-    private array $phones;
-    private array $addresses;
-    private array $usernames;
-    private array $emails;
-    private array $relationships;
-    private array $skills;
-    private array $images;
-    private array $languages;
-    private array $jobs;
-    private array $educations;
-    private array $socialProfiles;
-    private array $criminalRecords;
-    private array $metaData;
+    private iterable $names;
+    private iterable $phones;
+    private iterable $addresses;
+    private iterable $usernames;
+    private iterable $emails;
+    private iterable $relationships;
+    private iterable $skills;
+    private iterable $images;
+    private iterable $languages;
+    private iterable $jobs;
+    private iterable $educations;
+    private iterable $socialProfiles;
+    private iterable $criminalRecords;
+    private iterable $metaData;
 
     public function setProfile(IProfileEntity $profileEntity)
     {
@@ -190,71 +190,71 @@ class ProfileComposite implements IProfileComposite
 
     public function setNames(iterable $names)
     {
-        // TODO: Implement setNames() method.
+       $this->names = $names;
     }
 
     public function setPhones(iterable $phones)
     {
-        // TODO: Implement setPhones() method.
+        $this->phones = $phones;
     }
 
     public function setAddresses(iterable $addresses)
     {
-        // TODO: Implement setAddresses() method.
+       $this->addresses = $addresses;
     }
 
     public function setUsernames(iterable $usernames)
     {
-        // TODO: Implement setUsernames() method.
+       $this->usernames = $usernames;
     }
 
     public function setEmails(iterable $emails)
     {
-        // TODO: Implement setEmails() method.
+        $this->emails = $emails;
     }
 
     public function setSkills(iterable $skills)
     {
-        // TODO: Implement setSkills() method.
+        $this->skills = $skills;
     }
 
     public function setImages(iterable $images)
     {
-        // TODO: Implement setImages() method.
+      $this->images = $images;
     }
 
     public function setLanguages(iterable $languages)
     {
-        // TODO: Implement setLanguages() method.
+      $this->languages = $languages;
     }
 
     public function setJobs(iterable $jobs)
     {
-        // TODO: Implement setJobs() method.
+       $this->jobs = $jobs;
     }
 
     public function setEducations(iterable $educations)
     {
-        // TODO: Implement setEducations() method.
+        $this->educations = $educations;
     }
 
-    public function setSocialProfiles(iterable $SocialProfiles)
+    public function setSocialProfiles(iterable $socialProfiles)
     {
-        // TODO: Implement setSocialProfiles() method.
+       $this->socialProfiles = $socialProfiles;
     }
 
     public function setCriminalRecords(iterable $criminalRecords)
     {
-        // TODO: Implement setCriminalRecords() method.
+        $this->criminalRecords = $criminalRecords;
     }
 
     public function setMetaData(iterable $metaData)
     {
-        // TODO: Implement setMetaData() method.
+        $this->metaData = $metaData;
     }
 
     public function setRelationships(iterable $relationships)
     {
-        // TODO: Implement setRelationships() method.
+        $this->relationships = $relationships;
     }
 }

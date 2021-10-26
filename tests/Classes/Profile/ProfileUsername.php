@@ -47,7 +47,7 @@ class ProfileUsername extends Model implements IProfileUsernameEntity,IProfileUs
 
     public function getValidSince():? \DateTime
     {
-      return $this->valid_since;
+        return $this->valid_since? new \DateTime($this->valid_since):null;
     }
 
     public function setUsername(?string $username)

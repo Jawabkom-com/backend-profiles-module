@@ -13,7 +13,7 @@ trait DummyTrait
     {
         return [
             'gender' => 'male',
-            'date_of_birth' => Carbon::now()->subYears(20),
+            'date_of_birth' => now(),
             'place_of_birth' => $this->faker->countryCode,
             'data_source' => 'facebook',
         ];

@@ -53,7 +53,7 @@ class DeleteProfileTest extends AbstractTestCase
         $di = new DI();
         $this->createProfile = $di->make(CreateProfile::class);
         $this->deleteProfile = $di->make(DeleteProfile::class);
-       $this->faker = Factory::create();
+        $this->faker = Factory::create();
     }
 
     //Create New Profile

@@ -2,6 +2,7 @@
 
 namespace Jawabkom\Backend\Module\Profile\Test\Classes\Profile;
 
+use Carbon\Traits\Date;
 use Classes\Database\Factories\ProfileFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -78,7 +79,7 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
 
     public function getDateOfBirth():? \DateTime
     {
-        return $this->date_of_birth;
+        return $this->date_of_birth?new \DateTime($this->date_of_birth):null;
     }
 
     public function setPlaceOfBirth(?string $placeOfBirth)

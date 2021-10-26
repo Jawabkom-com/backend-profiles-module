@@ -53,7 +53,7 @@ class ProfileRelationship extends Model implements IProfileRelationshipEntity,IP
 
     public function getValidSince():? \DateTime
     {
-       return $this->valid_since;
+        return $this->valid_since? new \DateTime($this->valid_since):null;
     }
 
     public function setType(?string $type)

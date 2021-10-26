@@ -69,7 +69,8 @@ class ProfileImage extends Model implements IProfileImageEntity,IProfileImageRep
 
     public function getValidSince():? \DateTime
     {
-       return  $this->valid_since;
+        return $this->valid_since? new \DateTime($this->valid_since):null;
+
     }
 
     public function saveEntity(IEntity|IProfileImageEntity $entity): bool

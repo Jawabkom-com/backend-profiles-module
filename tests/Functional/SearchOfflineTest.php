@@ -3,6 +3,9 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
 
+use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileCompositeToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
@@ -17,14 +20,15 @@ class SearchOfflineTest extends AbstractTestCase
     private CreateProfile $createProfile;
     private SearchOfflineByFilters $searchOfflineByFilters;
     private \Faker\Generator $faker;
+    private DI $di;
 
     public function setUp(): void
     {
         parent::setUp();
-        $di = new DI();
-        $this->createProfile = $di->make(CreateProfile::class);
-        $this->searchOfflineByFilters = $di->make(SearchOfflineByFilters::class);
-       $this->faker = Factory::create();
+        $this->di = new DI();
+        $this->createProfile = $this->di->make(CreateProfile::class);
+        $this->searchOfflineByFilters = $this->di->make(SearchOfflineByFilters::class);
+        $this->faker = Factory::create();
     }
 
     //Create New Profile
@@ -41,19 +45,15 @@ class SearchOfflineTest extends AbstractTestCase
             'first_name'  => $dummyProfilesData[1]['names'][0]['first'],
             'middle_name' => $dummyProfilesData[1]['names'][0]['middle'],
             'last_name'   => $dummyProfilesData[1]['names'][0]['last'],
-            //'raw_name'    => $dummyProfilesData[1]['names'][0]['display'],
             'phone'       => $dummyProfilesData[1]['phones'][0]['formatted_number'],
             'country_code'=> $dummyProfilesData[1]['phones'][0]['country_code'],
             'city'        => $dummyProfilesData[1]['addresses'][0]['city'],
             'state'       => $dummyProfilesData[1]['addresses'][0]['state'],
-        // 'age'         => $dummyProfilesData[1]['addresses'][0]['state'],
             'username'    => $dummyProfilesData[1]['usernames'][0]['username'],
         ];
-       $result = $this->searchOfflineByFilters->input('filters',$filter)->process()->output('result');
-       $this->assertIsArray($result);
-       $this->assertNotEmpty($result);
-       $this->assertEquals($fakeProfiles[1]->getProfileId(),$result[0]['profile_id']);
-       $this->assertIsArray($result[0]->getJobs()->toArray());
+        $profileCompositesResults = $this->searchOfflineByFilters->input('filters',$filter)->process()->output('result');
+       $this->assertInstanceOf(IProfileComposite::class,$profileCompositesResults[0]);
+       $this->assertInstanceOf(IProfileEntity::class,$profileCompositesResults[0]->getProfile());
     }
 
     public function testMissingFilter(){
