@@ -3,10 +3,13 @@
 namespace Jawabkom\Backend\Module\Profile\Trait;
 
 
+use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileAddressesInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileCriminalRecordsInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileEducationsInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileEmailsInputValidator;
+use Jawabkom\Backend\Module\Profile\Validator\ProfileEntityValidator;
+use Jawabkom\Backend\Module\Profile\Validator\ProfileIdInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileImagesInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileJobsInputValidator;
@@ -137,6 +140,24 @@ trait ValidationInputsTrait
          if ($metaData){
             $validator = $this->di->make(ProfileMetaDataInputValidator::class);
             $validator->validate($metaData);
+         }
+
+    }
+    private function validateProfileIdInput(string $profileId)
+    {
+         if ($profileId){
+            $validator = $this->di->make(ProfileIdInputValidator::class);
+            $validator->validate($profileId);
+         }
+    }
+    private function validateProfileIdExits(string $profileId)
+    {
+         if ($profileId){
+            $inputValidator         = $this->di->make(ProfileIdInputValidator::class);
+            $entityValidator        = $this->di->make(ProfileEntityValidator::class);
+
+            $inputValidator->validate($profileId);
+            $entityValidator->validate($this->repository->profileIdExist($profileId));
          }
     }
 

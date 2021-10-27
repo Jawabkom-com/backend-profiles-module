@@ -186,10 +186,10 @@ trait DummyTrait
         return $userData;
     }
 
-    private function generateBulkDummyData()
+    private function generateBulkDummyData($count =2)
     {
         $dummyData  = [];
-        for ($i = 0; $i < 2; $i++) {
+        for ($i = 0; $i < $count; $i++) {
             $fakeProfile = $this->dummyFullProfileData();
             $dummyData[] =  $fakeProfile;
         }
