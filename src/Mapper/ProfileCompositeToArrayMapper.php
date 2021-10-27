@@ -14,6 +14,7 @@ use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileImageEntityToArrayMa
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileJobEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileLanguageEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileMetaDataEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileNameEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfilePhoneEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileRelationshipEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileSkillEntityToArrayMapper;
@@ -30,6 +31,7 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
     public function map(IProfileComposite $profileComposite,$withProfileId=false): array
     {
         $toReturn = [
+            'names' => $this->mapNames($profileComposite->getNames()),
             'phones' => $this->mapPhones($profileComposite->getPhones()),
             'addresses' => $this->mapAddresses($profileComposite->getAddresses()),
             'usernames' => $this->mapUsernames($profileComposite->getUsernames()),
@@ -47,7 +49,19 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
       return array_merge($this->mapProfile($profileComposite->getProfile(),$withProfileId),$toReturn);
     }
 
-    public function mapPhones(iterable $phones)
+    protected function mapNames(iterable $names)
+    {
+        $toReturn = [];
+        if($names) {
+            $nameEntityToArrayMapper = $this->di->make(IProfileNameEntityToArrayMapper::class);
+            foreach ($names as $name) {
+                $toReturn[] = $nameEntityToArrayMapper->map($name);
+            }
+        }
+        return $toReturn;
+    }
+
+    protected function mapPhones(iterable $phones)
     {
         $toReturn = [];
         if($phones) {
@@ -59,7 +73,7 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
         return $toReturn;
     }
 
-    private function mapAddresses(iterable $addresses)
+    protected function mapAddresses(iterable $addresses)
     {
         $toReturn = [];
         if($addresses) {
@@ -71,7 +85,7 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
         return $toReturn;
     }
 
-    private function mapUsernames(iterable $usernames)
+    protected function mapUsernames(iterable $usernames)
     {
         $toReturn = [];
         if($usernames) {
@@ -83,7 +97,7 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
         return $toReturn;
     }
 
-    private function mapEmails(iterable $emails)
+    protected function mapEmails(iterable $emails)
     {
         $toReturn = [];
         if($emails) {
@@ -95,7 +109,7 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
         return $toReturn;
     }
 
-    private function mapRelationships(iterable $relationships)
+    protected function mapRelationships(iterable $relationships)
     {
         $toReturn = [];
         if($relationships) {
@@ -107,7 +121,7 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
         return $toReturn;
     }
 
-    private function mapSkills(iterable $skills)
+    protected function mapSkills(iterable $skills)
     {
         $toReturn = [];
         if($skills) {
@@ -119,7 +133,7 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
         return $toReturn;
     }
 
-    private function mapImages(iterable $images)
+    protected function mapImages(iterable $images)
     {
         $toReturn = [];
         if($images) {
@@ -131,7 +145,7 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
         return $toReturn;
     }
 
-    private function mapLanguages(iterable $languages)
+    protected function mapLanguages(iterable $languages)
     {
         $toReturn = [];
         if($languages) {
@@ -143,7 +157,7 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
         return $toReturn;
     }
 
-    private function mapJobs(iterable $jobs)
+    protected function mapJobs(iterable $jobs)
     {
         $toReturn = [];
         if($jobs) {
@@ -155,7 +169,7 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
         return $toReturn;
     }
 
-    private function mapEducations(iterable $educations)
+    protected function mapEducations(iterable $educations)
     {
         $toReturn = [];
         if($educations) {
@@ -167,7 +181,7 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
         return $toReturn;
     }
 
-    private function mapSocialProfiles(iterable $socialProfiles)
+    protected function mapSocialProfiles(iterable $socialProfiles)
     {
         $toReturn = [];
         if($socialProfiles) {
@@ -179,7 +193,7 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
         return $toReturn;
     }
 
-    private function mapCriminalRecords(iterable $criminalRecords)
+    protected function mapCriminalRecords(iterable $criminalRecords)
     {
         $toReturn = [];
         if($criminalRecords) {
@@ -191,7 +205,7 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
         return $toReturn;
     }
 
-    private function mapMetaData(iterable $metaData)
+    protected function mapMetaData(iterable $metaData)
     {
         $toReturn = [];
         if($metaData) {
@@ -204,7 +218,7 @@ class ProfileCompositeToArrayMapper extends AbstractMapper implements IProfileCo
 
     }
 
-    private function mapProfile(IProfileEntity $profileEntity,$withProfileId)
+    protected function mapProfile(IProfileEntity $profileEntity,$withProfileId)
     {
         $profileEntityToArrayMapper = $this->di->make(IProfileEntityToArrayMapper::class);
         return $profileEntityToArrayMapper->map($profileEntity,$withProfileId);
