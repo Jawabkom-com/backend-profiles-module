@@ -6,5 +6,5 @@ use Jawabkom\Standard\Contract\IEntity;
 
 interface IProfileEmailHashGenerator
 {
-    public function generate(IProfileEmailEntity $entity, IArrayHashing $arrayHashing):string;
+    public function generate(IProfileEmailEntity $entity, string $profileId, IArrayHashing $arrayHashing):string;
 }
