@@ -26,8 +26,6 @@ trait DummyTrait
             'do_not_call_flag'=>false,
             'country_code'=>$this->faker->countryCode,
             'original_number'=> $this->faker->phoneNumber(),
-            'formatted_number'=>$this->faker->phoneNumber(),
-            'valid_phone'=>true,
             'risky_phone'=>false,
             'disposable_phone'=>true,
             'carrier'=>'wireless',

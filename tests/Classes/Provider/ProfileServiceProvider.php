@@ -13,7 +13,8 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilt
     Search\SearcherStatus,
     Search\SearchRequest};
 use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
-use Jawabkom\Backend\Module\Profile\Contract\{IArrayHashing,
+use Jawabkom\Backend\Module\Profile\Contract\{HashGenerator\IProfileAddressHashGenerator,
+    IArrayHashing,
     IArrayToProfileCompositeMapper,
     IProfileAddressEntity,
     IProfileAddressRepository,
@@ -83,6 +84,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{IArrayHashing,
     Mapper\IProfileUsernameEntityToArrayMapper};
 use Jawabkom\Backend\Module\Profile\BasicArrayHashing;
 use Jawabkom\Backend\Module\Profile\Facade\ProfileCompositeFacade;
+use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileAddressHashGenerator;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileEntityMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileAddressEntityMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileCriminalRecordEntityMapper;
@@ -217,7 +219,8 @@ class ProfileServiceProvider extends ServiceProvider
             IArrayToProfileSkillEntityMapper::class         => ArrayToProfileSkillEntityMapper::class,
             IArrayToProfileSocialProfileEntityMapper::class => ArrayToProfileSocialProfileEntityMapper::class,
             IArrayToProfileUsernameEntityMapper::class      => ArrayToProfileUsernameEntityMapper::class,
-            IProfileCompositeFacade::class                  => ProfileCompositeFacade::class
+            IProfileCompositeFacade::class                  => ProfileCompositeFacade::class,
+            IProfileAddressHashGenerator::class             => ProfileAddressHashGenerator::class
         ];
 
         foreach ($toBind as $interface => $implementation) {
