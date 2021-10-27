@@ -32,6 +32,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
+use Jawabkom\Backend\Module\Profile\Exception\InvalidInputValue;
 use Jawabkom\Backend\Module\Profile\Exception\ProfileEntityExists;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
@@ -475,6 +476,94 @@ class CreateProfileTest extends AbstractTestCase
         $this->expectException(MissingRequiredInputException::class);
         $userData = $this->dummyBasicProfileData();
         $userData = array_splice($userData, 0, 3);
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidGenderInputValue(){
+        $this->expectException(InvalidInputValue::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['gender'] = 'test';
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidPlaceOfBirthInputValue(){
+        $this->expectException(InvalidInputValue::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['place_of_birth'] = $this->faker->text(6);
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileAddressCountryCodeInputValue(){
+        $this->expectException(InvalidInputValue::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['addresses'][] = $this->dummyAddressData();
+        $userData['addresses'][0]['country']=$this->faker->text(6);
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileLanguageCodeInputValue(){
+        $this->expectException(InvalidInputValue::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['languages'][] = $this->dummyLanguagesData();
+        $userData['languages'][0]['language']=$this->faker->text(6);
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileLanguageCountryCodeInputValue(){
+        $this->expectException(InvalidInputValue::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['languages'][] = $this->dummyLanguagesData();
+        $userData['languages'][0]['country']=$this->faker->text(6);
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfilePhoneDoNotCallFlagInputValue(){
+        $this->expectException(InvalidInputValue::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['phones'][] = $this->dummyPhoneData();
+        $userData['phones'][0]['do_not_call_flag']=$this->faker->text(6);
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfilePhoneValidPhoneInputValue(){
+        $this->expectException(InvalidInputValue::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['phones'][] = $this->dummyPhoneData();
+        $userData['phones'][0]['valid_phone']=$this->faker->text(6);
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfilePhoneRiskyPhoneInputValue(){
+        $this->expectException(InvalidInputValue::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['phones'][] = $this->dummyPhoneData();
+        $userData['phones'][0]['risky_phone']=$this->faker->text(6);
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfilePhoneDisposablePhoneInputValue(){
+        $this->expectException(InvalidInputValue::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['phones'][] = $this->dummyPhoneData();
+        $userData['phones'][0]['disposable_phone']=$this->faker->text(6);
         $this->createProfile->input('profile',$userData)
             ->process()
             ->output('profile');
