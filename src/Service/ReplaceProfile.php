@@ -30,19 +30,14 @@ class ReplaceProfile extends AbstractService
 
     public function process(): static
     {
-        $this->validateProfileId($profileId    = $this->getInput('profile_id'));
+        $this->validateProfileId($profileId = $this->getInput('profile_id'));
         $this->validateInputs($newProfileInput = $this->getInput('profile'));
         //delete old profile from DB
-        try {
-            $deleteService    = $this->di->make(DeleteProfile::class);
-            $deleteService->input('profile_id',$profileId)->process()->output('status');
-            $newProfileComposite = $this->createNewProfileRecord($newProfileInput,$profileId);
-            $this->setOutput('profile',$newProfileComposite);
-            return $this;
-        }catch (\Throwable $exception){
-            throw new $exception;
-        }
-
+        $deleteService = $this->di->make(DeleteProfile::class);
+        $deleteService->input('profile_id', $profileId)->process()->output('status');
+        $newProfileComposite = $this->createNewProfileRecord($newProfileInput, $profileId);
+        $this->setOutput('profile', $newProfileComposite);
+        return $this;
     }
 
     private function validateProfileId(string $profileId)

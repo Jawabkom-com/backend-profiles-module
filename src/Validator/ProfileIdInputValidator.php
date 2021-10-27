@@ -9,7 +9,7 @@ class ProfileIdInputValidator
 
     public function validate(string $profileId)
     {
-        if (empty($profileId) || !is_string($profileId)){
+        if (empty($profileId)){
             throw new MissingRequiredInputException('profile_id* invalid value or missing,is required and must be string value');
         }
     }

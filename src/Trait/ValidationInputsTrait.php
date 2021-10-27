@@ -145,18 +145,13 @@ trait ValidationInputsTrait
     }
     private function validateProfileIdInput(string $profileId)
     {
-         if ($profileId){
-            $validator = $this->di->make(ProfileIdInputValidator::class);
-            $validator->validate($profileId);
-         }
+       $validator = $this->di->make(ProfileIdInputValidator::class);
+       $validator->validate($profileId);
     }
     private function validateProfileIdExits(string $profileId)
     {
          if ($profileId){
-            $inputValidator         = $this->di->make(ProfileIdInputValidator::class);
             $entityValidator        = $this->di->make(ProfileEntityValidator::class);
-
-            $inputValidator->validate($profileId);
             $entityValidator->validate($this->repository->profileIdExist($profileId));
          }
     }
