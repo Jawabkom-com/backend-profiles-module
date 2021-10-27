@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
 
+use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
@@ -59,5 +60,11 @@ class SearchOfflineTest extends AbstractTestCase
         $filter=[];
         $this->expectException(MissingRequiredInputException::class);
         $result = $this->searchOfflineByFilters->input('filters',$filter)->process()->output('result');
+    }
+
+    public function testGetCompositeByProfileIdWIthMissingProfileId(){
+        $profileCompositeFacade = $this->di->make(IProfileCompositeFacade::class);
+        $profileComposite = $profileCompositeFacade->getCompositeByProfileId('');
+        $this->assertNull($profileComposite);
     }
 }
