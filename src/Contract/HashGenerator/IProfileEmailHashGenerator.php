@@ -1,10 +1,11 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Profile\Contract;
+namespace Jawabkom\Backend\Module\Profile\Contract\HashGenerator;
 
-use Jawabkom\Standard\Contract\IEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
 
 interface IProfileEmailHashGenerator
 {
-    public function generate(IProfileEmailEntity $entity, IArrayHashing $arrayHashing):string;
+    public function generate(IProfileEmailEntity $entity, string $profileId, IArrayHashing $arrayHashing):string;
 }
