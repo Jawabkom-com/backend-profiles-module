@@ -13,38 +13,49 @@ class ProfilePhonesInputValidator
         'do_not_call_flag',
         'country_code',
         'original_number',
-        'formatted_number',
-        'valid_phone',
         'risky_phone',
         'disposable_phone',
         'carrier',
         'purpose',
         'industry',
+        'possible_countries'
     ];
 
     public function validate(array $inputs)
     {
-        foreach ($inputs as $name) {
-            foreach ($name as $inputKey => $inputValue) {
+        foreach ($inputs as $phones) {
+            foreach ($phones as $inputKey => $inputValue) {
                 if (!in_array($inputKey, $this->structure)) {
                     throw new InvalidInputStructure('CLASS: ' . __CLASS__ . ", input key is not defined '{$inputKey}'");
                 }
 
-                switch ($inputKey) {
-                    case 'country_code':
-/*                        if(strlen($inputValue) !== 2) {
-                            throw new InvalidInputValue('country_code input value must be a valid country code.');
-                        }*/
-                        break;
+                if(isset($inputValue)) {
+                    switch ($inputKey) {
+                        case 'country_code':
+                            if(strlen($inputValue) !== 2) {
+                                throw new InvalidInputValue('country_code input value must be a valid country code.');
+                            }
+                            break;
+                        case 'possible_countries':
+                            foreach($inputValue as $countryCode) {
+                                if(strlen($countryCode) !== 2) {
+                                    throw new InvalidInputValue('possible_countries input value must be a valid country codes list.');
+                                }
+                            }
+                            break;
 
-                    case 'do_not_call_flag':
-                    case 'valid_phone':
-                    case 'risky_phone':
-                    case 'disposable_phone':
-                        if(!is_bool($inputValue)) {
-                            throw new InvalidInputValue($inputKey.' input value must be either true or false');
-                        }
-                        break;
+                        case 'do_not_call_flag':
+                        case 'valid_phone':
+                        case 'risky_phone':
+                        case 'disposable_phone':
+                            if(!is_bool($inputValue)) {
+                                throw new InvalidInputValue($inputKey.' input value must be either true or false');
+                            }
+                            break;
+                    }
+
+                    // other validators goes here
+
                 }
             }
         }

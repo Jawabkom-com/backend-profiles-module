@@ -11,24 +11,29 @@ class ProfileLanguagesInputValidator
 
     public function validate(array $inputs)
     {
-        foreach ($inputs as $name) {
-            foreach($name as $inputKey => $inputValue) {
+        foreach ($inputs as $languages) {
+            foreach($languages as $inputKey => $inputValue) {
                 if(!in_array($inputKey, $this->structure)) {
                     throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
                 }
 
-                switch ($inputKey) {
-                    case 'language':
-                        if($inputValue && strlen($inputValue) !== 2) {
-                            throw new InvalidInputValue('language input value must be a valid language code.');
-                        }
-                        break;
-                    case 'country':
-                        if($inputValue && strlen($inputValue) !== 2) {
-                            throw new InvalidInputValue('country input value must be a valid country code.');
-                        }
-                        break;
+                if(isset($inputValue)) {
+                    switch ($inputKey) {
+                        case 'language':
+                            if($inputValue && strlen($inputValue) !== 2) {
+                                throw new InvalidInputValue('language input value must be a valid language code.');
+                            }
+                            break;
+                        case 'country':
+                            if($inputValue && strlen($inputValue) !== 2) {
+                                throw new InvalidInputValue('country input value must be a valid country code.');
+                            }
+                            break;
+                    }
+
+                    // other validators goes here
                 }
+
             }
         }
     }

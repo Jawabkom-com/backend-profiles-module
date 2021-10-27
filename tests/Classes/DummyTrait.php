@@ -49,7 +49,6 @@ trait DummyTrait
         return [
             'valid_since'=>Carbon::now(),
             'email'=>$this->faker->safeEmail,
-            'esp_domain'=>$this->faker->domainName(),
             'type'=>'personal',
         ];
     }

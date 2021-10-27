@@ -10,10 +10,14 @@ class ProfileSkillsInputValidator
 
     public function validate(array $inputs)
     {
-        foreach ($inputs as $name) {
-            foreach($name as $inputKey => $inputValue) {
+        foreach ($inputs as $skills) {
+            foreach($skills as $inputKey => $inputValue) {
                 if(!in_array($inputKey, $this->structure)) {
                     throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
+                }
+
+                if(isset($inputValue)) {
+                    // other validators goes here
                 }
             }
         }

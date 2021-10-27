@@ -9,16 +9,20 @@ class ProfileEmailsInputValidator
     protected array $structure = [
         'valid_since',
         'email',
-        'esp_domain',
+        //'esp_domain',
         'type',
     ];
 
     public function validate(array $inputs)
     {
-        foreach ($inputs as $name) {
-            foreach($name as $inputKey => $inputValue) {
+        foreach ($inputs as $emails) {
+            foreach($emails as $inputKey => $inputValue) {
                 if(!in_array($inputKey, $this->structure)) {
                     throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
+                }
+
+                if(isset($inputValue)) {
+                    // other validators goes here
                 }
             }
         }
