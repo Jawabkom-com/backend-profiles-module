@@ -4,6 +4,7 @@ namespace Jawabkom\Backend\Module\Profile\Validator;
 
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputValue;
+use Jawabkom\Backend\Module\Profile\Library\Country;
 
 class ProfileLanguagesInputValidator
 {
@@ -20,14 +21,12 @@ class ProfileLanguagesInputValidator
                 if(isset($inputValue)) {
                     switch ($inputKey) {
                         case 'language':
-                            if($inputValue && strlen($inputValue) !== 2) {
+                            if($inputValue && !in_array($inputValue, ['ar', 'en'])) {
                                 throw new InvalidInputValue('language input value must be a valid language code.');
                             }
                             break;
                         case 'country':
-                            if($inputValue && strlen($inputValue) !== 2) {
-                                throw new InvalidInputValue('country input value must be a valid country code.');
-                            }
+                            Country::assertCountryCodeExists($inputValue, 'country input value must be a valid country code.');
                             break;
                     }
 

@@ -20,7 +20,7 @@ class ProfileEducationsInputValidator
                 if(isset($inputValue)) {
                     switch ($inputKey) {
                         case 'valid_since':
-                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', 'valid since input value must be a valid date.');
+                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', 'valid_since input value must be a valid date.');
                             break;
                     }
                 }
