@@ -23,5 +23,6 @@ interface IProfileRepository extends IRepository {
     public function getByProfileId(string|int $profileId):?IProfileRepository;
     public function getByHash(string $hash):?IProfileRepository;
     public function hashExist(string $hash):bool;
+    public function ProfileIdExist(string $profileId):bool;
     public function deleteEntity(IProfileEntity|IEntity $entity):bool;
 }

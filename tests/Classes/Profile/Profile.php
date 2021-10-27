@@ -401,4 +401,8 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
         return ProfileFactory::new();
     }
 
+    public function profileIdExist(string $profileId): bool
+    {
+       return $this->where('profile_id',$profileId)->exists();
+    }
 }
