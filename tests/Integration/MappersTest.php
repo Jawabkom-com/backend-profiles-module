@@ -1,6 +1,6 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Profile\Test\Unit;
+namespace Jawabkom\Backend\Module\Profile\Test\Integration;
 
 use Jawabkom\Backend\Module\Profile\Exception\FilterLogicalOperationDoesNotExists;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
