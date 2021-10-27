@@ -3,7 +3,6 @@
 namespace Jawabkom\Backend\Module\Profile\Validator;
 
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
-use Jawabkom\Backend\Module\Profile\Exception\InvalidInputValue;
 use Jawabkom\Backend\Module\Profile\Library\Country;
 use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
