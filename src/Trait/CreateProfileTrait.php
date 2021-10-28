@@ -2,6 +2,14 @@
 
 namespace Jawabkom\Backend\Module\Profile\Trait;
 
+use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileAddressHashGenerator;
+use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileCriminalRecordHashGenerator;
+use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileEducationHashGenerator;
+use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileEmailHashGenerator;
+use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileImageHashGenerator;
+use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileJobHashGenerator;
+use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileNameHashGenerator;
+use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordRepository;
@@ -23,6 +31,14 @@ use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileNameEntityMap
 trait CreateProfileTrait
 {
     use ValidationInputsTrait;
+
+    private IArrayHashing $arrayHashing;
+
+    public function __construct(IArrayHashing $arrayHashing)
+    {
+
+        $this->arrayHashing = $arrayHashing;
+    }
 
     protected function validateInputs(array $profile)
     {
@@ -46,8 +62,11 @@ trait CreateProfileTrait
     protected function persistNames(IProfileComposite $profileComposite)
     {
         $repository = $this->di->make(IProfileNameRepository::class);
+        $nameHasingGenerator = $this->di->make(IProfileNameHashGenerator::class);
+        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getNames() as $nameObj) {
-            $nameObj->setProfileId($profileComposite->getProfile()->getProfileId());
+            $nameObj->setProfileId($profileId);
+            $nameObj->setHash($nameHasingGenerator->generate($nameObj,$profileId,$this->arrayHashing));
             $repository->saveEntity($nameObj);
         }
     }
@@ -55,8 +74,11 @@ trait CreateProfileTrait
     protected function persistAddresses(IProfileComposite $profileComposite)
     {
         $repository = $this->di->make(IProfileAddressRepository::class);
+        $addressHasingGenerator = $this->di->make(IProfileAddressHashGenerator::class);
+        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getAddresses() as $addressObj) {
-            $addressObj->setProfileId($profileComposite->getProfile()->getProfileId());
+            $addressObj->setProfileId($profileId);
+            $addressObj->setHash($addressHasingGenerator->generate($addressObj,$profileId,$this->arrayHashing));
             $repository->saveEntity($addressObj);
         }
     }
@@ -64,8 +86,11 @@ trait CreateProfileTrait
     protected function persistCriminalRecords(IProfileComposite $profileComposite)
     {
         $repository = $this->di->make(IProfileCriminalRecordRepository::class);
+        $criminalRecordHasingGenerator = $this->di->make(IProfileCriminalRecordHashGenerator::class);
+        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getCriminalRecords() as $criminalRecordObj) {
-            $criminalRecordObj->setProfileId($profileComposite->getProfile()->getProfileId());
+            $criminalRecordObj->setProfileId($profileId);
+            $criminalRecordObj->setHash($criminalRecordHasingGenerator->generate($criminalRecordObj,$profileId,$this->arrayHashing));
             $repository->saveEntity($criminalRecordObj);
         }
     }
@@ -73,8 +98,11 @@ trait CreateProfileTrait
     protected function persistEducations(IProfileComposite $profileComposite)
     {
         $repository = $this->di->make(IProfileEducationRepository::class);
+        $educationHasingGenerator = $this->di->make(IProfileEducationHashGenerator::class);
+        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getEducations() as $educationObj) {
-            $educationObj->setProfileId($profileComposite->getProfile()->getProfileId());
+            $educationObj->setProfileId($profileId);
+            $educationObj->setHash($educationHasingGenerator->generate($educationObj,$profileId,$this->arrayHashing));
             $repository->saveEntity($educationObj);
         }
     }
@@ -82,8 +110,11 @@ trait CreateProfileTrait
     protected function persistEmails(IProfileComposite $profileComposite)
     {
         $repository = $this->di->make(IProfileEmailRepository::class);
+        $emailHasingGenerator = $this->di->make(IProfileEmailHashGenerator::class);
+        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getEmails() as $emailObj) {
-            $emailObj->setProfileId($profileComposite->getProfile()->getProfileId());
+            $emailObj->setProfileId($profileId);
+            $emailObj->setHash($emailHasingGenerator->generate($emailObj,$profileId,$this->arrayHashing));
             $repository->saveEntity($emailObj);
         }
     }
@@ -91,8 +122,11 @@ trait CreateProfileTrait
     protected function persistImages(IProfileComposite $profileComposite)
     {
         $repository = $this->di->make(IProfileImageRepository::class);
+        $imageHasingGenerator = $this->di->make(IProfileImageHashGenerator::class);
+        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getImages() as $imageObj) {
-            $imageObj->setProfileId($profileComposite->getProfile()->getProfileId());
+            $imageObj->setProfileId($profileId);
+            $imageObj->setHash($imageHasingGenerator->generate($imageObj,$profileId,$this->arrayHashing));
             $repository->saveEntity($imageObj);
         }
     }
@@ -100,8 +134,11 @@ trait CreateProfileTrait
     protected function persistJobs(IProfileComposite $profileComposite)
     {
         $repository = $this->di->make(IProfileJobRepository::class);
+        $jobHasingGenerator = $this->di->make(IProfileJobHashGenerator::class);
+        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getJobs() as $jobObj) {
             $jobObj->setProfileId($profileComposite->getProfile()->getProfileId());
+            $jobObj->setHash($jobHasingGenerator->generate($jobObj,$profileId,$this->arrayHashing));
             $repository->saveEntity($jobObj);
         }
     }
