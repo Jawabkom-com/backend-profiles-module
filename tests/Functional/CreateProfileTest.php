@@ -32,6 +32,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Backend\Module\Profile\Exception\CountryCodeDoesNotExists;
+use Jawabkom\Backend\Module\Profile\Exception\InvalidDateTimeFormat;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidEmailAddressFormat;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputValue;
@@ -568,6 +569,16 @@ class CreateProfileTest extends AbstractTestCase
         $userData = $this->dummyBasicProfileData();
         $userData['images'][] = $this->dummyImagesData();
         $userData['images'][0]['original_url'] = 'not url';
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileImageDateTimeInputValue(){
+        $this->expectException(InvalidDateTimeFormat::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['images'][] = $this->dummyImagesData();
+        $userData['images'][0]['valid_since'] = 'not url';
         $this->createProfile->input('profile',$userData)
             ->process()
             ->output('profile');
