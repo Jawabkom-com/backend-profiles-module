@@ -20,6 +20,7 @@ class ProfileSocialProfileHashGenerator implements IProfileSocialProfileHashGene
     public function generate(IProfileSocialProfileEntity $entity, string $profileId, IArrayHashing $arrayHashing): string
     {
         $socialProfileArray =$this->arrayMapper->map($entity);
+        unset($socialProfileArray['valid_since']);
         $socialProfileArray['profile_id'] = $profileId;
         return $arrayHashing->hash($socialProfileArray);
     }

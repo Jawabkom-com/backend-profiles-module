@@ -18,7 +18,10 @@ class ProfileAddressHashGenerator implements IProfileAddressHashGenerator
     public function generate(IProfileAddressEntity $entity, string $profileId, IArrayHashing $arrayHashing): string
     {
         $addressArray =$this->arrayMapper->map($entity);
+        unset($addressArray['valid_since']);
         $addressArray['profile_id'] = $profileId;
+        if(isset($addressArray['country']))
+            $addressArray['country'] = strtoupper($addressArray['country']);
         return $arrayHashing->hash($addressArray);
     }
 }

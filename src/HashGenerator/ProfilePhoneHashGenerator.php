@@ -20,6 +20,7 @@ class ProfilePhoneHashGenerator implements IProfilePhoneHashGenerator
     public function generate(IProfilePhoneEntity $entity, string $profileId, IArrayHashing $arrayHashing): string
     {
         $phoneArray =$this->arrayMapper->map($entity);
+        unset($phoneArray['valid_since']);
         $phoneArray['profile_id'] = $profileId;
         return $arrayHashing->hash($phoneArray);
     }

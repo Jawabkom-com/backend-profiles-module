@@ -19,6 +19,7 @@ class ProfileUsernameHashGenerator implements IProfileUsernameHashGenerator
     public function generate(IProfileUsernameEntity $entity, string $profileId, IArrayHashing $arrayHashing): string
     {
         $usernameArray = $this->arrayMapper->map($entity);
+        unset($usernameArray['valid_since']);
         $usernameArray['profile_id'] = $profileId;
         return $arrayHashing->hash($usernameArray);
     }

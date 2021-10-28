@@ -10,8 +10,8 @@ class ProfileJobEntityToArrayMapper implements IProfileJobEntityToArrayMapper
     {
        return  [
            'valid_since' => $jobEntity->getValidSince()?->format('Y-m-d'),
-           'from' => $jobEntity->getFrom(),
-           'to' => $jobEntity->getTo(),
+           'from' => $jobEntity->getFrom()?->format('Y-m-d'),
+           'to' => $jobEntity->getTo()?->format('Y-m-d'),
            'title' => $jobEntity->getTitle(),
            'organization' => $jobEntity->getOrganization(),
            'industry' => $jobEntity->getIndustry(),

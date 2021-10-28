@@ -10,8 +10,8 @@ class ProfileEducationEntityToArrayMapper implements IProfileEducationEntityToAr
     {
        return [
            'valid_since' => $educationEntity->getValidSince()?->format('Y-m-d'),
-           'from' => $educationEntity->getFrom(),
-           'to' => $educationEntity->getTo(),
+           'from' => $educationEntity->getFrom()?->format('Y-m-d'),
+           'to' => $educationEntity->getTo()?->format('Y-m-d'),
            'school' => $educationEntity->getSchool(),
            'degree' => $educationEntity->getDegree(),
            'major' => $educationEntity->getMajor(),

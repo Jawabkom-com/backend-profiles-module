@@ -19,6 +19,8 @@ class ProfileEmailHashGenerator implements IProfileEmailHashGenerator
     public function generate(IProfileEmailEntity $entity, string $profileId, IArrayHashing $arrayHashing): string
     {
         $emailArray =$this->arrayMapper->map($entity);
+        unset($emailArray['valid_since']);
+        unset($emailArray['esp_domain']);
         $emailArray['profile_id'] = $profileId;
         return $arrayHashing->hash($emailArray);
     }

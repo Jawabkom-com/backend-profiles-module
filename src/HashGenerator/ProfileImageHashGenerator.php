@@ -20,6 +20,8 @@ class ProfileImageHashGenerator implements IProfileImageHashGenerator
     public function generate(IProfileImageEntity $entity, string $profileId, IArrayHashing $arrayHashing): string
     {
         $imageArray =$this->arrayMapper->map($entity);
+        unset($imageArray['valid_since']);
+        unset($imageArray['local_path']);
         $imageArray['profile_id'] = $profileId;
         return $arrayHashing->hash($imageArray);
     }
