@@ -22,6 +22,12 @@ class ProfileEducationsInputValidator
                         case 'valid_since':
                             DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', 'valid_since input value must be a valid date.');
                             break;
+                        case 'from':
+                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', 'from input value must be a valid date.');
+                            break;
+                        case 'to':
+                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', 'to input value must be a valid date.');
+                            break;
                     }
                 }
             }

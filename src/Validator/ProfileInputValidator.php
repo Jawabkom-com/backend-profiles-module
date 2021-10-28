@@ -48,7 +48,6 @@ class ProfileInputValidator
             if(isset($inputValue)) {
                 switch ($inputKey) {
                     case 'date_of_birth':
-                        if ($inputValue!=null)
                         DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', 'date_of_birth input value must be a valid date.');
                         break;
                     case 'place_of_birth':

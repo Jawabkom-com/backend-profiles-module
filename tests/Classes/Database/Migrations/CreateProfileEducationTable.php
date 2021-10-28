@@ -18,8 +18,8 @@ class CreateProfileEducationTable extends Migration
             $table->id();
             $table->string('profile_id')->index();
             $table->dateTime('valid_since')->nullable()->index();
-            $table->string('from')->nullable();
-            $table->string('to')->nullable();
+            $table->dateTime('from')->nullable();
+            $table->dateTime('to')->nullable();
             $table->string('school')->nullable()->index();
             $table->string('degree')->nullable()->index();
             $table->string('major')->nullable();

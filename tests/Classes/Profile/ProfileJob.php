@@ -11,8 +11,8 @@ use Jawabkom\Standard\Contract\IEntity;
 /**
  * @property mixed $profile_id
  * @property \DateTime $valid_since
- * @property string $from
- * @property string $to
+ * @property \DateTime $from
+ * @property \DateTime $to
  * @property string $title
  * @property string $organization
  * @property string $industry
@@ -58,22 +58,22 @@ class ProfileJob extends Model implements IProfileJobEntity,IProfileJobRepositor
         return $this->valid_since?(is_string($this->valid_since)?new \DateTime($this->valid_since):$this->valid_since):null;
     }
 
-    public function setFrom(?string $from)
+    public function setFrom(?\DateTime $from)
     {
        $this->from = $from;
     }
 
-    public function getFrom():? string
+    public function getFrom():? \DateTime
     {
        return $this->from;
     }
 
-    public function setTo(?string $to)
+    public function setTo(?\DateTime $to)
     {
        $this->to = $to;
     }
 
-    public function getTo():? string
+    public function getTo():? \DateTime
     {
         return $this->to;
     }
