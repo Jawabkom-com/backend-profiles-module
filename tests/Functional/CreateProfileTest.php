@@ -32,8 +32,10 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Backend\Module\Profile\Exception\CountryCodeDoesNotExists;
+use Jawabkom\Backend\Module\Profile\Exception\InvalidEmailAddressFormat;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputValue;
+use Jawabkom\Backend\Module\Profile\Exception\InvalidUrlFormat;
 use Jawabkom\Backend\Module\Profile\Exception\LanguageCodeDoesNotExists;
 use Jawabkom\Backend\Module\Profile\Exception\ProfileEntityExists;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
@@ -536,6 +538,46 @@ class CreateProfileTest extends AbstractTestCase
         $userData = $this->dummyBasicProfileData();
         $userData['phones'][] = $this->dummyPhoneData();
         $userData['phones'][0]['do_not_call_flag']=$this->faker->text(6);
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfilePhonePossibleCountriesInputValue(){
+        $this->expectException(CountryCodeDoesNotExists::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['phones'][] = $this->dummyPhoneData();
+        $userData['phones'][0]['possible_countries'] = ['xxx' => 'Palestine'];
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileSocialUrlInputValue(){
+        $this->expectException(InvalidUrlFormat::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['social_profiles'][] = $this->dummysSocialProfilesData();
+        $userData['social_profiles'][0]['url'] = 'not url';
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileImageUrlInputValue(){
+        $this->expectException(InvalidUrlFormat::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['images'][] = $this->dummyImagesData();
+        $userData['images'][0]['original_url'] = 'not url';
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileEmailEmailInputValue(){
+        $this->expectException(InvalidEmailAddressFormat::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['emails'][] = $this->dummyEmailsData();
+        $userData['emails'][0]['email'] = 'not email';
         $this->createProfile->input('profile',$userData)
             ->process()
             ->output('profile');

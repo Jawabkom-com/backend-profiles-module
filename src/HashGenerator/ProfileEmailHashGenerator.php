@@ -1,8 +1,8 @@
 <?php
 
+use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileEmailHashGenerator;
 use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailHashGenerator;
 
 class ProfileEmailHashGenerator implements IProfileEmailHashGenerator
 {
