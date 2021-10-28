@@ -17,6 +17,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{HashGenerator\IProfileAddressHashG
     HashGenerator\IProfileCriminalRecordHashGenerator,
     HashGenerator\IProfileEducationHashGenerator,
     HashGenerator\IProfileEmailHashGenerator,
+    HashGenerator\IProfileHashGenerator,
     HashGenerator\IProfileImageHashGenerator,
     HashGenerator\IProfileJobHashGenerator,
     HashGenerator\IProfileLanguageHashGenerator,
@@ -101,6 +102,7 @@ use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileAddressHashGenerator;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileCriminalRecordHashGenerator;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileEducationHashGenerator;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileEmailHashGenerator;
+use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileHashGenerator;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileImageHashGenerator;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileJobHashGenerator;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileLanguageHashGenerator;
@@ -259,8 +261,8 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileMetaDataHashGenerator::class            => ProfileMetaDataHashGenerator::class,
             IProfilePhoneHashGenerator::class               => ProfilePhoneHashGenerator::class,
             IProfileCriminalRecordHashGenerator::class      => ProfileCriminalRecordHashGenerator::class,
-            IProfileEducationHashGenerator::class           => ProfileEducationHashGenerator::class
-
+            IProfileEducationHashGenerator::class           => ProfileEducationHashGenerator::class,
+            IProfileHashGenerator::class                    => ProfileHashGenerator::class
         ];
 
         foreach ($toBind as $interface => $implementation) {

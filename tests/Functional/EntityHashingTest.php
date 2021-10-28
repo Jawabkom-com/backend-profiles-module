@@ -2,26 +2,32 @@
 
 namespace Functional;
 
+use Carbon\Carbon;
 use Faker\Factory;
-use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileAddressHashGenerator;
-use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileCriminalRecordHashGenerator;
-use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileEducationHashGenerator;
-use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileEmailHashGenerator;
-use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileImageHashGenerator;
-use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileJobHashGenerator;
-use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileLanguageHashGenerator;
-use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileMetaDataHashGenerator;
-use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileNameHashGenerator;
-use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfilePhoneHashGenerator;
-use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileRelationsHashGenerator;
-use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileSkillHashGenerator;
-use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileSocialProfileHashGenerator;
-use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileUsernameHashGenerator;
-use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
-use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
-use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
-use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
-use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
+use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\{
+    IProfileAddressHashGenerator,
+    IProfileCriminalRecordHashGenerator,
+    IProfileEducationHashGenerator,
+    IProfileEmailHashGenerator,
+    IProfileHashGenerator,
+    IProfileImageHashGenerator,
+    IProfileJobHashGenerator,
+    IProfileLanguageHashGenerator,
+    IProfileMetaDataHashGenerator,
+    IProfileNameHashGenerator,
+    IProfilePhoneHashGenerator,
+    IProfileRelationsHashGenerator,
+    IProfileSkillHashGenerator,
+    IProfileSocialProfileHashGenerator,
+    IProfileUsernameHashGenerator,
+};
+use Jawabkom\Backend\Module\Profile\{
+    Contract\IArrayHashing,
+    Service\CreateProfile,
+    Test\AbstractTestCase,
+    Test\Classes\DI,
+    Test\Classes\DummyTrait,
+};
 
 class EntityHashingTest extends AbstractTestCase
 {
@@ -147,6 +153,228 @@ class EntityHashingTest extends AbstractTestCase
         }
         $this->assertNotEmpty($socialProfileHasing);
         $this->assertIsString($socialProfileHasing[0]);
+
+        $profileHashGenerator = $this->di->make(IProfileHashGenerator::class);
+        $profileHasing = $profileHashGenerator->generate($fakeProfile->getProfile(),$arrayHasing);
+        $this->assertNotEmpty($profileHasing);
+        $this->assertIsString($profileHasing[0]);
+    }
+
+    public function testAddressHashingWithDifferentProfiles(){
+        $dummyProfilesData = $this->generateBulkDummyData();
+        $fakeProfileOne = $this->createProfile->input('profile', $dummyProfilesData[0])
+            ->process()
+            ->output('result');
+        $fakeProfileTwo = $this->createProfile->input('profile', $dummyProfilesData[1])
+            ->process()
+            ->output('result');
+        $addressHashGenerator = $this->di->make(IProfileAddressHashGenerator::class);
+        $arrayHasing = $this->di->make(IArrayHashing::class);
+        $profileIdOne = $fakeProfileOne->getProfile()->getProfileId();
+        $profileIdTwo = $fakeProfileTwo->getProfile()->getProfileId();
+        $addressHasingOne = $addressHashGenerator->generate($fakeProfileOne->getAddresses()[0], $profileIdOne, $arrayHasing);
+        $addressHasingTwo = $addressHashGenerator->generate($fakeProfileTwo->getAddresses()[0], $profileIdTwo, $arrayHasing);
+        $this->assertIsString($addressHasingOne);
+        $this->assertIsString($addressHasingTwo);
+        $this->assertNotEquals($addressHasingOne,$addressHasingTwo);
+    }
+
+    public function testAddressHashingWithSameProfileWithDifferentValidSince(){
+        $dummyProfilesData = $this->generateBulkDummyData(1);
+        $fakeProfile = $this->createProfile->input('profile', $dummyProfilesData[0])
+            ->process()
+            ->output('result');
+        $addressHashGenerator = $this->di->make(IProfileAddressHashGenerator::class);
+        $arrayHasing = $this->di->make(IArrayHashing::class);
+        $profileId   = $fakeProfile->getProfile()->getProfileId();
+        $address = $fakeProfile->getAddresses()[0];
+        $addressHasingOne = $addressHashGenerator->generate($address, $profileId, $arrayHasing);
+        $address->setValidSince(Carbon::now());
+        $addressHasingTwo = $addressHashGenerator->generate($address, $profileId, $arrayHasing);
+        $this->assertIsString($addressHasingOne);
+        $this->assertEquals($addressHasingOne,$addressHasingTwo);
+    }
+
+    public function testEducationHashingWithSameProfileWithDifferentValidSince(){
+        $dummyProfilesData = $this->generateBulkDummyData(1);
+        $fakeProfile = $this->createProfile->input('profile', $dummyProfilesData[0])
+            ->process()
+            ->output('result');
+        $educationHashGenerator = $this->di->make(IProfileEducationHashGenerator::class);
+        $arrayHasing = $this->di->make(IArrayHashing::class);
+        $profileId   = $fakeProfile->getProfile()->getProfileId();
+        $education = $fakeProfile->getEducations()[0];
+        $educationHasingOne = $educationHashGenerator->generate($education, $profileId, $arrayHasing);
+        $education->setValidSince(Carbon::now());
+        $educationHasingTwo = $educationHashGenerator->generate($education, $profileId, $arrayHasing);
+        $this->assertIsString($educationHasingOne);
+        $this->assertEquals($educationHasingOne,$educationHasingTwo);
+    }
+
+    public function testEducationHashingWithSameProfileWithDifferentFromAndToDate(){
+        $dummyProfilesData = $this->generateBulkDummyData(1);
+        $fakeProfile = $this->createProfile->input('profile', $dummyProfilesData[0])
+            ->process()
+            ->output('result');
+        $educationHashGenerator = $this->di->make(IProfileEducationHashGenerator::class);
+        $arrayHasing = $this->di->make(IArrayHashing::class);
+        $profileId   = $fakeProfile->getProfile()->getProfileId();
+        $education = $fakeProfile->getEducations()[0];
+        $educationHasingOne = $educationHashGenerator->generate($education, $profileId, $arrayHasing);
+        $education->setFrom(Carbon::now());
+        $education->setTo(Carbon::now());
+        $educationHasingTwo = $educationHashGenerator->generate($education, $profileId, $arrayHasing);
+        $this->assertIsString($educationHasingOne);
+        $this->assertEquals($educationHasingOne,$educationHasingTwo);
+    }
+
+    public function testEmailHashingWithSameProfileWithDifferentValidSinceAndEspDomain(){
+        $dummyProfilesData = $this->generateBulkDummyData(1);
+        $fakeProfile = $this->createProfile->input('profile', $dummyProfilesData[0])
+            ->process()
+            ->output('result');
+        $emailHashGenerator = $this->di->make(IProfileEmailHashGenerator::class);
+        $arrayHasing = $this->di->make(IArrayHashing::class);
+        $profileId   = $fakeProfile->getProfile()->getProfileId();
+        $email = $fakeProfile->getEmails()[0];
+        $emailHasingOne = $emailHashGenerator->generate($email, $profileId, $arrayHasing);
+        $email->setValidSince(Carbon::now());
+        $email->setEspDomain('jawabkom');
+        $emailHasingTwo = $emailHashGenerator->generate($email, $profileId, $arrayHasing);
+        $this->assertIsString($emailHasingOne);
+        $this->assertEquals($emailHasingOne,$emailHasingTwo);
+    }
+
+    public function testImageHashingWithSameProfileWithDifferentValidSinceAndLocalPath(){
+        $dummyProfilesData = $this->generateBulkDummyData(1);
+        $fakeProfile = $this->createProfile->input('profile', $dummyProfilesData[0])
+            ->process()
+            ->output('result');
+        $imageHashGenerator = $this->di->make(IProfileImageHashGenerator::class);
+        $arrayHasing = $this->di->make(IArrayHashing::class);
+        $profileId   = $fakeProfile->getProfile()->getProfileId();
+        $image = $fakeProfile->getImages()[0];
+        $imageHasingOne = $imageHashGenerator->generate($image, $profileId, $arrayHasing);
+        $image->setValidSince(Carbon::now());
+        $image->setLocalPath($this->faker->imageUrl);
+        $imageHasingTwo = $imageHashGenerator->generate($image, $profileId, $arrayHasing);
+        $this->assertIsString($imageHasingOne);
+        $this->assertEquals($imageHasingOne,$imageHasingTwo);
+    }
+
+    public function testJobHashingWithSameProfileWithDifferentValidSinceAndFromAndToDate(){
+        $dummyProfilesData = $this->generateBulkDummyData(1);
+        $fakeProfile = $this->createProfile->input('profile', $dummyProfilesData[0])
+            ->process()
+            ->output('result');
+        $jobHashGenerator = $this->di->make(IProfileJobHashGenerator::class);
+        $arrayHasing = $this->di->make(IArrayHashing::class);
+        $profileId   = $fakeProfile->getProfile()->getProfileId();
+        $job = $fakeProfile->getJobs()[0];
+        $jobHasingOne = $jobHashGenerator->generate($job, $profileId, $arrayHasing);
+        $job->setValidSince(Carbon::now());
+        $job->setFrom(Carbon::now()->subYears(10));
+        $job->setTo(Carbon::now()->addYears(5));
+        $jobHasingTwo = $jobHashGenerator->generate($job, $profileId, $arrayHasing);
+        $this->assertIsString($jobHasingOne);
+        $this->assertEquals($jobHasingOne,$jobHasingTwo);
+    }
+
+    public function testNameHashingWithSameProfileWithDisplay(){
+        $dummyProfilesData = $this->generateBulkDummyData(1);
+        $fakeProfile = $this->createProfile->input('profile', $dummyProfilesData[0])
+            ->process()
+            ->output('result');
+        $nameHashGenerator = $this->di->make(IProfileNameHashGenerator::class);
+        $arrayHasing = $this->di->make(IArrayHashing::class);
+        $profileId   = $fakeProfile->getProfile()->getProfileId();
+        $name = $fakeProfile->getNames()[0];
+        $nameHasingOne = $nameHashGenerator->generate($name, $profileId, $arrayHasing);
+        $name->setDisplay('test name display');
+        $nameHasingTwo = $nameHashGenerator->generate($name, $profileId, $arrayHasing);
+        $this->assertIsString($nameHasingOne);
+        $this->assertEquals($nameHasingOne,$nameHasingTwo);
+    }
+
+    public function testPhoneHashingWithSameProfileWithDifferentValidSince(){
+        $dummyProfilesData = $this->generateBulkDummyData(1);
+        $fakeProfile = $this->createProfile->input('profile', $dummyProfilesData[0])
+            ->process()
+            ->output('result');
+        $phoneHashGenerator = $this->di->make(IProfilePhoneHashGenerator::class);
+        $arrayHasing = $this->di->make(IArrayHashing::class);
+        $profileId   = $fakeProfile->getProfile()->getProfileId();
+        $phone = $fakeProfile->getPhones()[0];
+        $phoneHasingOne = $phoneHashGenerator->generate($phone, $profileId, $arrayHasing);
+        $phone->setValidSince(Carbon::now());
+        $phoneHasingTwo = $phoneHashGenerator->generate($phone, $profileId, $arrayHasing);
+        $this->assertIsString($phoneHasingOne);
+        $this
+            ->assertEquals($phoneHasingOne,$phoneHasingTwo);
+    }
+
+    public function testRelationsHashingWithSameProfileWithDifferentValidSince(){
+        $dummyProfilesData = $this->generateBulkDummyData(1);
+        $fakeProfile = $this->createProfile->input('profile', $dummyProfilesData[0])
+            ->process()
+            ->output('result');
+        $relationsHashGenerator = $this->di->make(IProfileRelationsHashGenerator::class);
+        $arrayHasing = $this->di->make(IArrayHashing::class);
+        $profileId   = $fakeProfile->getProfile()->getProfileId();
+        $relations = $fakeProfile->getRelationships()[0];
+        $relationsHasingOne = $relationsHashGenerator->generate($relations, $profileId, $arrayHasing);
+        $relations->setValidSince(Carbon::now());
+        $relationsHasingTwo = $relationsHashGenerator->generate($relations, $profileId, $arrayHasing);
+        $this->assertIsString($relationsHasingOne);
+        $this->assertEquals($relationsHasingOne,$relationsHasingTwo);
+    }
+
+    public function testSkillHashingWithSameProfileWithDifferentValidSince(){
+        $dummyProfilesData = $this->generateBulkDummyData(1);
+        $fakeProfile = $this->createProfile->input('profile', $dummyProfilesData[0])
+            ->process()
+            ->output('result');
+        $skillHashGenerator = $this->di->make(IProfileSkillHashGenerator::class);
+        $arrayHasing = $this->di->make(IArrayHashing::class);
+        $profileId   = $fakeProfile->getProfile()->getProfileId();
+        $skill = $fakeProfile->getSkills()[0];
+        $skillHasingOne = $skillHashGenerator->generate($skill, $profileId, $arrayHasing);
+        $skill->setValidSince(Carbon::now());
+        $skillHasingTwo = $skillHashGenerator->generate($skill, $profileId, $arrayHasing);
+        $this->assertIsString($skillHasingOne);
+        $this->assertEquals($skillHasingOne,$skillHasingTwo);
+    }
+
+    public function testSocialProfileHashingWithSameProfileWithDifferentValidSince(){
+        $dummyProfilesData = $this->generateBulkDummyData(1);
+        $fakeProfile = $this->createProfile->input('profile', $dummyProfilesData[0])
+            ->process()
+            ->output('result');
+        $socialProfileHashGenerator = $this->di->make(IProfileSocialProfileHashGenerator::class);
+        $arrayHasing = $this->di->make(IArrayHashing::class);
+        $profileId   = $fakeProfile->getProfile()->getProfileId();
+        $socialProfile = $fakeProfile->getSocialProfiles()[0];
+        $socialProfileHasingOne = $socialProfileHashGenerator->generate($socialProfile, $profileId, $arrayHasing);
+        $socialProfile->setValidSince(Carbon::now());
+        $socialProfileHasingTwo = $socialProfileHashGenerator->generate($socialProfile, $profileId, $arrayHasing);
+        $this->assertIsString($socialProfileHasingOne);
+        $this->assertEquals($socialProfileHasingOne,$socialProfileHasingTwo);
+    }
+
+    public function testUsernameHashingWithSameProfileWithDifferentValidSince(){
+        $dummyProfilesData = $this->generateBulkDummyData(1);
+        $fakeProfile = $this->createProfile->input('profile', $dummyProfilesData[0])
+            ->process()
+            ->output('result');
+        $usernameHashGenerator = $this->di->make(IProfileUsernameHashGenerator::class);
+        $arrayHasing = $this->di->make(IArrayHashing::class);
+        $profileId   = $fakeProfile->getProfile()->getProfileId();
+        $username = $fakeProfile->getUsernames()[0];
+        $usernameHasingOne = $usernameHashGenerator->generate($username, $profileId, $arrayHasing);
+        $username->setValidSince(Carbon::now());
+        $usernameHasingTwo = $usernameHashGenerator->generate($username, $profileId, $arrayHasing);
+        $this->assertIsString($usernameHasingOne);
+        $this->assertEquals($usernameHasingOne,$usernameHasingTwo);
     }
 
 }
