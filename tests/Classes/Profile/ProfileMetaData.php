@@ -12,6 +12,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property string $meta_key
  * @property string $meta_value
  * @property int|string $profile_id
+ * @property string $hash
  */
 class ProfileMetaData extends Model implements IProfileMetaDataEntity,IProfileMetaDataRepository
 {
@@ -20,6 +21,7 @@ class ProfileMetaData extends Model implements IProfileMetaDataEntity,IProfileMe
       'profile_id',
       'meta_key',
       'meta_value',
+      'hash'
     ];
 
     protected $hidden =[
@@ -77,4 +79,13 @@ class ProfileMetaData extends Model implements IProfileMetaDataEntity,IProfileMe
         return $this->where('profile_id',$profileId)->get();
     }
 
+    public function setHash(string $hash)
+    {
+       $this->hash = $hash;
+    }
+
+    public function getHash(): string
+    {
+      return $this->hash;
+    }
 }

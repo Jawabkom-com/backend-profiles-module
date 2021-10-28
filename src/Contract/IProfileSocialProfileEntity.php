@@ -24,4 +24,7 @@ interface IProfileSocialProfileEntity extends IEntity
     public function setAccountId(?string $accountId);
     public function getAccountId():?string;
 
+    public function setHash(string $hash);
+    public function getHash():string;
+
 }

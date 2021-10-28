@@ -19,6 +19,7 @@ class CreateProfileLanguagesTable extends Migration
             $table->string('profile_id')->index();
             $table->string('language')->nullable()->index();
             $table->string('country')->nullable()->index();
+            $table->string('hash')->index();
             $table->timestamps();
         });
     }

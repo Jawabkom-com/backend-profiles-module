@@ -13,6 +13,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property string $original_url
  * @property string $local_path
  * @property \DateTime $valid_since
+ * @property string $hash
  */
 class ProfileImage extends Model implements IProfileImageEntity,IProfileImageRepository
 {
@@ -23,6 +24,7 @@ class ProfileImage extends Model implements IProfileImageEntity,IProfileImageRep
       'original_url',
       'local_path',
       'valid_since',
+       'hash'
     ];
 
     protected $hidden =[
@@ -92,4 +94,13 @@ class ProfileImage extends Model implements IProfileImageEntity,IProfileImageRep
         return $this->where('profile_id',$profileId)->get();
     }
 
+    public function setHash(string $hash)
+    {
+       $this->hash = $hash;
+    }
+
+    public function getHash(): string
+    {
+       return $this->hash;
+    }
 }

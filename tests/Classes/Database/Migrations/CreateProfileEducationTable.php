@@ -23,6 +23,7 @@ class CreateProfileEducationTable extends Migration
             $table->string('school')->nullable()->index();
             $table->string('degree')->nullable()->index();
             $table->string('major')->nullable();
+            $table->string('hash')->index();
             $table->timestamps();
         });
     }

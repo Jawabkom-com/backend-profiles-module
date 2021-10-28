@@ -21,6 +21,7 @@ class CreateProfileEmailsTable extends Migration
             $table->string('email')->nullable()->index();
             $table->string('esp_domain')->nullable()->index();
             $table->string('type')->nullable()->index();
+            $table->string('hash')->index();
             $table->timestamps();
         });
     }

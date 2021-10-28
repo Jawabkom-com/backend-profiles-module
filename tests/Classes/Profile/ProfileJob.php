@@ -16,6 +16,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property string $title
  * @property string $organization
  * @property string $industry
+ * @property string $hash
  */
 class ProfileJob extends Model implements IProfileJobEntity,IProfileJobRepository
 {
@@ -29,6 +30,7 @@ class ProfileJob extends Model implements IProfileJobEntity,IProfileJobRepositor
       'title',
       'organization',
       'industry',
+      'hash'
     ];
 
     protected $hidden =[
@@ -128,4 +130,13 @@ class ProfileJob extends Model implements IProfileJobEntity,IProfileJobRepositor
         return $this->where('profile_id',$profileId)->get();
     }
 
+    public function setHash(string $hash)
+    {
+     $this->hash = $hash;
+    }
+
+    public function getHash(): string
+    {
+      return $this->hash;
+    }
 }

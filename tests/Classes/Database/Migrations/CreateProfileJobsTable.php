@@ -23,6 +23,7 @@ class CreateProfileJobsTable extends Migration
             $table->string('title')->nullable();
             $table->string('organization')->nullable()->index();
             $table->string('industry')->nullable()->index();
+            $table->string('hash')->index();
             $table->timestamps();
         });
     }

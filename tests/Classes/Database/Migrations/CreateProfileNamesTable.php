@@ -22,6 +22,7 @@ class CreateProfileNamesTable extends Migration
             $table->string('middle')->nullable()->index();
             $table->string('last')->nullable()->index();
             $table->string('display')->nullable();
+            $table->string('hash')->index();
             $table->timestamps();
         });
     }

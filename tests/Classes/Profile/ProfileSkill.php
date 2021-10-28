@@ -13,6 +13,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property \DateTime $valid_since
  * @property string $level
  * @property string $skill
+ * @property string $hash
  */
 class ProfileSkill extends Model implements IProfileSkillEntity,IProfileSkillRepository
 {
@@ -23,6 +24,7 @@ class ProfileSkill extends Model implements IProfileSkillEntity,IProfileSkillRep
       'valid_since',
       'level',
       'skill',
+      'hash'
     ];
 
     protected $hidden =[
@@ -92,4 +94,13 @@ class ProfileSkill extends Model implements IProfileSkillEntity,IProfileSkillRep
         return $this->where('profile_id',$profileId)->get();
     }
 
+    public function setHash(string $hash)
+    {
+       $this->hash = $hash;
+    }
+
+    public function getHash(): string
+    {
+      return $this->hash;
+    }
 }

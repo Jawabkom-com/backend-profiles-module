@@ -25,6 +25,7 @@ class CreateProfileAddressesTable extends Migration
             $table->string('street')->nullable();
             $table->string('building_number')->nullable();
             $table->string('display')->nullable()->index();
+            $table->string('hash')->index();
             $table->timestamps();
         });
     }

@@ -12,6 +12,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property mixed $profile_id
  * @property string $language
  * @property string $country
+ * @property string $hash
  */
 class ProfileLanguage extends Model implements IProfileLanguageEntity,IProfileLanguageRepository
 {
@@ -21,6 +22,7 @@ class ProfileLanguage extends Model implements IProfileLanguageEntity,IProfileLa
       'profile_id',
       'language',
       'country',
+        'hash'
     ];
 
     protected $hidden =[
@@ -80,4 +82,13 @@ class ProfileLanguage extends Model implements IProfileLanguageEntity,IProfileLa
         return $this->where('profile_id',$profileId)->get();
     }
 
+    public function setHash(string $hash)
+    {
+        $this->hash = $hash;
+    }
+
+    public function getHash(): string
+    {
+     return $this->hash;
+    }
 }

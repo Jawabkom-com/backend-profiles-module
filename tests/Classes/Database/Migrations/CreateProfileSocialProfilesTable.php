@@ -22,6 +22,7 @@ class CreateProfileSocialProfilesTable extends Migration
             $table->string('type')->nullable()->index();
             $table->string('username')->nullable()->index();
             $table->string('account_id')->nullable()->index();
+            $table->string('hash')->index();
             $table->timestamps();
         });
     }

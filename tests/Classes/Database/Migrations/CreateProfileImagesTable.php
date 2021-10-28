@@ -20,6 +20,7 @@ class CreateProfileImagesTable extends Migration
             $table->string('original_url')->nullable();
             $table->string('local_path')->nullable();
             $table->dateTime('valid_since')->nullable()->index();
+            $table->string('hash')->index();
             $table->timestamps();
         });
     }

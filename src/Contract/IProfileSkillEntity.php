@@ -18,4 +18,7 @@ interface IProfileSkillEntity extends IEntity
     public function setSkill(?string $skill);
     public function getSkill():?string;
 
+    public function setHash(string $hash);
+    public function getHash():string;
+
 }

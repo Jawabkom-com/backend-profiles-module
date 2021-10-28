@@ -14,6 +14,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property string $type
  * @property string $username
  * @property string $account_id
+ * @property string $hash
  */
 class ProfileSocialProfile extends Model implements IProfileSocialProfileEntity,IProfileSocialProfileRepository
 {
@@ -26,6 +27,7 @@ class ProfileSocialProfile extends Model implements IProfileSocialProfileEntity,
       'type',
       'username',
       'account_id',
+       'hash'
     ];
 
     protected $hidden =[
@@ -114,4 +116,13 @@ class ProfileSocialProfile extends Model implements IProfileSocialProfileEntity,
         return $this->where('profile_id',$profileId)->get();
     }
 
+    public function setHash(string $hash)
+    {
+      $this->hash = $hash;
+    }
+
+    public function getHash(): string
+    {
+      return $this->hash;
+    }
 }

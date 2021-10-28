@@ -24,4 +24,7 @@ interface IProfileCriminalRecordEntity  extends IEntity
     public function setDisplay(?string $display);
     public function getDisplay():?string;
 
+    public function setHash(string $hash);
+    public function getHash():string;
+
 }

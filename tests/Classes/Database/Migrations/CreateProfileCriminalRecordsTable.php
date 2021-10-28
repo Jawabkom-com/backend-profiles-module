@@ -22,6 +22,7 @@ class CreateProfileCriminalRecordsTable extends Migration
             $table->string('case_year')->nullable()->index();
             $table->string('case_status')->nullable()->index();
             $table->string('display')->nullable();
+            $table->string('hash')->index();
             $table->timestamps();
         });
     }

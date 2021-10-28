@@ -18,6 +18,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property string $street
  * @property string $building_number
  * @property string $display
+ * @property string $hash
  */
 class ProfileAddress extends Model implements IProfileAddressEntity,IProfileAddressRepository
 {
@@ -33,6 +34,7 @@ class ProfileAddress extends Model implements IProfileAddressEntity,IProfileAddr
       'street',
       'building_number',
       'display',
+      'hash'
     ];
     protected $hidden =[
         'id',
@@ -148,5 +150,15 @@ class ProfileAddress extends Model implements IProfileAddressEntity,IProfileAddr
     public function getByProfileId(string $profileId): ?iterable
     {
        return $this->where('profile_id',$profileId)->get();
+    }
+
+    public function setHash(string $hash)
+    {
+        return $this->hash = $hash;
+    }
+
+    public function getHash(): string
+    {
+       return $this->hash;
     }
 }

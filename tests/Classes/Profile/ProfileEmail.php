@@ -14,6 +14,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property string $email
  * @property string $esp_domain
  * @property string $type
+ * @property string $hash
  */
 class ProfileEmail extends Model implements IProfileEmailEntity,IProfileEmailRepository
 {
@@ -25,6 +26,7 @@ class ProfileEmail extends Model implements IProfileEmailEntity,IProfileEmailRep
         'email',
         'esp_domain',
         'type',
+        'hash'
     ];
 
     protected $hidden =[
@@ -103,4 +105,13 @@ class ProfileEmail extends Model implements IProfileEmailEntity,IProfileEmailRep
         return $this->where('profile_id',$profileId)->get();
     }
 
+    public function setHash(string $hash)
+    {
+       $this->hash = $hash;
+    }
+
+    public function getHash(): string
+    {
+       return $this->hash;
+    }
 }

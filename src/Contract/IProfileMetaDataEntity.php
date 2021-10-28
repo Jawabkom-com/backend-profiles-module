@@ -15,4 +15,7 @@ interface IProfileMetaDataEntity extends IEntity
     public function setMetaValue(?string $value);
     public function getMetaValue():?string;
 
+    public function setHash(string $hash);
+    public function getHash():string;
+
 }

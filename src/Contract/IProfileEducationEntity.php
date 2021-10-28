@@ -27,4 +27,7 @@ interface IProfileEducationEntity extends IEntity
     public function setMajor(?string $major);
     public function getMajor():?string;
 
+    public function setHash(string $hash);
+    public function getHash():string;
+
 }

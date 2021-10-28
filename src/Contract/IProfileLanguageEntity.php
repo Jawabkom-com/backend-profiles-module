@@ -15,4 +15,7 @@ interface IProfileLanguageEntity extends IEntity
     public function setCountry(?string $country);
     public function getCountry():?string;
 
+    public function setHash(string $hash);
+    public function getHash():string;
+
 }

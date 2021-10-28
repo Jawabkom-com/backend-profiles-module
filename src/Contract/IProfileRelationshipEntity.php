@@ -24,4 +24,7 @@ interface IProfileRelationshipEntity extends IEntity
     public function setPersonId(?string $personId);
     public function getPersonId():?string;
 
+    public function setHash(string $hash);
+    public function getHash():string;
+
 }

@@ -15,6 +15,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property string $middle
  * @property string $last
  * @property string $display
+ * @property string $hash
  */
 class ProfileName extends Model implements IProfileNameEntity,IProfileNameRepository
 {
@@ -27,6 +28,7 @@ class ProfileName extends Model implements IProfileNameEntity,IProfileNameReposi
       'middle',
       'last',
       'display',
+       'hash'
     ];
 
     protected $hidden =[
@@ -115,4 +117,13 @@ class ProfileName extends Model implements IProfileNameEntity,IProfileNameReposi
         return $this->where('profile_id',$profileId)->get();
     }
 
+    public function setHash(string $hash)
+    {
+      $this->hash = $hash;
+    }
+
+    public function getHash(): string
+    {
+       return $this->hash;
+    }
 }

@@ -12,6 +12,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property mixed $profile_id
  * @property \DateTime $valid_since
  * @property string $username
+ * @property string $hash
  */
 class ProfileUsername extends Model implements IProfileUsernameEntity,IProfileUsernameRepository
 {
@@ -21,6 +22,7 @@ class ProfileUsername extends Model implements IProfileUsernameEntity,IProfileUs
       'profile_id',
       'valid_since',
       'username',
+      'hash'
     ];
 
     protected $hidden =[
@@ -78,5 +80,15 @@ class ProfileUsername extends Model implements IProfileUsernameEntity,IProfileUs
     public function getByProfileId(string $profileId): ?iterable
     {
         return $this->where('profile_id',$profileId)->get();
+    }
+
+    public function setHash(string $hash)
+    {
+     $this->hash = $hash;
+    }
+
+    public function getHash(): string
+    {
+       return $this->hash;
     }
 }

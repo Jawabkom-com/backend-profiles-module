@@ -15,6 +15,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property string $first_name
  * @property string $last_name
  * @property string $person_id
+ * @property string $hash
  */
 class ProfileRelationship extends Model implements IProfileRelationshipEntity,IProfileRelationshipRepository
 {
@@ -27,6 +28,7 @@ class ProfileRelationship extends Model implements IProfileRelationshipEntity,IP
       'first_name',
       'last_name',
       'person_id',
+        'hash'
     ];
 
     protected $hidden =[
@@ -115,4 +117,13 @@ class ProfileRelationship extends Model implements IProfileRelationshipEntity,IP
         return $this->where('profile_id',$profileId)->get();
     }
 
+    public function setHash(string $hash)
+    {
+      $this->hash = $hash;
+    }
+
+    public function getHash(): string
+    {
+       return $this->hash;
+    }
 }

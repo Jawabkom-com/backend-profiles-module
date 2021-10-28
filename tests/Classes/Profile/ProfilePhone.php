@@ -23,6 +23,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property string $purpose
  * @property string $industry
  * @property \DateTime|null $valid_since
+ * @property string $hash
  */
 class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRepository
 {
@@ -42,6 +43,7 @@ class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRep
       'purpose',
       'industry',
       'valid_since',
+      'hash'
     ];
 
     protected $hidden =[
@@ -210,4 +212,13 @@ class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRep
         return $this->where('profile_id',$profileId)->get();
     }
 
+    public function setHash(string $hash)
+    {
+       $this->hash = $hash;
+    }
+
+    public function getHash(): string
+    {
+        return $this->hash;
+    }
 }

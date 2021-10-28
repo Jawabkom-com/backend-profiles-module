@@ -15,6 +15,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property string $case_year
  * @property string $case_status
  * @property string $display
+ * @property string $hash
  */
 class ProfileCriminalRecord extends Model implements IProfileCriminalRecordEntity,IProfileCriminalRecordRepository
 {
@@ -27,6 +28,7 @@ class ProfileCriminalRecord extends Model implements IProfileCriminalRecordEntit
       'case_year',
       'case_status',
       'display',
+      'hash'
     ];
 
     protected $hidden =[
@@ -116,4 +118,13 @@ class ProfileCriminalRecord extends Model implements IProfileCriminalRecordEntit
         return $this->where('profile_id',$profileId)->get();
     }
 
+    public function setHash(string $hash)
+    {
+      $this->hash = $hash;
+    }
+
+    public function getHash(): string
+    {
+      return $this->hash;
+    }
 }

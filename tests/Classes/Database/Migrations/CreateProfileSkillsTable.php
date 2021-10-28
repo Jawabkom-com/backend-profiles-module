@@ -20,6 +20,7 @@ class CreateProfileSkillsTable extends Migration
             $table->dateTime('valid_since')->nullable()->index();
             $table->string('level')->nullable();
             $table->string('skill')->nullable()->index();
+            $table->string('hash')->index();
             $table->timestamps();
         });
     }

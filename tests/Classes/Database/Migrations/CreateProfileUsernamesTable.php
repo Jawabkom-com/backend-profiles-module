@@ -19,6 +19,7 @@ class CreateProfileUsernamesTable extends Migration
             $table->string('profile_id')->index();
             $table->dateTime('valid_since')->nullable()->index();
             $table->string('username')->nullable()->index();
+            $table->string('hash')->index();
             $table->timestamps();
         });
     }

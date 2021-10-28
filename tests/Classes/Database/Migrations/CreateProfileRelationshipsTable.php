@@ -22,6 +22,7 @@ class CreateProfileRelationshipsTable extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('person_id')->nullable()->index();
+            $table->string('hash')->index();
             $table->timestamps();
         });
     }

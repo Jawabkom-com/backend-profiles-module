@@ -18,6 +18,7 @@ class CreateProfileMetaDataTable extends Migration
             $table->string('profile_id')->index();
             $table->string('meta_key')->nullable()->index();
             $table->string('meta_value')->nullable()->index();
+            $table->string('hash')->index();
             $table->timestamps();
         });
     }

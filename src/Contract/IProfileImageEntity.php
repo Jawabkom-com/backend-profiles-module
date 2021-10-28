@@ -18,4 +18,7 @@ interface IProfileImageEntity extends IEntity
     public function setValidSince(?\DateTime $validSince);
     public function getValidSince():?\DateTime;
 
+    public function setHash(string $hash);
+    public function getHash():string;
+
 }

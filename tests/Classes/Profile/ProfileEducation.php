@@ -16,6 +16,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property string $school
  * @property string $degree
  * @property string $major
+ * @property string $hash
  */
 class ProfileEducation extends Model implements IProfileEducationEntity,IProfileEducationRepository
 {
@@ -29,6 +30,7 @@ class ProfileEducation extends Model implements IProfileEducationEntity,IProfile
       'school',
       'degree',
       'major',
+      'hash'
     ];
 
     protected $hidden =[
@@ -127,4 +129,13 @@ class ProfileEducation extends Model implements IProfileEducationEntity,IProfile
         return $this->where('profile_id',$profileId)->get();
     }
 
+    public function setHash(string $hash)
+    {
+        return $this->hash = $hash;
+    }
+
+    public function getHash(): string
+    {
+      return $this->hash;
+    }
 }

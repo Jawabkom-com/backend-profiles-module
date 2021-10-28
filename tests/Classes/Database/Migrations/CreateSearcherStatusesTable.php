@@ -22,6 +22,7 @@ class CreateSearcherStatusesTable extends Migration
             $table->integer('status_month')->nullable();
             $table->integer('status_year')->nullable();
             $table->integer('counter')->nullable();
+            $table->string('hash')->index();
             $table->timestamps();
         });
     }

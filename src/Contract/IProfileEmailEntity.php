@@ -21,4 +21,7 @@ interface IProfileEmailEntity extends IEntity
     public function setType(?string $type);
     public function getType():?string;
 
+    public function setHash(string $hash);
+    public function getHash():string;
+
 }

@@ -15,4 +15,6 @@ interface IProfileUsernameEntity extends IEntity
     public function setUsername(?string $username);
     public function getUsername():?string;
 
+    public function setHash(string $hash);
+    public function getHash():string;
 }

@@ -27,4 +27,7 @@ interface IProfileJobEntity extends IEntity
     public function setIndustry(?string $industry);
     public function getIndustry():?string;
 
+    public function setHash(string $hash);
+    public function getHash():string;
+
 }
