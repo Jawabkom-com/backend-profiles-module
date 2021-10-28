@@ -26,7 +26,6 @@ class CreateSearchRequestsTable extends Migration
             $table->string('result_alias_source')->index();
             $table->boolean('is_from_cache')->index();
             $table->json('other_params');
-            $table->string('hash')->index();
             $table->timestamps();
         });
     }
