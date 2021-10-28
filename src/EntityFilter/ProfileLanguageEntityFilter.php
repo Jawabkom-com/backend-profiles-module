@@ -1,6 +1,6 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Profile;
+namespace Jawabkom\Backend\Module\Profile\EntityFilter;
 
 use Jawabkom\Backend\Module\Profile\Contract\EntityFilter\IProfileLanguageEntityFilter;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageEntity;
