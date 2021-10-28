@@ -14,8 +14,8 @@ class ArrayToProfileJobEntityMapper extends AbstractMapper implements IArrayToPr
         if(!$entity)
             $entity = $this->di->make(IProfileJobEntity::class);
         $entity->setValidSince(!empty($profile['valid_since']) ? new \DateTime($profile['valid_since']) : null);
-        $entity->setFrom($profile['from'] ?? null);
-        $entity->setTo($profile['to'] ?? null);
+        $entity->setFrom(!empty($profile['from']) ? new \DateTime($profile['from']) : null);
+        $entity->setTo(!empty($profile['to']) ? new \DateTime($profile['to']) : null);
         $entity->setTitle($profile['title'] ?? null);
         $entity->setOrganization($profile['organization'] ?? null);
         $entity->setIndustry($profile['industry'] ?? null);

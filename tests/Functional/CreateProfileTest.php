@@ -31,8 +31,10 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
+use Jawabkom\Backend\Module\Profile\Exception\CountryCodeDoesNotExists;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputValue;
+use Jawabkom\Backend\Module\Profile\Exception\LanguageCodeDoesNotExists;
 use Jawabkom\Backend\Module\Profile\Exception\ProfileEntityExists;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
@@ -491,7 +493,7 @@ class CreateProfileTest extends AbstractTestCase
     }
 
     public function testCheckInvalidPlaceOfBirthInputValue(){
-        $this->expectException(InvalidInputValue::class);
+        $this->expectException(CountryCodeDoesNotExists::class);
         $userData = $this->dummyBasicProfileData();
         $userData['place_of_birth'] = $this->faker->text(6);
         $this->createProfile->input('profile',$userData)
@@ -500,7 +502,7 @@ class CreateProfileTest extends AbstractTestCase
     }
 
     public function testCheckInvalidProfileAddressCountryCodeInputValue(){
-        $this->expectException(InvalidInputValue::class);
+        $this->expectException(CountryCodeDoesNotExists::class);
         $userData = $this->dummyBasicProfileData();
         $userData['addresses'][] = $this->dummyAddressData();
         $userData['addresses'][0]['country']=$this->faker->text(6);
@@ -510,7 +512,7 @@ class CreateProfileTest extends AbstractTestCase
     }
 
     public function testCheckInvalidProfileLanguageCodeInputValue(){
-        $this->expectException(InvalidInputValue::class);
+        $this->expectException(LanguageCodeDoesNotExists::class);
         $userData = $this->dummyBasicProfileData();
         $userData['languages'][] = $this->dummyLanguagesData();
         $userData['languages'][0]['language']=$this->faker->text(6);
@@ -520,7 +522,7 @@ class CreateProfileTest extends AbstractTestCase
     }
 
     public function testCheckInvalidProfileLanguageCountryCodeInputValue(){
-        $this->expectException(InvalidInputValue::class);
+        $this->expectException(CountryCodeDoesNotExists::class);
         $userData = $this->dummyBasicProfileData();
         $userData['languages'][] = $this->dummyLanguagesData();
         $userData['languages'][0]['country']=$this->faker->text(6);
@@ -540,7 +542,7 @@ class CreateProfileTest extends AbstractTestCase
     }
 
     public function testCheckInvalidProfilePhoneValidPhoneInputValue(){
-        $this->expectException(InvalidInputValue::class);
+        $this->expectException(InvalidInputStructure::class);
         $userData = $this->dummyBasicProfileData();
         $userData['phones'][] = $this->dummyPhoneData();
         $userData['phones'][0]['valid_phone']=$this->faker->text(6);
@@ -854,15 +856,15 @@ class CreateProfileTest extends AbstractTestCase
         ]);
 
         /*** Address ***/
-        $names =$profile->profileAddress;
-        $this->assertNotEmpty($names);
-        $this->assertInstanceOf(IProfileAddressRepository::class,$names[0]);
-        $this->assertInstanceOf(IProfileAddressEntity::class,$names[0]);
+        $addresses =$profile->profileAddress;
+        $this->assertNotEmpty($addresses);
+        $this->assertInstanceOf(IProfileAddressRepository::class,$addresses[0]);
+        $this->assertInstanceOf(IProfileAddressEntity::class,$addresses[0]);
         $this->assertDatabaseHas('profile_addresses',[
             'profile_id' => $profile->getProfileId()
         ]);
         $this->assertDatabaseHas('profile_addresses',[
-            'country' => $names[0]->getCountry()
+            'country' => $addresses[0]->getCountry()
         ]);
 
         /*** Name ***/

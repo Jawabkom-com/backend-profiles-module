@@ -14,8 +14,8 @@ class ArrayToProfileEducationEntityMapper extends AbstractMapper implements IArr
         if(!$entity)
             $entity = $this->di->make(IProfileEducationEntity::class);
         $entity->setValidSince(!empty($profile['valid_since']) ? new \DateTime($profile['valid_since']) : null);
-        $entity->setFrom($profile['from'] ?? null);
-        $entity->setTo($profile['to'] ?? null);
+        $entity->setFrom(!empty($profile['from']) ? new \DateTime($profile['from']) : null);
+        $entity->setTo(!empty($profile['to']) ? new \DateTime($profile['to']) : null);
         $entity->setSchool($profile['school'] ?? null);
         $entity->setDegree($profile['degree'] ?? null);;
         $entity->setMajor($profile['major'] ?? null);;
