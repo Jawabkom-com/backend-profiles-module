@@ -38,14 +38,14 @@ class SearchOfflineTest extends AbstractTestCase
         foreach ($dummyProfilesData as $profileDummyData){
           $fakeProfiles[] =  $this->createProfile->input('profile',$profileDummyData)
                                                ->process()
-                                               ->output('profile');
+                                               ->output('result');
         }
         $filter =[
             'email'       => $dummyProfilesData[1]['emails'][0]['email'],
             'first_name'  => $dummyProfilesData[1]['names'][0]['first'],
             'middle_name' => $dummyProfilesData[1]['names'][0]['middle'],
             'last_name'   => $dummyProfilesData[1]['names'][0]['last'],
-            'phone'       => $dummyProfilesData[1]['phones'][0]['formatted_number'],
+            'phone'       => $dummyProfilesData[1]['phones'][0]['original_number'],
             'country_code'=> $dummyProfilesData[1]['phones'][0]['country_code'],
             'city'        => $dummyProfilesData[1]['addresses'][0]['city'],
             'state'       => $dummyProfilesData[1]['addresses'][0]['state'],
