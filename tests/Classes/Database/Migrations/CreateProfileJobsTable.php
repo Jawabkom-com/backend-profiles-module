@@ -18,8 +18,8 @@ class CreateProfileJobsTable extends Migration
             $table->id();
             $table->string('profile_id')->index();
             $table->dateTime('valid_since')->nullable()->index();
-            $table->string('from')->nullable();
-            $table->string('to')->nullable();
+            $table->dateTime('from')->nullable();
+            $table->dateTime('to')->nullable();
             $table->string('title')->nullable();
             $table->string('organization')->nullable()->index();
             $table->string('industry')->nullable()->index();

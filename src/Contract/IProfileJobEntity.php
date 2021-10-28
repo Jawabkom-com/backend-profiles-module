@@ -12,11 +12,11 @@ interface IProfileJobEntity extends IEntity
     public function setValidSince(?\DateTime $validSince);
     public function getValidSince():?\DateTime;
 
-    public function setFrom(?string $from);
-    public function getFrom():?string;
+    public function setFrom(?\DateTime $from);
+    public function getFrom():?\DateTime;
 
-    public function setTo(?string $to);
-    public function getTo():?string;
+    public function setTo(?\DateTime $to);
+    public function getTo():?\DateTime;
 
     public function setTitle(?string $title);
     public function getTitle():?string;

@@ -4,6 +4,8 @@ namespace Jawabkom\Backend\Module\Profile\Validator;
 
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputValue;
+use Jawabkom\Backend\Module\Profile\Library\Country;
+use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class ProfileInputValidator
@@ -45,14 +47,15 @@ class ProfileInputValidator
 
             if(isset($inputValue)) {
                 switch ($inputKey) {
+                    case 'date_of_birth':
+                        DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', 'date_of_birth input value must be a valid date.');
+                        break;
                     case 'place_of_birth':
-                        if(!is_null($inputValue) && strlen($inputValue) !== 2) {
-                            throw new InvalidInputValue('place_of_birth input value must be a valid country code.');
-                        }
+                        Country::assertCountryCodeExists($inputValue, 'place_of_birth input value must be a valid country code.');
                         break;
                     case 'gender':
                         if(!is_null($inputValue) && !in_array($inputValue, ['male', 'female'])) {
-                            throw new InvalidInputValue('gender input value must be either mail or femail.');
+                            throw new InvalidInputValue('gender input value must be either mail or female.');
                         }
                         break;
                 }

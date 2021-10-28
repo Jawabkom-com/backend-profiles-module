@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Profile\Validator;
 
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
+use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
 class ProfileUsernamesInputValidator
 {
@@ -20,7 +21,11 @@ class ProfileUsernamesInputValidator
                 }
 
                 if(isset($inputValue)) {
-                    // other validators goes here
+                    switch ($inputKey) {
+                        case 'valid_since':
+                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', 'valid_since input value must be a valid date.');
+                            break;
+                    }
                 }
             }
         }

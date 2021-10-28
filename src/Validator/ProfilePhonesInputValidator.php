@@ -4,6 +4,7 @@ namespace Jawabkom\Backend\Module\Profile\Validator;
 
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputValue;
+use Jawabkom\Backend\Module\Profile\Library\Country;
 
 class ProfilePhonesInputValidator
 {
@@ -29,18 +30,14 @@ class ProfilePhonesInputValidator
                     throw new InvalidInputStructure('CLASS: ' . __CLASS__ . ", input key is not defined '{$inputKey}'");
                 }
 
-                if(isset($inputValue)) {
+                if (isset($inputValue)) {
                     switch ($inputKey) {
                         case 'country_code':
-                            if(strlen($inputValue) !== 2) {
-                                throw new InvalidInputValue('country_code input value must be a valid country code.');
-                            }
+                            Country::assertCountryCodeExists($inputValue, 'country_code input value must be a valid country code.');
                             break;
                         case 'possible_countries':
-                            foreach($inputValue as $countryCode) {
-                                if(strlen($countryCode) !== 2) {
-                                    throw new InvalidInputValue('possible_countries input value must be a valid country codes list.');
-                                }
+                            foreach ($inputValue as $countryCode) {
+                                Country::assertCountryCodeExists($countryCode, 'possible_countries input value must be a valid country codes list.');
                             }
                             break;
 
@@ -48,8 +45,8 @@ class ProfilePhonesInputValidator
                         case 'valid_phone':
                         case 'risky_phone':
                         case 'disposable_phone':
-                            if(!is_bool($inputValue)) {
-                                throw new InvalidInputValue($inputKey.' input value must be either true or false');
+                            if (!is_bool($inputValue)) {
+                                throw new InvalidInputValue($inputKey . ' input value must be either true or false');
                             }
                             break;
                     }

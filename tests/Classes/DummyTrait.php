@@ -13,7 +13,7 @@ trait DummyTrait
     {
         return [
             'gender' => 'male',
-            'date_of_birth' => now(),
+            'date_of_birth' => $this->faker->date(),
             'place_of_birth' => $this->faker->countryCode,
             'data_source' => 'facebook',
         ];
@@ -37,7 +37,7 @@ trait DummyTrait
     private function dummyUsernamesData()
     {
         return [
-            'valid_since' => Carbon::now(),
+            'valid_since' => $this->faker->date,
             'username'    => $this->faker->userName
         ];
     }
@@ -45,7 +45,7 @@ trait DummyTrait
     private function dummyEmailsData()
     {
         return [
-            'valid_since'=>Carbon::now(),
+            'valid_since'=>$this->faker->date,
             'email'=>$this->faker->safeEmail,
             'type'=>'personal',
         ];
@@ -54,7 +54,7 @@ trait DummyTrait
     private function dummyRelationshipsData()
     {
         return [
-            'valid_since'=>Carbon::now(),
+            'valid_since'=>$this->faker->date,
             'type'=>'friend',
             'first_name'=>$this->faker->firstName,
             'last_name'=>$this->faker->lastName,
@@ -64,7 +64,7 @@ trait DummyTrait
     private function dummySkillsData()
     {
         return [
-            'valid_since'=>Carbon::now(),
+            'valid_since'=>$this->faker->date,
             'level'=>$this->faker->randomDigit(),
             'skill'=>'Software Engineer',
         ];
@@ -74,7 +74,7 @@ trait DummyTrait
     {
         return [
             'original_url'=>$this->faker->imageUrl,
-            'valid_since'=>Carbon::now()
+            'valid_since'=>$this->faker->date
         ];
     }
 
@@ -96,9 +96,9 @@ trait DummyTrait
     private function dummyjobsData()
     {
         return [
-            'valid_since'=>Carbon::now(),
-            'from'=>$this->faker->year,
-            'to'=>$this->faker->year,
+            'valid_since'=>$this->faker->date,
+            'from'=>$this->faker->date,
+            'to'=>$this->faker->date,
             'title'=>$this->faker->title,
             'organization'=>$this->faker->companySuffix,
             'industry'=>'software',
@@ -108,9 +108,9 @@ trait DummyTrait
     private function dummyEducationsData()
     {
         return [
-            'valid_since'=>Carbon::now(),
-            'from'=>$this->faker->year,
-            'to'=>$this->faker->year,
+            'valid_since'=>$this->faker->date,
+            'from'=>$this->faker->date,
+            'to'=>$this->faker->date,
             'school'=>$this->faker->word,
             'degree'=>$this->faker->word,
             'major'=>$this->faker->word,
@@ -120,7 +120,7 @@ trait DummyTrait
     private function dummysSocialProfilesData()
     {
         return [
-            'valid_since'=>Carbon::now(),
+            'valid_since'=>$this->faker->date,
             'url'=>$this->faker->url,
             'type'=>'facebook',
             'username'=>$this->faker->userName,
@@ -153,7 +153,7 @@ trait DummyTrait
     private function dummyAddressData()
     {
         return [
-            'valid_since'=>Carbon::now(),
+            'valid_since'=>$this->faker->date,
             'country' => $this->faker->countryCode(),
             'state'=>$this->faker->word,
             'city'=>$this->faker->city,

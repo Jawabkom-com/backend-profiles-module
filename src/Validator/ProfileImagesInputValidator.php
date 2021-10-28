@@ -3,6 +3,8 @@
 namespace Jawabkom\Backend\Module\Profile\Validator;
 
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
+use Jawabkom\Backend\Module\Profile\Exception\InvalidUrlFormat;
+use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
 class ProfileImagesInputValidator
 {
@@ -17,7 +19,15 @@ class ProfileImagesInputValidator
                 }
 
                 if(isset($inputValue)) {
-                    // other validators goes here
+                    switch ($inputKey) {
+                        case 'original_url':
+                            if (!filter_var($inputValue, FILTER_VALIDATE_URL))
+                                throw new InvalidUrlFormat('original_url input value must be a valid format.');
+                            break;
+                        case 'valid_since':
+                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', 'valid_since input value must be a valid date.');
+                            break;
+                    }
                 }
             }
         }
