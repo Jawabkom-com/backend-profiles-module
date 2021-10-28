@@ -14,6 +14,19 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilt
     Search\SearchRequest};
 use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 use Jawabkom\Backend\Module\Profile\Contract\{HashGenerator\IProfileAddressHashGenerator,
+    HashGenerator\IProfileCriminalRecordHashGenerator,
+    HashGenerator\IProfileEducationHashGenerator,
+    HashGenerator\IProfileEmailHashGenerator,
+    HashGenerator\IProfileImageHashGenerator,
+    HashGenerator\IProfileJobHashGenerator,
+    HashGenerator\IProfileLanguageHashGenerator,
+    HashGenerator\IProfileMetaDataHashGenerator,
+    HashGenerator\IProfileNameHashGenerator,
+    HashGenerator\IProfilePhoneHashGenerator,
+    HashGenerator\IProfileRelationsHashGenerator,
+    HashGenerator\IProfileSkillHashGenerator,
+    HashGenerator\IProfileSocialProfileHashGenerator,
+    HashGenerator\IProfileUsernameHashGenerator,
     IArrayHashing,
     IArrayToProfileCompositeMapper,
     IProfileAddressEntity,
@@ -85,6 +98,19 @@ use Jawabkom\Backend\Module\Profile\Contract\{HashGenerator\IProfileAddressHashG
 use Jawabkom\Backend\Module\Profile\BasicArrayHashing;
 use Jawabkom\Backend\Module\Profile\Facade\ProfileCompositeFacade;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileAddressHashGenerator;
+use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileCriminalRecordHashGenerator;
+use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileEducationHashGenerator;
+use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileEmailHashGenerator;
+use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileImageHashGenerator;
+use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileJobHashGenerator;
+use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileLanguageHashGenerator;
+use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileMetaDataHashGenerator;
+use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileNameHashGenerator;
+use Jawabkom\Backend\Module\Profile\HashGenerator\ProfilePhoneHashGenerator;
+use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileRelationsHashGenerator;
+use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileSkillHashGenerator;
+use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileSocialProfileHashGenerator;
+use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileUsernameHashGenerator;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileEntityMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileAddressEntityMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileCriminalRecordEntityMapper;
@@ -220,7 +246,21 @@ class ProfileServiceProvider extends ServiceProvider
             IArrayToProfileSocialProfileEntityMapper::class => ArrayToProfileSocialProfileEntityMapper::class,
             IArrayToProfileUsernameEntityMapper::class      => ArrayToProfileUsernameEntityMapper::class,
             IProfileCompositeFacade::class                  => ProfileCompositeFacade::class,
-            IProfileAddressHashGenerator::class             => ProfileAddressHashGenerator::class
+            IProfileAddressHashGenerator::class             => ProfileAddressHashGenerator::class,
+            IProfileNameHashGenerator::class                => ProfileNameHashGenerator::class,
+            IProfileEmailHashGenerator::class               => ProfileEmailHashGenerator::class,
+            IProfileUsernameHashGenerator::class            => ProfileUsernameHashGenerator::class,
+            IProfileJobHashGenerator::class                 => ProfileJobHashGenerator::class,
+            IProfileImageHashGenerator::class               => ProfileImageHashGenerator::class,
+            IProfileLanguageHashGenerator::class            => ProfileLanguageHashGenerator::class,
+            IProfileSkillHashGenerator::class               => ProfileSkillHashGenerator::class,
+            IProfileSocialProfileHashGenerator::class       => ProfileSocialProfileHashGenerator::class,
+            IProfileRelationsHashGenerator::class           => ProfileRelationsHashGenerator::class,
+            IProfileMetaDataHashGenerator::class            => ProfileMetaDataHashGenerator::class,
+            IProfilePhoneHashGenerator::class               => ProfilePhoneHashGenerator::class,
+            IProfileCriminalRecordHashGenerator::class      => ProfileCriminalRecordHashGenerator::class,
+            IProfileEducationHashGenerator::class           => ProfileEducationHashGenerator::class
+
         ];
 
         foreach ($toBind as $interface => $implementation) {
