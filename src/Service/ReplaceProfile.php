@@ -33,6 +33,9 @@ class ReplaceProfile extends AbstractService
         $this->arrayHashing = $arrayHashing;
     }
 
+    /**
+     * @throws \Jawabkom\Backend\Module\Profile\Exception\ProfileEntityExists
+     */
     public function process(): static
     {
         $this->validateProfileId($profileId = $this->getInput('profile_id'));
@@ -40,8 +43,10 @@ class ReplaceProfile extends AbstractService
         //delete old profile from DB
         $deleteService = $this->di->make(DeleteProfile::class);
         $deleteService->input('profile_id', $profileId)->process()->output('status');
-        $newProfileComposite = $this->createNewProfileRecord($newProfileInput, $profileId);
-        $this->setOutput('profile', $newProfileComposite);
+        // create composite
+        $profileComposite = $this->arrayToProfileCompositeMapper->map($newProfileInput);
+        $this->createNewProfileRecord($profileComposite, $profileId);
+        $this->setOutput('profile', $profileComposite);
         return $this;
     }
 
@@ -49,21 +54,6 @@ class ReplaceProfile extends AbstractService
     {
         $this->validateProfileIdInput($profileId);
         $this->validateProfileIdExits($profileId);
-    }
-
-    protected function createNewProfileRecord($profileInputs,$profileId): IProfileComposite
-    {
-        // create profile hash
-        $arrayHashing = $this->di->make(IArrayHashing::class);
-        $hash = $arrayHashing->hash($profileInputs, true);
-        $this->assertProfileHashDoesNotExists($hash);
-
-        // create composite
-        $profileComposite = $this->arrayToProfileCompositeMapper->map($profileInputs);
-        $profileComposite->getProfile()->setProfileId($profileId);
-        $profileComposite->getProfile()->setHash($hash);
-        $this->persistProfileComposite($profileComposite);
-        return $profileComposite;
     }
 
 }

@@ -27,11 +27,13 @@ trait CreateProfileTrait
     /**
      * @throws ProfileEntityExists
      */
-    protected function createNewProfileRecord(IProfileComposite $profileComposite): void
+    protected function createNewProfileRecord(IProfileComposite $profileComposite,$profileId=''): void
     {
-        // create composite
-        $uuidFactory = $this->di->make(IProfileUuidFactory::class);
-        $profileComposite->getProfile()->setProfileId($uuidFactory->generate());
+        if (empty($profileId)){
+            $uuidFactory = $this->di->make(IProfileUuidFactory::class);
+            $profileId   = $uuidFactory->generate();
+        }
+        $profileComposite->getProfile()->setProfileId($profileId);
         $this->hashProfileComposite($profileComposite);
         $this->assertProfileHashDoesNotExists($profileComposite->getProfile()->getHash());
         // todo: validate duplicate entities inside the composite object
