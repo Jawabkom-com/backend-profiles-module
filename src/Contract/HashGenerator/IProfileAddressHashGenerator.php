@@ -7,5 +7,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressEntity;
 
 interface IProfileAddressHashGenerator
 {
-    public function generate(IProfileAddressEntity $entity, string $profileId, IArrayHashing $arrayHashing):string;
+    public function generate(IProfileAddressEntity $entity, IArrayHashing $arrayHashing):string;
 }

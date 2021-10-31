@@ -17,10 +17,9 @@ class ProfileLanguageHashGenerator implements IProfileLanguageHashGenerator
         $this->arrayMapper = $arrayMapper;
     }
 
-    public function generate(IProfileLanguageEntity $entity, string $profileId, IArrayHashing $arrayHashing): string
+    public function generate(IProfileLanguageEntity $entity, IArrayHashing $arrayHashing): string
     {
         $languageArray =$this->arrayMapper->map($entity);
-        $languageArray['profile_id'] = $profileId;
         return $arrayHashing->hash($languageArray);
     }
 }

@@ -17,13 +17,12 @@ class ProfileEducationHashGenerator implements IProfileEducationHashGenerator
         $this->arrayMapper = $arrayMapper;
     }
 
-    public function generate(IProfileEducationEntity $entity, string $profileId, IArrayHashing $arrayHashing): string
+    public function generate(IProfileEducationEntity $entity, IArrayHashing $arrayHashing): string
     {
         $educationArray = $this->arrayMapper->map($entity);
         unset($educationArray['valid_since']);
         unset($educationArray['from']);
         unset($educationArray['to']);
-        $educationArray['profile_id'] = $profileId;
         return $arrayHashing->hash($educationArray);
     }
 }

@@ -18,7 +18,7 @@ class ProfileHashGenerator implements IProfileHashGenerator
 
     public function generate(IProfileEntity $entity, IArrayHashing $arrayHashing): string
     {
-        $imageArray =$this->arrayMapper->map($entity,true);
-        return $arrayHashing->hash($imageArray);
+        $profileArray =$this->arrayMapper->map($entity);
+        return $arrayHashing->hash($profileArray);
     }
 }

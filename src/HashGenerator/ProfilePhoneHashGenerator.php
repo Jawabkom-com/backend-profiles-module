@@ -17,11 +17,10 @@ class ProfilePhoneHashGenerator implements IProfilePhoneHashGenerator
         $this->arrayMapper = $arrayMapper;
     }
 
-    public function generate(IProfilePhoneEntity $entity, string $profileId, IArrayHashing $arrayHashing): string
+    public function generate(IProfilePhoneEntity $entity, IArrayHashing $arrayHashing): string
     {
         $phoneArray =$this->arrayMapper->map($entity);
         unset($phoneArray['valid_since']);
-        $phoneArray['profile_id'] = $profileId;
         return $arrayHashing->hash($phoneArray);
     }
 }

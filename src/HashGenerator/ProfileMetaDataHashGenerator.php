@@ -17,10 +17,9 @@ class ProfileMetaDataHashGenerator implements IProfileMetaDataHashGenerator
         $this->arrayMapper = $arrayMapper;
     }
 
-    public function generate(IProfileMetaDataEntity $entity, string $profileId, IArrayHashing $arrayHashing): string
+    public function generate(IProfileMetaDataEntity $entity, IArrayHashing $arrayHashing): string
     {
         $metaDataArray =$this->arrayMapper->map($entity);
-        $metaDataArray['profile_id'] = $profileId;
         return $arrayHashing->hash($metaDataArray);
     }
 }

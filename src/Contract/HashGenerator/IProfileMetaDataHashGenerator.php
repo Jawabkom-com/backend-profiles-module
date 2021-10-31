@@ -7,5 +7,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileMetaDataEntity;
 
 interface IProfileMetaDataHashGenerator
 {
-    public function generate(IProfileMetaDataEntity $entity, string $profileId, IArrayHashing $arrayHashing):string;
+    public function generate(IProfileMetaDataEntity $entity, IArrayHashing $arrayHashing):string;
 }

@@ -16,11 +16,10 @@ class ProfileSkillHashGenerator implements IProfileSkillHashGenerator
         $this->arrayMapper = $arrayMapper;
     }
 
-    public function generate(IProfileSkillEntity $entity, string $profileId, IArrayHashing $arrayHashing): string
+    public function generate(IProfileSkillEntity $entity, IArrayHashing $arrayHashing): string
     {
         $skillArray =$this->arrayMapper->map($entity);
         unset($skillArray['valid_since']);
-        $skillArray['profile_id'] = $profileId;
         return $arrayHashing->hash($skillArray);
     }
 }

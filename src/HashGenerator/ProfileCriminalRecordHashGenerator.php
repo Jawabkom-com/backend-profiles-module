@@ -16,10 +16,9 @@ class ProfileCriminalRecordHashGenerator implements IProfileCriminalRecordHashGe
         $this->arrayMapper = $arrayMapper;
     }
 
-    public function generate(IProfileCriminalRecordEntity $entity, string $profileId, IArrayHashing $arrayHashing): string
+    public function generate(IProfileCriminalRecordEntity $entity, IArrayHashing $arrayHashing): string
     {
         $criminalRecord =$this->arrayMapper->map($entity);
-        $criminalRecord['profile_id'] = $profileId;
         return $arrayHashing->hash($criminalRecord);
     }
 }

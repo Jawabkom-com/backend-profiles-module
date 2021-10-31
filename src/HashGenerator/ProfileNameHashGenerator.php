@@ -16,11 +16,10 @@ class ProfileNameHashGenerator implements IProfileNameHashGenerator
         $this->arrayMapper = $arrayMapper;
     }
 
-    public function generate(IProfileNameEntity $entity, string $profileId, IArrayHashing $arrayHashing): string
+    public function generate(IProfileNameEntity $entity, IArrayHashing $arrayHashing): string
     {
         $nameArray =$this->arrayMapper->map($entity);
         unset($nameArray['display']);
-        $nameArray['profile_id'] = $profileId;
         return $arrayHashing->hash($nameArray);
     }
 }

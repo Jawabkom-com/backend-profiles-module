@@ -17,10 +17,27 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileUuidFactory;
+use Jawabkom\Backend\Module\Profile\Exception\ProfileEntityExists;
 
 trait CreateProfileTrait
 {
     use ValidationInputsTrait;
+
+    /**
+     * @throws ProfileEntityExists
+     */
+    protected function createNewProfileRecord(IProfileComposite $profileComposite): void
+    {
+        // create composite
+        $uuidFactory = $this->di->make(IProfileUuidFactory::class);
+        $profileComposite->getProfile()->setProfileId($uuidFactory->generate());
+        $this->hashProfileComposite($profileComposite);
+        $this->assertProfileHashDoesNotExists($profileComposite->getProfile()->getHash());
+        // todo: validate duplicate entities inside the composite object
+
+        $this->persistProfileComposite($profileComposite);
+    }
 
     protected function validateInputs(array $profile)
     {

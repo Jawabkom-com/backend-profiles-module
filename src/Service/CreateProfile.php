@@ -40,8 +40,10 @@ class CreateProfile extends AbstractService
 
         //validate inputs
         $this->validateInputs($profileInputs);
+
         //create && save profile
-        $profileComposite = $this->createNewProfileRecord($profileInputs);
+        $profileComposite = $this->arrayToProfileCompositeMapper->map($profileInputs);
+        $this->createNewProfileRecord($profileComposite);
 
         $this->setOutput('result', $profileComposite);
         return $this;
@@ -51,19 +53,5 @@ class CreateProfile extends AbstractService
     // LEVEL 1
     //
 
-    /**
-     * @throws ProfileEntityExists
-     */
-    protected function createNewProfileRecord($profileInputs): IProfileComposite
-    {
-        // create composite
-        $profileComposite = $this->arrayToProfileCompositeMapper->map($profileInputs);
-        $uuidFactory = $this->di->make(IProfileUuidFactory::class);
-        $profileComposite->getProfile()->setProfileId($uuidFactory->generate());
-        $this->hashProfileComposite($profileComposite);
-        $this->assertProfileHashDoesNotExists($profileComposite->getProfile()->getHash());
-        $this->persistProfileComposite($profileComposite);
 
-        return $profileComposite;
-    }
 }

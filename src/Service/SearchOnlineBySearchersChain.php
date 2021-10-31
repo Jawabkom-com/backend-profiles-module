@@ -265,20 +265,10 @@ class SearchOnlineBySearchersChain extends AbstractService
 
             // validate
             $this->validateProfileInputs($aProfile);
-            // create hash
-            $arrayHashing = $this->di->make(IArrayHashing::class);
-            $hash = $arrayHashing->hash($aProfile, true);
             try {
-
-                $this->assertProfileHashDoesNotExists($hash);
-                $profileComposite->getProfile()->setHash($hash);
-
-                // create profile id
-                $uuidFactory = $this->di->make(IProfileUuidFactory::class);
-                $profileComposite->getProfile()->setProfileId($uuidFactory->generate());
-                // save
-                $this->persistProfileComposite($profileComposite);
+                $this->createNewProfileRecord($profileComposite);
             } catch (ProfileEntityExists $exception) {
+                $hash = $profileComposite->getProfile()->getHash();
                 $profileComposites[$inx] = $this->profileCompositeFacade->getCompositeByProfileId($this->repository->getByHash($hash)->getProfileId());
             }
         }

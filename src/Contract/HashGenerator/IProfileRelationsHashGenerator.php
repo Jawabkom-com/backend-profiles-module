@@ -7,5 +7,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipEntity;
 
 interface IProfileRelationsHashGenerator
 {
-    public function generate(IProfileRelationshipEntity $entity, string $profileId, IArrayHashing $arrayHashing):string;
+    public function generate(IProfileRelationshipEntity $entity, IArrayHashing $arrayHashing):string;
 }

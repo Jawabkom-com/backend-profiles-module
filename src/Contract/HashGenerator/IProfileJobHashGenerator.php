@@ -7,5 +7,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileJobEntity;
 
 interface IProfileJobHashGenerator
 {
-    public function generate(IProfileJobEntity $entity, string $profileId, IArrayHashing $arrayHashing):string;
+    public function generate(IProfileJobEntity $entity, IArrayHashing $arrayHashing):string;
 }

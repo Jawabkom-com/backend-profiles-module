@@ -7,5 +7,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageEntity;
 
 interface IProfileLanguageHashGenerator
 {
-    public function generate(IProfileLanguageEntity $entity, string $profileId, IArrayHashing $arrayHashing):string;
+    public function generate(IProfileLanguageEntity $entity, IArrayHashing $arrayHashing):string;
 }

@@ -17,11 +17,10 @@ class ProfileSocialProfileHashGenerator implements IProfileSocialProfileHashGene
         $this->arrayMapper = $arrayMapper;
     }
 
-    public function generate(IProfileSocialProfileEntity $entity, string $profileId, IArrayHashing $arrayHashing): string
+    public function generate(IProfileSocialProfileEntity $entity, IArrayHashing $arrayHashing): string
     {
         $socialProfileArray =$this->arrayMapper->map($entity);
         unset($socialProfileArray['valid_since']);
-        $socialProfileArray['profile_id'] = $profileId;
         return $arrayHashing->hash($socialProfileArray);
     }
 }

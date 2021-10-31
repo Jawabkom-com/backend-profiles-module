@@ -14,21 +14,19 @@ class BasicArrayHashing implements IArrayHashing
         return sha1(implode(',', $singleDArray));
     }
 
-    protected function multiDArray2OneDArray(array $inputs, bool $ignoreBlanks)
+    protected function multiDArray2OneDArray(array $inputs, bool $ignoreBlanks, string $keyPrefix = '')
     {
         $toReturn = [];
         foreach($inputs as $inputKey => $inputValues) {
             if(!is_array($inputValues)) {
                 if( ($ignoreBlanks && !empty($inputValues)) || !$ignoreBlanks)
-                    $toReturn[] = "{$inputKey}={$this->castInputValue2String($inputValues)}";
-            } else {
-                if(isset($inputValues[0])) {
-                    foreach($inputValues as $inputValue) {
-                        $toReturn = array_merge($toReturn, $this->multiDArray2OneDArray($inputValue, $ignoreBlanks));
+                    if(is_int($inputKey)) {
+                        $toReturn[] = "{$keyPrefix} = {$this->castInputValue2String($inputValues)}";
+                    } else {
+                        $toReturn[] = "{$keyPrefix}.{$inputKey}={$this->castInputValue2String($inputValues)}";
                     }
-                } else {
-                    $toReturn = array_merge($toReturn, $this->multiDArray2OneDArray($this->castInputValue2String($inputValues), $ignoreBlanks));
-                }
+            } else {
+                $toReturn = array_merge($toReturn, $this->multiDArray2OneDArray($inputValues, $ignoreBlanks, "{$keyPrefix}".(is_int($inputKey) ? '' : ".{$inputKey}") ));
             }
         }
         return $toReturn;

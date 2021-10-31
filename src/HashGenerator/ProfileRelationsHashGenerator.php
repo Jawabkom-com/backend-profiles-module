@@ -17,12 +17,11 @@ class ProfileRelationsHashGenerator implements IProfileRelationsHashGenerator
         $this->arrayMapper = $arrayMapper;
     }
 
-    public function generate(IProfileRelationshipEntity $entity, string $profileId, IArrayHashing $arrayHashing): string
+    public function generate(IProfileRelationshipEntity $entity, IArrayHashing $arrayHashing): string
     {
         $relationshipArray =$this->arrayMapper->map($entity);
         unset($relationshipArray['person_id']);
         unset($relationshipArray['valid_since']);
-        $relationshipArray['profile_id'] = $profileId;
         return $arrayHashing->hash($relationshipArray);
     }
 }

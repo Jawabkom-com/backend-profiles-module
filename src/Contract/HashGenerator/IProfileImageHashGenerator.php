@@ -7,5 +7,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileImageEntity;
 
 interface IProfileImageHashGenerator
 {
-    public function generate(IProfileImageEntity $entity, string $profileId, IArrayHashing $arrayHashing):string;
+    public function generate(IProfileImageEntity $entity, IArrayHashing $arrayHashing):string;
 }

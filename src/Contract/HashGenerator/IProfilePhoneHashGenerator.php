@@ -7,5 +7,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
 
 interface IProfilePhoneHashGenerator
 {
-    public function generate(IProfilePhoneEntity $entity, string $profileId, IArrayHashing $arrayHashing):string;
+    public function generate(IProfilePhoneEntity $entity, IArrayHashing $arrayHashing):string;
 }

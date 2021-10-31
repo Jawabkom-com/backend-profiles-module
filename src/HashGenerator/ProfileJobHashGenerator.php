@@ -17,13 +17,12 @@ class ProfileJobHashGenerator implements IProfileJobHashGenerator
         $this->arrayMapper = $arrayMapper;
     }
 
-    public function generate(IProfileJobEntity $entity, string $profileId, IArrayHashing $arrayHashing): string
+    public function generate(IProfileJobEntity $entity, IArrayHashing $arrayHashing): string
     {
         $jobArray =$this->arrayMapper->map($entity);
         unset($jobArray['valid_since']);
         unset($jobArray['from']);
         unset($jobArray['to']);
-        $jobArray['profile_id'] = $profileId;
         return $arrayHashing->hash($jobArray);
     }
 }

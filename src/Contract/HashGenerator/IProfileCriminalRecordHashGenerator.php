@@ -7,5 +7,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordEntity;
 
 interface IProfileCriminalRecordHashGenerator
 {
-    public function generate(IProfileCriminalRecordEntity $entity, string $profileId, IArrayHashing $arrayHashing):string;
+    public function generate(IProfileCriminalRecordEntity $entity, IArrayHashing $arrayHashing):string;
 }

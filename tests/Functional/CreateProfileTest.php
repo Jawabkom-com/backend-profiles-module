@@ -946,14 +946,18 @@ class CreateProfileTest extends AbstractTestCase
 
     public function testDuplicateProfileData(){
 
+        $this->expectException(ProfileEntityExists::class);
+
         $userData = $this->dummyBasicProfileData();
         $profileOne = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
-        $this->expectException(ProfileEntityExists::class);
+            ->output('result');
+
         $profileTwo = $this->createProfile->input('profile',$userData)
             ->process()
-            ->output('profile');
+            ->output('result');
+dd($profileOne->getProfile()->toArray(), $profileTwo->getProfile()->toArray());
+
 /*        $this->assertDatabaseHas('profiles',[
             'profile_id' => $profile->getProfileId()
         ]);*/

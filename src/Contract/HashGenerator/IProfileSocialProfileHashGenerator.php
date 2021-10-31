@@ -7,5 +7,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileEntity;
 
 interface IProfileSocialProfileHashGenerator
 {
-    public function generate(IProfileSocialProfileEntity $entity, string $profileId, IArrayHashing $arrayHashing):string;
+    public function generate(IProfileSocialProfileEntity $entity, IArrayHashing $arrayHashing):string;
 }

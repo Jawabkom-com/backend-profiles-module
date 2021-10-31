@@ -6,5 +6,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 
 interface IProfileEntityToArrayMapper
 {
-    public function map(IProfileEntity $profileEntity,$withProfileId):array;
+    public function map(IProfileEntity $profileEntity, $withProfileId = false):array;
 }
