@@ -26,7 +26,6 @@ trait ProfileHashTrait
     protected function hashNames(IProfileComposite $profileComposite)
     {
         $nameHasingGenerator = $this->di->make(IProfileNameHashGenerator::class);
-        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getNames() as $nameObj) {
             $nameObj->setHash($nameHasingGenerator->generate($nameObj, $this->arrayHashing));
         }
@@ -35,7 +34,6 @@ trait ProfileHashTrait
     protected function hashAddresses(IProfileComposite $profileComposite)
     {
         $addressHasingGenerator = $this->di->make(IProfileAddressHashGenerator::class);
-        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getAddresses() as $addressObj) {
             $addressObj->setHash($addressHasingGenerator->generate($addressObj, $this->arrayHashing));
         }
@@ -44,7 +42,6 @@ trait ProfileHashTrait
     protected function hashCriminalRecords(IProfileComposite $profileComposite)
     {
         $criminalRecordHasingGenerator = $this->di->make(IProfileCriminalRecordHashGenerator::class);
-        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getCriminalRecords() as $criminalRecordObj) {
             $criminalRecordObj->setHash($criminalRecordHasingGenerator->generate($criminalRecordObj, $this->arrayHashing));
         }
@@ -53,7 +50,6 @@ trait ProfileHashTrait
     protected function hashEducations(IProfileComposite $profileComposite)
     {
         $educationHasingGenerator = $this->di->make(IProfileEducationHashGenerator::class);
-        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getEducations() as $educationObj) {
             $educationObj->setHash($educationHasingGenerator->generate($educationObj, $this->arrayHashing));
         }
@@ -62,7 +58,6 @@ trait ProfileHashTrait
     protected function hashEmails(IProfileComposite $profileComposite)
     {
         $emailHasingGenerator = $this->di->make(IProfileEmailHashGenerator::class);
-        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getEmails() as $emailObj) {
             $emailObj->setHash($emailHasingGenerator->generate($emailObj, $this->arrayHashing));
         }
@@ -71,7 +66,6 @@ trait ProfileHashTrait
     protected function hashImages(IProfileComposite $profileComposite)
     {
         $imageHasingGenerator = $this->di->make(IProfileImageHashGenerator::class);
-        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getImages() as $imageObj) {
             $imageObj->setHash($imageHasingGenerator->generate($imageObj, $this->arrayHashing));
         }
@@ -80,16 +74,15 @@ trait ProfileHashTrait
     protected function hashJobs(IProfileComposite $profileComposite)
     {
         $jobHasingGenerator = $this->di->make(IProfileJobHashGenerator::class);
-        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getJobs() as $jobObj) {
             $jobObj->setHash($jobHasingGenerator->generate($jobObj, $this->arrayHashing));
         }
+
     }
 
     protected function hashLanguages(IProfileComposite $profileComposite)
     {
         $languageHasingGenerator = $this->di->make(IProfileLanguageHashGenerator::class);
-        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getLanguages() as $languageObj) {
             $languageObj->setHash($languageHasingGenerator->generate($languageObj, $this->arrayHashing));
         }
@@ -98,7 +91,6 @@ trait ProfileHashTrait
     protected function hashPhones(IProfileComposite $profileComposite)
     {
         $phoneHasingGenerator = $this->di->make(IProfilePhoneHashGenerator::class);
-        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getPhones() as $phoneObj) {
             $phoneObj->setHash($phoneHasingGenerator->generate($phoneObj, $this->arrayHashing));
         }
@@ -107,7 +99,6 @@ trait ProfileHashTrait
     protected function hashRelationships(IProfileComposite $profileComposite)
     {
         $relationsHasingGenerator = $this->di->make(IProfileRelationsHashGenerator::class);
-        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getRelationships() as $relationshipObj) {
             $relationshipObj->setHash($relationsHasingGenerator->generate($relationshipObj, $this->arrayHashing));
         }
@@ -116,7 +107,6 @@ trait ProfileHashTrait
     protected function hashSkills(IProfileComposite $profileComposite)
     {
         $skillHasingGenerator = $this->di->make(IProfileSkillHashGenerator::class);
-        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getSkills() as $skillObj) {
             $skillObj->setHash($skillHasingGenerator->generate($skillObj, $this->arrayHashing));
         }
@@ -125,7 +115,6 @@ trait ProfileHashTrait
     protected function hashSocialProfiles(IProfileComposite $profileComposite)
     {
         $socialProfileHasingGenerator = $this->di->make(IProfileSocialProfileHashGenerator::class);
-        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getSocialProfiles() as $socialProfileObj) {
             $socialProfileObj->setHash($socialProfileHasingGenerator->generate($socialProfileObj, $this->arrayHashing));
         }
@@ -134,7 +123,6 @@ trait ProfileHashTrait
     protected function hashUsernames(IProfileComposite $profileComposite)
     {
         $usernameHasingGenerator = $this->di->make(IProfileUsernameHashGenerator::class);
-        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getUsernames() as $usernameObj) {
             $usernameObj->setHash($usernameHasingGenerator->generate($usernameObj, $this->arrayHashing));
         }
@@ -143,7 +131,6 @@ trait ProfileHashTrait
     protected function hashMetaData(IProfileComposite $profileComposite)
     {
         $metaDataHasingGenerator = $this->di->make(IProfileMetaDataHashGenerator::class);
-        $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getMetaData() as $metaObj) {
             $metaObj->setHash($metaDataHasingGenerator->generate($metaObj, $this->arrayHashing));
         }

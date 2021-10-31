@@ -6,5 +6,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressEntity;
 
 interface IArrayToProfileAddressEntityMapper
 {
-    public function map(array $profile, ?IProfileAddressEntity &$entity = null);
+    public function map(array $profile, ?IProfileAddressEntity &$entity = null):IProfileAddressEntity;
 }

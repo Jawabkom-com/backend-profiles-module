@@ -6,5 +6,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordEntity;
 
 interface IArrayToProfileCriminalRecordEntityMapper
 {
-    public function map(array $profile, ?IProfileCriminalRecordEntity &$entity = null);
+    public function map(array $profile, ?IProfileCriminalRecordEntity &$entity = null): IProfileCriminalRecordEntity;
 }

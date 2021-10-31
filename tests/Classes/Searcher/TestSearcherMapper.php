@@ -91,8 +91,7 @@ class TestSearcherMapper implements IProfileEntityMapper
             $nameInput['middle'] = $name['middle'] ?? '';
             $nameInput['last'] = $name['last'] ?? '';
             $nameInput['prefix'] = $name['prefix'] ?? '';
-            $nameEntityMapper->map($nameInput, $newNameEntity);
-            $composite->addName($newNameEntity);
+            $composite->addName($nameEntityMapper->map($nameInput));
         }
     }
 

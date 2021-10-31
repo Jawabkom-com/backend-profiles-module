@@ -33,7 +33,7 @@ class ProfileCompositeInnerEntitiesHashValidator
     {
         $hashes = [];
         foreach ($entities as $entity) {
-            if (in_array($entity->getHash(),$hashes)) {
+            if (in_array($entity->getHash() , $hashes)) {
                 $entityName = get_class($entity).' => '.basename(get_class($entity));
                 throw new EntityHashAlreadyExists('Entity Duplicate founded, twice [ '.$entityName.' ] '.serialize($entity));
             }
