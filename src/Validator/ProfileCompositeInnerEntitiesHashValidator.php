@@ -3,31 +3,41 @@
 namespace Jawabkom\Backend\Module\Profile\Validator;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileNameEntity;
 use Jawabkom\Backend\Module\Profile\Exception\EntityHashAlreadyExists;
-use Jawabkom\Backend\Module\Profile\Exception\InvalidEmailAddress;
 
 class ProfileCompositeInnerEntitiesHashValidator
 {
 
-    public function validate(IProfileComposite $oComposite)
+    /**
+     * @throws EntityHashAlreadyExists
+     */
+    public function validate(IProfileComposite $objectComposite)
     {
-        $this->validateNames($oComposite->getNames());
-
+        $this->duplicateChecker($objectComposite->getNames());
+        $this->duplicateChecker($objectComposite->getMetaData());
+        $this->duplicateChecker($objectComposite->getCriminalRecords());
+        $this->duplicateChecker($objectComposite->getEducations());
+        $this->duplicateChecker($objectComposite->getJobs());
+        $this->duplicateChecker($objectComposite->getRelationships());
+        $this->duplicateChecker($objectComposite->getEmails());
+        $this->duplicateChecker($objectComposite->getSocialProfiles());
+        $this->duplicateChecker($objectComposite->getSkills());
+        $this->duplicateChecker($objectComposite->getLanguages());
+        $this->duplicateChecker($objectComposite->getImages());
+        $this->duplicateChecker($objectComposite->getUsernames());
+        $this->duplicateChecker($objectComposite->getAddresses());
+        $this->duplicateChecker($objectComposite->getPhones());
     }
 
-    /**
-     * @param IProfileNameEntity[] $aNames
-     */
-    protected function validateNames(array $aNames)
+    protected function duplicateChecker(array $entities):void
     {
         $hashes = [];
-        foreach ($aNames as $oName) {
-            if (!isset($hashes[$oName->getHash()])) {
-                $hashes[$oName->getHash()] = true;
-            } else {
-                throw new EntityHashAlreadyExists('Name entity founded twice - '.serialize($oName));
+        foreach ($entities as $entity) {
+            if (in_array($entity->getHash(),$hashes)) {
+                $entityName = get_class($entity).' => '.basename(get_class($entity));
+                throw new EntityHashAlreadyExists('Entity Duplicate founded, twice [ '.$entityName.' ] '.serialize($entity));
             }
+            $hashes[] = $entity->getHash();
         }
     }
 }

@@ -19,6 +19,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUuidFactory;
 use Jawabkom\Backend\Module\Profile\Exception\ProfileEntityExists;
+use Jawabkom\Backend\Module\Profile\Validator\ProfileCompositeInnerEntitiesHashValidator;
 
 trait CreateProfileTrait
 {
@@ -36,8 +37,8 @@ trait CreateProfileTrait
         $profileComposite->getProfile()->setProfileId($profileId);
         $this->hashProfileComposite($profileComposite);
         $this->assertProfileHashDoesNotExists($profileComposite->getProfile()->getHash());
-        // todo: validate duplicate entities inside the composite object
-
+        $duplicateValidator = $this->di->make(ProfileCompositeInnerEntitiesHashValidator::class);
+        $duplicateValidator->validate($profileComposite);
         $this->persistProfileComposite($profileComposite);
     }
 

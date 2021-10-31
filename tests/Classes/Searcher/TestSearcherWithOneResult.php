@@ -56,21 +56,6 @@ class TestSearcherWithOneResult implements IProfileSearcher
           "middle": "Fathi",
           "last": "Saleh",
           "display": "Ahmad Fathi Saleh"
-        },
-        {
-          "@valid_since": "2010-07-14",
-          "@last_seen": "2019-12-09",
-          "first": "Ahmad",
-          "last": "Fathi",
-          "display": "Ahmad Fathi"
-        },
-        {
-          "@valid_since": "2019-06-09",
-          "@last_seen": "2019-06-09",
-          "prefix": "Brother",
-          "first": "Ahmed",
-          "last": "Fathi",
-          "display": "Brother Ahmed Fathi"
         }
       ],
       "usernames": [

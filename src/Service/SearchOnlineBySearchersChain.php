@@ -95,6 +95,7 @@ class SearchOnlineBySearchersChain extends AbstractService
                 }
 
             } catch (\Throwable $exception) {
+                dd($exception);
                 if (!isset($searchRequest))
                     throw $exception;
                 $this->setErrorSearchRequestStatus($searchRequest, $exception);

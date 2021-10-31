@@ -20,6 +20,7 @@ class ProfileJobHashGenerator implements IProfileJobHashGenerator
     public function generate(IProfileJobEntity $entity, IArrayHashing $arrayHashing): string
     {
         $jobArray =$this->arrayMapper->map($entity);
+
         unset($jobArray['valid_since']);
         unset($jobArray['from']);
         unset($jobArray['to']);
