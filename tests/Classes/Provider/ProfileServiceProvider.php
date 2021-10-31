@@ -66,6 +66,20 @@ use Jawabkom\Backend\Module\Profile\Contract\{HashGenerator\IProfileAddressHashG
     ISearcherStatusRepository,
     ISearchFiltersBuilder,
     ISearchRequestRepository,
+    EntityFilter\IProfileAddressEntityFilter,
+    EntityFilter\IProfileCriminalRecordEntityFilter,
+    EntityFilter\IProfileEducationEntityFilter,
+    EntityFilter\IProfileEmailEntityFilter,
+    EntityFilter\IProfileImageEntityFilter,
+    EntityFilter\IProfileJobEntityFilter,
+    EntityFilter\IProfileLanguageEntityFilter,
+    EntityFilter\IProfileMetaDataEntityFilter,
+    EntityFilter\IProfileNameEntityFilter,
+    EntityFilter\IProfilePhoneEntityFilter,
+    EntityFilter\IProfileRelationEntityFilter,
+    EntityFilter\IProfileSkillEntityFilter,
+    EntityFilter\IProfileSocialProfileEntityFilter,
+    EntityFilter\IProfileUsernameEntityFilter,
     Mapper\IArrayToProfileEntityMapper,
     Mapper\IArrayToProfileAddressEntityMapper,
     Mapper\IArrayToProfileCriminalRecordEntityMapper,
@@ -113,6 +127,20 @@ use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileRelationsHashGenerator;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileSkillHashGenerator;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileSocialProfileHashGenerator;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileUsernameHashGenerator;
+use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileAddressEntityFilter;
+use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileCriminalRecordEntityFilter;
+use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileEducationEntityFilter;
+use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileEmailEntityFilter;
+use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileImageEntityFilter;
+use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileJobEntityFilter;
+use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileLanguageEntityFilter;
+use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileMetaDataEntityFilter;
+use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileNameEntityFilter;
+use Jawabkom\Backend\Module\Profile\EntityFilter\ProfilePhoneEntityFilter;
+use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileRelationEntityFilter;
+use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileSkillEntityFilter;
+use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileSocialProfileEntityFilter;
+use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileUsernameEntityFilter;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileEntityMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileAddressEntityMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileCriminalRecordEntityMapper;
@@ -262,7 +290,21 @@ class ProfileServiceProvider extends ServiceProvider
             IProfilePhoneHashGenerator::class               => ProfilePhoneHashGenerator::class,
             IProfileCriminalRecordHashGenerator::class      => ProfileCriminalRecordHashGenerator::class,
             IProfileEducationHashGenerator::class           => ProfileEducationHashGenerator::class,
-            IProfileHashGenerator::class                    => ProfileHashGenerator::class
+            IProfileHashGenerator::class                    => ProfileHashGenerator::class,
+            IProfileAddressEntityFilter::class              => ProfileAddressEntityFilter::class,
+            IProfileCriminalRecordEntityFilter::class       => ProfileCriminalRecordEntityFilter::class,
+            IProfileEducationEntityFilter::class            => ProfileEducationEntityFilter::class,
+            IProfileEmailEntityFilter::class                => ProfileEmailEntityFilter::class,
+            IProfileImageEntityFilter::class                => ProfileImageEntityFilter::class,
+            IProfileJobEntityFilter::class                  => ProfileJobEntityFilter::class,
+            IProfileLanguageEntityFilter::class             => ProfileLanguageEntityFilter::class,
+            IProfileMetaDataEntityFilter::class             => ProfileMetaDataEntityFilter::class,
+            IProfileNameEntityFilter::class                 => ProfileNameEntityFilter::class,
+            IProfilePhoneEntityFilter::class                => ProfilePhoneEntityFilter::class,
+            IProfileRelationEntityFilter::class             => ProfileRelationEntityFilter::class,
+            IProfileSkillEntityFilter::class                => ProfileSkillEntityFilter::class,
+            IProfileSocialProfileEntityFilter::class        => ProfileSocialProfileEntityFilter::class,
+            IProfileUsernameEntityFilter::class             => ProfileUsernameEntityFilter::class,
         ];
 
         foreach ($toBind as $interface => $implementation) {
