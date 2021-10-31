@@ -242,7 +242,6 @@ class ArrayToProfileCompositeMapper extends AbstractMapper implements IArrayToPr
             foreach ($profile['names'] as $name) {
                 $mapper->map($name,$objectName);
                 $nameEntityFilter->filter($objectName);
-                dd($objectName);
                 $profileComposite->addName($objectName);
             }
         }
