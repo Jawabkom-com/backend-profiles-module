@@ -18,7 +18,6 @@ class BasicArrayHashing implements IArrayHashing
     {
         $toReturn = [];
         foreach($inputs as $inputKey => $inputValues) {
-
             if(!is_array($inputValues)) {
                 if( ($ignoreBlanks && !empty($inputValues)) || !$ignoreBlanks)
                     $toReturn[] = "{$inputKey}={$this->castInputValue2String($inputValues)}";
