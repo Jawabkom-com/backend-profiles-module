@@ -2,6 +2,7 @@
 
 namespace Jawabkom\Backend\Module\Profile\Service;
 
+use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileCompositeHashGenerator;
 use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
 use Jawabkom\Backend\Module\Profile\Contract\IArrayToProfileCompositeMapper;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
@@ -17,15 +18,17 @@ class CreateProfile extends AbstractService
 {
     use ProfileHashTrait;
     use CreateProfileTrait;
+    private IArrayHashing $arrayHashing;
 
     protected IProfileRepository $repository;
     private IArrayToProfileCompositeMapper $arrayToProfileCompositeMapper;
 
-    public function __construct(IDependencyInjector $di, IProfileRepository $repository, IArrayToProfileCompositeMapper $arrayToProfileCompositeMapper)
+    public function __construct(IDependencyInjector $di, IProfileRepository $repository, IArrayToProfileCompositeMapper $arrayToProfileCompositeMapper,IArrayHashing $arrayHashing)
     {
         parent::__construct($di);
         $this->repository = $repository;
         $this->arrayToProfileCompositeMapper = $arrayToProfileCompositeMapper;
+        $this->arrayHashing = $arrayHashing;
     }
 
     //
@@ -37,7 +40,6 @@ class CreateProfile extends AbstractService
 
         //validate inputs
         $this->validateInputs($profileInputs);
-
         //create && save profile
         $profileComposite = $this->createNewProfileRecord($profileInputs);
 
@@ -55,8 +57,7 @@ class CreateProfile extends AbstractService
     protected function createNewProfileRecord($profileInputs): IProfileComposite
     {
         // create profile hash
-        $arrayHashing = $this->di->make(IArrayHashing::class);
-        $hash = $arrayHashing->hash($profileInputs, true);
+        $hash = $this->arrayHashing->hash($profileInputs, true);
         $this->assertProfileHashDoesNotExists($hash);
 
         // create composite
@@ -64,7 +65,11 @@ class CreateProfile extends AbstractService
         $uuidFactory = $this->di->make(IProfileUuidFactory::class);
         $profileComposite->getProfile()->setProfileId($uuidFactory->generate());
         $profileComposite->getProfile()->setHash($hash);
-        $this->persistProfileComposite($profileComposite);
+            $this->persistProfileComposite($profileComposite);
+
+     //   $profileCompositeHashGenerator = $this->di->make(IProfileCompositeHashGenerator::class);
+      //  $hash = $profileCompositeHashGenerator->generate($profileComposite,$this->arrayHashing);
+      //  $this->repository->saveEntity($profileComposite->getProfile());
         return $profileComposite;
     }
 }

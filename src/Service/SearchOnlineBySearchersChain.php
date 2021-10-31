@@ -36,6 +36,7 @@ class SearchOnlineBySearchersChain extends AbstractService
     private CreateProfile $createProfileService;
     private IProfileCompositeToArrayMapper $profileCompositeToArrayMapper;
     private IProfileCompositeFacade $profileCompositeFacade;
+    private IArrayHashing $arrayHashing;
 
     public function __construct(IDependencyInjector       $di,
                                 IProfileRepository        $repository,
@@ -45,7 +46,8 @@ class SearchOnlineBySearchersChain extends AbstractService
                                 ISearcherStatusRepository $searcherStatusRepository,
                                 \DateTime                 $currentDateTime,
                                 IProfileCompositeToArrayMapper $profileCompositeToArrayMapper,
-                                IProfileCompositeFacade $profileCompositeFacade
+                                IProfileCompositeFacade $profileCompositeFacade,
+                                IArrayHashing   $arrayHashing,
     )
     {
         parent::__construct($di);
@@ -58,6 +60,7 @@ class SearchOnlineBySearchersChain extends AbstractService
         $this->profileCompositeToArrayMapper = $profileCompositeToArrayMapper;
         $this->createProfileService   = $this->di->make(CreateProfile::class);
         $this->profileCompositeFacade = $profileCompositeFacade;
+        $this->arrayHashing = $arrayHashing;
     }
 
     //

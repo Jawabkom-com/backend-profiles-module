@@ -14,6 +14,7 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilt
     Search\SearchRequest};
 use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 use Jawabkom\Backend\Module\Profile\Contract\{HashGenerator\IProfileAddressHashGenerator,
+    HashGenerator\IProfileCompositeHashGenerator,
     HashGenerator\IProfileCriminalRecordHashGenerator,
     HashGenerator\IProfileEducationHashGenerator,
     HashGenerator\IProfileEmailHashGenerator,
@@ -113,6 +114,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{HashGenerator\IProfileAddressHashG
 use Jawabkom\Backend\Module\Profile\BasicArrayHashing;
 use Jawabkom\Backend\Module\Profile\Facade\ProfileCompositeFacade;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileAddressHashGenerator;
+use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileCompositeHashGenerator;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileCriminalRecordHashGenerator;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileEducationHashGenerator;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileEmailHashGenerator;
@@ -305,6 +307,7 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileSkillEntityFilter::class                => ProfileSkillEntityFilter::class,
             IProfileSocialProfileEntityFilter::class        => ProfileSocialProfileEntityFilter::class,
             IProfileUsernameEntityFilter::class             => ProfileUsernameEntityFilter::class,
+            IProfileCompositeHashGenerator::class           => ProfileCompositeHashGenerator::class
         ];
 
         foreach ($toBind as $interface => $implementation) {

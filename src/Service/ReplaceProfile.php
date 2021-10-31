@@ -20,12 +20,17 @@ class ReplaceProfile extends AbstractService
 
     private IArrayToProfileCompositeMapper $arrayToProfileCompositeMapper;
     private IProfileRepository $repository;
+    private IArrayHashing $arrayHashing;
 
-    public function __construct(IDependencyInjector $di,IProfileRepository $repository, IArrayToProfileCompositeMapper $arrayToProfileCompositeMapper)
+    public function __construct(IDependencyInjector $di,
+                                IProfileRepository $repository,
+                                IArrayToProfileCompositeMapper $arrayToProfileCompositeMapper,
+                                IArrayHashing $arrayHashing)
     {
         parent::__construct($di);
         $this->arrayToProfileCompositeMapper = $arrayToProfileCompositeMapper;
         $this->repository = $repository;
+        $this->arrayHashing = $arrayHashing;
     }
 
     public function process(): static

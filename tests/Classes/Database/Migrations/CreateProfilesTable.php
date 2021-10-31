@@ -15,12 +15,12 @@ class CreateProfilesTable extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-            $table->string('hash')->index();
             $table->string('profile_id')->unique();
             $table->string('gender')->nullable()->index();
             $table->string('date_of_birth')->nullable()->index();
             $table->string('place_of_birth')->nullable()->index();
             $table->string('data_source')->index();
+            $table->string('hash')->index();
             $table->timestamps();
         });
     }

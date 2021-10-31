@@ -18,7 +18,7 @@ class ProfileCompositeHashGenerator implements IProfileCompositeHashGenerator
     public function generate(IProfileComposite $composite, IArrayHashing $arrayHashing): string
     {
         $hashes = [
-            'profile' => $this->getProfileHash($composite->getProfile()),
+        //  'profile' => $this->getProfileHash($composite->getProfile()),
             'names' => $this->getEntitiesHash($composite->getNames()),
             'phones' => $this->getEntitiesHash($composite->getPhones()),
             'addresses' => $this->getEntitiesHash($composite->getAddresses()),
