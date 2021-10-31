@@ -10,6 +10,6 @@ class ProfileNameEntityFilter implements IProfileNameEntityFilter
 
     public function filter(IProfileNameEntity $entity): void
     {
-
+        $entity->setDisplay(preg_replace('#[\s]+#', ' ', trim($entity->getPrefix() . ' ' . $entity->getFirst() . ' ' . $entity->getMiddle() . ' ' . $entity->getLast())));
     }
 }

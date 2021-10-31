@@ -17,7 +17,5 @@ class ArrayToProfileNameEntityMapper extends AbstractMapper implements IArrayToP
         $entity->setMiddle($profile['middle'] ?? null);
         $entity->setLast($profile['last'] ?? null);
         $entity->setPrefix($profile['prefix'] ?? null);
-        $displayName = preg_replace('#[\s]+#', ' ', trim($entity->getPrefix() . ' ' . $entity->getFirst() . ' ' . $entity->getMiddle() . ' ' . $entity->getLast()));
-        $entity->setDisplay($displayName);
     }
 }

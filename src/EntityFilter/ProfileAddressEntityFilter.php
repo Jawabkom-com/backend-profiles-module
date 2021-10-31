@@ -10,6 +10,7 @@ class ProfileAddressEntityFilter implements IProfileAddressEntityFilter
 
     public function filter(IProfileAddressEntity $entity): void
     {
+        if($entity->getCountry()) $entity->setCountry(strtoupper($entity->getCountry()));
 
     }
 }
