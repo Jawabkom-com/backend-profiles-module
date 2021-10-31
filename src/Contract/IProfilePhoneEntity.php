@@ -48,7 +48,7 @@ interface IProfilePhoneEntity extends IEntity
     public function setHash(string $hash);
     public function getHash():string;
 
-    public function addPossibleCountries(iterable $countries);
+    public function setPossibleCountries(iterable $countries);
     public function getPossibleCountries():iterable;
 
 }

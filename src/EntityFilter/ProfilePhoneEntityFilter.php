@@ -28,5 +28,7 @@ class ProfilePhoneEntityFilter implements IProfilePhoneEntityFilter
 
         if($entity->getCountryCode()) $entity->setCountryCode(strtoupper($entity->getCountryCode()));
 
+        $entity->setPossibleCountries(array_map(function($value) { return strtoupper($value);  }, $entity->getPossibleCountries()));
+
     }
 }
