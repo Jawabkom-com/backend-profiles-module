@@ -230,7 +230,7 @@ class ProfilePhone extends Model implements IProfilePhoneEntity, IProfilePhoneRe
         return $this->hash;
     }
 
-    public function addPossibleCountries(iterable $possible_countries)
+    public function setPossibleCountries(iterable $possible_countries)
     {
         $this->possible_countries = $possible_countries;
     }
