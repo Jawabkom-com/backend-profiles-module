@@ -60,11 +60,9 @@ trait CreateProfileTrait
     protected function persistNames(IProfileComposite $profileComposite)
     {
         $repository = $this->di->make(IProfileNameRepository::class);
-        $nameHasingGenerator = $this->di->make(IProfileNameHashGenerator::class);
         $profileId = $profileComposite->getProfile()->getProfileId();
         foreach ($profileComposite->getNames() as $nameObj) {
             $nameObj->setProfileId($profileId);
-            $nameObj->setHash($nameHasingGenerator->generate($nameObj,$profileId,$this->arrayHashing));
             $repository->saveEntity($nameObj);
         }
     }

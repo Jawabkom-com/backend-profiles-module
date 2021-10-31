@@ -2,6 +2,7 @@
 namespace Jawabkom\Backend\Module\Profile\HashGenerator;
 
 use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileCompositeHashGenerator;
+use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileHashGenerator;
 use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
@@ -18,7 +19,7 @@ class ProfileCompositeHashGenerator implements IProfileCompositeHashGenerator
     public function generate(IProfileComposite $composite, IArrayHashing $arrayHashing): string
     {
         $hashes = [
-            'profile' => $this->getProfileHash($composite->getProfile()),
+            'profile' => $this->getProfileHash($composite->getProfile(), $arrayHashing),
             'names' => $this->getEntitiesHash($composite->getNames()),
             'phones' => $this->getEntitiesHash($composite->getPhones()),
             'addresses' => $this->getEntitiesHash($composite->getAddresses()),
@@ -54,12 +55,9 @@ class ProfileCompositeHashGenerator implements IProfileCompositeHashGenerator
         return null;
     }
 
-    protected function getProfileHash(IProfileEntity $getProfile)
+    protected function getProfileHash(IProfileEntity $getProfile, IArrayHashing $arrayHashing)
     {
-        $hash = $getProfile->getHash();
-        if (!$hash){
-            throw new MissingHashException('Entity Missing Hashing*,Hash is required');
-        }
-        return $hash;
+        $profileHashGenerator = $this->di->make(IProfileHashGenerator::class);
+        return $profileHashGenerator->generate($getProfile, $this->arrayHashing);
     }
 }

@@ -56,15 +56,15 @@ class CreateProfile extends AbstractService
      */
     protected function createNewProfileRecord($profileInputs): IProfileComposite
     {
-        // create profile hash// old algorithm
-        $hash = $this->arrayHashing->hash($profileInputs, true);
-        $this->assertProfileHashDoesNotExists($hash);
-
         // create composite
         $profileComposite = $this->arrayToProfileCompositeMapper->map($profileInputs);
         $uuidFactory = $this->di->make(IProfileUuidFactory::class);
         $profileComposite->getProfile()->setProfileId($uuidFactory->generate());
-        $profileComposite->getProfile()->setHash($hash);
+        $this->hashProfileComposite($profileComposite);
+
+        // create profile hash// old algorithm
+        $this->assertProfileHashDoesNotExists($profileComposite->getProfile()->getHash());
+
         $this->persistProfileComposite($profileComposite);
 
      //   $profileCompositeHashGenerator = $this->di->make(IProfileCompositeHashGenerator::class);
