@@ -8,10 +8,19 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameEntity;
 use Jawabkom\Backend\Module\Profile\Exception\MissingHashException;
+use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class ProfileCompositeHashGenerator implements IProfileCompositeHashGenerator
 {
+
+    private IDependencyInjector $di;
+
+    public function __construct(IDependencyInjector $dependencyInjector)
+    {
+
+        $this->di = $dependencyInjector;
+    }
 
     /**
      * @throws MissingHashException
@@ -35,7 +44,6 @@ class ProfileCompositeHashGenerator implements IProfileCompositeHashGenerator
             'criminal_records' => $this->getEntitiesHash($composite->getCriminalRecords()),
             'meta_data' => $this->getEntitiesHash($composite->getMetaData()),
         ];
-
         return $arrayHashing->hash($hashes);
     }
 
@@ -55,9 +63,9 @@ class ProfileCompositeHashGenerator implements IProfileCompositeHashGenerator
         return null;
     }
 
-    protected function getProfileHash(IProfileEntity $getProfile, IArrayHashing $arrayHashing)
+    protected function getProfileHash(IProfileEntity $getProfile,IArrayHashing $arrayHashing)
     {
         $profileHashGenerator = $this->di->make(IProfileHashGenerator::class);
-        return $profileHashGenerator->generate($getProfile, $this->arrayHashing);
+        return $profileHashGenerator->generate($getProfile, $arrayHashing);
     }
 }

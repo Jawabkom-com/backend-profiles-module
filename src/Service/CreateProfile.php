@@ -61,16 +61,9 @@ class CreateProfile extends AbstractService
         $uuidFactory = $this->di->make(IProfileUuidFactory::class);
         $profileComposite->getProfile()->setProfileId($uuidFactory->generate());
         $this->hashProfileComposite($profileComposite);
-
-        // create profile hash// old algorithm
         $this->assertProfileHashDoesNotExists($profileComposite->getProfile()->getHash());
-
         $this->persistProfileComposite($profileComposite);
 
-     //   $profileCompositeHashGenerator = $this->di->make(IProfileCompositeHashGenerator::class);
-      //  $hash = $profileCompositeHashGenerator->generate($profileComposite,$this->arrayHashing);
-        //   $profileComposite->getProfile()->setHash($hash);
-      //  $this->repository->saveEntity($profileComposite->getProfile());
         return $profileComposite;
     }
 }
