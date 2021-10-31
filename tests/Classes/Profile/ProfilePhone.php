@@ -1,6 +1,7 @@
 <?php
 
 namespace Jawabkom\Backend\Module\Profile\Test\Classes\Profile;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
@@ -24,48 +25,54 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property string $industry
  * @property \DateTime|null $valid_since
  * @property string $hash
+ * @property iterable $possible_countries
  */
-class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRepository
+class ProfilePhone extends Model implements IProfilePhoneEntity, IProfilePhoneRepository
 {
     use HasFactory;
 
-    protected $fillable=[
-      'profile_id',
-      'type',
-      'do_not_call_flag',
-      'country_code',
-      'original_number',
-      'formatted_number',
-      'valid_phone',
-      'risky_phone',
-      'disposable_phone',
-      'carrier',
-      'purpose',
-      'industry',
-      'valid_since',
-      'hash'
+    protected $fillable = [
+        'profile_id',
+        'type',
+        'do_not_call_flag',
+        'country_code',
+        'original_number',
+        'formatted_number',
+        'valid_phone',
+        'risky_phone',
+        'disposable_phone',
+        'carrier',
+        'purpose',
+        'industry',
+        'possible_countries',
+        'valid_since',
+        'hash'
     ];
 
-    protected $hidden =[
+    protected $hidden = [
         'id',
         'profile_id',
         'created_at',
         'updated_at',
     ];
 
+    protected $casts = [
+        'possible_countries' => 'array'
+    ];
+
     public function getProfileId(): int|string
     {
-       return $this->profile_id;
+        return $this->profile_id;
     }
 
     public function setProfileId(int|string $id)
     {
-       $this->profile_id = $id;
+        $this->profile_id = $id;
     }
 
     public function getCreatedAt(): \DateTime
     {
-      return  $this->created_at;
+        return $this->created_at;
     }
 
     public function getUpdatedAt(): \DateTime
@@ -75,32 +82,32 @@ class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRep
 
     public function setType(?string $type)
     {
-     $this->type = $type;
+        $this->type = $type;
     }
 
-    public function getType():? string
+    public function getType(): ?string
     {
-       return $this->type;
+        return $this->type;
     }
 
     public function setDoNotCallFlag(?bool $doNotCallFlag)
     {
-       $this->do_not_call_flag = $doNotCallFlag;
+        $this->do_not_call_flag = $doNotCallFlag;
     }
 
-    public function getDoNotCallFlag():? bool
+    public function getDoNotCallFlag(): ?bool
     {
         return $this->do_not_call_flag;
     }
 
     public function setCountryCode(?string $countryCode)
     {
-       $this->country_code = $countryCode;
+        $this->country_code = $countryCode;
     }
 
-    public function getCountryCode():? string
+    public function getCountryCode(): ?string
     {
-       return $this->country_code;
+        return $this->country_code;
     }
 
     public function setOriginalNumber(?string $originalNumber)
@@ -108,29 +115,29 @@ class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRep
         $this->original_number = $originalNumber;
     }
 
-    public function getOriginalNumber():? string
+    public function getOriginalNumber(): ?string
     {
         return $this->original_number;
     }
 
     public function setFormattedNumber(?string $formattedNumber)
     {
-      $this->formatted_number = $formattedNumber;
+        $this->formatted_number = $formattedNumber;
     }
 
-    public function getFormattedNumber():? string
+    public function getFormattedNumber(): ?string
     {
-     return $this->formatted_number;
+        return $this->formatted_number;
     }
 
     public function setValidPhone(?bool $validPhone)
     {
-       $this->valid_phone = $validPhone;
+        $this->valid_phone = $validPhone;
     }
 
-    public function getValidPhone():? bool
+    public function getValidPhone(): ?bool
     {
-       return $this->valid_phone;
+        return $this->valid_phone;
     }
 
     public function setRiskyPhone(?bool $riskyPhone)
@@ -138,39 +145,39 @@ class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRep
         $this->risky_phone = $riskyPhone;
     }
 
-    public function getRiskyPhone():? bool
+    public function getRiskyPhone(): ?bool
     {
-      return  $this->risky_phone;
+        return $this->risky_phone;
     }
 
     public function setDisposablePhone(?bool $disposablePhone)
     {
-       $this->disposable_phone = $disposablePhone;
+        $this->disposable_phone = $disposablePhone;
     }
 
-    public function getDisposablePhone():? bool
+    public function getDisposablePhone(): ?bool
     {
         return $this->disposable_phone;
     }
 
     public function setCarrier(?string $carrier)
     {
-       $this->carrier = $carrier;
+        $this->carrier = $carrier;
     }
 
-    public function getCarrier():? string
+    public function getCarrier(): ?string
     {
-      return $this->carrier;
+        return $this->carrier;
     }
 
     public function setPurpose(?string $purpose)
     {
-      $this->purpose = $purpose;
+        $this->purpose = $purpose;
     }
 
-    public function getPurpose():? string
+    public function getPurpose(): ?string
     {
-        return  $this->purpose;
+        return $this->purpose;
     }
 
     public function setIndustry(?string $industry)
@@ -178,14 +185,14 @@ class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRep
         $this->industry = $industry;
     }
 
-    public function getIndustry():? string
+    public function getIndustry(): ?string
     {
-       return $this->industry;
+        return $this->industry;
     }
 
     public function saveEntity(IEntity|IProfilePhoneEntity $entity): bool
     {
-       return  $entity->save();
+        return $entity->save();
     }
 
     public function createEntity(array $params = []): IProfilePhoneEntity
@@ -195,30 +202,41 @@ class ProfilePhone extends Model implements IProfilePhoneEntity,IProfilePhoneRep
 
     public function deleteEntity(IEntity $entity): bool
     {
-       return $entity->delete();
+        return $entity->delete();
     }
 
     public function setValidSince(?\DateTime $validSince)
     {
-       $this->valid_since = $validSince;
+        $this->valid_since = $validSince;
     }
 
     public function getValidSince(): ?\DateTime
     {
-        return $this->valid_since?(is_string($this->valid_since)?new \DateTime($this->valid_since):$this->valid_since):null;
+        return $this->valid_since ? (is_string($this->valid_since) ? new \DateTime($this->valid_since) : $this->valid_since) : null;
     }
+
     public function getByProfileId(string $profileId): ?iterable
     {
-        return $this->where('profile_id',$profileId)->get();
+        return $this->where('profile_id', $profileId)->get();
     }
 
     public function setHash(string $hash)
     {
-       $this->hash = $hash;
+        $this->hash = $hash;
     }
 
     public function getHash(): string
     {
         return $this->hash;
+    }
+
+    public function addPossibleCountries(iterable $possible_countries)
+    {
+        $this->possible_countries = $possible_countries;
+    }
+
+    public function getPossibleCountries(): iterable
+    {
+        return $this->possible_countries ?? [];
     }
 }
