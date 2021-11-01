@@ -9,7 +9,7 @@ use Jawabkom\Backend\Module\Profile\Mapper\AbstractMapper;
 class ArrayToProfileCriminalRecordEntityMapper extends AbstractMapper implements IArrayToProfileCriminalRecordEntityMapper
 {
 
-    public function map(array $profile, ?IProfileCriminalRecordEntity &$entity = null)
+    public function map(array $profile, ?IProfileCriminalRecordEntity &$entity = null):IProfileCriminalRecordEntity
     {
         if(!$entity)
             $entity = $this->di->make(IProfileCriminalRecordEntity::class);
@@ -18,5 +18,6 @@ class ArrayToProfileCriminalRecordEntityMapper extends AbstractMapper implements
         $entity->setCaseYear($profile['case_year'] ?? null);
         $entity->setCaseStatus($profile['case_status'] ?? null);
         $entity->setDisplay($profile['display'] ?? null);
+        return $entity;
     }
 }

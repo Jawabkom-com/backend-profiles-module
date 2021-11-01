@@ -9,7 +9,7 @@ use Jawabkom\Backend\Module\Profile\Mapper\AbstractMapper;
 class ArrayToProfileJobEntityMapper extends AbstractMapper implements IArrayToProfileJobEntityMapper
 {
 
-    public function map(array $profile, ?IProfileJobEntity &$entity = null)
+    public function map(array $profile, ?IProfileJobEntity &$entity = null):IProfileJobEntity
     {
         if(!$entity)
             $entity = $this->di->make(IProfileJobEntity::class);
@@ -19,5 +19,6 @@ class ArrayToProfileJobEntityMapper extends AbstractMapper implements IArrayToPr
         $entity->setTitle($profile['title'] ?? null);
         $entity->setOrganization($profile['organization'] ?? null);
         $entity->setIndustry($profile['industry'] ?? null);
+        return $entity;
     }
 }

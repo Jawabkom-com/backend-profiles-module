@@ -9,7 +9,7 @@ use Jawabkom\Backend\Module\Profile\Mapper\AbstractMapper;
 class ArrayToProfileEmailEntityMapper extends AbstractMapper implements IArrayToProfileEmailEntityMapper
 {
 
-    public function map(array $profile, ?IProfileEmailEntity &$entity = null)
+    public function map(array $profile, ?IProfileEmailEntity &$entity = null):IProfileEmailEntity
     {
         if(!$entity)
             $entity = $this->di->make(IProfileEmailEntity::class);
@@ -17,5 +17,6 @@ class ArrayToProfileEmailEntityMapper extends AbstractMapper implements IArrayTo
         $entity->setEmail($profile['email'] ?? null);
         $entity->setEspDomain($profile['esp_domain'] ?? null);
         $entity->setType($profile['type'] ?? null);
+        return $entity;
     }
 }

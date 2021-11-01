@@ -9,7 +9,7 @@ use Jawabkom\Backend\Module\Profile\Mapper\AbstractMapper;
 class ArrayToProfileEducationEntityMapper extends AbstractMapper implements IArrayToProfileEducationEntityMapper
 {
 
-    public function map(array $profile, ?IProfileEducationEntity &$entity = null)
+    public function map(array $profile, ?IProfileEducationEntity &$entity = null):IProfileEducationEntity
     {
         if(!$entity)
             $entity = $this->di->make(IProfileEducationEntity::class);
@@ -18,6 +18,7 @@ class ArrayToProfileEducationEntityMapper extends AbstractMapper implements IArr
         $entity->setTo(!empty($profile['to']) ? new \DateTime($profile['to']) : null);
         $entity->setSchool($profile['school'] ?? null);
         $entity->setDegree($profile['degree'] ?? null);;
-        $entity->setMajor($profile['major'] ?? null);;
+        $entity->setMajor($profile['major'] ?? null);
+        return $entity;
     }
 }

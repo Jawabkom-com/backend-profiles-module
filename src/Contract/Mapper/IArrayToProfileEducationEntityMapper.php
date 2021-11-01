@@ -6,5 +6,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationEntity;
 
 interface IArrayToProfileEducationEntityMapper
 {
-    public function map(array $profile, ?IProfileEducationEntity &$entity = null);
+    public function map(array $profile, ?IProfileEducationEntity &$entity = null):IProfileEducationEntity;
 }

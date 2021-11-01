@@ -9,7 +9,7 @@ use Jawabkom\Backend\Module\Profile\Mapper\AbstractMapper;
 class ArrayToProfilePhoneEntityMapper extends AbstractMapper implements IArrayToProfilePhoneEntityMapper
 {
 
-    public function map(array $profile, ?IProfilePhoneEntity &$entity = null)
+    public function map(array $profile, ?IProfilePhoneEntity &$entity = null):IProfilePhoneEntity
     {
         if(!$entity)
             $entity = $this->di->make(IProfilePhoneEntity::class);
@@ -25,5 +25,6 @@ class ArrayToProfilePhoneEntityMapper extends AbstractMapper implements IArrayTo
         $entity->setCarrier($profile['carrier'] ?? null);
         $entity->setPurpose($profile['purpose'] ?? null);
         $entity->setIndustry($profile['industry'] ?? null);
+        return $entity;
     }
 }

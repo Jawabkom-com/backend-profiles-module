@@ -6,5 +6,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameEntity;
 
 interface IArrayToProfileUsernameEntityMapper
 {
-    public function map(array $profile, ?IProfileUsernameEntity &$entity = null);
+    public function map(array $profile, ?IProfileUsernameEntity &$entity = null):IProfileUsernameEntity;
 }

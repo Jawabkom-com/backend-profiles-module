@@ -6,5 +6,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageEntity;
 
 interface IArrayToProfileLanguageEntityMapper
 {
-    public function map(array $profile, ?IProfileLanguageEntity &$entity = null);
+    public function map(array $profile, ?IProfileLanguageEntity &$entity = null):IProfileLanguageEntity;
 }

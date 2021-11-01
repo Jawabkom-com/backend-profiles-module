@@ -2,31 +2,23 @@
 
 namespace Jawabkom\Backend\Module\Profile\Test\Classes\Searcher;
 
-use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileImageRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileNameRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileAddressEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileEducationEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileImageEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileJobEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileLanguageEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileNameEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfilePhoneEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileRelationshipEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileSocialProfileEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileUsernameEntityMapper;
+use Jawabkom\Backend\Module\Profile\Contract\{
+    IProfileComposite,
+    IProfileEntity,
+    IProfileEntityMapper,
+    IProfileRepository,
+    Mapper\IArrayToProfileAddressEntityMapper,
+    Mapper\IArrayToProfileEducationEntityMapper,
+    Mapper\IArrayToProfileEntityMapper,
+    Mapper\IArrayToProfileImageEntityMapper,
+    Mapper\IArrayToProfileJobEntityMapper,
+    Mapper\IArrayToProfileLanguageEntityMapper,
+    Mapper\IArrayToProfileNameEntityMapper,
+    Mapper\IArrayToProfilePhoneEntityMapper,
+    Mapper\IArrayToProfileRelationshipEntityMapper,
+    Mapper\IArrayToProfileSocialProfileEntityMapper,
+    Mapper\IArrayToProfileUsernameEntityMapper,
+};
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 
@@ -78,8 +70,7 @@ class TestSearcherMapper implements IProfileEntityMapper
         if ($personal) {
             $gender = $personal ['gender']['content'] ?? null;
             $personal['gender'] = $gender;
-            $this->arrayToProfileMapper->map($personal, $profileEntry);
-            return $profileEntry;
+           return $this->arrayToProfileMapper->map($personal);
         }
     }
 
@@ -105,8 +96,7 @@ class TestSearcherMapper implements IProfileEntityMapper
             $jobInput['title'] = $job['title'] ?? '';
             $jobInput['organization'] = $job['organization'] ?? '';
             $jobInput['industry'] = $job['industry'] ?? '';
-            $jobEntityMapper->map($jobInput, $newJobEntity);
-            $composite->addJob($newJobEntity);
+            $composite->addJob($jobEntityMapper->map($jobInput));
         }
     }
 
@@ -116,8 +106,7 @@ class TestSearcherMapper implements IProfileEntityMapper
         foreach ($usernames as $username) {
             $usernameInput['valid_since'] = $username['@valid_since'];
             $usernameInput['username'] = $username['content'] ?? '';
-            $usernameEntityMapper->map($usernameInput, $newUserNameEntity);
-            $composite->addUsername($newUserNameEntity);
+            $composite->addUsername($usernameEntityMapper->map($usernameInput));
         }
     }
 
@@ -137,8 +126,7 @@ class TestSearcherMapper implements IProfileEntityMapper
             $phoneInput['carrier'] = $phone['carrier'] ?? '';
             $phoneInput['purpose'] = $phone['purpose'] ?? '';
             $phoneInput['industry'] = $phone['industry'] ?? '';
-            $phoneEntityMapper->map($phoneInput, $newPhoneEntity);
-            $composite->addPhone($newPhoneEntity);
+            $composite->addPhone($phoneEntityMapper->map($phoneInput));
         }
     }
 
@@ -148,8 +136,7 @@ class TestSearcherMapper implements IProfileEntityMapper
         foreach ($languages as $language) {
             $languageInput['language'] = $language['language'] ?? '';
             $languageInput['country'] = $language['region'] ?? '';
-            $languageEntityMapper->map($languageInput, $newLanguageEntity);
-            $composite->addLanguage($newLanguageEntity);
+            $composite->addLanguage($languageEntityMapper->map($languageInput));
         }
     }
 
@@ -165,8 +152,7 @@ class TestSearcherMapper implements IProfileEntityMapper
             $addressInput['street'] = $address['street'] ?? '';
             $addressInput['building_number'] = $address['building_number'] ?? '';
             $addressInput['display'] = $address['display'] ?? '';
-            $addressEntityMapper->map($addressInput, $newAddressEntity);
-            $composite->addAddress($newAddressEntity);
+            $composite->addAddress($addressEntityMapper->map($addressInput));
         }
     }
 
@@ -180,8 +166,7 @@ class TestSearcherMapper implements IProfileEntityMapper
             $educationInput['school'] = $education['school'] ?? '';
             $educationInput['degree'] = $education['degree'] ?? '';
             $educationInput['major'] = $education['major'] ?? '';
-            $educationEntityMapper->map($educationInput, $newEducationEntity);
-            $composite->addEducation($newEducationEntity);
+            $composite->addEducation($educationEntityMapper->map($educationInput));
         }
     }
 
@@ -194,8 +179,7 @@ class TestSearcherMapper implements IProfileEntityMapper
             $relationshipInput['first_name'] = $relationship['names'][0]['first'] ?? '';
             $relationshipInput['last_name'] = $relationship['names'][0]['last'] ?? '';
             $relationshipInput['person_id'] = $relationship['person_id'] ?? '';
-            $relationshipEntityMapper->map($relationshipInput, $newRelationshipEntity);
-            $composite->addRelationship($newRelationshipEntity);
+            $composite->addRelationship($relationshipEntityMapper->map($relationshipInput));
         }
     }
 
@@ -208,8 +192,7 @@ class TestSearcherMapper implements IProfileEntityMapper
             $socialInput['type'] = explode('@', $social['content'])[1] ?? '';
             $socialInput['username'] = $social['@username'] ?? '';
             $socialInput['account_id'] = explode('@', $social['content'])[0] ?? '';
-            $socialEntityMapper->map($socialInput, $newSocialEntity);
-            $composite->addSocialProfile($newSocialEntity);
+            $composite->addSocialProfile($socialEntityMapper->map($socialInput));
         }
     }
 
@@ -220,8 +203,7 @@ class TestSearcherMapper implements IProfileEntityMapper
             $imageInput['valid_since'] = $image['@valid_since'];
             $imageInput['original_url'] = $image['original_url'] ?? '';
             $imageInput['local_path'] = $image['local_path'] ?? '';
-            $imageEntityMapper->map($imageInput, $newImageEntity);
-            $composite->addImage($newImageEntity);
+            $composite->addImage($imageEntityMapper->map($imageInput));
         }
     }
 }

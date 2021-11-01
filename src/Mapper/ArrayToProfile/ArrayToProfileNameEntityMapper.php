@@ -9,7 +9,7 @@ use Jawabkom\Backend\Module\Profile\Mapper\AbstractMapper;
 class ArrayToProfileNameEntityMapper extends AbstractMapper implements IArrayToProfileNameEntityMapper
 {
 
-    public function map(array $profile, ?IProfileNameEntity &$entity = null)
+    public function map(array $profile, ?IProfileNameEntity &$entity = null):IProfileNameEntity
     {
         if(!$entity)
             $entity = $this->di->make(IProfileNameEntity::class);
@@ -17,5 +17,6 @@ class ArrayToProfileNameEntityMapper extends AbstractMapper implements IArrayToP
         $entity->setMiddle($profile['middle'] ?? null);
         $entity->setLast($profile['last'] ?? null);
         $entity->setPrefix($profile['prefix'] ?? null);
+        return $entity;
     }
 }

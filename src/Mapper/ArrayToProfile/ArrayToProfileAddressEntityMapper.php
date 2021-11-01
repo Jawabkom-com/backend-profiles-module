@@ -9,7 +9,7 @@ use Jawabkom\Backend\Module\Profile\Mapper\AbstractMapper;
 class ArrayToProfileAddressEntityMapper extends AbstractMapper implements IArrayToProfileAddressEntityMapper
 {
 
-    public function map(array $profile, ?IProfileAddressEntity &$entity = null)
+    public function map(array $profile, ?IProfileAddressEntity &$entity = null):IProfileAddressEntity
     {
         if(!$entity)
             $entity = $this->di->make(IProfileAddressEntity::class);
@@ -21,5 +21,6 @@ class ArrayToProfileAddressEntityMapper extends AbstractMapper implements IArray
         $entity->setStreet($profile['street'] ?? null);
         $entity->setBuildingNumber($profile['building_number'] ?? null);
         $entity->setDisplay($profile['display'] ?? null);
+        return $entity;
     }
 }

@@ -6,5 +6,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileImageEntity;
 
 interface IArrayToProfileImageEntityMapper
 {
-    public function map(array $profile, ?IProfileImageEntity &$entity = null);
+    public function map(array $profile, ?IProfileImageEntity &$entity = null):IProfileImageEntity;
 }

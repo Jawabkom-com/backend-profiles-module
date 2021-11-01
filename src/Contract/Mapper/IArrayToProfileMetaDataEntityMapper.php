@@ -6,5 +6,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileMetaDataEntity;
 
 interface IArrayToProfileMetaDataEntityMapper
 {
-    public function map(array $profile, ?IProfileMetaDataEntity &$entity = null);
+    public function map(array $profile, ?IProfileMetaDataEntity &$entity = null):IProfileMetaDataEntity;
 }

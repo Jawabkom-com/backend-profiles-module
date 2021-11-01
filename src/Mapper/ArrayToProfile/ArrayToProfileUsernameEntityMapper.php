@@ -9,11 +9,12 @@ use Jawabkom\Backend\Module\Profile\Mapper\AbstractMapper;
 class ArrayToProfileUsernameEntityMapper extends AbstractMapper implements IArrayToProfileUsernameEntityMapper
 {
 
-    public function map(array $profile, ?IProfileUsernameEntity &$entity = null)
+    public function map(array $profile, ?IProfileUsernameEntity &$entity = null):IProfileUsernameEntity
     {
         if(!$entity)
             $entity = $this->di->make(IProfileUsernameEntity::class);
         $entity->setValidSince(!empty($profile['valid_since']) ? new \DateTime($profile['valid_since']) : null);
         $entity->setUsername($profile['username'] ?? null);
+        return $entity;
     }
 }

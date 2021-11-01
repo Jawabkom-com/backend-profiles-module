@@ -281,8 +281,6 @@ class EntityHashingTest extends AbstractTestCase
         $job = $fakeProfile->getJobs()[0];
         $jobHashingOne = $jobHashGenerator->generate($job, $arrayHashing);
         $job->setValidSince(Carbon::now());
-        $job->setFrom(Carbon::now()->subYears(10));
-        $job->setTo(Carbon::now()->addYears(5));
         $jobHashingTwo = $jobHashGenerator->generate($job, $arrayHashing);
         $this->assertIsString($jobHashingOne);
         $this->assertEquals($jobHashingOne, $jobHashingTwo);

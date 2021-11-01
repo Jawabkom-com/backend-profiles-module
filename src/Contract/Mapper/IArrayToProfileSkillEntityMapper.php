@@ -6,5 +6,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillEntity;
 
 interface IArrayToProfileSkillEntityMapper
 {
-    public function map(array $profile, ?IProfileSkillEntity &$entity = null);
+    public function map(array $profile, ?IProfileSkillEntity &$entity = null):IProfileSkillEntity;
 }
