@@ -67,6 +67,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{HashGenerator\IProfileAddressHashG
     ISearcherStatusRepository,
     ISearchFiltersBuilder,
     ISearchRequestRepository,
+    EntityFilter\IProfileEntityFilter,
     EntityFilter\IProfileAddressEntityFilter,
     EntityFilter\IProfileCriminalRecordEntityFilter,
     EntityFilter\IProfileEducationEntityFilter,
@@ -129,6 +130,7 @@ use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileRelationsHashGenerator;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileSkillHashGenerator;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileSocialProfileHashGenerator;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileUsernameHashGenerator;
+use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileEntityFilter;
 use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileAddressEntityFilter;
 use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileCriminalRecordEntityFilter;
 use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileEducationEntityFilter;
@@ -293,6 +295,7 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileCriminalRecordHashGenerator::class      => ProfileCriminalRecordHashGenerator::class,
             IProfileEducationHashGenerator::class           => ProfileEducationHashGenerator::class,
             IProfileHashGenerator::class                    => ProfileHashGenerator::class,
+            IProfileEntityFilter::class                     => ProfileEntityFilter::class,
             IProfileAddressEntityFilter::class              => ProfileAddressEntityFilter::class,
             IProfileCriminalRecordEntityFilter::class       => ProfileCriminalRecordEntityFilter::class,
             IProfileEducationEntityFilter::class            => ProfileEducationEntityFilter::class,
