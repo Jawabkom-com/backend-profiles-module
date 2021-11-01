@@ -10,7 +10,7 @@ class Phone
     public function parse(string $phoneNumber, array $possibleCountryCodes = [])
     {
         $cleanPhoneNumber = $this->cleanPhone($phoneNumber);
-        $parse = [
+       $parse = [
             'phone' => $cleanPhoneNumber,
             'is_valid' => false,
             'country_code' => null
@@ -25,11 +25,10 @@ class Phone
                 try {
                     $oPhone = $this->parsePhoneUsingPlusPrefix($cleanPhoneNumber);
                 } catch (\Exception $e) {
-                    return $parse;
+                 return $parse;
                 }
             }
         }
-
         $parse['country_code'] = $oPhone->getRegionCode();
         $parse['is_valid'] = true;
         $parse['phone'] = $oPhone->format(PhoneNumberFormat::E164);

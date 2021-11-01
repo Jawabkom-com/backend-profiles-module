@@ -10,7 +10,6 @@ use Jawabkom\Backend\Module\Profile\Trait\ResponseFormattedTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
-use phpDocumentor\Reflection\Types\Iterable_;
 
 class SearchOfflineByFilters extends AbstractService
 {
@@ -36,10 +35,10 @@ class SearchOfflineByFilters extends AbstractService
         $perPage = $this->getInput('perPage', 0);
         $filtersInput = $this->getInput('filters', []);
         $this->validate($filtersInput);
-        $compositeFilters  = $this->searchFiltersBuilder->setAllFilters($this->getInput('filters'))->build();
-        $results           = $this->repository->getByFilters($compositeFilters);
+        $compositeFilters = $this->searchFiltersBuilder->setAllFilters($filtersInput)->build();
+        $results = $this->repository->getByFilters($compositeFilters);
         $profileComposites = $this->formattedToProfileComposite($results);
-        $this->setOutput('result',$profileComposites);
+        $this->setOutput('result', $profileComposites);
         return $this;
     }
 

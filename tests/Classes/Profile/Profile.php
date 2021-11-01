@@ -156,7 +156,7 @@ class Profile extends Model implements IProfileEntity, IProfileRepository
                         $table = 'profile_names';
                         break;
                     case 'phone':
-                        $field = 'original_number';
+                        $field = 'formatted_number';
                         $table = 'profile_phones';
                         break;
                     case 'email':

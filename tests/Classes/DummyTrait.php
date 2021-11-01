@@ -24,8 +24,8 @@ trait DummyTrait
         return [
             'type'=>'mobile',
             'do_not_call_flag'=>false,
-            'country_code'=>$this->faker->countryCode,
-            'original_number'=> $this->faker->phoneNumber(),
+            'country_code'=>'TR',
+            'original_number'=> '5527153514',
             'risky_phone'=>false,
             'disposable_phone'=>true,
             'carrier'=>'wireless',

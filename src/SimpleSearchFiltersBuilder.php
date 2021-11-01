@@ -5,6 +5,7 @@ namespace Jawabkom\Backend\Module\Profile;
 use Jawabkom\Backend\Module\Profile\Contract\ISearchFiltersBuilder;
 use Jawabkom\Backend\Module\Profile\Exception\FilterLogicalOperationDoesNotExists;
 use Jawabkom\Backend\Module\Profile\Exception\FilterNameDoesNotExistsException;
+use Jawabkom\Backend\Module\Profile\Library\Phone;
 use Jawabkom\Standard\Contract\IAndFilterComposite;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Contract\IFilter;
@@ -80,6 +81,7 @@ class SimpleSearchFiltersBuilder implements ISearchFiltersBuilder
             return $this->di->make(IOrFilterComposite::class);
         } elseif($this->filterType == 'and') {
             $compositeAndFilter = $this->di->make(IAndFilterComposite::class);
+            $this->formattedFilter();
             foreach ($this->filters as $filterName => $filterValue) {
                 $filterObj = $this->di->make(IFilter::class);
                 $compositeAndFilter->addChild($filterObj->setName($filterName)->setValue($filterValue));
@@ -109,6 +111,14 @@ class SimpleSearchFiltersBuilder implements ISearchFiltersBuilder
             if(!in_array($filterName, $this->registeredFilters)) {
                 throw new FilterNameDoesNotExistsException("Filter Name: '$filterName', Allowed Filters: ".json_encode($this->registeredFilters));
             }
+        }
+    }
+
+    private function formattedFilter()
+    {
+        if (array_key_exists('phone',$this->filters)){
+            $phone = $this->di->make(Phone::class);
+            $this->filters['phone'] = $phone->parse($this->filters['phone'],[$this->filters['country_code']])['phone']??'';
         }
     }
 }

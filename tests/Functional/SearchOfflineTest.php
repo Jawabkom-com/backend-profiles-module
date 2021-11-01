@@ -46,12 +46,12 @@ class SearchOfflineTest extends AbstractTestCase
             'middle_name' => $dummyProfilesData[1]['names'][0]['middle'],
             'last_name'   => $dummyProfilesData[1]['names'][0]['last'],
             'phone'       => $dummyProfilesData[1]['phones'][0]['original_number'],
-            'country_code'=> $dummyProfilesData[1]['phones'][0]['country_code'],
+           'country_code'=> $dummyProfilesData[1]['phones'][0]['country_code'],
             'city'        => $dummyProfilesData[1]['addresses'][0]['city'],
             'state'       => $dummyProfilesData[1]['addresses'][0]['state'],
             'username'    => $dummyProfilesData[1]['usernames'][0]['username'],
         ];
-        $profileCompositesResults = $this->searchOfflineByFilters->input('filters',$filter)->process()->output('result');
+       $profileCompositesResults = $this->searchOfflineByFilters->input('filters',$filter)->process()->output('result');
        $this->assertInstanceOf(IProfileComposite::class,$profileCompositesResults[0]);
        $this->assertInstanceOf(IProfileEntity::class,$profileCompositesResults[0]->getProfile());
     }

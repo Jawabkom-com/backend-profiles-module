@@ -7,7 +7,7 @@ use Jawabkom\Backend\Module\Profile\Exception\CountryCodeDoesNotExists;
 
 class Country
 {
-    protected static $countries = [
+    public static $countries = [
         'AF' => 'Afghanistan',
         'AX' => 'Aland Islands',
         'AL' => 'Albania',
