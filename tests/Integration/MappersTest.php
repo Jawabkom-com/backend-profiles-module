@@ -2,6 +2,9 @@
 
 namespace Jawabkom\Backend\Module\Profile\Test\Integration;
 
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileEntityMapper;
 use Jawabkom\Backend\Module\Profile\Exception\FilterLogicalOperationDoesNotExists;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
@@ -29,10 +32,27 @@ class SearcherRegistryTest extends AbstractTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->di = new DI();
+        //$this->di = new DI();
         $this->createProfile = $this->di->make(CreateProfile::class);
         $this->searchOfflineByFilters = $this->di->make(SearchOfflineByFilters::class);
         $this->faker = Factory::create();
+    }
+
+    public function testProfileEntity2Array2ProfileEntityMapping()
+    {
+        $originEntity = $this->di->make(IProfileEntity::class);
+        $originEntity->setDataSource('test_data_source');
+        $originEntity->setPlaceOfBirth('JO');
+        $originEntity->setDateOfBirth('2021-10-01');
+        $originEntity->setGender('male');
+
+        $toArrayMapper = $this->di->make(IProfileEntityToArrayMapper::class);
+        $aMappedEntity = $toArrayMapper->map($originEntity);
+
+        $toProfileEntityMapper = $this->di->make(IArrayToProfileEntityMapper::class);
+        $newEntity = $toProfileEntityMapper->map($aMappedEntity);
+
+        $this->assertEquals(serialize($originEntity), serialize($newEntity));
     }
 
     public function testInputArrayMustMatchTheArrayAfterMapping()
