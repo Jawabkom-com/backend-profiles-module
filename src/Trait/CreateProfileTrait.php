@@ -2,6 +2,7 @@
 
 namespace Jawabkom\Backend\Module\Profile\Trait;
 
+use Jawabkom\Backend\Module\Profile\Contract\EntityFilter\IProfileCompositeEntitiesFilter;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordRepository;
@@ -34,6 +35,8 @@ trait CreateProfileTrait
             $uuidFactory = $this->di->make(IProfileUuidFactory::class);
             $profileId   = $uuidFactory->generate();
         }
+        $profileCompositeEntitiesFilter = $this->di->make(IProfileCompositeEntitiesFilter::class);
+        $profileCompositeEntitiesFilter->filter($profileComposite);
         $profileComposite->getProfile()->setProfileId($profileId);
         $this->hashProfileComposite($profileComposite);
         $this->assertProfileHashDoesNotExists($profileComposite->getProfile()->getHash());

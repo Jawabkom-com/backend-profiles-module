@@ -24,6 +24,9 @@ interface IProfileNameEntity extends IEntity
     public function setDisplay(?string $display);
     public function getDisplay():?string;
 
+    public function setScore(int $score);
+    public function getScore():int;
+
     public function setHash(string $hash);
     public function getHash():string;
 

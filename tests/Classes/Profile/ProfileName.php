@@ -28,7 +28,8 @@ class ProfileName extends Model implements IProfileNameEntity,IProfileNameReposi
       'middle',
       'last',
       'display',
-       'hash'
+       'hash',
+        'score'
     ];
 
     protected $hidden =[
@@ -125,5 +126,15 @@ class ProfileName extends Model implements IProfileNameEntity,IProfileNameReposi
     public function getHash(): string
     {
        return $this->hash;
+    }
+
+    public function setScore(int $score)
+    {
+        $this->score = $score;
+    }
+
+    public function getScore(): int
+    {
+        return $this->score;
     }
 }

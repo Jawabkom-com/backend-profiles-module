@@ -68,10 +68,8 @@ class ArrayToProfileCompositeMapper extends AbstractMapper implements IArrayToPr
     {
         if (isset($profile['phones'])) {
             $mapper = $this->di->make(IArrayToProfilePhoneEntityMapper::class);
-            $phoneEntityFilter = $this->di->make(IProfilePhoneEntityFilter::class);
             foreach ($profile['phones'] as $phone) {
                 $objectPhone = $mapper->map($phone);
-                $phoneEntityFilter->filter($objectPhone);
                 $profileComposite->addPhone($objectPhone);
             }
         }
@@ -81,10 +79,8 @@ class ArrayToProfileCompositeMapper extends AbstractMapper implements IArrayToPr
     {
         if (isset($profile['addresses'])) {
             $mapper = $this->di->make(IArrayToProfileAddressEntityMapper::class);
-            $addressEntityFilter = $this->di->make(IProfileAddressEntityFilter::class);
             foreach ($profile['addresses'] as $address) {
                 $objectAddress = $mapper->map($address);
-                $addressEntityFilter->filter($objectAddress);
                 $profileComposite->addAddress($objectAddress);
             }
         }
@@ -94,10 +90,8 @@ class ArrayToProfileCompositeMapper extends AbstractMapper implements IArrayToPr
     {
         if (isset($profile['usernames'])) {
             $mapper = $this->di->make(IArrayToProfileUsernameEntityMapper::class);
-            $usernameEntityFilter = $this->di->make(IProfileUsernameEntityFilter::class);
             foreach ($profile['usernames'] as $username) {
                 $objectUsername = $mapper->map($username);
-                $usernameEntityFilter->filter($objectUsername);
                 $profileComposite->addUsername($objectUsername);
             }
         }
@@ -107,10 +101,8 @@ class ArrayToProfileCompositeMapper extends AbstractMapper implements IArrayToPr
     {
         if (isset($profile['emails'])) {
             $mapper = $this->di->make(IArrayToProfileEmailEntityMapper::class);
-            $emailEntityFilter = $this->di->make(IProfileEmailEntityFilter::class);
             foreach ($profile['emails'] as $email) {
                 $objectEmail = $mapper->map($email);
-                $emailEntityFilter->filter($objectEmail);
                 $profileComposite->addEmail($objectEmail);
             }
         }
@@ -120,10 +112,8 @@ class ArrayToProfileCompositeMapper extends AbstractMapper implements IArrayToPr
     {
         if (isset($profile['relationships'])) {
             $mapper = $this->di->make(IArrayToProfileRelationshipEntityMapper::class);
-            $relationshipEntityFilter = $this->di->make(IProfileRelationEntityFilter::class);
             foreach ($profile['relationships'] as $relationship) {
                 $objectRelationship = $mapper->map($relationship);
-                $relationshipEntityFilter->filter($objectRelationship);
                 $profileComposite->addRelationship($objectRelationship);
             }
         }
@@ -133,10 +123,8 @@ class ArrayToProfileCompositeMapper extends AbstractMapper implements IArrayToPr
     {
         if (isset($profile['skills'])) {
             $mapper = $this->di->make(IArrayToProfileSkillEntityMapper::class);
-            $skillEntityFilter = $this->di->make(IProfileSkillEntityFilter::class);
             foreach ($profile['skills'] as $skill) {
                 $objectSkill = $mapper->map($skill);
-                $skillEntityFilter->filter($objectSkill);
                 $profileComposite->addSkill($objectSkill);
             }
         }
@@ -146,10 +134,8 @@ class ArrayToProfileCompositeMapper extends AbstractMapper implements IArrayToPr
     {
         if (isset($profile['images'])) {
             $mapper = $this->di->make(IArrayToProfileImageEntityMapper::class);
-            $imageEntityFilter = $this->di->make(IProfileImageEntityFilter::class);
             foreach ($profile['images'] as $image) {
                 $objectImage = $mapper->map($image);
-                $imageEntityFilter->filter($objectImage);
                 $profileComposite->addImage($objectImage);
             }
         }
@@ -159,10 +145,8 @@ class ArrayToProfileCompositeMapper extends AbstractMapper implements IArrayToPr
     {
         if (isset($profile['languages'])) {
             $mapper = $this->di->make(IArrayToProfileLanguageEntityMapper::class);
-            $languageEntityFilter = $this->di->make(IProfileLanguageEntityFilter::class);
             foreach ($profile['languages'] as $language) {
                 $objectLanguage = $mapper->map($language);
-                $languageEntityFilter->filter($objectLanguage);
                 $profileComposite->addLanguage($objectLanguage);
             }
         }
@@ -172,10 +156,8 @@ class ArrayToProfileCompositeMapper extends AbstractMapper implements IArrayToPr
     {
         if (isset($profile['jobs'])) {
             $mapper = $this->di->make(IArrayToProfileJobEntityMapper::class);
-            $jobEntityFilter = $this->di->make(IProfileJobEntityFilter::class);
             foreach ($profile['jobs'] as $job) {
                 $objectJob = $mapper->map($job);
-                $jobEntityFilter->filter($objectJob);
                 $profileComposite->addJob($objectJob);
             }
         }
@@ -185,10 +167,8 @@ class ArrayToProfileCompositeMapper extends AbstractMapper implements IArrayToPr
     {
         if (isset($profile['educations'])) {
             $mapper = $this->di->make(IArrayToProfileEducationEntityMapper::class);
-            $educationEntityFilter = $this->di->make(IProfileEducationEntityFilter::class);
             foreach ($profile['educations'] as $education) {
                 $objectEducation = $mapper->map($education);
-                $educationEntityFilter->filter($objectEducation);
                 $profileComposite->addEducation($objectEducation);
             }
         }
@@ -198,10 +178,8 @@ class ArrayToProfileCompositeMapper extends AbstractMapper implements IArrayToPr
     {
         if (isset($profile['social_profiles'])) {
             $mapper = $this->di->make(IArrayToProfileSocialProfileEntityMapper::class);
-            $socialProfileEntityFilter = $this->di->make(IProfileSocialProfileEntityFilter::class);
             foreach ($profile['social_profiles'] as $socialProfile) {
                 $objectSocialProfile = $mapper->map($socialProfile);
-                $socialProfileEntityFilter->filter($objectSocialProfile);
                 $profileComposite->addSocialProfile($objectSocialProfile);
             }
         }
@@ -211,10 +189,8 @@ class ArrayToProfileCompositeMapper extends AbstractMapper implements IArrayToPr
     {
         if (isset($profile['criminal_records'])) {
             $mapper = $this->di->make(IArrayToProfileCriminalRecordEntityMapper::class);
-            $criminalRecordEntityFilter = $this->di->make(IProfileCriminalRecordEntityFilter::class);
             foreach ($profile['criminal_records'] as $criminalRecord) {
                 $objectCriminalRecord = $mapper->map($criminalRecord);
-                $criminalRecordEntityFilter->filter($objectCriminalRecord);
                 $profileComposite->addCriminalRecord($objectCriminalRecord);
             }
         }
@@ -224,10 +200,8 @@ class ArrayToProfileCompositeMapper extends AbstractMapper implements IArrayToPr
     {
         if (isset($profile['meta_data'])) {
             $mapper = $this->di->make(IArrayToProfileMetaDataEntityMapper::class);
-            $metaDataEntityFilter = $this->di->make(IProfileMetaDataEntityFilter::class);
             foreach ($profile['meta_data'] as $metaData) {
                 $objectMetaData = $mapper->map($metaData);
-                $metaDataEntityFilter->filter($objectMetaData);
                 $profileComposite->addMetaData($objectMetaData);
             }
         }
@@ -237,10 +211,8 @@ class ArrayToProfileCompositeMapper extends AbstractMapper implements IArrayToPr
     {
         if (isset($profile['names'])) {
             $mapper = $this->di->make(IArrayToProfileNameEntityMapper::class);
-            $nameEntityFilter = $this->di->make(IProfileNameEntityFilter::class);
             foreach ($profile['names'] as $name) {
                 $objectName = $mapper->map($name);
-                $nameEntityFilter->filter($objectName);
                 $profileComposite->addName($objectName);
             }
         }

@@ -11,9 +11,11 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilt
     DI,
     ProfileUuidFactory,
     Search\SearcherStatus,
-    Search\SearchRequest};
+    Search\SearchRequest,
+    TestNameScoring};
 use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
-use Jawabkom\Backend\Module\Profile\Contract\{HashGenerator\IProfileAddressHashGenerator,
+use Jawabkom\Backend\Module\Profile\Contract\{EntityFilter\IProfileCompositeEntitiesFilter,
+    HashGenerator\IProfileAddressHashGenerator,
     HashGenerator\IProfileCompositeHashGenerator,
     HashGenerator\IProfileCriminalRecordHashGenerator,
     HashGenerator\IProfileEducationHashGenerator,
@@ -82,6 +84,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{HashGenerator\IProfileAddressHashG
     EntityFilter\IProfileSkillEntityFilter,
     EntityFilter\IProfileSocialProfileEntityFilter,
     EntityFilter\IProfileUsernameEntityFilter,
+    Libraries\INameScoring,
     Mapper\IArrayToProfileEntityMapper,
     Mapper\IArrayToProfileAddressEntityMapper,
     Mapper\IArrayToProfileCriminalRecordEntityMapper,
@@ -113,6 +116,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{HashGenerator\IProfileAddressHashG
     Mapper\IProfileSocialProfileEntityToArrayMapper,
     Mapper\IProfileUsernameEntityToArrayMapper};
 use Jawabkom\Backend\Module\Profile\BasicArrayHashing;
+use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileCompositeEntitiesFilter;
 use Jawabkom\Backend\Module\Profile\Facade\ProfileCompositeFacade;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileAddressHashGenerator;
 use Jawabkom\Backend\Module\Profile\HashGenerator\ProfileCompositeHashGenerator;
@@ -310,7 +314,9 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileSkillEntityFilter::class                => ProfileSkillEntityFilter::class,
             IProfileSocialProfileEntityFilter::class        => ProfileSocialProfileEntityFilter::class,
             IProfileUsernameEntityFilter::class             => ProfileUsernameEntityFilter::class,
-            IProfileCompositeHashGenerator::class           => ProfileCompositeHashGenerator::class
+            IProfileCompositeHashGenerator::class           => ProfileCompositeHashGenerator::class,
+            INameScoring::class                             => TestNameScoring::class,
+            IProfileCompositeEntitiesFilter::class          => ProfileCompositeEntitiesFilter::class,
         ];
 
         foreach ($toBind as $interface => $implementation) {

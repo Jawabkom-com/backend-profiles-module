@@ -23,6 +23,7 @@ class CreateProfileNamesTable extends Migration
             $table->string('last')->nullable()->index();
             $table->string('display')->nullable();
             $table->string('hash')->index();
+            $table->integer('score')->index();
             $table->timestamps();
         });
     }

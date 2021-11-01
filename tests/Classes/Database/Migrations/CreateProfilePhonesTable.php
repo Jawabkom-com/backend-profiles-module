@@ -29,7 +29,7 @@ class CreateProfilePhonesTable extends Migration
             $table->string('carrier')->nullable()->index();
             $table->string('purpose')->nullable()->index();
             $table->string('industry')->nullable()->index();
-            $table->json('possible_countries')->default('[]');
+            $table->json('possible_countries')->nullable();
             $table->string('hash')->index();
             $table->timestamps();
         });
