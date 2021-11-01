@@ -70,4 +70,9 @@ class PhoneLibraryTest extends AbstractTestCase
         $this->assertTrue($parse['is_valid']);
         $this->assertEquals('JO', $parse['country_code']);
     }
+    public function testParseInvalidPhoneNumberException()
+    {
+         $phone= $this->phoneLib->parse('+9627882082631');
+         $this->assertEquals(false,$phone['is_valid']);
+    }
 }
