@@ -31,6 +31,14 @@ class PhoneLibraryTest extends AbstractTestCase
         $this->assertEquals('JO', $parse['country_code']);
     }
 
+    public function testParseNormalizedPhoneNumberWith00()
+    {
+        $parse = $this->phoneLib->parse('00962788208263');
+        $this->assertEquals('+962788208263', $parse['phone']);
+        $this->assertTrue($parse['is_valid']);
+        $this->assertEquals('JO', $parse['country_code']);
+    }
+
     public function testParseNormalizedPhoneNumber_NoPrefix()
     {
         $parse = $this->phoneLib->parse('962788208263');
@@ -61,5 +69,10 @@ class PhoneLibraryTest extends AbstractTestCase
         $this->assertEquals('+962788208263', $parse['phone']);
         $this->assertTrue($parse['is_valid']);
         $this->assertEquals('JO', $parse['country_code']);
+    }
+    public function testParseInvalidPhoneNumberException()
+    {
+         $phone= $this->phoneLib->parse('+9627882082631');
+         $this->assertEquals(false,$phone['is_valid']);
     }
 }

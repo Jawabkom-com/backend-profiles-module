@@ -39,6 +39,7 @@ class ProfilePhonesInputValidator
                             foreach ($inputValue as $countryCode) {
                                 Country::assertCountryCodeExists($countryCode, 'possible_countries input value must be a valid country codes list.');
                             }
+                            break;
 
                         case 'do_not_call_flag':
                         case 'valid_phone':

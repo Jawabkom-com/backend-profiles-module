@@ -199,6 +199,8 @@ class CreateProfileTest extends AbstractTestCase
         $this->assertTrue(true);
         $this->assertNotEmpty($result);
         $profile = $result->getProfile();
+        $emailEntity = $result->getEmails();
+        $this->assertEquals($emailEntity[0]->esp_domain ,explode("@", $emailEntity[0]->email)[1]);
         $this->assertInstanceOf(IProfileRepository::class,$profile);
         $this->assertInstanceOf(IProfileEntity::class,$profile);
         $this->assertDatabaseHas('profiles',[

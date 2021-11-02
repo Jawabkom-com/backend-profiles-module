@@ -25,6 +25,7 @@ class ArrayToProfilePhoneEntityMapper extends AbstractMapper implements IArrayTo
         $entity->setCarrier($profile['carrier'] ?? null);
         $entity->setPurpose($profile['purpose'] ?? null);
         $entity->setIndustry($profile['industry'] ?? null);
+        $entity->setPossibleCountries($profile['possible_countries'] ?? []);
         return $entity;
     }
 }

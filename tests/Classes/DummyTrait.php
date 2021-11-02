@@ -30,6 +30,7 @@ trait DummyTrait
             'disposable_phone'=>true,
             'carrier'=>'wireless',
             'purpose'=>'home',
+            'possible_countries' => [$this->faker->countryCode],
             'industry'=>'home',
         ];
     }
