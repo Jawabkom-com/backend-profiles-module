@@ -10,6 +10,7 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilt
     Composite\ProfileComposite,
     DI,
     ProfileUuidFactory,
+    Search\QueryRequestLogger,
     Search\SearcherStatus,
     Search\SearchRequest,
     TestNameScoring};
@@ -66,6 +67,8 @@ use Jawabkom\Backend\Module\Profile\Contract\{EntityFilter\IProfileCompositeEnti
     IProfileUsernameEntity,
     IProfileUsernameRepository,
     IProfileUuidFactory,
+    IQueryRequestLoggerEntity,
+    IQueryRequestLoggerRepository,
     ISearcherStatusRepository,
     ISearchFiltersBuilder,
     ISearchRequestRepository,
@@ -317,6 +320,8 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileCompositeHashGenerator::class           => ProfileCompositeHashGenerator::class,
             INameScoring::class                             => TestNameScoring::class,
             IProfileCompositeEntitiesFilter::class          => ProfileCompositeEntitiesFilter::class,
+            IQueryRequestLoggerRepository::class            => QueryRequestLogger::class,
+            IQueryRequestLoggerEntity::class                => QueryRequestLogger::class,
         ];
 
         foreach ($toBind as $interface => $implementation) {
