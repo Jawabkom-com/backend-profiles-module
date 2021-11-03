@@ -3,11 +3,15 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Integration;
 
 use Jawabkom\Backend\Module\Profile\Contract\IArrayToProfileCompositeMapper;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileAddressRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCompositeToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileImageRepository;
@@ -20,7 +24,15 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
+use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileAddressEntityMapper;
+use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileCriminalRecordEntityMapper;
+use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileEducationEntityMapper;
+use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileEmailEntityMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileEntityMapper;
+use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileAddressEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileCriminalRecordEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileEducationEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileEmailEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
@@ -30,7 +42,7 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Profile\Profile;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 
-class MappersTest extends AbstractTestCase
+class MapperEntityArrayEntityTest extends AbstractTestCase
 {
     use DummyTrait;
 
@@ -48,105 +60,76 @@ class MappersTest extends AbstractTestCase
 
     public function testProfileEntity2Array2ProfileEntityMapping()
     {
-        $originalComposite = $this->di->make(IProfileComposite::class);
         $originEntity = $this->originalProfile();
-        $originalComposite->setProfile($originEntity);
-        $toArrayMapper = $this->di->make(IProfileCompositeToArrayMapper::class);
-        $aMappedComposite = $toArrayMapper->map($originalComposite);
-        $toProfileEntityMapper = $this->di->make(IArrayToProfileCompositeMapper::class);
-        $newComposite = $toProfileEntityMapper->map($aMappedComposite);
-        $this->assertEquals($this->hashSerializeObject($originalComposite), $this->hashSerializeObject($newComposite));
+        $toArrayMapper = $this->di->make(IProfileEntityToArrayMapper::class);
+        $aMappedEntity = $toArrayMapper->map($originEntity);
+        $toProfileEntityMapper = $this->di->make(IArrayToProfileEntityMapper::class);
+        $newEntity = $toProfileEntityMapper->map($aMappedEntity);
+        $this->assertEquals($this->hashSerializeObject($originEntity), $this->hashSerializeObject($newEntity));
     }
 
     public function testProfileEmailEntity2Array2ProfileEmailEntityMapping()
     {
-        $originalComposite = $this->di->make(IProfileComposite::class);
-        $originEntity = $this->originalProfile();
-
-        $emailRepository = $this->di->make(IProfileEmailRepository::class);
-        $newEmailEntity =  $emailRepository->createEntity();
-        $newEmailEntity->setValidSince(new \DateTime('2021-10-01'));
-        $newEmailEntity->setEmail('jked@example.com');
-        $newEmailEntity->setEspDomain('example.com');
-        $newEmailEntity->setType('edjekjed');
-
-        $originalComposite->addEmail($newEmailEntity);
-        $originalComposite->setProfile($originEntity);
-        $profileCompositeToArrayMapper = $this->di->make(IProfileCompositeToArrayMapper::class);
-        $aMappedComposite  =  $profileCompositeToArrayMapper->map($originalComposite);
-        $toProfileEntityMapper = $this->di->make(IArrayToProfileCompositeMapper::class);
-        $newComposite = $toProfileEntityMapper->map($aMappedComposite);
-        $this->assertEquals($this->hashSerializeObject($originalComposite), $this->hashSerializeObject($newComposite));
+        $originEntity = $this->di->make(IProfileEmailEntity::class);
+        $originEntity->setValidSince(new \DateTime('2021-10-01'));
+        $originEntity->setEmail('jked@example.com');
+        $originEntity->setEspDomain('example.com');
+        $originEntity->setType('edjekjed');
+        $toArrayMapper = $this->di->make(IProfileEmailEntityToArrayMapper::class);
+        $aMappedEntity = $toArrayMapper->map($originEntity);
+        $toProfileEntityMapper = $this->di->make(IArrayToProfileEmailEntityMapper::class);
+        $newEntity = $toProfileEntityMapper->map($aMappedEntity);
+        $this->assertEquals($this->hashSerializeObject($originEntity), $this->hashSerializeObject($newEntity));
     }
 
     public function testProfileAddressEntity2Array2ProfileAddressEntityMapping()
     {
-        $originalComposite = $this->di->make(IProfileComposite::class);
-        $originEntity = $this->originalProfile();
-
-        $addressRepository = $this->di->make(IProfileAddressRepository::class);
-        $newAddressEntity =  $addressRepository->createEntity();
-        $newAddressEntity->setValidSince(new \DateTime('2021-10-01'));
-        $newAddressEntity->setCountry('PS');
-        $newAddressEntity->setState('state');
-        $newAddressEntity->setCity('city');
-        $newAddressEntity->setZip('zip');
-        $newAddressEntity->setStreet('street');
-        $newAddressEntity->setBuildingNumber('3333');
-        $newAddressEntity->setDisplay('display');
-
-        $originalComposite->addAddress($newAddressEntity);
-        $originalComposite->setProfile($originEntity);
-        $profileCompositeToArrayMapper = $this->di->make(IProfileCompositeToArrayMapper::class);
-        $aMappedComposite  =  $profileCompositeToArrayMapper->map($originalComposite);
-        $toProfileEntityMapper = $this->di->make(IArrayToProfileCompositeMapper::class);
-        $newComposite = $toProfileEntityMapper->map($aMappedComposite);
-        $this->assertEquals($this->hashSerializeObject($originalComposite), $this->hashSerializeObject($newComposite));
+        $originEntity = $this->di->make(IProfileAddressEntity::class);
+        $originEntity->setValidSince(new \DateTime('2021-10-01'));
+        $originEntity->setCountry('PS');
+        $originEntity->setState('state');
+        $originEntity->setCity('city');
+        $originEntity->setZip('zip');
+        $originEntity->setStreet('street');
+        $originEntity->setBuildingNumber('3333');
+        $originEntity->setDisplay('display');
+        $toArrayMapper = $this->di->make(IProfileAddressEntityToArrayMapper::class);
+        $aMappedEntity = $toArrayMapper->map($originEntity);
+        $toProfileEntityMapper = $this->di->make(IArrayToProfileAddressEntityMapper::class);
+        $newEntity = $toProfileEntityMapper->map($aMappedEntity);
+        $this->assertEquals($this->hashSerializeObject($originEntity), $this->hashSerializeObject($newEntity));
     }
 
     public function testProfileCriminalRecordEntity2Array2ProfileCriminalRecordEntityMapping()
     {
-        $originalComposite = $this->di->make(IProfileComposite::class);
-        $originEntity = $this->originalProfile();
-
-        $criminalRecordRepository = $this->di->make(IProfileCriminalRecordRepository::class);
-        $newCriminalRecordEntity =  $criminalRecordRepository->createEntity();
-        $newCriminalRecordEntity->setCaseNumber('Case Number');
-        $newCriminalRecordEntity->setCaseType('Case Type');
-        $newCriminalRecordEntity->setCaseYear('Case Year');
-        $newCriminalRecordEntity->setCaseStatus('Case Status');
-        $newCriminalRecordEntity->setDisplay('Display');
-
-        $originalComposite->addCriminalRecord($newCriminalRecordEntity);
-        $originalComposite->setProfile($originEntity);
-        $profileCompositeToArrayMapper = $this->di->make(IProfileCompositeToArrayMapper::class);
-        $aMappedComposite  =  $profileCompositeToArrayMapper->map($originalComposite);
-        $toProfileEntityMapper = $this->di->make(IArrayToProfileCompositeMapper::class);
-        $newComposite = $toProfileEntityMapper->map($aMappedComposite);
-        $this->assertEquals($this->hashSerializeObject($originalComposite), $this->hashSerializeObject($newComposite));
+        $originEntity = $this->di->make(IProfileCriminalRecordEntity::class);
+        $originEntity->setCaseNumber('Case Number');
+        $originEntity->setCaseType('Case Type');
+        $originEntity->setCaseYear('Case Year');
+        $originEntity->setCaseStatus('Case Status');
+        $originEntity->setDisplay('Display');
+        $toArrayMapper = $this->di->make(IProfileCriminalRecordEntityToArrayMapper::class);
+        $aMappedEntity = $toArrayMapper->map($originEntity);
+        $toProfileEntityMapper = $this->di->make(IArrayToProfileCriminalRecordEntityMapper::class);
+        $newEntity = $toProfileEntityMapper->map($aMappedEntity);
+        $this->assertEquals($this->hashSerializeObject($originEntity), $this->hashSerializeObject($newEntity));
     }
 
     public function testProfileEducationEntity2Array2ProfileEducationEntityMapping()
     {
-        $originalComposite = $this->di->make(IProfileComposite::class);
-        $originEntity = $this->originalProfile();
+        $originEntity = $this->di->make(IProfileEducationEntity::class);
+        $originEntity->setValidSince(new \DateTime('2021-10-01'));
+        $originEntity->setFrom(new \DateTime('2021-10-01'));
+        $originEntity->setTo(new \DateTime('2021-10-01'));
+        $originEntity->setSchool('school');
+        $originEntity->setDegree('degree');
+        $originEntity->setMajor('major');
+        $toArrayMapper = $this->di->make(IProfileEducationEntityToArrayMapper::class);
+        $aMappedEntity = $toArrayMapper->map($originEntity);
+        $toProfileEntityMapper = $this->di->make(IArrayToProfileEducationEntityMapper::class);
+        $newEntity = $toProfileEntityMapper->map($aMappedEntity);
+        $this->assertEquals($this->hashSerializeObject($originEntity), $this->hashSerializeObject($newEntity));
 
-        $educationRepository = $this->di->make(IProfileEducationRepository::class);
-        $newEducationEntity =  $educationRepository->createEntity();
-        $newEducationEntity->setValidSince(new \DateTime('2021-10-01'));
-        $newEducationEntity->setFrom(new \DateTime('2021-10-01'));
-        $newEducationEntity->setTo(new \DateTime('2021-10-01'));
-        $newEducationEntity->setSchool('school');
-        $newEducationEntity->setDegree('degree');
-        $newEducationEntity->setMajor('major');
-
-        $originalComposite->addEducation($newEducationEntity);
-        $originalComposite->setProfile($originEntity);
-        $profileCompositeToArrayMapper = $this->di->make(IProfileCompositeToArrayMapper::class);
-        $aMappedComposite  =  $profileCompositeToArrayMapper->map($originalComposite);
-        $toProfileEntityMapper = $this->di->make(IArrayToProfileCompositeMapper::class);
-        $newComposite = $toProfileEntityMapper->map($aMappedComposite);
-        $this->assertEquals($this->hashSerializeObject($originalComposite), $this->hashSerializeObject($newComposite));
     }
 
     public function testProfileImageEntity2Array2ProfileImageEntityMapping()

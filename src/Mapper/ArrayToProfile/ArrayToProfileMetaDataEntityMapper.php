@@ -13,8 +13,8 @@ class ArrayToProfileMetaDataEntityMapper extends AbstractMapper implements IArra
     {
         if(!$entity)
             $entity = $this->di->make(IProfileMetaDataEntity::class);
-        $entity->setMetaKey($profile['meta_key'] ?? null);
-        $entity->setMetaValue($profile['meta_value'] ?? null);
+        $entity->setMetaKey($profile['key'] ?? null);
+        $entity->setMetaValue($profile['value'] ?? null);
         return $entity;
     }
 }
