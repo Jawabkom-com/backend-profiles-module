@@ -17,6 +17,7 @@ class ProfilePhoneEntityToArrayMapper implements IProfilePhoneEntityToArrayMappe
           'valid_phone'=>$phoneEntity->getValidPhone(),
           'risky_phone'=>$phoneEntity->getRiskyPhone(),
           'disposable_phone'=>$phoneEntity->getDisposablePhone(),
+          'possible_countries'=>$phoneEntity->getPossibleCountries(),
           'carrier'=>$phoneEntity->getCarrier(),
           'purpose'=>$phoneEntity->getPurpose(),
           'industry'=>$phoneEntity->getIndustry(),
