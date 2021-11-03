@@ -4,7 +4,6 @@ namespace Jawabkom\Backend\Module\Profile\Service;
 
 use Jawabkom\Backend\Module\Profile\Contract\IArrayHashing;
 use Jawabkom\Backend\Module\Profile\Contract\IArrayToProfileCompositeMapper;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Trait\CreateProfileTrait;
 use Jawabkom\Backend\Module\Profile\Trait\ProfileHashTrait;

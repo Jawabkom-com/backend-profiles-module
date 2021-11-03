@@ -41,18 +41,18 @@ class ProfileMetaData extends Model implements IProfileMetaDataEntity,IProfileMe
         $this->profile_id = $id;
     }
 
-    public function setMetaKey(?string $key)
+    public function setMetaKey(?string $metaKey)
     {
-       $this->meta_key = $key;
+       $this->meta_key = $metaKey;
     }
     public function getMetaKey():?string
     {
        return $this->meta_key;
     }
 
-    public function setMetaValue(?string $value)
+    public function setMetaValue(?string $metaValue)
     {
-      $this->meta_value = $value;
+      $this->meta_value = $metaValue;
     }
 
     public function getMetaValue():? string

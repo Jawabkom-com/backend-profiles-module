@@ -2,8 +2,6 @@
 
 namespace Jawabkom\Backend\Module\Profile\Trait;
 
-
-use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileAddressesInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileCriminalRecordsInputValidator;
 use Jawabkom\Backend\Module\Profile\Validator\ProfileEducationsInputValidator;

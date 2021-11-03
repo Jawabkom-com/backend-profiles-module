@@ -9,10 +9,10 @@ interface IProfileMetaDataEntity extends IEntity
     public function getProfileId():int|string;
     public function setProfileId(int|string $id);
 
-    public function setMetaKey(?string $key);
+    public function setMetaKey(?string $metaKey);
     public function getMetaKey():?string;
 
-    public function setMetaValue(?string $value);
+    public function setMetaValue(?string $metaValue);
     public function getMetaValue():?string;
 
     public function setHash(string $hash);

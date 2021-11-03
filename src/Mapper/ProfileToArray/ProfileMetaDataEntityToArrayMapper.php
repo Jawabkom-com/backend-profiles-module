@@ -9,8 +9,8 @@ class ProfileMetaDataEntityToArrayMapper implements IProfileMetaDataEntityToArra
     public function map(IProfileMetaDataEntity $metaDataEntity): array
     {
        return  [
-           'key'=>$metaDataEntity->getMetaKey(),
-           'value'=>$metaDataEntity->getMetaValue(),
+           'meta_key'   => $metaDataEntity->getMetaKey(),
+           'meta_value' => $metaDataEntity->getMetaValue(),
        ];
     }
 }
