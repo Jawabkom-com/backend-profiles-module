@@ -39,9 +39,8 @@ class SearchOfflineByPhone extends AbstractService
         $phoneNumber = $this->getInput('phone'); // required
         $phonePossibleCountries = $this->getInput('possible_countries'); //optional
 
-        // todo: input validation
         $this->validate($phoneNumber, $phonePossibleCountries);
-        // todo: use phone library to get the normalized phone
+
         $phone = $this->di->make(Phone::class);
         $formattedPhone = $phone->parse($phoneNumber, $phonePossibleCountries)['phone'];
         $profilePhoneEntities = $this->phoneRepository->getByPhone($formattedPhone);

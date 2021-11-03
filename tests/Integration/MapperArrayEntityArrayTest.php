@@ -93,7 +93,6 @@ class MapperArrayEntityArrayTest extends AbstractTestCase
         $originalArray['images'][] = $this->dummyImagesData();
         $toProfileCompositeMapper = $this->di->make(IArrayToProfileCompositeMapper::class);
         $aMappedArray = $toProfileCompositeMapper->map($originalArray);
-        dd($aMappedArray);
         $toArrayMapper = $this->di->make(IProfileCompositeToArrayMapper::class);
         $aMappedComposite = $toArrayMapper->map($aMappedArray);
         $this->assertEquals($this->hashSerializeObject($originalArray), $this->hashSerializeObject($aMappedComposite));
