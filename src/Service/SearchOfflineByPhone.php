@@ -4,39 +4,48 @@ namespace Jawabkom\Backend\Module\Profile\Service;
 
 use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 
-use Jawabkom\Backend\Module\Profile\Trait\GetProfileTrait;
-use Jawabkom\Backend\Module\Profile\Trait\ResponseFormattedTrait;
+use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
+use Jawabkom\Backend\Module\Profile\Exception\CountryCodeDoesNotExists;
+use Jawabkom\Backend\Module\Profile\Library\Country;
+use Jawabkom\Backend\Module\Profile\Library\Phone;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class SearchOfflineByPhone extends AbstractService
 {
-    protected IProfilePhoneReposito $repository;
     private IProfileCompositeFacade $compositeFacade;
+    private IProfilePhoneRepository $phoneRepository;
 
-    public function __construct(IDependencyInjector $di, IProfilePhoneRepository $repository, IProfileCompositeFacade $compositeFacade)
+    public function __construct(IDependencyInjector $di,
+                                IProfilePhoneRepository $phoneRepository,
+                                IProfileCompositeFacade $compositeFacade)
     {
         parent::__construct($di);
-        $this->repository = $repository;
         $this->compositeFacade = $compositeFacade;
+        $this->phoneRepository = $phoneRepository;
     }
 
     //
     // LEVEL 0
     //
+    /**
+     * @throws MissingRequiredInputException
+     * @throws CountryCodeDoesNotExists
+     */
     public function process(): static
     {
+        $composites = [];
         $phoneNumber = $this->getInput('phone'); // required
-        $phonePossibleCountries = $this->getInput('phone_possible_countries'); //optional
+        $phonePossibleCountries = $this->getInput('possible_countries'); //optional
 
         // todo: input validation
+        $this->validate($phoneNumber, $phonePossibleCountries);
+        // todo: use phone library to get the normalized phone
+        $phone = $this->di->make(Phone::class);
+        $formattedPhone = $phone->parse($phoneNumber, $phonePossibleCountries)['phone'];
+        $profilePhoneEntities = $this->phoneRepository->getByPhone($formattedPhone);
 
-        // toto: use phone library to get the normalized phone
-
-        $profilePhoneEntities = $this->repository->getByPhone();
-
-        $composites = [];
         foreach($profilePhoneEntities as $entity) {
             $composites[] = $this->compositeFacade->getCompositeByProfileId($entity->getProfileId());
         }
@@ -44,10 +53,34 @@ class SearchOfflineByPhone extends AbstractService
         return $this;
     }
 
-    private function validate(mixed $filtersInput)
+    /**
+     * @param string $phoneNumber
+     * @param array $phonePossibleCountries
+     * @throws MissingRequiredInputException
+     * @throws CountryCodeDoesNotExists
+     */
+    protected function validate(string $phoneNumber, array $phonePossibleCountries): void
     {
-        if (empty($filtersInput)) {
-            throw new MissingRequiredInputException('Missing Filter');
+        $this->validatePhoneNumber($phoneNumber);
+        $this->validatePhonePossibleCountries($phonePossibleCountries);
+    }
+
+    private function validatePhoneNumber(string $phoneNumber):void
+    {
+        if (empty($phoneNumber)){
+            throw new MissingRequiredInputException('Missing Phone Number* ,is required');
+        }
+    }
+
+    /**
+     * @throws CountryCodeDoesNotExists
+     */
+    private function validatePhonePossibleCountries(array $phonePossibleCountries)
+    {
+        if ($phonePossibleCountries){
+            foreach ($phonePossibleCountries as $countryCode) {
+                Country::assertCountryCodeExists($countryCode, 'possible_countries input value must be a valid country codes list.');
+            }
         }
     }
 
