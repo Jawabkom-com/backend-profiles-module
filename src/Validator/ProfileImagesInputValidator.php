@@ -8,7 +8,7 @@ use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
 class ProfileImagesInputValidator
 {
-    protected array $structure = ['original_url', 'valid_since'];
+    protected array $structure = ['original_url', 'valid_since' ];
 
     public function validate(array $inputs)
     {

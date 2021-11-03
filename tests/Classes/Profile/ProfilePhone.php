@@ -239,9 +239,4 @@ class ProfilePhone extends Model implements IProfilePhoneEntity, IProfilePhoneRe
     {
         return $this->possible_countries ?? [];
     }
-
-    public function getByPhone(string $normalizedPhoneNumber): ?iterable
-    {
-       return $this->where('formatted_number',$normalizedPhoneNumber)->get();
-    }
 }
