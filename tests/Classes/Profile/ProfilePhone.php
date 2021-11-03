@@ -239,4 +239,9 @@ class ProfilePhone extends Model implements IProfilePhoneEntity, IProfilePhoneRe
     {
         return $this->possible_countries ?? [];
     }
+
+    public function getByPhone(string $nomalizedPhoneNumber): ?iterable
+    {
+        // TODO: Implement getByPhone() method.
+    }
 }
