@@ -54,6 +54,9 @@ class SearchOfflineTest extends AbstractTestCase
        $profileCompositesResults = $this->searchOfflineByFilters->input('filters',$filter)->process()->output('result');
        $this->assertInstanceOf(IProfileComposite::class,$profileCompositesResults[0]);
        $this->assertInstanceOf(IProfileEntity::class,$profileCompositesResults[0]->getProfile());
+       $this->assertDatabaseHas('query_request_loggers',[
+           'matches_count'=>count($profileCompositesResults)
+       ]);
     }
 
     public function testMissingFilter(){
