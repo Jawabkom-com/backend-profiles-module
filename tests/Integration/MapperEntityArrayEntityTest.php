@@ -14,6 +14,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileEducationRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileImageEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileImageRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageRepository;
@@ -29,11 +30,13 @@ use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileCriminalRecor
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileEducationEntityMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileEmailEntityMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileEntityMapper;
+use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileImageEntityMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileAddressEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileCriminalRecordEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileEducationEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileEmailEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileImageEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
@@ -134,22 +137,15 @@ class MapperEntityArrayEntityTest extends AbstractTestCase
 
     public function testProfileImageEntity2Array2ProfileImageEntityMapping()
     {
-        $originalComposite = $this->di->make(IProfileComposite::class);
-        $originEntity = $this->originalProfile();
-
-        $imageRepository = $this->di->make(IProfileImageRepository::class);
-        $newImageEntity =  $imageRepository->createEntity();
-        $newImageEntity->setOriginalUrl('http://www.url.com');
-        $newImageEntity->setLocalPath('http://www.local.com');
-        $newImageEntity->setValidSince(new \DateTime('2021-10-01'));
-
-        $originalComposite->addImage($newImageEntity);
-        $originalComposite->setProfile($originEntity);
-        $profileCompositeToArrayMapper = $this->di->make(IProfileCompositeToArrayMapper::class);
-        $aMappedComposite  =  $profileCompositeToArrayMapper->map($originalComposite);
-        $toProfileEntityMapper = $this->di->make(IArrayToProfileCompositeMapper::class);
-        $newComposite = $toProfileEntityMapper->map($aMappedComposite);
-        $this->assertEquals($this->hashSerializeObject($originalComposite), $this->hashSerializeObject($newComposite));
+        $originEntity = $this->di->make(IProfileImageEntity::class);
+        $originEntity->setOriginalUrl('http://www.url.com');
+        $originEntity->setLocalPath('http://www.url.com');
+        $originEntity->setValidSince(new \DateTime('2021-10-01'));
+        $toArrayMapper = $this->di->make(IProfileImageEntityToArrayMapper::class);
+        $aMappedEntity = $toArrayMapper->map($originEntity);
+        $toProfileEntityMapper = $this->di->make(IArrayToProfileImageEntityMapper::class);
+        $newEntity = $toProfileEntityMapper->map($aMappedEntity);
+        $this->assertEquals($this->hashSerializeObject($originEntity), $this->hashSerializeObject($newEntity));
     }
 
     public function testProfileJobEntity2Array2ProfileJobEntityMapping()
