@@ -958,7 +958,6 @@ class CreateProfileTest extends AbstractTestCase
         $profileTwo = $this->createProfile->input('profile',$userData)
             ->process()
             ->output('result');
-dd($profileOne->getProfile()->toArray(), $profileTwo->getProfile()->toArray());
 
 /*        $this->assertDatabaseHas('profiles',[
             'profile_id' => $profile->getProfileId()

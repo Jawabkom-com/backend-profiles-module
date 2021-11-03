@@ -75,7 +75,7 @@ trait DummyTrait
     {
         return [
             'original_url'=>$this->faker->imageUrl,
-            'local_path'=>$this->faker->url,
+            //'local_path'=>$this->faker->url,
             'valid_since'=>$this->faker->date
         ];
     }
@@ -90,8 +90,8 @@ trait DummyTrait
     private function dummyMetaData()
     {
         return [
-            'meta_key'=>'email',
-            'meta_value'=>$this->faker->email,
+            'key'=>'email',
+            'value'=>$this->faker->email,
         ];
     }
 
