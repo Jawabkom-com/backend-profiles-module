@@ -90,8 +90,8 @@ trait DummyTrait
     private function dummyMetaData()
     {
         return [
-            'key'=>'email',
-            'value'=>$this->faker->email,
+            'meta_key'=>'email',
+            'meta_value'=>$this->faker->email,
         ];
     }
 

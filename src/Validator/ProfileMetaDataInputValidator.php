@@ -6,7 +6,7 @@ use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 
 class ProfileMetaDataInputValidator
 {
-    protected array $structure = ['meta_key', 'key_value'];
+    protected array $structure = ['meta_key', 'meta_value'];
 
     public function validate(array $inputs)
     {

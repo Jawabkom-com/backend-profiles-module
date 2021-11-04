@@ -145,7 +145,6 @@ class MapperArrayEntityArrayTest extends AbstractTestCase
         $aMappedEntity = $toProfileEntityMapper->map($originalArray);
         $toArrayMapper = $this->di->make(IProfileMetaDataEntityToArrayMapper::class);
         $aMappedArray = $toArrayMapper->map($aMappedEntity);
-        dd($originalArray  , $aMappedArray);
         $this->assertEquals($this->hashSerializeObject($originalArray), $this->hashSerializeObject($aMappedArray));
     }
 
