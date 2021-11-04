@@ -32,6 +32,7 @@ trait DummyTrait
             'purpose'=>'home',
             'possible_countries' => [$this->faker->countryCode],
             'industry'=>'home',
+            'valid_since' => $this->faker->date,
         ];
     }
 
@@ -66,7 +67,7 @@ trait DummyTrait
     {
         return [
             'valid_since'=>$this->faker->date,
-            'level'=>$this->faker->randomDigit(),
+            'level'=> (string) $this->faker->randomDigit(),
             'skill'=>'Software Engineer',
         ];
     }
@@ -75,7 +76,6 @@ trait DummyTrait
     {
         return [
             'original_url'=>$this->faker->imageUrl,
-            //'local_path'=>$this->faker->url,
             'valid_since'=>$this->faker->date
         ];
     }
