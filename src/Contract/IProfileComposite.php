@@ -36,7 +36,7 @@ interface IProfileComposite
     public function addUsername(IProfileUsernameEntity $IProfileEntityUsername);
 
     /**
-     * @return IProfileNameEntity[]
+     * @return IProfileUsernameEntity[]
      */
     public function getUsernames(): iterable;
     public function setUsernames(iterable $usernames);

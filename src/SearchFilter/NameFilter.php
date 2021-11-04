@@ -6,19 +6,20 @@ namespace Jawabkom\Backend\Module\Profile\SearchFilter;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\SearchFilter\IProfileCompositeSearchFilter;
 
-class PhoneNumberFilter implements IProfileCompositeSearchFilter
+class NameFilter implements IProfileCompositeSearchFilter
 {
-    protected string $phoneNumber;
 
-    public function __construct(string $phoneNumber)
+    private string $name;
+
+    public function __construct(string $name)
     {
-        $this->phoneNumber = $phoneNumber;
+        $this->name = $name;
     }
 
     public function apply(IProfileComposite $composite): bool
     {
-        foreach($composite->getPhones() as $oPhone) {
-            if($oPhone->getFormattedNumber() == $this->phoneNumber) {
+        foreach($composite->getNames() as $name) {
+            if($name->getDisplay() == $this->name) {
                 return true;
             }
         }

@@ -6,19 +6,21 @@ namespace Jawabkom\Backend\Module\Profile\SearchFilter;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\SearchFilter\IProfileCompositeSearchFilter;
 
-class PhoneNumberFilter implements IProfileCompositeSearchFilter
+class CountryCodeFilter implements IProfileCompositeSearchFilter
 {
-    protected string $phoneNumber;
 
-    public function __construct(string $phoneNumber)
+
+    private string $countryCode;
+
+    public function __construct(string $countryCode)
     {
-        $this->phoneNumber = $phoneNumber;
+        $this->countryCode = $countryCode;
     }
 
     public function apply(IProfileComposite $composite): bool
     {
-        foreach($composite->getPhones() as $oPhone) {
-            if($oPhone->getFormattedNumber() == $this->phoneNumber) {
+        foreach($composite->getPhones() as $phone) {
+            if($phone->getCountryCode() == $this->countryCode) {
                 return true;
             }
         }

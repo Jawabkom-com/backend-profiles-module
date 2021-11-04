@@ -18,7 +18,13 @@ class SearchOfflineByPhone extends AbstractService
 {
     private IProfileCompositeFacade $compositeFacade;
     private IProfilePhoneRepository $phoneRepository;
-
+    protected array $structure = ['phone', 'username', 'email' , 'name' , 'country_code'];
+    const SEARCH_FILTER =[
+      'phone' => "Jawabkom\\Backend\\Module\\Profile\\SearchFilter\\PhoneNumberFilter",
+      'username' => "Jawabkom\\Backend\\Module\\Profile\\SearchFilter\\PhoneNumberFilter",
+      'email' => "Jawabkom\\Backend\\Module\\Profile\\SearchFilter\\PhoneNumberFilter",
+      'country_code' => "Jawabkom\\Backend\\Module\\Profile\\SearchFilter\\PhoneNumberFilter",
+    ];
     public function __construct(IDependencyInjector $di,
                                 IProfilePhoneRepository $phoneRepository,
                                 IProfileCompositeFacade $compositeFacade)
@@ -40,8 +46,8 @@ class SearchOfflineByPhone extends AbstractService
         $composites = [];
         $phoneNumber = $this->getInput('phone'); // required
         $phonePossibleCountries = $this->getInput('possible_countries'); //optional
-        $filters = $this->getInput('filters');
-
+        $inputFilters = $this->getInput('filters',[]);
+        $searchFilters = [];
         $this->validate($phoneNumber, $phonePossibleCountries);
 
         $phone = $this->di->make(Phone::class);
@@ -51,8 +57,13 @@ class SearchOfflineByPhone extends AbstractService
         foreach($profilePhoneEntities as $entity) {
             $composites[] = $this->compositeFacade->getCompositeByProfileId($entity->getProfileId());
         }
-
-        $this->setOutput('result', $this->applySearchFilters($composites));
+        foreach ($inputFilters as $inputFilterName =>$inputFilterValue){
+                if (in_array($inputFilterName,$this->structure) && ($className =self::SEARCH_FILTER[$inputFilterName])){
+                    $reflection = new \ReflectionClass($className);
+                    $searchFilters[] = $reflection->newInstanceArgs(array($inputFilterValue));
+                }
+        }
+        $this->setOutput('result', $this->applySearchFilters($searchFilters,$composites));
         return $this;
     }
 
@@ -61,7 +72,8 @@ class SearchOfflineByPhone extends AbstractService
      * @param IProfileCompositeSearchFilter[] $filters
      * @param IProfileComposite[] $composite
      */
-    protected function applySearchFilters(array $filters, array $composites) {
+    protected function applySearchFilters(array $filters, array $composites): array
+    {
         $filteredComposites = [];
         foreach($composites as $composite) {
             $filterResult = true;

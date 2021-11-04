@@ -44,7 +44,11 @@ class SearchByPhoneTest extends AbstractTestCase
         }
            $phone       = $dummyProfilesData[1]['phones'][0]['original_number'];
            $countryCode = $dummyProfilesData[1]['phones'][0]['country_code'];
+           $filter =[
+             'phone'=>$phone
+           ];
        $profileCompositesResults = $this->searchByPhoneService->input('phone',$phone)
+                                                              ->input('filters',$filter)
                                                               ->input('possible_countries',[$countryCode])
                                                               ->process()
                                                               ->output('result');
