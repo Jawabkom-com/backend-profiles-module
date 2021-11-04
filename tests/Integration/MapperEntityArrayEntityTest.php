@@ -10,6 +10,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileImageEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileJobEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileLanguageEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileMetaDataEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRelationshipEntity;
@@ -24,6 +25,7 @@ use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileEntityMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileImageEntityMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileJobEntityMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileLanguageEntityMapper;
+use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileMetaDataEntityMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileNameEntityMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfilePhoneEntityMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileRelationshipEntityMapper;
@@ -38,6 +40,7 @@ use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileImageEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileJobEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileLanguageEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileMetaDataEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileNameEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfilePhoneEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileRelationshipEntityToArrayMapper;
@@ -183,17 +186,17 @@ class MapperEntityArrayEntityTest extends AbstractTestCase
         $this->assertEquals($this->hashSerializeObject($originEntity), $this->hashSerializeObject($newEntity));
     }
 
-//    public function testProfileMetaDataEntity2Array2ProfileMetaDataEntityMapping()
-//    {
-//        $originEntity = $this->di->make(IProfileMetaDataEntity::class);
-//        $originEntity->setMetaKey('key');
-//        $originEntity->setMetaValue('value');
-//        $toArrayMapper = $this->di->make(IProfileMetaDataEntityToArrayMapper::class);
-//        $aMappedEntity = $toArrayMapper->map($originEntity);
-//        $toProfileEntityMapper = $this->di->make(IArrayToProfileMetaDataEntityMapper::class);
-//        $newEntity = $toProfileEntityMapper->map($aMappedEntity);
-//        $this->assertEquals($this->hashSerializeObject($originEntity), $this->hashSerializeObject($newEntity));
-//    }
+    public function testProfileMetaDataEntity2Array2ProfileMetaDataEntityMapping()
+    {
+        $originEntity = $this->di->make(IProfileMetaDataEntity::class);
+        $originEntity->setMetaKey('key_example');
+        $originEntity->setMetaValue('value_example');
+        $toArrayMapper = $this->di->make(IProfileMetaDataEntityToArrayMapper::class);
+        $aMappedEntity = $toArrayMapper->map($originEntity);
+        $toProfileEntityMapper = $this->di->make(IArrayToProfileMetaDataEntityMapper::class);
+        $newEntity = $toProfileEntityMapper->map($aMappedEntity);
+        $this->assertEquals($this->hashSerializeObject($originEntity), $this->hashSerializeObject($newEntity));
+    }
 
     public function testProfileNameEntity2Array2ProfileNameEntityMapping()
     {
