@@ -4,7 +4,9 @@ namespace Jawabkom\Backend\Module\Profile\Service;
 
 use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 
+use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
+use Jawabkom\Backend\Module\Profile\Contract\SearchFilter\IProfileCompositeSearchFilter;
 use Jawabkom\Backend\Module\Profile\Exception\CountryCodeDoesNotExists;
 use Jawabkom\Backend\Module\Profile\Library\Country;
 use Jawabkom\Backend\Module\Profile\Library\Phone;
@@ -38,6 +40,7 @@ class SearchOfflineByPhone extends AbstractService
         $composites = [];
         $phoneNumber = $this->getInput('phone'); // required
         $phonePossibleCountries = $this->getInput('possible_countries'); //optional
+        $filters = $this->getInput('filters');
 
         $this->validate($phoneNumber, $phonePossibleCountries);
 
@@ -48,8 +51,31 @@ class SearchOfflineByPhone extends AbstractService
         foreach($profilePhoneEntities as $entity) {
             $composites[] = $this->compositeFacade->getCompositeByProfileId($entity->getProfileId());
         }
-        $this->setOutput('result', $composites);
+
+        $this->setOutput('result', $this->applySearchFilters($composites));
         return $this;
+    }
+
+
+    /**
+     * @param IProfileCompositeSearchFilter[] $filters
+     * @param IProfileComposite[] $composite
+     */
+    protected function applySearchFilters(array $filters, array $composites) {
+        $filteredComposites = [];
+        foreach($composites as $composite) {
+            $filterResult = true;
+            foreach ($filters as $filter) {
+                if(!$filter->apply($composite)) {
+                    $filterResult = false;
+                    break;
+                }
+            }
+            if($filterResult) {
+                $filteredComposites[] = $composite;
+            }
+        }
+        return $filteredComposites;
     }
 
     /**
