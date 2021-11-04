@@ -140,12 +140,13 @@ class MapperArrayEntityArrayTest extends AbstractTestCase
 
     public function testArray2ProfileMetaDataEntity2ArrayMapping()
     {
-//        $originalArray = $this->dummyMetaData();
-//        $toProfileEntityMapper = $this->di->make(IArrayToProfileMetaDataEntityMapper::class);
-//        $aMappedEntity = $toProfileEntityMapper->map($originalArray);
-//        $toArrayMapper = $this->di->make(IProfileMetaDataEntityToArrayMapper::class);
-//        $aMappedArray = $toArrayMapper->map($aMappedEntity);
-//        $this->assertEquals($this->hashSerializeObject($originalArray), $this->hashSerializeObject($aMappedArray));
+        $originalArray = $this->dummyMetaData();
+        $toProfileEntityMapper = $this->di->make(IArrayToProfileMetaDataEntityMapper::class);
+        $aMappedEntity = $toProfileEntityMapper->map($originalArray);
+        $toArrayMapper = $this->di->make(IProfileMetaDataEntityToArrayMapper::class);
+        $aMappedArray = $toArrayMapper->map($aMappedEntity);
+        dd($originalArray  , $aMappedArray);
+        $this->assertEquals($this->hashSerializeObject($originalArray), $this->hashSerializeObject($aMappedArray));
     }
 
 
