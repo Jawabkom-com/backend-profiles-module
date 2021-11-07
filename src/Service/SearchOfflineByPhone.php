@@ -1,6 +1,6 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Profile\Service\SearchOffline;
+namespace Jawabkom\Backend\Module\Profile\Service;
 
 use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 
@@ -18,12 +18,13 @@ use Jawabkom\Standard\Exception\MissingRequiredInputException;
 class SearchOfflineByPhone extends AbstractService
 {
     use SearchFiltersTrait;
+
     private IProfileCompositeFacade $compositeFacade;
     private IProfilePhoneRepository $phoneRepository;
-    protected array $structure = ['phone', 'username', 'email' , 'name' , 'country_code'];
+    protected array $structure = ['phone', 'username', 'email', 'name', 'country_code'];
     private mixed $phone;
 
-    public function __construct(IDependencyInjector $di,
+    public function __construct(IDependencyInjector     $di,
                                 IProfilePhoneRepository $phoneRepository,
                                 IProfileCompositeFacade $compositeFacade)
     {
@@ -45,18 +46,18 @@ class SearchOfflineByPhone extends AbstractService
         $composites = [];
         $phoneNumber = $this->getInput('phone'); // required
         $phonePossibleCountries = $this->getInput('possible_countries'); //optional
-        $inputFilters = $this->getInput('filters',[]);
-        $this->validate($phoneNumber, $phonePossibleCountries,$inputFilters);
+        $inputFilters = $this->getInput('filters', []);
+        $this->validate($phoneNumber, $phonePossibleCountries, $inputFilters);
 
 
         $formattedPhone = $this->phone->parse($phoneNumber, $phonePossibleCountries)['phone'];
         $profilePhoneEntities = $this->phoneRepository->getByPhone($formattedPhone);
 
-        foreach($profilePhoneEntities as $entity) {
+        foreach ($profilePhoneEntities as $entity) {
             $composites[] = $this->compositeFacade->getCompositeByProfileId($entity->getProfileId());
         }
         $searchFilters = $this->getSearchFilters($inputFilters);
-        $this->setOutput('result', $this->applySearchFilters($searchFilters,$composites));
+        $this->setOutput('result', $this->applySearchFilters($searchFilters, $composites));
         return $this;
     }
 
@@ -68,15 +69,15 @@ class SearchOfflineByPhone extends AbstractService
     protected function applySearchFilters(array $filters, array $composites): array
     {
         $filteredComposites = [];
-        foreach($composites as $composite) {
+        foreach ($composites as $composite) {
             $filterResult = true;
             foreach ($filters as $filter) {
-                if(!$filter->apply($composite)) {
+                if (!$filter->apply($composite)) {
                     $filterResult = false;
                     break;
                 }
             }
-            if($filterResult) {
+            if ($filterResult) {
                 $filteredComposites[] = $composite;
             }
         }
@@ -89,16 +90,16 @@ class SearchOfflineByPhone extends AbstractService
      * @throws MissingRequiredInputException
      * @throws CountryCodeDoesNotExists
      */
-    protected function validate(string $phoneNumber, array $phonePossibleCountries,array $inputFilters): void
+    protected function validate(string $phoneNumber, array $phonePossibleCountries, array $inputFilters): void
     {
         $this->validatePhoneNumber($phoneNumber);
         $this->validatePhonePossibleCountries($phonePossibleCountries);
         $this->validateFilterInputs($inputFilters);
     }
 
-    private function validatePhoneNumber(string $phoneNumber):void
+    private function validatePhoneNumber(string $phoneNumber): void
     {
-        if (empty($phoneNumber)){
+        if (empty($phoneNumber)) {
             throw new MissingRequiredInputException('Missing Phone Number* ,is required');
         }
     }
@@ -108,7 +109,7 @@ class SearchOfflineByPhone extends AbstractService
      */
     private function validatePhonePossibleCountries(array $phonePossibleCountries)
     {
-        if ($phonePossibleCountries){
+        if ($phonePossibleCountries) {
             foreach ($phonePossibleCountries as $countryCode) {
                 Country::assertCountryCodeExists($countryCode, 'possible_countries input value must be a valid country codes list.');
             }

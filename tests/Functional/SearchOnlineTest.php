@@ -5,7 +5,6 @@ namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 use Jawabkom\Backend\Module\Profile\Exception\FilterNameDoesNotExistsException;
 use Jawabkom\Backend\Module\Profile\Exception\SearcherRegistryDoesNotExist;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
-use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
 use Jawabkom\Backend\Module\Profile\Service\SearchOnlineBySearchersChain;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
@@ -29,7 +28,6 @@ class SearchOnlineTest extends AbstractTestCase
     use DummyTrait;
 
     private CreateProfile $createProfile;
-    private SearchOfflineByFilters $searchOfflineByFilters;
     private \Faker\Generator $faker;
     private IDependencyInjector $di;
 
@@ -38,7 +36,6 @@ class SearchOnlineTest extends AbstractTestCase
         parent::setUp();
         $this->di = new DI();
         $this->createProfile = $this->di->make(CreateProfile::class);
-        $this->searchOfflineByFilters = $this->di->make(SearchOfflineByFilters::class);
         $this->faker = Factory::create();
     }
 

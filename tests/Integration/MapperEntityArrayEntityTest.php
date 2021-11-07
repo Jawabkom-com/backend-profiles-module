@@ -47,7 +47,6 @@ use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileRelationshipEntityTo
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileSkillEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileSocialProfileEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileUsernameEntityToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
@@ -59,7 +58,6 @@ class MapperEntityArrayEntityTest extends AbstractTestCase
 {
     use DummyTrait;
 
-    private SearchOfflineByFilters $searchOfflineByFilters;
     private \Faker\Generator $faker;
     private IDependencyInjector $di;
 
@@ -67,7 +65,6 @@ class MapperEntityArrayEntityTest extends AbstractTestCase
     {
         parent::setUp();
         $this->di = new DI();
-        $this->searchOfflineByFilters = $this->di->make(SearchOfflineByFilters::class);
         $this->faker = Factory::create();
     }
 

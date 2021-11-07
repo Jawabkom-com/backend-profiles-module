@@ -3,21 +3,14 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Unit;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCriminalRecordRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileMetaDataEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileMetaDataRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileNameEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileNameRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillEntity;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUuidFactory;
 use Jawabkom\Backend\Module\Profile\Mapper\ProfileCompositeToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByFilters;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
@@ -30,7 +23,6 @@ class CompositeToArrayTest extends AbstractTestCase
     use DummyTrait;
 
     private CreateProfile $createProfile;
-    private SearchOfflineByFilters $searchOfflineByFilters;
     private \Faker\Generator $faker;
     private IDependencyInjector $di;
     private IProfileComposite $profileComposite;
@@ -41,7 +33,6 @@ class CompositeToArrayTest extends AbstractTestCase
         parent::setUp();
         $this->di = new DI();
         $this->createProfile = $this->di->make(CreateProfile::class);
-        $this->searchOfflineByFilters = $this->di->make(SearchOfflineByFilters::class);
         $this->profileComposite = $this->di->make(IProfileComposite::class);
         $this->profileRepository = $this->di->make(IProfileRepository::class);
         $this->faker = Factory::create();
