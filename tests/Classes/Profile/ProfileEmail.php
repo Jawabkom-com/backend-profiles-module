@@ -114,4 +114,9 @@ class ProfileEmail extends Model implements IProfileEmailEntity,IProfileEmailRep
     {
        return $this->hash;
     }
+
+    public function getByEmail(string $email): ?iterable
+    {
+    return    $this->where('email',$email)->get();
+    }
 }

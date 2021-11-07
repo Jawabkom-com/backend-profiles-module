@@ -91,4 +91,9 @@ class ProfileUsername extends Model implements IProfileUsernameEntity,IProfileUs
     {
        return $this->hash;
     }
+
+    public function getByUsername(string $username): ?iterable
+    {
+        // TODO: Implement getByUsername() method.
+    }
 }

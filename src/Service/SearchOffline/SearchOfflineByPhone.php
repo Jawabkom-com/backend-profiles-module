@@ -1,6 +1,6 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Profile\Service;
+namespace Jawabkom\Backend\Module\Profile\Service\SearchOffline;
 
 use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 
@@ -10,21 +10,19 @@ use Jawabkom\Backend\Module\Profile\Contract\SearchFilter\IProfileCompositeSearc
 use Jawabkom\Backend\Module\Profile\Exception\CountryCodeDoesNotExists;
 use Jawabkom\Backend\Module\Profile\Library\Country;
 use Jawabkom\Backend\Module\Profile\Library\Phone;
+use Jawabkom\Backend\Module\Profile\Trait\SearchFiltersTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class SearchOfflineByPhone extends AbstractService
 {
+    use SearchFiltersTrait;
     private IProfileCompositeFacade $compositeFacade;
     private IProfilePhoneRepository $phoneRepository;
     protected array $structure = ['phone', 'username', 'email' , 'name' , 'country_code'];
-    const SEARCH_FILTER =[
-      'phone' => "Jawabkom\\Backend\\Module\\Profile\\SearchFilter\\PhoneNumberFilter",
-      'username' => "Jawabkom\\Backend\\Module\\Profile\\SearchFilter\\PhoneNumberFilter",
-      'email' => "Jawabkom\\Backend\\Module\\Profile\\SearchFilter\\PhoneNumberFilter",
-      'country_code' => "Jawabkom\\Backend\\Module\\Profile\\SearchFilter\\PhoneNumberFilter",
-    ];
+    private mixed $phone;
+
     public function __construct(IDependencyInjector $di,
                                 IProfilePhoneRepository $phoneRepository,
                                 IProfileCompositeFacade $compositeFacade)
@@ -32,6 +30,7 @@ class SearchOfflineByPhone extends AbstractService
         parent::__construct($di);
         $this->compositeFacade = $compositeFacade;
         $this->phoneRepository = $phoneRepository;
+        $this->phone = $this->di->make(Phone::class);
     }
 
     //
@@ -47,22 +46,16 @@ class SearchOfflineByPhone extends AbstractService
         $phoneNumber = $this->getInput('phone'); // required
         $phonePossibleCountries = $this->getInput('possible_countries'); //optional
         $inputFilters = $this->getInput('filters',[]);
-        $searchFilters = [];
-        $this->validate($phoneNumber, $phonePossibleCountries);
+        $this->validate($phoneNumber, $phonePossibleCountries,$inputFilters);
 
-        $phone = $this->di->make(Phone::class);
-        $formattedPhone = $phone->parse($phoneNumber, $phonePossibleCountries)['phone'];
+
+        $formattedPhone = $this->phone->parse($phoneNumber, $phonePossibleCountries)['phone'];
         $profilePhoneEntities = $this->phoneRepository->getByPhone($formattedPhone);
 
         foreach($profilePhoneEntities as $entity) {
             $composites[] = $this->compositeFacade->getCompositeByProfileId($entity->getProfileId());
         }
-        foreach ($inputFilters as $inputFilterName =>$inputFilterValue){
-                if (in_array($inputFilterName,$this->structure) && ($className =self::SEARCH_FILTER[$inputFilterName])){
-                    $reflection = new \ReflectionClass($className);
-                    $searchFilters[] = $reflection->newInstanceArgs(array($inputFilterValue));
-                }
-        }
+        $searchFilters = $this->getSearchFilters($inputFilters);
         $this->setOutput('result', $this->applySearchFilters($searchFilters,$composites));
         return $this;
     }
@@ -96,10 +89,11 @@ class SearchOfflineByPhone extends AbstractService
      * @throws MissingRequiredInputException
      * @throws CountryCodeDoesNotExists
      */
-    protected function validate(string $phoneNumber, array $phonePossibleCountries): void
+    protected function validate(string $phoneNumber, array $phonePossibleCountries,array $inputFilters): void
     {
         $this->validatePhoneNumber($phoneNumber);
         $this->validatePhonePossibleCountries($phonePossibleCountries);
+        $this->validateFilterInputs($inputFilters);
     }
 
     private function validatePhoneNumber(string $phoneNumber):void

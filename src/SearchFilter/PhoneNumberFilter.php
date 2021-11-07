@@ -8,17 +8,17 @@ use Jawabkom\Backend\Module\Profile\Contract\SearchFilter\IProfileCompositeSearc
 
 class PhoneNumberFilter implements IProfileCompositeSearchFilter
 {
-    protected string $phoneNumber;
+    protected string $normalizedPhoneNumber;
 
-    public function __construct(string $phoneNumber)
+    public function __construct(string $normalizedPhoneNumber)
     {
-        $this->phoneNumber = $phoneNumber;
+        $this->normalizedPhoneNumber = $normalizedPhoneNumber;
     }
 
     public function apply(IProfileComposite $composite): bool
     {
         foreach($composite->getPhones() as $oPhone) {
-            if($oPhone->getFormattedNumber() == $this->phoneNumber) {
+            if($oPhone->getFormattedNumber() == $this->normalizedPhoneNumber) {
                 return true;
             }
         }

@@ -2,11 +2,9 @@
 
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
-
-use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
-use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByPhone;
+use Jawabkom\Backend\Module\Profile\Service\SearchOffline\SearchOfflineByPhone;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
@@ -45,7 +43,7 @@ class SearchByPhoneTest extends AbstractTestCase
            $phone       = $dummyProfilesData[1]['phones'][0]['original_number'];
            $countryCode = $dummyProfilesData[1]['phones'][0]['country_code'];
            $filter =[
-             'phone'=>$phone
+             'country_code'=>$countryCode
            ];
        $profileCompositesResults = $this->searchByPhoneService->input('phone',$phone)
                                                               ->input('filters',$filter)

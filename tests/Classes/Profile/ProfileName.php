@@ -137,4 +137,9 @@ class ProfileName extends Model implements IProfileNameEntity,IProfileNameReposi
     {
         return $this->score;
     }
+
+    public function getByName(string $name): ?iterable
+    {
+     return $this->where('display',$name)->get();
+    }
 }

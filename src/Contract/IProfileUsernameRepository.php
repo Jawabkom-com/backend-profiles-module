@@ -11,4 +11,5 @@ interface IProfileUsernameRepository extends IRepository
 
     public function createEntity(array $params = []): IProfileUsernameEntity;
     public function getByProfileId(string $profileId):?iterable;
+    public function getByUsername(string $username):?iterable;
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Profile\Service;
+namespace Jawabkom\Backend\Module\Profile\Service\SearchOffline;
 
 use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;

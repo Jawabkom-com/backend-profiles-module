@@ -2,7 +2,6 @@
 
 namespace Jawabkom\Backend\Module\Profile\Validator;
 
-use Jawabkom\Backend\Module\Profile\Exception\InvalidEmailAddress;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidEmailAddressFormat;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Library\DateFormat;
