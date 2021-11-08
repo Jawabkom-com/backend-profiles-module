@@ -11,6 +11,7 @@ use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
+use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class SearchByPhoneTest extends AbstractTestCase
 {
@@ -55,5 +56,27 @@ class SearchByPhoneTest extends AbstractTestCase
             ->output('result');
         $this->assertInstanceOf(IProfileComposite::class, $profileCompositesResults[0]);
         $this->assertInstanceOf(IProfileEntity::class, $profileCompositesResults[0]->getProfile());
+    }
+    //testSearchOfflineByPhone
+    public function testSearchOfflineByPhoneMissingPhone()
+    {
+        $dummyProfilesData = $this->generateBulkDummyData();
+        $fakeProfiles = [];
+        foreach ($dummyProfilesData as $profileDummyData) {
+            $fakeProfiles[] = $this->createProfile->input('profile', $profileDummyData)
+                ->process()
+                ->output('result');
+        }
+        $phone = $dummyProfilesData[1]['phones'][0]['original_number'];
+        $countryCode = $dummyProfilesData[1]['phones'][0]['country_code'];
+        $filter = [
+            'country_code' => $countryCode
+        ];
+        $this->expectException(MissingRequiredInputException::class);
+        $profileCompositesResults = $this->searchByPhoneService
+            ->input('filters', $filter)
+            ->input('possible_countries', [$countryCode])
+            ->process()
+            ->output('result');
     }
 }

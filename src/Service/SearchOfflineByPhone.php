@@ -65,14 +65,14 @@ class SearchOfflineByPhone extends AbstractService
      * @throws MissingRequiredInputException
      * @throws CountryCodeDoesNotExists
      */
-    protected function validate(string $phoneNumber, array $phonePossibleCountries, array $inputFilters): void
+    protected function validate(?string $phoneNumber, array $phonePossibleCountries, array $inputFilters): void
     {
         $this->validatePhoneNumber($phoneNumber);
         $this->validatePhonePossibleCountries($phonePossibleCountries);
         $this->validateFilterInputs($inputFilters);
     }
 
-    private function validatePhoneNumber(string $phoneNumber): void
+    private function validatePhoneNumber(?string $phoneNumber): void
     {
         if (empty($phoneNumber)) {
             throw new MissingRequiredInputException('Missing Phone Number* ,is required');

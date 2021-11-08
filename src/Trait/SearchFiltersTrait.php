@@ -47,7 +47,7 @@ trait SearchFiltersTrait
             switch ($inputFilterName) {
                 case 'phone':
                     $formattedPhone  = $this->phone->parse($inputFilterValue)['phone'];
-                    $searchFilters[] = $this->di->make(PhoneNumberFilter::class,['phone'=>$formattedPhone]);
+                    $searchFilters[] = $this->di->make(PhoneNumberFilter::class,['normalizedPhoneNumber'=>$formattedPhone]);
                     break;
                 case 'username':
                     $searchFilters[] = $this->di->make(UserNameFilter::class,['userName'=>$inputFilterValue]);
