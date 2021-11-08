@@ -21,6 +21,7 @@ use Jawabkom\Backend\Module\Profile\Contract\EntityFilter\IProfileUsernameEntity
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Contract\Libraries\INameScoring;
+use Jawabkom\Backend\Module\Profile\Contract\Libraries\ISearchableText;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 
 class ProfileCompositeEntitiesFilter implements IProfileCompositeEntitiesFilter
@@ -70,8 +71,9 @@ class ProfileCompositeEntitiesFilter implements IProfileCompositeEntitiesFilter
     {
         $entityFilter = $this->di->make(IProfileNameEntityFilter::class);
         $nameScoring = $this->di->make(INameScoring::class);
+        $searchableText = $this->di->make(ISearchableText::class);
         foreach ($entities as $entity) {
-            $entityFilter->filter($entity, $nameScoring);
+            $entityFilter->filter($entity, $nameScoring, $searchableText);
         }
     }
 }
