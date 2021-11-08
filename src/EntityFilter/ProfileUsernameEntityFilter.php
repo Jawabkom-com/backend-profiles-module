@@ -10,6 +10,6 @@ class ProfileUsernameEntityFilter implements IProfileUsernameEntityFilter
 
     public function filter(IProfileUsernameEntity $entity): void
     {
-
+        $entity->setUsername(trim(strtolower($entity->getUsername())));
     }
 }
