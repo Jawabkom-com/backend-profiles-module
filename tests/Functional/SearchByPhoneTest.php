@@ -2,6 +2,7 @@
 
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
+use Illuminate\Queue\Failed\DynamoDbFailedJobProvider;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByPhone;
@@ -32,8 +33,8 @@ class SearchByPhoneTest extends AbstractTestCase
         $this->faker = Factory::create();
     }
 
-    //Create New Profile
-    public function testGetProfileWithFilter()
+    //testSearchOfflineByPhone
+    public function testSearchOfflineByPhone()
     {
         $dummyProfilesData = $this->generateBulkDummyData();
         $fakeProfiles = [];

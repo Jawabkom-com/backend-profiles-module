@@ -62,13 +62,13 @@ class SearchOfflineByEmail extends AbstractService
      * @throws InvalidEmailAddressFormat
      * @throws MissingRequiredInputException
      */
-    protected function validate(string $email, array $inputFilters): void
+    protected function validate(?string $email, array $inputFilters): void
     {
         $this->validateEmail($email);
         $this->validateFilterInputs($inputFilters);
     }
 
-    private function validateEmail(string $email):void
+    private function validateEmail(?string $email):void
     {
         if (empty($email)){
             throw new MissingRequiredInputException('Missing Email* ,is required');
