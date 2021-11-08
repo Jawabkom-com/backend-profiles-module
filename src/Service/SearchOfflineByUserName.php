@@ -47,11 +47,11 @@ class SearchOfflineByUserName extends AbstractService
     public function process(): static
     {
         $composites = [];
-        $name = $this->getInput('name'); // required
+        $username = $this->getInput('username'); // required
         $inputFilters = $this->getInput('filters',[]);
-        $this->validate($name,$inputFilters);
+        $this->validate($username,$inputFilters);
 
-        $profileUserNameEntities = $this->usernameRepository->getByUserName($name);
+        $profileUserNameEntities = $this->usernameRepository->getByUserName($username);
 
         foreach($profileUserNameEntities as $entity) {
             $composites[] = $this->compositeFacade->getCompositeByProfileId($entity->getProfileId());
@@ -64,16 +64,16 @@ class SearchOfflineByUserName extends AbstractService
     /**
      * @throws MissingRequiredInputException
      */
-    protected function validate(string $name, array $inputFilters): void
+    protected function validate(?string $username, array $inputFilters): void
     {
-        $this->validateName($name);
+        $this->validateName($username);
         $this->validateFilterInputs($inputFilters);
     }
 
-    private function validateName(string $name):void
+    private function validateName(?string $username):void
     {
-        if (empty($name)){
-            throw new MissingRequiredInputException('Missing Name* ,is required');
+        if (empty($username)){
+            throw new MissingRequiredInputException('Missing Username* ,is required');
         }
 
     }

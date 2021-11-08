@@ -15,7 +15,7 @@ use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
 use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
-class SearchByEmailTest extends AbstractTestCase
+class SearchOfflineByUsernameTest extends AbstractTestCase
 {
     use DummyTrait;
 
@@ -23,21 +23,21 @@ class SearchByEmailTest extends AbstractTestCase
     private \Faker\Generator $faker;
     private DI $di;
     /**
-     * @var SearchOfflineByEmail|mixed
+     * @var SearchOfflineByUserName|mixed
      */
-    private mixed $searchByEmailService;
+    private mixed $searchByUserNameService;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->di = new DI();
         $this->createProfile = $this->di->make(CreateProfile::class);
-        $this->searchByEmailService = $this->di->make(SearchOfflineByEmail::class);
+        $this->searchByUserNameService = $this->di->make(SearchOfflineByUserName::class);
         $this->faker = Factory::create();
     }
 
     //testSearchOfflineWithEmail
-    public function testSearchOfflineByEmail()
+    public function testSearchOfflineByUserName()
     {
         $dummyProfilesData = $this->generateBulkDummyData(3);
         $fakeProfiles = [];
@@ -49,9 +49,9 @@ class SearchByEmailTest extends AbstractTestCase
         $email = $dummyProfilesData[1]['emails'][0]['email'];
         $userName = $dummyProfilesData[1]['usernames'][0]['username'];
         $filter = [
-            'username' => $userName
+            'email' => $email
         ];
-        $profileCompositesResults = $this->searchByEmailService->input('email', $email)
+        $profileCompositesResults = $this->searchByUserNameService->input('username', $userName)
                                                                ->input('filters', $filter)
                                                                ->process()
                                                                ->output('result');
@@ -62,8 +62,8 @@ class SearchByEmailTest extends AbstractTestCase
     public function testSearchOfflineByEmailWithCompositeFAlter()
     {
         $dummyProfilesData = $this->generateBulkDummyData(3);
-        $email = $dummyProfilesData[1]['emails'][0]['email'];
-        $dummyProfilesData[0]['emails'][0]['email'] = $dummyProfilesData[1]['emails'][0]['email'];
+        $userName = $dummyProfilesData[1]['usernames'][0]['username'];
+        $dummyProfilesData[2]['usernames'][0]['username'] = $userName;
         $fakeProfiles = [];
         foreach ($dummyProfilesData as $profileDummyData) {
             $fakeProfiles[] = $this->createProfile->input('profile', $profileDummyData)
@@ -71,20 +71,21 @@ class SearchByEmailTest extends AbstractTestCase
                 ->output('result');
         }
 
-        $userName = $dummyProfilesData[1]['usernames'][0]['username'];
+
+        $email = $dummyProfilesData[1]['emails'][0]['email'];
         $filter = [
-            'username' => $userName
+            'email' => $email
         ];
-        $profileCompositesResults = $this->searchByEmailService->input('email', $email)
-                                                               ->input('filters', $filter)
-                                                               ->process()
-                                                               ->output('result');
+        $profileCompositesResults = $this->searchByUserNameService->input('username', $userName)
+                                                                    ->input('filters', $filter)
+                                                                    ->process()
+                                                                    ->output('result');
         $this->assertInstanceOf(IProfileComposite::class, $profileCompositesResults[0]);
         $this->assertInstanceOf(IProfileEntity::class, $profileCompositesResults[0]->getProfile());
     }
 
-    //testSearchOfflineByEmailServiceMissingEmail
-    public function testSearchOfflineByEmailServiceMissingEmail()
+    //testSearchOfflineByEmailServiceMissingUserName
+        public function testSearchOfflineByUserNameServiceMissingUserName()
     {
         $dummyProfilesData = $this->generateBulkDummyData(3);
         $fakeProfiles = [];
@@ -94,32 +95,11 @@ class SearchByEmailTest extends AbstractTestCase
                 ->output('result');
         }
         $email = $dummyProfilesData[1]['emails'][0]['email'];
-        $userName = $dummyProfilesData[1]['usernames'][0]['username'];
         $filter = [
-            'username' => $userName
+            'email' => $email
         ];
         $this->expectException(MissingRequiredInputException::class);
-        $profileCompositesResults = $this->searchByEmailService->input('filters', $filter)
-                                                               ->process()
-                                                               ->output('result');
-    }
-    //testSearchOfflineByEmailServiceWrongFormatEmail
-    public function testSearchOfflineByEmailServiceWrongFormatEmail()
-    {
-        $dummyProfilesData = $this->generateBulkDummyData(3);
-        $fakeProfiles = [];
-        foreach ($dummyProfilesData as $profileDummyData) {
-            $fakeProfiles[] = $this->createProfile->input('profile', $profileDummyData)
-                ->process()
-                ->output('result');
-        }
-        $userName = $dummyProfilesData[1]['usernames'][0]['username'];
-        $filter = [
-            'username' => $userName
-        ];
-        $this->expectException(InvalidEmailAddressFormat::class);
-        $profileCompositesResults = $this->searchByEmailService->input('email','www.people.com')
-                                                               ->input('filters', $filter)
+        $profileCompositesResults = $this->searchByUserNameService->input('filters', $filter)
                                                                ->process()
                                                                ->output('result');
     }

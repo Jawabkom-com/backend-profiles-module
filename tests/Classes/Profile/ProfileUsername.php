@@ -94,6 +94,6 @@ class ProfileUsername extends Model implements IProfileUsernameEntity,IProfileUs
 
     public function getByUsername(string $username): ?iterable
     {
-        // TODO: Implement getByUsername() method.
+     return $this->where('username',$username)->get();
     }
 }

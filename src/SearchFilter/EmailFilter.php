@@ -19,7 +19,7 @@ class EmailFilter implements IProfileCompositeSearchFilter
     public function apply(IProfileComposite $composite): bool
     {
         foreach($composite->getEmails() as $email) {
-            if($email->getEmails() == $this->email) {
+            if($email->getEmail() == $this->email) {
                 return true;
             }
         }
