@@ -52,7 +52,6 @@ class SearchOfflineByUserName extends AbstractService
         $this->validate($username,$inputFilters);
 
         $profileUserNameEntities = $this->usernameRepository->getByUserName($username);
-
         foreach($profileUserNameEntities as $entity) {
             $composites[] = $this->compositeFacade->getCompositeByProfileId($entity->getProfileId());
         }

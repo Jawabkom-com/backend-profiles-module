@@ -57,6 +57,36 @@ class SearchByPhoneTest extends AbstractTestCase
         $this->assertInstanceOf(IProfileComposite::class, $profileCompositesResults[0]);
         $this->assertInstanceOf(IProfileEntity::class, $profileCompositesResults[0]->getProfile());
     }
+    public function testSearchOfflineByPhoneWithFilterCountryCode()
+    {
+        $dummyProfilesData = $this->generateBulkDummyData(3);
+        $phone = $dummyProfilesData[0]['phones'][0]['original_number'];
+        $countryCode = $dummyProfilesData[0]['phones'][0]['country_code'];
+        $dummyProfilesData[1]['phones'][0]['original_number'] = $phone;
+        $dummyProfilesData[1]['phones'][0]['country_code'] = 'AT';
+        $fakeProfiles = [];
+        foreach ($dummyProfilesData as $profileDummyData) {
+            $fakeProfiles[] = $this->createProfile->input('profile', $profileDummyData)
+                ->process()
+                ->output('result');
+        }
+        $this->assertDatabaseHas('profile_phones',[
+           'country_code' =>'AT'
+        ]);
+        $this->assertDatabaseHas('profile_phones',[
+           'country_code' =>'TR'
+        ]);
+        $filter = [
+            'country_code' => $countryCode
+        ];
+        $profileCompositesResults = $this->searchByPhoneService->input('phone', $phone)
+            ->input('filters', $filter)
+            ->input('possible_countries', ['TR','AT'])
+            ->process()
+            ->output('result');
+        $this->assertInstanceOf(IProfileComposite::class, $profileCompositesResults[0]);
+        $this->assertInstanceOf(IProfileEntity::class, $profileCompositesResults[0]->getProfile());
+    }
     //testSearchOfflineByPhone
     public function testSearchOfflineByPhoneMissingPhone()
     {

@@ -58,8 +58,8 @@ class SearchOfflineByUsernameTest extends AbstractTestCase
         $this->assertInstanceOf(IProfileComposite::class, $profileCompositesResults[0]);
         $this->assertInstanceOf(IProfileEntity::class, $profileCompositesResults[0]->getProfile());
     }
-    //testSearchOfflineByEmailWithCompositeFAlter
-    public function testSearchOfflineByEmailWithCompositeFAlter()
+    //testSearchOfflineByEmailWithCompositeFAlterEmail
+    public function testSearchOfflineByEmailWithCompositeFAlterEmail()
     {
         $dummyProfilesData = $this->generateBulkDummyData(3);
         $userName = $dummyProfilesData[1]['usernames'][0]['username'];
@@ -73,8 +73,37 @@ class SearchOfflineByUsernameTest extends AbstractTestCase
 
 
         $email = $dummyProfilesData[1]['emails'][0]['email'];
+
         $filter = [
-            'email' => $email
+            'email' => $email,
+        ];
+        $profileCompositesResults = $this->searchByUserNameService->input('username', $userName)
+                                                                    ->input('filters', $filter)
+                                                                    ->process()
+                                                                    ->output('result');
+        $this->assertInstanceOf(IProfileComposite::class, $profileCompositesResults[0]);
+        $this->assertInstanceOf(IProfileEntity::class, $profileCompositesResults[0]->getProfile());
+    }
+    public function testSearchOfflineByEmailWithCompositeFAlterName()
+    {
+        $dummyProfilesData = $this->generateBulkDummyData(3);
+        $userName = $dummyProfilesData[1]['usernames'][0]['username'];
+        $dummyProfilesData[2]['usernames'][0]['username'] = $userName;
+        $fakeProfiles = [];
+        foreach ($dummyProfilesData as $profileDummyData) {
+            $fakeProfiles[] = $this->createProfile->input('profile', $profileDummyData)
+                ->process()
+                ->output('result');
+        }
+
+
+        $name  = $dummyProfilesData[1]['names'][0]['prefix'] .' ';
+        $name .= $dummyProfilesData[1]['names'][0]['first'] .' ';
+        $name .= $dummyProfilesData[1]['names'][0]['middle']. ' ';
+        $name .= $dummyProfilesData[1]['names'][0]['last'];
+
+        $filter = [
+            'name' => $name,
         ];
         $profileCompositesResults = $this->searchByUserNameService->input('username', $userName)
                                                                     ->input('filters', $filter)

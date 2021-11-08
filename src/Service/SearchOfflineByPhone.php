@@ -50,7 +50,6 @@ class SearchOfflineByPhone extends AbstractService
 
         $formattedPhone = $this->phone->parse($phoneNumber, $phonePossibleCountries)['phone'];
         $profilePhoneEntities = $this->phoneRepository->getByPhone($formattedPhone);
-
         foreach ($profilePhoneEntities as $entity) {
             $composites[] = $this->compositeFacade->getCompositeByProfileId($entity->getProfileId());
         }
