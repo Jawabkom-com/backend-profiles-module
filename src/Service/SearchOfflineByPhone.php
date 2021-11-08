@@ -85,7 +85,7 @@ class SearchOfflineByPhone extends AbstractService
     {
         if ($phonePossibleCountries) {
             foreach ($phonePossibleCountries as $countryCode) {
-                Country::assertCountryCodeExists($countryCode, 'possible_countries input value must be a valid country codes list.'.json_encode($phonePossibleCountries));
+                Country::assertCountryCodeExists($countryCode, 'possible_countries input value must be a valid country codes list. Invalid ['.$countryCode.'], LIST: '.json_encode($phonePossibleCountries));
             }
         }
     }

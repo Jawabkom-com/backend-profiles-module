@@ -37,7 +37,7 @@ class ProfilePhonesInputValidator
                             break;
                         case 'possible_countries':
                             foreach ($inputValue as $countryCode) {
-                                Country::assertCountryCodeExists($countryCode, 'possible_countries input value must be a valid country codes list.'.json_encode($inputValue));
+                                Country::assertCountryCodeExists($countryCode, 'possible_countries input value must be a valid country codes list. Invalid ['.$countryCode.'], LIST: '.json_encode($inputValue));
                             }
                             break;
 
