@@ -63,13 +63,13 @@ class SearchOfflineByName extends AbstractService
     /**
      * @throws MissingRequiredInputException
      */
-    protected function validate(string $name, array $inputFilters): void
+    protected function validate(?string $name, array $inputFilters): void
     {
         $this->validateName($name);
         $this->validateFilterInputs($inputFilters);
     }
 
-    private function validateName(string $name):void
+    private function validateName(?string $name):void
     {
         if (empty($name)){
             throw new MissingRequiredInputException('Missing Name* ,is required');

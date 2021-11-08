@@ -4,9 +4,7 @@ namespace Jawabkom\Backend\Module\Profile\Service;
 
 use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 
-use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
-use Jawabkom\Backend\Module\Profile\Contract\SearchFilter\IProfileCompositeSearchFilter;
 use Jawabkom\Backend\Module\Profile\Exception\CountryCodeDoesNotExists;
 use Jawabkom\Backend\Module\Profile\Library\Country;
 use Jawabkom\Backend\Module\Profile\Library\Phone;
@@ -52,7 +50,6 @@ class SearchOfflineByPhone extends AbstractService
 
         $formattedPhone = $this->phone->parse($phoneNumber, $phonePossibleCountries)['phone'];
         $profilePhoneEntities = $this->phoneRepository->getByPhone($formattedPhone);
-
         foreach ($profilePhoneEntities as $entity) {
             $composites[] = $this->compositeFacade->getCompositeByProfileId($entity->getProfileId());
         }
@@ -61,43 +58,20 @@ class SearchOfflineByPhone extends AbstractService
         return $this;
     }
 
-
-    /**
-     * @param IProfileCompositeSearchFilter[] $filters
-     * @param IProfileComposite[] $composite
-     */
-    protected function applySearchFilters(array $filters, array $composites): array
-    {
-        $filteredComposites = [];
-        foreach ($composites as $composite) {
-            $filterResult = true;
-            foreach ($filters as $filter) {
-                if (!$filter->apply($composite)) {
-                    $filterResult = false;
-                    break;
-                }
-            }
-            if ($filterResult) {
-                $filteredComposites[] = $composite;
-            }
-        }
-        return $filteredComposites;
-    }
-
     /**
      * @param string $phoneNumber
      * @param array $phonePossibleCountries
      * @throws MissingRequiredInputException
      * @throws CountryCodeDoesNotExists
      */
-    protected function validate(string $phoneNumber, array $phonePossibleCountries, array $inputFilters): void
+    protected function validate(?string $phoneNumber, array $phonePossibleCountries, array $inputFilters): void
     {
         $this->validatePhoneNumber($phoneNumber);
         $this->validatePhonePossibleCountries($phonePossibleCountries);
         $this->validateFilterInputs($inputFilters);
     }
 
-    private function validatePhoneNumber(string $phoneNumber): void
+    private function validatePhoneNumber(?string $phoneNumber): void
     {
         if (empty($phoneNumber)) {
             throw new MissingRequiredInputException('Missing Phone Number* ,is required');

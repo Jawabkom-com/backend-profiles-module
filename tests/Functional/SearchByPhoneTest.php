@@ -2,6 +2,7 @@
 
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
+use Illuminate\Queue\Failed\DynamoDbFailedJobProvider;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByPhone;
@@ -10,6 +11,7 @@ use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
+use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class SearchByPhoneTest extends AbstractTestCase
 {
@@ -32,8 +34,8 @@ class SearchByPhoneTest extends AbstractTestCase
         $this->faker = Factory::create();
     }
 
-    //Create New Profile
-    public function testGetProfileWithFilter()
+    //testSearchOfflineByPhone
+    public function testSearchOfflineByPhone()
     {
         $dummyProfilesData = $this->generateBulkDummyData();
         $fakeProfiles = [];
@@ -54,5 +56,57 @@ class SearchByPhoneTest extends AbstractTestCase
             ->output('result');
         $this->assertInstanceOf(IProfileComposite::class, $profileCompositesResults[0]);
         $this->assertInstanceOf(IProfileEntity::class, $profileCompositesResults[0]->getProfile());
+    }
+    public function testSearchOfflineByPhoneWithFilterCountryCode()
+    {
+        $dummyProfilesData = $this->generateBulkDummyData(3);
+        $phone = $dummyProfilesData[0]['phones'][0]['original_number'];
+        $countryCode = $dummyProfilesData[0]['phones'][0]['country_code'];
+        $dummyProfilesData[1]['phones'][0]['original_number'] = $phone;
+        $dummyProfilesData[1]['phones'][0]['country_code'] = 'AT';
+        $fakeProfiles = [];
+        foreach ($dummyProfilesData as $profileDummyData) {
+            $fakeProfiles[] = $this->createProfile->input('profile', $profileDummyData)
+                ->process()
+                ->output('result');
+        }
+        $this->assertDatabaseHas('profile_phones',[
+           'country_code' =>'AT'
+        ]);
+        $this->assertDatabaseHas('profile_phones',[
+           'country_code' =>'TR'
+        ]);
+        $filter = [
+            'country_code' => $countryCode
+        ];
+        $profileCompositesResults = $this->searchByPhoneService->input('phone', $phone)
+            ->input('filters', $filter)
+            ->input('possible_countries', ['TR','AT'])
+            ->process()
+            ->output('result');
+        $this->assertInstanceOf(IProfileComposite::class, $profileCompositesResults[0]);
+        $this->assertInstanceOf(IProfileEntity::class, $profileCompositesResults[0]->getProfile());
+    }
+    //testSearchOfflineByPhone
+    public function testSearchOfflineByPhoneMissingPhone()
+    {
+        $dummyProfilesData = $this->generateBulkDummyData();
+        $fakeProfiles = [];
+        foreach ($dummyProfilesData as $profileDummyData) {
+            $fakeProfiles[] = $this->createProfile->input('profile', $profileDummyData)
+                ->process()
+                ->output('result');
+        }
+        $phone = $dummyProfilesData[1]['phones'][0]['original_number'];
+        $countryCode = $dummyProfilesData[1]['phones'][0]['country_code'];
+        $filter = [
+            'country_code' => $countryCode
+        ];
+        $this->expectException(MissingRequiredInputException::class);
+        $profileCompositesResults = $this->searchByPhoneService
+            ->input('filters', $filter)
+            ->input('possible_countries', [$countryCode])
+            ->process()
+            ->output('result');
     }
 }
