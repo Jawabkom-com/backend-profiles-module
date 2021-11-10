@@ -22,10 +22,10 @@ class ProfileLanguagesInputValidator
                 if(isset($inputValue)) {
                     switch ($inputKey) {
                         case 'language':
-                            Language::assertLanguageCodeExists($inputValue,'language input value must be a valid language code.');
+                            Language::assertLanguageCodeExists($inputValue, $this->getErrorMessage('language input value must be a valid language code.', $inputValue));
                             break;
                         case 'country':
-                            Country::assertCountryCodeExists($inputValue, 'country input value must be a valid country code.');
+                            Country::assertCountryCodeExists($inputValue, $this->getErrorMessage('country input value must be a valid country code.', $inputValue));
                             break;
                     }
 
@@ -34,5 +34,10 @@ class ProfileLanguagesInputValidator
 
             }
         }
+    }
+
+    protected function getErrorMessage(string $message, $inputValue) {
+        $stringInputValue = json_encode($inputValue);
+        return "[Profile Languages] {$message} - Invalid Value [{$stringInputValue}]";
     }
 }

@@ -48,21 +48,25 @@ class ProfileInputValidator
             if(isset($inputValue)) {
                 switch ($inputKey) {
                     case 'date_of_birth':
-                        DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', 'date_of_birth input value must be a valid date.');
+                        DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', $this->getErrorMessage('date_of_birth input value must be a valid date.', $inputValue));
                         break;
                     case 'place_of_birth':
-                        Country::assertCountryCodeExists($inputValue, 'place_of_birth input value must be a valid country code.');
+                        Country::assertCountryCodeExists($inputValue, $this->getErrorMessage('place_of_birth input value must be a valid country code.', $inputValue));
                         break;
                     case 'gender':
                         if(!is_null($inputValue) && !in_array($inputValue, ['male', 'female'])) {
-                            throw new InvalidInputValue('gender input value must be either mail or female.');
+                            throw new InvalidInputValue($this->getErrorMessage('gender input value must be either mail or female.', $inputValue));
                         }
                         break;
                 }
 
                 // other validators goes here
             }
-
         }
+    }
+
+    protected function getErrorMessage(string $message, $inputValue) {
+        $stringInputValue = json_encode($inputValue);
+        return "[Main Profile] {$message} - Invalid Value [{$stringInputValue}]";
     }
 }

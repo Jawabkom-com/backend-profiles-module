@@ -33,11 +33,11 @@ class ProfilePhonesInputValidator
                 if (isset($inputValue)) {
                     switch ($inputKey) {
                         case 'country_code':
-                            Country::assertCountryCodeExists($inputValue, 'country_code input value must be a valid country code.');
+                            Country::assertCountryCodeExists($inputValue, $this->getErrorMessage('country_code input value must be a valid country code.', $inputValue));
                             break;
                         case 'possible_countries':
                             foreach ($inputValue as $countryCode) {
-                                Country::assertCountryCodeExists($countryCode, 'possible_countries input value must be a valid country codes list. Invalid ['.$countryCode.'], LIST: '.json_encode($inputValue));
+                                Country::assertCountryCodeExists($countryCode, $this->getErrorMessage('possible_countries input value must be a valid country codes list.', $countryCode));
                             }
                             break;
 
@@ -46,7 +46,7 @@ class ProfilePhonesInputValidator
                         case 'risky_phone':
                         case 'disposable_phone':
                             if (!is_bool($inputValue)) {
-                                throw new InvalidInputValue($inputKey . ' input value must be either true or false');
+                                throw new InvalidInputValue($this->getErrorMessage($inputKey . ' input value must be either true or false', $inputValue));
                             }
                             break;
                     }
@@ -56,5 +56,10 @@ class ProfilePhonesInputValidator
                 }
             }
         }
+    }
+
+    protected function getErrorMessage(string $message, $inputValue) {
+        $stringInputValue = json_encode($inputValue);
+        return "[Profile Phones] {$message} - Invalid Value [{$stringInputValue}]";
     }
 }

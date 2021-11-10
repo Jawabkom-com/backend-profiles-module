@@ -20,11 +20,16 @@ class ProfileSkillsInputValidator
                 if(isset($inputValue)) {
                     switch ($inputKey) {
                         case 'valid_since':
-                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', 'valid_since input value must be a valid date.');
+                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', $this->getErrorMessage('valid_since input value must be a valid date.', $inputValue));
                             break;
                     }
                 }
             }
         }
+    }
+
+    protected function getErrorMessage(string $message, $inputValue) {
+        $stringInputValue = json_encode($inputValue);
+        return "[Profile Skills] {$message} - Invalid Value [{$stringInputValue}]";
     }
 }
