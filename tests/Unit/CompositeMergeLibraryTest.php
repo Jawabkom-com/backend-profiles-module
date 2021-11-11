@@ -48,7 +48,16 @@ class CompositeMergeLibraryTest extends AbstractTestCase
 
     public function generateComposite()
     {
+        $dummyBasicData = $this->dummyBasicProfileData();
+        $profileRepository= $this->di->make(IProfileRepository::class);
+        $profileEntity = $profileRepository->createEntity();
+        $profileEntity->setGender($dummyBasicData['gender'] ?? null);
+        $profileEntity->setDataSource($dummyBasicData['data_source'] ?? null);
+        $profileEntity->setPlaceOfBirth($dummyBasicData['place_of_birth'] ?? null);
+        $profileEntity->setDateOfBirth(!empty($dummyBasicData['date_of_birth']) ? new \DateTime($dummyBasicData['date_of_birth']) : null);
+
         $composite = $this->di->make(IProfileComposite::class);
+        $composite->setProfile($profileEntity);
         $this->generateEmailEntity($composite);
         $profileCompositeInnerEntitiesHashValidator = $this->di->make(ProfileCompositeInnerEntitiesHashValidator::class);
         $profileCompositeInnerEntitiesHashValidator->validate($composite);
