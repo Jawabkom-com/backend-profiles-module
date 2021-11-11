@@ -7,5 +7,5 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 
 interface IProfileCompositeHashGenerator
 {
-    public function generate(IProfileComposite $entity, IArrayHashing $arrayHashing):string;
+    public function generate(IProfileComposite $composite, IArrayHashing $arrayHashing):string;
 }
