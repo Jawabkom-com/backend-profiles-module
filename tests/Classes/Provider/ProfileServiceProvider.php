@@ -87,6 +87,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{EntityFilter\IProfileCompositeEnti
     EntityFilter\IProfileSkillEntityFilter,
     EntityFilter\IProfileSocialProfileEntityFilter,
     EntityFilter\IProfileUsernameEntityFilter,
+    Libraries\ICompositesMerge,
     Libraries\INameScoring,
     Libraries\ISearchableText,
     Mapper\IArrayToProfileEntityMapper,
@@ -154,6 +155,7 @@ use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileSkillEntityFilter;
 use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileSocialProfileEntityFilter;
 use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileUsernameEntityFilter;
 use Jawabkom\Backend\Module\Profile\Library\BasicSearchableText;
+use Jawabkom\Backend\Module\Profile\Library\CompositeMerge;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileEntityMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileAddressEntityMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileCriminalRecordEntityMapper;
@@ -324,6 +326,7 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileCompositeEntitiesFilter::class          => ProfileCompositeEntitiesFilter::class,
             IQueryRequestLoggerRepository::class            => QueryRequestLogger::class,
             IQueryRequestLoggerEntity::class                => QueryRequestLogger::class,
+            ICompositesMerge::class                         => CompositeMerge::class,
 
 
             ISearchableText::class => BasicSearchableText::class
