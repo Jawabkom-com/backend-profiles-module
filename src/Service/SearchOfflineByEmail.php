@@ -6,11 +6,8 @@ use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEmailRepository;
-use Jawabkom\Backend\Module\Profile\Contract\IProfilePhoneRepository;
-use Jawabkom\Backend\Module\Profile\Contract\SearchFilter\IProfileCompositeSearchFilter;
 use Jawabkom\Backend\Module\Profile\Exception\CountryCodeDoesNotExists;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidEmailAddressFormat;
-use Jawabkom\Backend\Module\Profile\Library\Country;
 use Jawabkom\Backend\Module\Profile\Library\Phone;
 use Jawabkom\Backend\Module\Profile\Trait\SearchFiltersTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
@@ -45,15 +42,13 @@ class SearchOfflineByEmail extends AbstractService
     {
         $composites = [];
         $email = $this->getInput('email'); // required
-        $inputFilters = $this->getInput('filters',[]);
-        $this->validate($email,$inputFilters);
-
+        $searchFilters = $this->getInput('filters',[]);
+        $this->validate($email,$searchFilters);
         $profileEmailEntities = $this->emailRepository->getByEmail($email);
 
         foreach($profileEmailEntities as $entity) {
             $composites[] = $this->compositeFacade->getCompositeByProfileId($entity->getProfileId());
         }
-        $searchFilters = $this->getSearchFilters($inputFilters);
         $this->setOutput('result', $this->applySearchFilters($searchFilters,$composites));
         return $this;
     }

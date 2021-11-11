@@ -9,6 +9,7 @@ use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Facade\ProfileCompositeFacade;
 use Jawabkom\Backend\Module\Profile\SearcherRegistry;
 use Jawabkom\Backend\Module\Profile\SearchFilter\CountryCodeFilter;
+use Jawabkom\Backend\Module\Profile\SearchFilter\EmailFilter;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
@@ -46,7 +47,8 @@ class SearchFiltersInputValidatorTest extends AbstractTestCase
     {
         $this->expectException(InvalidEmailAddressFormat::class);
         $v = new SearchFiltersInputValidator();
-        $v->validate(['email'=>'test@test']);
+
+        $v->validate(['email'=>new EmailFilter('test@test')]);
     }
 
 }

@@ -5,6 +5,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidEmailAddressFormat;
+use Jawabkom\Backend\Module\Profile\SearchFilter\UserNameFilter;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByEmail;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByPhone;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByUserName;
@@ -49,7 +50,7 @@ class SearchOfflineByEmailTest extends AbstractTestCase
         $email = $dummyProfilesData[1]['emails'][0]['email'];
         $userName = $dummyProfilesData[1]['usernames'][0]['username'];
         $filter = [
-            'username' => $userName
+            'username' => new UserNameFilter($userName)
         ];
         $profileCompositesResults = $this->searchByEmailService->input('email', $email)
                                                                ->input('filters', $filter)
@@ -73,7 +74,7 @@ class SearchOfflineByEmailTest extends AbstractTestCase
 
         $userName = $dummyProfilesData[1]['usernames'][0]['username'];
         $filter = [
-            'username' => $userName
+            'username' => new UserNameFilter($userName)
         ];
         $profileCompositesResults = $this->searchByEmailService->input('email', $email)
                                                                ->input('filters', $filter)
@@ -96,7 +97,7 @@ class SearchOfflineByEmailTest extends AbstractTestCase
         $email = $dummyProfilesData[1]['emails'][0]['email'];
         $userName = $dummyProfilesData[1]['usernames'][0]['username'];
         $filter = [
-            'username' => $userName
+            'username' => new UserNameFilter($userName)
         ];
         $this->expectException(MissingRequiredInputException::class);
         $profileCompositesResults = $this->searchByEmailService->input('filters', $filter)
@@ -115,7 +116,7 @@ class SearchOfflineByEmailTest extends AbstractTestCase
         }
         $userName = $dummyProfilesData[1]['usernames'][0]['username'];
         $filter = [
-            'username' => $userName
+            'username' => new UserNameFilter($userName)
         ];
         $this->expectException(InvalidEmailAddressFormat::class);
         $profileCompositesResults = $this->searchByEmailService->input('email','www.people.com')

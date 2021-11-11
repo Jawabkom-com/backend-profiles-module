@@ -2,9 +2,9 @@
 
 namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 
-use Illuminate\Queue\Failed\DynamoDbFailedJobProvider;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
+use Jawabkom\Backend\Module\Profile\SearchFilter\CountryCodeFilter;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByPhone;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
@@ -47,7 +47,7 @@ class SearchByPhoneTest extends AbstractTestCase
         $phone = $dummyProfilesData[1]['phones'][0]['original_number'];
         $countryCode = $dummyProfilesData[1]['phones'][0]['country_code'];
         $filter = [
-            'country_code' => $countryCode
+            'country_code' => new CountryCodeFilter($countryCode)
         ];
         $profileCompositesResults = $this->searchByPhoneService->input('phone', $phone)
             ->input('filters', $filter)
@@ -77,7 +77,7 @@ class SearchByPhoneTest extends AbstractTestCase
            'country_code' =>'TR'
         ]);
         $filter = [
-            'country_code' => $countryCode
+            'country_code' => new CountryCodeFilter($countryCode)
         ];
         $profileCompositesResults = $this->searchByPhoneService->input('phone', $phone)
             ->input('filters', $filter)
@@ -100,7 +100,7 @@ class SearchByPhoneTest extends AbstractTestCase
         $phone = $dummyProfilesData[1]['phones'][0]['original_number'];
         $countryCode = $dummyProfilesData[1]['phones'][0]['country_code'];
         $filter = [
-            'country_code' => $countryCode
+            'country_code' => new CountryCodeFilter($countryCode)
         ];
         $this->expectException(MissingRequiredInputException::class);
         $profileCompositesResults = $this->searchByPhoneService

@@ -25,4 +25,12 @@ class EmailFilter implements IProfileCompositeSearchFilter
         }
         return false;
     }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
 }

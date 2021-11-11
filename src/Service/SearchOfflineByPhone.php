@@ -44,16 +44,14 @@ class SearchOfflineByPhone extends AbstractService
         $composites = [];
         $phoneNumber = $this->getInput('phone'); // required
         $phonePossibleCountries = $this->getInput('possible_countries'); //optional
-        $inputFilters = $this->getInput('filters', []);
-        $this->validate($phoneNumber, $phonePossibleCountries, $inputFilters);
-
+        $searchFilters = $this->getInput('filters', []);
+        $this->validate($phoneNumber, $phonePossibleCountries, $searchFilters);
 
         $formattedPhone = $this->phone->parse($phoneNumber, $phonePossibleCountries)['phone'];
         $profilePhoneEntities = $this->phoneRepository->getByPhone($formattedPhone);
         foreach ($profilePhoneEntities as $entity) {
             $composites[] = $this->compositeFacade->getCompositeByProfileId($entity->getProfileId());
         }
-        $searchFilters = $this->getSearchFilters($inputFilters);
         $this->setOutput('result', $this->applySearchFilters($searchFilters, $composites));
         return $this;
     }

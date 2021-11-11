@@ -5,6 +5,9 @@ namespace Jawabkom\Backend\Module\Profile\Test\Functional;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileEntity;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidEmailAddressFormat;
+use Jawabkom\Backend\Module\Profile\SearchFilter\EmailFilter;
+use Jawabkom\Backend\Module\Profile\SearchFilter\PhoneNumberFilter;
+use Jawabkom\Backend\Module\Profile\SearchFilter\UserNameFilter;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByEmail;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByName;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByPhone;
@@ -50,7 +53,7 @@ class SearchOfflineByNameTest extends AbstractTestCase
         }
         $userName = $dummyProfilesData[1]['usernames'][0]['username'];
         $filter = [
-            'username' => $userName
+            'username' => new UserNameFilter($userName)
         ];
         $profileCompositesResults = $this->searchByNameService->input('name', $name)
                                                                ->input('filters', $filter)
@@ -81,7 +84,7 @@ class SearchOfflineByNameTest extends AbstractTestCase
                 ->output('result');
         }
         $filter = [
-            'phone' => '+905527153514'
+            'phone' => new PhoneNumberFilter('+905527153514')
         ];
         $profileCompositesResults = $this->searchByNameService->input('name', $name)
             ->input('filters', $filter)
@@ -103,7 +106,7 @@ class SearchOfflineByNameTest extends AbstractTestCase
         }
         $email = $dummyProfilesData[1]['emails'][0]['email'];
         $filter = [
-            'email' => $email
+            'email' => new EmailFilter($email)
         ];
         $this->expectException(MissingRequiredInputException::class);
         $profileCompositesResults = $this->searchByNameService->input('filters', $filter)

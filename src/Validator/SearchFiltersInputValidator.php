@@ -20,13 +20,12 @@ class SearchFiltersInputValidator
                 if (isset($inputValue)) {
                     switch ($inputKey) {
                         case 'country_code':
-                            Country::assertCountryCodeExists($inputValue, $this->getErrorMessage('country_code input value must be a valid country code.', $inputValue));
+                            Country::assertCountryCodeExists($inputValue->getCountryCode(), $this->getErrorMessage('country_code input value must be a valid country code.', $inputValue));
                             break;
                         case 'email':
-                            if (!filter_var($inputValue, FILTER_VALIDATE_EMAIL))
+                            if (!filter_var($inputValue->getEmail(), FILTER_VALIDATE_EMAIL))
                                 throw new InvalidEmailAddressFormat($this->getErrorMessage('email input value must be a valid format.', $inputValue));
                             break;
-
                     }
 
                     // other validators goes here

@@ -47,15 +47,14 @@ class SearchOfflineByName extends AbstractService
     {
         $composites = [];
         $name = $this->getInput('name'); // required
-        $inputFilters = $this->getInput('filters',[]);
-        $this->validate($name,$inputFilters);
+        $searchFilters = $this->getInput('filters',[]);
+        $this->validate($name,$searchFilters);
 
         $profileNameEntities = $this->nameRepository->getByName($name);
 
         foreach($profileNameEntities as $entity) {
             $composites[] = $this->compositeFacade->getCompositeByProfileId($entity->getProfileId());
         }
-        $searchFilters = $this->getSearchFilters($inputFilters);
         $this->setOutput('result', $this->applySearchFilters($searchFilters,$composites));
         return $this;
     }
