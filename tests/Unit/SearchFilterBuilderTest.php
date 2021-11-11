@@ -9,6 +9,7 @@ use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
+use Jawabkom\Standard\Contract\IAndFilterComposite;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Contract\IOrFilterComposite;
 
@@ -48,6 +49,16 @@ class SearchFilterBuilderTest extends AbstractTestCase
             ->registerFilter('new')
             ->setFilterType('or')->build();
         $this->assertInstanceOf(IOrFilterComposite::class,$searchFilterBuilder);
+    }
+
+    public function testInstantiatePhoneFilterCompositeObject()
+    {
+        /**@var $searchFilterBuilder SimpleSearchFiltersBuilder */
+        $searchFilterBuilder = $this->di->make(SimpleSearchFiltersBuilder::class);
+        $searchFilterBuilder = $searchFilterBuilder
+            ->setAllFilters(['phone' => '5527153514','country_code'=>'TR'])
+            ->registerFilter('new')->build();
+        $this->assertInstanceOf(IAndFilterComposite::class,$searchFilterBuilder);
     }
 
 }
