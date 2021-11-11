@@ -22,14 +22,19 @@ class ProfileImagesInputValidator
                     switch ($inputKey) {
                         case 'original_url':
                             if (!filter_var($inputValue, FILTER_VALIDATE_URL))
-                                throw new InvalidUrlFormat('original_url input value must be a valid format.');
+                                throw new InvalidUrlFormat($this->getErrorMessage('original_url input value must be a valid format.', $inputValue));
                             break;
                         case 'valid_since':
-                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', 'valid_since input value must be a valid date.');
+                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', $this->getErrorMessage('valid_since input value must be a valid date.', $inputValue));
                             break;
                     }
                 }
             }
         }
+    }
+
+    protected function getErrorMessage(string $message, $inputValue) {
+        $stringInputValue = json_encode($inputValue);
+        return "[Profile Images] {$message} - Invalid Value [{$stringInputValue}]";
     }
 }

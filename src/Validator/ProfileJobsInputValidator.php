@@ -20,18 +20,23 @@ class ProfileJobsInputValidator
                 if(isset($inputValue)) {
                     switch ($inputKey) {
                         case 'valid_since':
-                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', 'valid_since input value must be a valid date.');
+                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', $this->getErrorMessage('valid_since input value must be a valid date.', $inputValue));
                             break;
                         case 'from':
-                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', 'from input value must be a valid date.');
+                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', $this->getErrorMessage('from input value must be a valid date.', $inputValue));
                             break;
                         case 'to':
-                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', 'to input value must be a valid date.');
+                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', $this->getErrorMessage('to input value must be a valid date.', $inputValue));
                             break;
                     }
 
                 }
             }
         }
+    }
+
+    protected function getErrorMessage(string $message, $inputValue) {
+        $stringInputValue = json_encode($inputValue);
+        return "[Profile Jobs] {$message} - Invalid Value [{$stringInputValue}]";
     }
 }

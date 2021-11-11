@@ -20,11 +20,11 @@ class SearchFiltersInputValidator
                 if (isset($inputValue)) {
                     switch ($inputKey) {
                         case 'country_code':
-                            Country::assertCountryCodeExists($inputValue, 'country_code input value must be a valid country code.');
+                            Country::assertCountryCodeExists($inputValue, $this->getErrorMessage('country_code input value must be a valid country code.', $inputValue));
                             break;
                         case 'email':
                             if (!filter_var($inputValue, FILTER_VALIDATE_EMAIL))
-                                throw new InvalidEmailAddressFormat('email input value must be a valid format.');
+                                throw new InvalidEmailAddressFormat($this->getErrorMessage('email input value must be a valid format.', $inputValue));
                             break;
 
                     }
@@ -33,5 +33,10 @@ class SearchFiltersInputValidator
 
                 }
         }
+    }
+
+    protected function getErrorMessage(string $message, $inputValue) {
+        $stringInputValue = json_encode($inputValue);
+        return "[Search Filters] {$message} - Invalid Value [{$stringInputValue}]";
     }
 }

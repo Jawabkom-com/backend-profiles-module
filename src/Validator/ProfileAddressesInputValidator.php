@@ -31,15 +31,20 @@ class ProfileAddressesInputValidator
                 if (isset($inputValue)) {
                     switch ($inputKey) {
                         case 'country':
-                            Country::assertCountryCodeExists($inputValue, 'country input value must be a valid country code.');
+                            Country::assertCountryCodeExists($inputValue, $this->getErrorMessage('country input value must be a valid country code.', $inputValue));
                             break;
 
                         case 'valid_since':
-                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', 'valid_since input value must be a valid date.');
+                            DateFormat::assertValidDateFormat($inputValue, 'Y-m-d', $this->getErrorMessage('valid_since input value must be a valid date.', $inputValue));
                             break;
                     }
                 }
             }
         }
+    }
+
+    protected function getErrorMessage(string $message, $inputValue) {
+        $stringInputValue = json_encode($inputValue);
+        return "[Profile Addresses] {$message} - Invalid Value [{$stringInputValue}]";
     }
 }

@@ -258,7 +258,8 @@ class Country
         'YE' => 'Yemen',
         'ZM' => 'Zambia',
         'ZW' => 'Zimbabwe',
-        'XK' => 'Kosovo'
+        'XK' => 'Kosovo',
+        'CS' => 'Czechoslovakia'
     ];
 
     public static function getNameByCode($code)

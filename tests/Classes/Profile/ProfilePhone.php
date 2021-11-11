@@ -207,7 +207,7 @@ class ProfilePhone extends Model implements IProfilePhoneEntity, IProfilePhoneRe
 
     public function setValidSince(?\DateTime $validSince)
     {
-        $this->valid_since = $validSince;
+        $this->valid_since = $validSince->format('Y-m-d');
     }
 
     public function getValidSince(): ?\DateTime
