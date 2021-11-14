@@ -84,6 +84,9 @@ class SearchByPhoneTest extends AbstractTestCase
             ->input('possible_countries', ['TR','AT'])
             ->process()
             ->output('result');
+        $this->assertDatabaseHas('offline_search_requests',[
+            'matches_count'=> count($profileCompositesResults)
+        ]);
         $this->assertInstanceOf(IProfileComposite::class, $profileCompositesResults[0]);
         $this->assertInstanceOf(IProfileEntity::class, $profileCompositesResults[0]->getProfile());
     }

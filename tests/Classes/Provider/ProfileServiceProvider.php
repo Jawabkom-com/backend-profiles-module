@@ -10,7 +10,7 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilt
     Composite\ProfileComposite,
     DI,
     ProfileUuidFactory,
-    Search\QueryRequestLogger,
+    Search\OfflineSearchRequest,
     Search\SearcherStatus,
     Search\SearchRequest,
     TestNameScoring};
@@ -34,6 +34,8 @@ use Jawabkom\Backend\Module\Profile\Contract\{EntityFilter\IProfileCompositeEnti
     HashGenerator\IProfileUsernameHashGenerator,
     IArrayHashing,
     IArrayToProfileCompositeMapper,
+    IOfflineSearchRequestEntity,
+    IOfflineSearchRequestRepository,
     IProfileAddressEntity,
     IProfileAddressRepository,
     IProfileComposite,
@@ -67,8 +69,6 @@ use Jawabkom\Backend\Module\Profile\Contract\{EntityFilter\IProfileCompositeEnti
     IProfileUsernameEntity,
     IProfileUsernameRepository,
     IProfileUuidFactory,
-    IQueryRequestLoggerEntity,
-    IQueryRequestLoggerRepository,
     ISearcherStatusRepository,
     ISearchFiltersBuilder,
     ISearchRequestRepository,
@@ -324,8 +324,8 @@ class ProfileServiceProvider extends ServiceProvider
             IProfileCompositeHashGenerator::class           => ProfileCompositeHashGenerator::class,
             INameScoring::class                             => TestNameScoring::class,
             IProfileCompositeEntitiesFilter::class          => ProfileCompositeEntitiesFilter::class,
-            IQueryRequestLoggerRepository::class            => QueryRequestLogger::class,
-            IQueryRequestLoggerEntity::class                => QueryRequestLogger::class,
+            IOfflineSearchRequestEntity::class              => OfflineSearchRequest::class,
+            IOfflineSearchRequestRepository::class          => OfflineSearchRequest::class,
             ICompositesMerge::class                         => CompositeMerge::class,
 
 

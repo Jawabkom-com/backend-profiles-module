@@ -4,8 +4,8 @@ namespace Jawabkom\Backend\Module\Profile\Test\Classes\Search;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Jawabkom\Backend\Module\Profile\Contract\IQueryRequestLoggerEntity;
-use Jawabkom\Backend\Module\Profile\Contract\IQueryRequestLoggerRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IOfflineSearchRequestEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IOfflineSearchRequestRepository;
 use Jawabkom\Standard\Contract\IEntity;
 
 /**
@@ -17,7 +17,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property string[] $error_messages
  * @property false|string $request_meta
  */
-class QueryRequestLogger extends Model implements IQueryRequestLoggerEntity, IQueryRequestLoggerRepository
+class OfflineSearchRequest extends Model implements IOfflineSearchRequestEntity, IOfflineSearchRequestRepository
 {
     use HasFactory;
 
@@ -59,12 +59,12 @@ class QueryRequestLogger extends Model implements IQueryRequestLoggerEntity, IQu
         return json_decode($this->other_params);
     }
 
-    public function saveEntity(IEntity|IQueryRequestLoggerEntity $entity): bool
+    public function saveEntity(IEntity|IOfflineSearchRequestEntity $entity): bool
     {
         return $entity->save();
     }
 
-    public function createEntity(array $params = []): IQueryRequestLoggerEntity
+    public function createEntity(array $params = []): IOfflineSearchRequestEntity
     {
         return app()->make(static::class)->fill($params);
     }

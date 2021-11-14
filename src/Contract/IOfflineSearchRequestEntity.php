@@ -4,7 +4,7 @@ namespace Jawabkom\Backend\Module\Profile\Contract;
 
 use Jawabkom\Standard\Contract\IEntity;
 
-interface IQueryRequestLoggerEntity extends IEntity
+interface IOfflineSearchRequestEntity extends IEntity
 {
 
     public function setRequestFilters(array $filter);

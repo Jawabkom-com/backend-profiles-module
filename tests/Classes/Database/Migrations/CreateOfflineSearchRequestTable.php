@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQueryRequestLoggerTable extends Migration
+class CreateOfflineSearchRequestTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class CreateQueryRequestLoggerTable extends Migration
      */
     public function up()
     {
-        Schema::create('query_request_loggers', function (Blueprint $table) {
+        Schema::create('offline_search_requests', function (Blueprint $table) {
             $table->id();
             $table->string('status')->index();
             $table->integer('matches_count')->index();
@@ -34,6 +34,6 @@ class CreateQueryRequestLoggerTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('query_request_loggers');
+        Schema::dropIfExists('offline_search_requests');
     }
 }
