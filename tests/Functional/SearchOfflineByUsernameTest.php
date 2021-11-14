@@ -51,7 +51,7 @@ class SearchOfflineByUsernameTest extends AbstractTestCase
         $email = $dummyProfilesData[1]['emails'][0]['email'];
         $userName = $dummyProfilesData[1]['usernames'][0]['username'];
         $filter = [
-            'email' => new EmailFilter($email)
+           new EmailFilter($email)
         ];
         $profileCompositesResults = $this->searchByUserNameService->input('username', $userName)
                                                                ->input('filters', $filter)
@@ -77,7 +77,7 @@ class SearchOfflineByUsernameTest extends AbstractTestCase
         $email = $dummyProfilesData[1]['emails'][0]['email'];
 
         $filter = [
-            'email' => new EmailFilter($email)
+            new EmailFilter($email)
         ];
         $profileCompositesResults = $this->searchByUserNameService->input('username', $userName)
                                                                     ->input('filters', $filter)
@@ -105,7 +105,7 @@ class SearchOfflineByUsernameTest extends AbstractTestCase
         $name .= $dummyProfilesData[1]['names'][0]['last'];
 
         $filter = [
-            'name' => new NameFilter($name),
+            new NameFilter($name),
         ];
         $profileCompositesResults = $this->searchByUserNameService->input('username', $userName)
                                                                     ->input('filters', $filter)
@@ -127,7 +127,7 @@ class SearchOfflineByUsernameTest extends AbstractTestCase
         }
         $email = $dummyProfilesData[1]['emails'][0]['email'];
         $filter = [
-            'email' => new EmailFilter($email)
+           new EmailFilter($email)
         ];
         $this->expectException(MissingRequiredInputException::class);
         $profileCompositesResults = $this->searchByUserNameService->input('filters', $filter)

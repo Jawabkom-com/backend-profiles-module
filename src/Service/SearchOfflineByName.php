@@ -48,7 +48,7 @@ class SearchOfflineByName extends AbstractService
         $composites = [];
         $name = $this->getInput('name'); // required
         $searchFilters = $this->getInput('filters',[]);
-        $this->validate($name,$searchFilters);
+        $this->validateName($name);
 
         $profileNameEntities = $this->nameRepository->getByName($name);
 
@@ -57,15 +57,6 @@ class SearchOfflineByName extends AbstractService
         }
         $this->setOutput('result', $this->applySearchFilters($searchFilters,$composites));
         return $this;
-    }
-
-    /**
-     * @throws MissingRequiredInputException
-     */
-    protected function validate(?string $name, array $inputFilters): void
-    {
-        $this->validateName($name);
-        $this->validateFilterInputs($inputFilters);
     }
 
     private function validateName(?string $name):void

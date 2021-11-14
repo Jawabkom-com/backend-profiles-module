@@ -26,13 +26,4 @@ class CountryCodeFilter implements IProfileCompositeSearchFilter
         }
         return false;
     }
-
-    /**
-     * @return string
-     */
-    public function getCountryCode(): string
-    {
-        return $this->countryCode;
-    }
-
 }
