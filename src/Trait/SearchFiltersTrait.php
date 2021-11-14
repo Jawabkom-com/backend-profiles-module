@@ -4,7 +4,7 @@ namespace Jawabkom\Backend\Module\Profile\Trait;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\SearchFilter\IProfileCompositeSearchFilter;
-use Jawabkom\Backend\Module\Profile\Validator\SearchFiltersInputValidator;
+use Jawabkom\Backend\Module\Profile\Exception\InvalidFilterException;
 
 trait SearchFiltersTrait
 {
@@ -18,6 +18,9 @@ trait SearchFiltersTrait
         foreach($composites as $composite) {
             $filterResult = true;
             foreach ($filters as $filter) {
+                if (!($filter instanceof IProfileCompositeSearchFilter)){
+                    throw new InvalidFilterException('Invalid filter type');
+                }
                 if(!$filter->apply($composite)) {
                     $filterResult = false;
                     break;
@@ -29,11 +32,4 @@ trait SearchFiltersTrait
         }
         return $filteredComposites;
     }
-
-    private function validateFilterInputs(array $inputFilters)
-    {
-        $validator = $this->di->make(SearchFiltersInputValidator::class);
-        $validator->validate($inputFilters);
-    }
-
 }

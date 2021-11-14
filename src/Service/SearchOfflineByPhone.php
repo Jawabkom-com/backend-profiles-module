@@ -45,7 +45,7 @@ class SearchOfflineByPhone extends AbstractService
         $phoneNumber = $this->getInput('phone'); // required
         $phonePossibleCountries = $this->getInput('possible_countries'); //optional
         $searchFilters = $this->getInput('filters', []);
-        $this->validate($phoneNumber, $phonePossibleCountries, $searchFilters);
+        $this->validate($phoneNumber, $phonePossibleCountries);
 
         $formattedPhone = $this->phone->parse($phoneNumber, $phonePossibleCountries)['phone'];
         $profilePhoneEntities = $this->phoneRepository->getByPhone($formattedPhone);
@@ -62,11 +62,10 @@ class SearchOfflineByPhone extends AbstractService
      * @throws MissingRequiredInputException
      * @throws CountryCodeDoesNotExists
      */
-    protected function validate(?string $phoneNumber, array $phonePossibleCountries, array $inputFilters): void
+    protected function validate(?string $phoneNumber, array $phonePossibleCountries): void
     {
         $this->validatePhoneNumber($phoneNumber);
         $this->validatePhonePossibleCountries($phonePossibleCountries);
-        $this->validateFilterInputs($inputFilters);
     }
 
     private function validatePhoneNumber(?string $phoneNumber): void

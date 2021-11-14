@@ -43,7 +43,7 @@ class SearchOfflineByEmail extends AbstractService
         $composites = [];
         $email = $this->getInput('email'); // required
         $searchFilters = $this->getInput('filters',[]);
-        $this->validate($email,$searchFilters);
+        $this->validateEmail($email);
         $profileEmailEntities = $this->emailRepository->getByEmail($email);
 
         foreach($profileEmailEntities as $entity) {
@@ -51,16 +51,6 @@ class SearchOfflineByEmail extends AbstractService
         }
         $this->setOutput('result', $this->applySearchFilters($searchFilters,$composites));
         return $this;
-    }
-
-    /**
-     * @throws InvalidEmailAddressFormat
-     * @throws MissingRequiredInputException
-     */
-    protected function validate(?string $email, array $inputFilters): void
-    {
-        $this->validateEmail($email);
-        $this->validateFilterInputs($inputFilters);
     }
 
     private function validateEmail(?string $email):void
