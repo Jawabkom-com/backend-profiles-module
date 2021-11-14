@@ -54,7 +54,8 @@ class SearchOfflineByName extends AbstractService
         $composites = [];
         $name = $this->getInput('name'); // required
         $searchFilters = $this->getInput('filters',[]);
-        $offlineSearchRequest = $this->tracking();
+        $offlineSearchHash    = sha1(json_encode($this->getInputs()));
+        $offlineSearchRequest = $this->initOfflineSearchRequest($offlineSearchHash);
         try {
             $this->validateName($name);
 
@@ -65,11 +66,11 @@ class SearchOfflineByName extends AbstractService
             }
             $searchFiltersResult = $this->applySearchFilters($searchFilters, $composites);
             $this->setOutput('result', $searchFiltersResult);
-            $this->tracking($offlineSearchRequest,'done',match: count($searchFiltersResult));
+            $this->setSucceededSearchRequestStatus($offlineSearchRequest, count($searchFiltersResult));
             return $this;
 
         }catch (\Throwable $exception){
-            $this->tracking($offlineSearchRequest,status: 'error',error: $exception->getMessage());
+            $this->setErrorSearchRequestStatus($offlineSearchRequest,$exception);
             throw $exception;
         }
     }

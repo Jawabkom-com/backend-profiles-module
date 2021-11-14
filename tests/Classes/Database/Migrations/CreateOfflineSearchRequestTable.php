@@ -18,6 +18,7 @@ class CreateOfflineSearchRequestTable extends Migration
             $table->id();
             $table->string('status')->index();
             $table->integer('matches_count')->index();
+            $table->string('hash')->index();
             $table->json('error_messages')->nullable();
             $table->json('request_search_filters')->nullable();
             $table->dateTime('request_date_time')->index();

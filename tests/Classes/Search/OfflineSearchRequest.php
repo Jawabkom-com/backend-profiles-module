@@ -16,6 +16,7 @@ use Jawabkom\Standard\Contract\IEntity;
  * @property string $status
  * @property string[] $error_messages
  * @property false|string $request_meta
+ * @property string $hash
  */
 class OfflineSearchRequest extends Model implements IOfflineSearchRequestEntity, IOfflineSearchRequestRepository
 {
@@ -23,6 +24,7 @@ class OfflineSearchRequest extends Model implements IOfflineSearchRequestEntity,
 
     protected $fillable = [
         'status',
+        'hash',
         'error_messages',
         'matches_count',
         'request_search_filters',
@@ -121,5 +123,13 @@ class OfflineSearchRequest extends Model implements IOfflineSearchRequestEntity,
     public function getRequestFilters(): array
     {
      return json_decode($this->request_search_filters,true);
+    }
+
+    public function setHash(string $hash){
+        $this->hash = $hash;
+    }
+
+    public function getHash():?string{
+        return $this->hash;
     }
 }

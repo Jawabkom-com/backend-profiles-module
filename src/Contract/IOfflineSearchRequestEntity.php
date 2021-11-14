@@ -23,6 +23,9 @@ interface IOfflineSearchRequestEntity extends IEntity
     public function setStatus(string $status);
     public function getStatus():string;
 
+    public function setHash(string $hash);
+    public function getHash():?string;
+
     public function setRequestMeta(array $meta);
     public function getRequestMeta():array;
 

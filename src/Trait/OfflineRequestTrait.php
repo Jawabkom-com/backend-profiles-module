@@ -26,20 +26,32 @@ use Jawabkom\Backend\Module\Profile\Validator\ProfileCompositeInnerEntitiesHashV
 
 trait OfflineRequestTrait
 {
-    protected function tracking(IOfflineSearchRequestEntity $entity=null,string $status='init',$error='',$match=0,$requestMeta=[]): ?IOfflineSearchRequestEntity
+    protected function initOfflineSearchRequest(string $offlineSearchHash): ?IOfflineSearchRequestEntity
     {
-        if (empty($entity)){
             $entity = $this->offlineSearchRequestRepository->createEntity();
-        }
+            $entity->setRequestDateTime(new \DateTime());
+            $entity->setHash($offlineSearchHash);
+            $entity->setOtherParams($this->getInput('requestMeta', []));
+            $entity->setMatchesCount(0);
+            $entity->setStatus('init');
+            $entity->setRequestFilters($this->getInputs());
+            $this->offlineSearchRequestRepository->saveEntity($entity);
+            return $entity;
+    }
 
-        $entity->setRequestDateTime(new \DateTime());
-        $entity->setOtherParams($this->getInput('requestMeta', $requestMeta));
-        $entity->setStatus($status);
-        $entity->addError($error);
-        $entity->setMatchesCount($match);
-        $entity->setRequestFilters($this->getInputs());
+    protected function setSucceededSearchRequestStatus(IOfflineSearchRequestEntity $entity, int $matches): void
+    {
+        $entity->setMatchesCount($matches);
+        $entity->setStatus('done');
         $this->offlineSearchRequestRepository->saveEntity($entity);
-        return $entity;
+    }
+
+    protected function setErrorSearchRequestStatus(IOfflineSearchRequestEntity $entity, \Throwable $exception): void
+    {
+        $entity->setMatchesCount(0);
+        $entity->setStatus('error');
+        $entity->addError("Time: " . date('Y-m-d H:i:s') . ", File: {$exception->getFile()}, Line: {$exception->getLine()}, Message: {$exception->getMessage()}, Type: " . get_class($exception));
+        $this->offlineSearchRequestRepository->saveEntity($entity);
     }
 
 }
