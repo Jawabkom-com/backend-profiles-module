@@ -4,6 +4,7 @@ namespace Jawabkom\Backend\Module\Profile\Validator;
 
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidUrlFormat;
+use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
 class ProfileSocialProfilesInputValidator
@@ -34,7 +35,26 @@ class ProfileSocialProfilesInputValidator
                     }
                 }
             }
+            $this->validateNullOrEmptyInputs($socialProfiles);
         }
+    }
+
+    protected function validateNullOrEmptyInputs(array $fields)
+    {
+        if (
+            $this->isNullOrEmptyString($fields['url']) &&
+            $this->isNullOrEmptyString($fields['username']) &&
+            $this->isNullOrEmptyString($fields['account_id'])
+
+        ) {
+            throw new MissingValueException("inputs should not be empty");
+        }
+    }
+
+
+    protected function isNullOrEmptyString($str)
+    {
+        return (!isset($str) || trim($str) === '');
     }
 
     protected function getErrorMessage(string $message, $inputValue) {

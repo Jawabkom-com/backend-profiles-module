@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Profile\Validator;
 
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
+use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 
 class ProfileNamesInputValidator
 {
@@ -25,6 +26,26 @@ class ProfileNamesInputValidator
                     // other validators goes here
                 }
             }
+            $this->validateNullOrEmptyInputs($names);
         }
     }
+
+    protected function validateNullOrEmptyInputs(array $fields)
+    {
+        if (
+            $this->isNullOrEmptyString($fields['first']) &&
+            $this->isNullOrEmptyString($fields['middle']) &&
+            $this->isNullOrEmptyString($fields['last'])
+
+        ) {
+            throw new MissingValueException("inputs should not be empty");
+        }
+    }
+
+
+    protected function isNullOrEmptyString($str)
+    {
+        return (!isset($str) || trim($str) === '');
+    }
+
 }

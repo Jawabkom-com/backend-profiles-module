@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Profile\Validator;
 
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
+use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 use Jawabkom\Backend\Module\Profile\Library\Country;
 use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
@@ -41,8 +42,31 @@ class ProfileAddressesInputValidator
                     }
                 }
             }
+            $this->validateNullOrEmptyInputs($addresses);
         }
     }
+
+    protected function validateNullOrEmptyInputs(array $fields)
+    {
+        if (
+            $this->isNullOrEmptyString($fields['country']) &&
+            $this->isNullOrEmptyString($fields['state']) &&
+            $this->isNullOrEmptyString($fields['city']) &&
+            $this->isNullOrEmptyString($fields['zip']) &&
+            $this->isNullOrEmptyString($fields['street']) &&
+            $this->isNullOrEmptyString($fields['building_number']) &&
+            $this->isNullOrEmptyString($fields['display'])
+        ) {
+            throw new MissingValueException("inputs should not be empty");
+        }
+    }
+
+
+    protected function isNullOrEmptyString($str)
+    {
+        return (!isset($str) || trim($str) === '');
+    }
+
 
     protected function getErrorMessage(string $message, $inputValue) {
         $stringInputValue = json_encode($inputValue);

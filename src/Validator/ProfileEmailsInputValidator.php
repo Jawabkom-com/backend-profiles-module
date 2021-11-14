@@ -4,6 +4,7 @@ namespace Jawabkom\Backend\Module\Profile\Validator;
 
 use Jawabkom\Backend\Module\Profile\Exception\InvalidEmailAddressFormat;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
+use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
 class ProfileEmailsInputValidator
@@ -36,7 +37,22 @@ class ProfileEmailsInputValidator
                     }
                 }
             }
+            $this->validateNullOrEmptyInputs($emails);
         }
+    }
+
+    protected function validateNullOrEmptyInputs(array $fields)
+    {
+        if (
+            $this->isNullOrEmptyString($fields['email'])
+        ) {
+            throw new MissingValueException("inputs should not be empty");
+        }
+    }
+
+    protected function isNullOrEmptyString($str)
+    {
+        return (!isset($str) || trim($str) === '');
     }
 
     protected function getErrorMessage(string $message, $inputValue) {
