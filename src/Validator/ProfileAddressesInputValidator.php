@@ -10,14 +10,15 @@ class ProfileAddressesInputValidator
 {
     protected array $structure = [
         'valid_since',  //YYYY-mm-dd
+
+        // below shouldn't be null together
         'country',      // country_code validators
         'state',
         'city',
         'zip',
         'street',
         'building_number',
-        'display',
-        'hash'
+        'display'
     ];
 
     public function validate(array $inputs)

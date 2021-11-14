@@ -9,7 +9,10 @@ use Jawabkom\Backend\Module\Profile\Library\Language;
 
 class ProfileLanguagesInputValidator
 {
-    protected array $structure = ['language', 'country'];
+    protected array $structure = [
+        // below shouldn't be null together
+        'language', 'country'
+    ];
 
     public function validate(array $inputs)
     {

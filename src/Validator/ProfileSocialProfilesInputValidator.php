@@ -8,7 +8,11 @@ use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
 class ProfileSocialProfilesInputValidator
 {
-    protected array $structure = ['valid_since', 'url', 'type' , 'username' , 'account_id'];
+    protected array $structure = ['valid_since', 'type',
+
+        // below shouldn't be null/empty together
+        'url' , 'username' , 'account_id'
+    ];
 
     public function validate(array $inputs)
     {

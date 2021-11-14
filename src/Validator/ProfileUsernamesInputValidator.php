@@ -9,6 +9,8 @@ class ProfileUsernamesInputValidator
 {
     protected array $structure = [
         'valid_since',
+
+        // below shouldn't be null/empty
         'username',
     ];
 

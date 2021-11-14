@@ -7,7 +7,10 @@ use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
 class ProfileSkillsInputValidator
 {
-    protected array $structure = ['valid_since', 'level', 'skill'];
+    protected array $structure = ['valid_since', 'level',
+        // below shouldn't be null/empty together
+        'skill'
+    ];
 
     public function validate(array $inputs)
     {

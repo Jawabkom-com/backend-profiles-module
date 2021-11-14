@@ -10,9 +10,10 @@ class ProfileEmailsInputValidator
 {
     protected array $structure = [
         'valid_since',
-        'email',
-        //'esp_domain',
         'type',
+
+        // below shouldn't be null together
+        'email'
     ];
 
     public function validate(array $inputs)

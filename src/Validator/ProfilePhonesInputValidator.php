@@ -13,13 +13,15 @@ class ProfilePhonesInputValidator
         'type',
         'do_not_call_flag',
         'country_code',
-        'original_number',
         'risky_phone',
         'disposable_phone',
         'carrier',
         'purpose',
         'industry',
-        'possible_countries'
+        'possible_countries',
+
+        // below shouldn't be empty
+        'original_number',
     ];
 
     public function validate(array $inputs)
