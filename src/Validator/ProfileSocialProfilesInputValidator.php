@@ -7,7 +7,7 @@ use Jawabkom\Backend\Module\Profile\Exception\InvalidUrlFormat;
 use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
-class ProfileSocialProfilesInputValidator
+class ProfileSocialProfilesInputValidator extends AbstractInputValidator
 {
     protected array $structure = ['valid_since', 'type',
 
@@ -17,13 +17,10 @@ class ProfileSocialProfilesInputValidator
 
     public function validate(array $inputs)
     {
-        foreach ($inputs as $socialProfiles) {
-            $this->validateNullOrEmptyInputs($socialProfiles);
-            foreach($socialProfiles as $inputKey => $inputValue) {
-                if(!in_array($inputKey, $this->structure)) {
-                    throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
-                }
-
+        foreach ($inputs as $socialProfile) {
+            $this->validateNullOrEmptyInputs($socialProfile);
+            foreach($socialProfile as $inputKey => $inputValue) {
+                $this->assertDefinedInputKeysOnly($socialProfile);
                 if(isset($inputValue)) {
                     switch ($inputKey) {
                         case 'url':
@@ -42,23 +39,13 @@ class ProfileSocialProfilesInputValidator
     protected function validateNullOrEmptyInputs(array $fields)
     {
         if (
-            $this->isNullOrEmptyString($fields['url']) &&
-            $this->isNullOrEmptyString($fields['username']) &&
-            $this->isNullOrEmptyString($fields['account_id'])
+            empty($fields['url']) &&
+            empty($fields['username']) &&
+            empty($fields['account_id'])
 
         ) {
             throw new MissingValueException("inputs should not be empty");
         }
     }
 
-
-    protected function isNullOrEmptyString($str)
-    {
-        return (!isset($str) || trim($str) === '');
-    }
-
-    protected function getErrorMessage(string $message, $inputValue) {
-        $stringInputValue = json_encode($inputValue);
-        return "[Profile Social Profiles] {$message} - Invalid Value [{$stringInputValue}]";
-    }
 }

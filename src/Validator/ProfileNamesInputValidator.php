@@ -2,10 +2,9 @@
 
 namespace Jawabkom\Backend\Module\Profile\Validator;
 
-use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 
-class ProfileNamesInputValidator
+class ProfileNamesInputValidator extends AbstractInputValidator
 {
     protected array $structure = [
         'prefix',
@@ -16,13 +15,10 @@ class ProfileNamesInputValidator
 
     public function validate(array $inputs)
     {
-        foreach ($inputs as $names) {
-            $this->validateNullOrEmptyInputs($names);
-            foreach($names as $inputKey => $inputValue) {
-                if(!in_array($inputKey, $this->structure)) {
-                    throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
-                }
-
+        foreach ($inputs as $name) {
+            $this->validateNullOrEmptyInputs($name);
+            foreach($name as $inputKey => $inputValue) {
+                $this->assertDefinedInputKeysOnly($name);
                 if(isset($inputValue)) {
                     // other validators goes here
                 }
@@ -33,9 +29,9 @@ class ProfileNamesInputValidator
     protected function validateNullOrEmptyInputs(array $fields)
     {
         if (
-            $this->isNullOrEmptyString($fields['first']) &&
-            $this->isNullOrEmptyString($fields['middle']) &&
-            $this->isNullOrEmptyString($fields['last'])
+            empty($fields['first']) &&
+            empty($fields['middle']) &&
+            empty($fields['last'])
 
         ) {
             throw new MissingValueException("inputs should not be empty");
@@ -43,9 +39,6 @@ class ProfileNamesInputValidator
     }
 
 
-    protected function isNullOrEmptyString($str)
-    {
-        return (!isset($str) || trim($str) === '');
-    }
+
 
 }

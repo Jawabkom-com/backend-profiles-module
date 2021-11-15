@@ -7,7 +7,7 @@ use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 use Jawabkom\Backend\Module\Profile\Library\Country;
 use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
-class ProfileAddressesInputValidator
+class ProfileAddressesInputValidator extends AbstractInputValidator
 {
     protected array $structure = [
         'valid_since',  //YYYY-mm-dd
@@ -24,17 +24,15 @@ class ProfileAddressesInputValidator
 
     public function validate(array $inputs)
     {
-        foreach ($inputs as $addresses) {
-            $this->validateNullOrEmptyInputs($addresses);
-            foreach ($addresses as $inputKey => $inputValue) {
-                if (!in_array($inputKey, $this->structure)) {
-                    throw new InvalidInputStructure('CLASS: ' . __CLASS__ . ", input key is not defined '{$inputKey}'");
-                }
+        foreach ($inputs as $address) {
+            $this->validateNullOrEmptyInputs($address);
+            foreach ($address as $inputKey => $inputValue) {
+                $this->assertDefinedInputKeysOnly($address);
 
                 if (isset($inputValue)) {
                     switch ($inputKey) {
                         case 'country':
-                            Country::assertCountryCodeExists($inputValue, $this->getErrorMessage('country input value must be a valid country code.', $inputValue));
+                            Country::assertCountryCodeExists($inputValue, $this->getErrorMessage('country input value must be a valid country code.',$inputValue));
                             break;
 
                         case 'valid_since':
@@ -49,27 +47,16 @@ class ProfileAddressesInputValidator
     protected function validateNullOrEmptyInputs(array $fields)
     {
         if (
-            $this->isNullOrEmptyString($fields['country']) &&
-            $this->isNullOrEmptyString($fields['state']) &&
-            $this->isNullOrEmptyString($fields['city']) &&
-            $this->isNullOrEmptyString($fields['zip']) &&
-            $this->isNullOrEmptyString($fields['street']) &&
-            $this->isNullOrEmptyString($fields['building_number']) &&
-            $this->isNullOrEmptyString($fields['display'])
+            empty($fields['country']) &&
+            empty($fields['state']) &&
+            empty($fields['city']) &&
+            empty($fields['zip']) &&
+            empty($fields['street']) &&
+            empty($fields['building_number']) &&
+            empty($fields['display'])
         ) {
             throw new MissingValueException("inputs should not be empty");
         }
     }
 
-
-    protected function isNullOrEmptyString($str)
-    {
-        return (!isset($str) || trim($str) === '');
-    }
-
-
-    protected function getErrorMessage(string $message, $inputValue) {
-        $stringInputValue = json_encode($inputValue);
-        return "[Profile Addresses] {$message} - Invalid Value [{$stringInputValue}]";
-    }
 }
