@@ -21,8 +21,8 @@ class ProfileEmailsInputValidator extends AbstractInputValidator
     {
         foreach ($inputs as $email) {
             $this->validateNullOrEmptyInputs($email);
+            $this->assertDefinedInputKeysOnly($email);
             foreach($email as $inputKey => $inputValue) {
-                $this->assertDefinedInputKeysOnly($email);
                 if(isset($inputValue)) {
                     switch ($inputKey) {
                         case 'email':

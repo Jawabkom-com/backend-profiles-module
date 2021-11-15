@@ -26,8 +26,8 @@ class ProfileAddressesInputValidator extends AbstractInputValidator
     {
         foreach ($inputs as $address) {
             $this->validateNullOrEmptyInputs($address);
+            $this->assertDefinedInputKeysOnly($address);
             foreach ($address as $inputKey => $inputValue) {
-                $this->assertDefinedInputKeysOnly($address);
 
                 if (isset($inputValue)) {
                     switch ($inputKey) {

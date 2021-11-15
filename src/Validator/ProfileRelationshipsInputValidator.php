@@ -17,9 +17,8 @@ class ProfileRelationshipsInputValidator extends AbstractInputValidator
     {
         foreach ($inputs as $relationship) {
             $this->validateNullOrEmptyInputs($relationship);
+            $this->assertDefinedInputKeysOnly($relationship);
             foreach($relationship as $inputKey => $inputValue) {
-                $this->assertDefinedInputKeysOnly($relationship);
-
                 if(isset($inputValue)) {
                     switch ($inputKey) {
                         case 'valid_since':
