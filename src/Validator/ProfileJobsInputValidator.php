@@ -3,15 +3,22 @@
 namespace Jawabkom\Backend\Module\Profile\Validator;
 
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
+use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
 class ProfileJobsInputValidator
 {
-    protected array $structure = ['valid_since', 'from', 'to' , 'title' , 'organization' , 'industry'];
+    protected array $structure = [
+        'valid_since', 'from', 'to',
+
+        // below shouldn't be null together
+        'title' , 'organization', 'industry'
+    ];
 
     public function validate(array $inputs)
     {
         foreach ($inputs as $jobs) {
+            $this->validateNullOrEmptyInputs($jobs);
             foreach($jobs as $inputKey => $inputValue) {
                 if(!in_array($inputKey, $this->structure)) {
                     throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
@@ -33,6 +40,24 @@ class ProfileJobsInputValidator
                 }
             }
         }
+    }
+
+    protected function validateNullOrEmptyInputs(array $fields)
+    {
+        if (
+            $this->isNullOrEmptyString($fields['title']) &&
+            $this->isNullOrEmptyString($fields['organization']) &&
+            $this->isNullOrEmptyString($fields['industry'])
+
+        ) {
+            throw new MissingValueException("inputs should not be empty");
+        }
+    }
+
+
+    protected function isNullOrEmptyString($str)
+    {
+        return (!isset($str) || trim($str) === '');
     }
 
     protected function getErrorMessage(string $message, $inputValue) {

@@ -4,15 +4,21 @@ namespace Jawabkom\Backend\Module\Profile\Validator;
 
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidUrlFormat;
+use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
 class ProfileSocialProfilesInputValidator
 {
-    protected array $structure = ['valid_since', 'url', 'type' , 'username' , 'account_id'];
+    protected array $structure = ['valid_since', 'type',
+
+        // below shouldn't be null/empty together
+        'url' , 'username' , 'account_id'
+    ];
 
     public function validate(array $inputs)
     {
         foreach ($inputs as $socialProfiles) {
+            $this->validateNullOrEmptyInputs($socialProfiles);
             foreach($socialProfiles as $inputKey => $inputValue) {
                 if(!in_array($inputKey, $this->structure)) {
                     throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
@@ -31,6 +37,24 @@ class ProfileSocialProfilesInputValidator
                 }
             }
         }
+    }
+
+    protected function validateNullOrEmptyInputs(array $fields)
+    {
+        if (
+            $this->isNullOrEmptyString($fields['url']) &&
+            $this->isNullOrEmptyString($fields['username']) &&
+            $this->isNullOrEmptyString($fields['account_id'])
+
+        ) {
+            throw new MissingValueException("inputs should not be empty");
+        }
+    }
+
+
+    protected function isNullOrEmptyString($str)
+    {
+        return (!isset($str) || trim($str) === '');
     }
 
     protected function getErrorMessage(string $message, $inputValue) {

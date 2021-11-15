@@ -4,15 +4,22 @@ namespace Jawabkom\Backend\Module\Profile\Validator;
 
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidUrlFormat;
+use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
 class ProfileImagesInputValidator
 {
-    protected array $structure = ['original_url', 'valid_since' ];
+    protected array $structure = [
+        'valid_since',
+
+        // below shouldn't be null together
+        'original_url'
+    ];
 
     public function validate(array $inputs)
     {
         foreach ($inputs as $images) {
+            $this->validateNullOrEmptyInputs($images);
             foreach($images as $inputKey => $inputValue) {
                 if(!in_array($inputKey, $this->structure)) {
                     throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
@@ -31,6 +38,19 @@ class ProfileImagesInputValidator
                 }
             }
         }
+    }
+
+    protected function validateNullOrEmptyInputs(array $fields)
+    {
+        if ($this->isNullOrEmptyString($fields['original_url'])) {
+            throw new MissingValueException("inputs should not be empty");
+        }
+    }
+
+
+    protected function isNullOrEmptyString($str)
+    {
+        return (!isset($str) || trim($str) === '');
     }
 
     protected function getErrorMessage(string $message, $inputValue) {

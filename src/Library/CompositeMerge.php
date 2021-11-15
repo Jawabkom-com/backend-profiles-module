@@ -43,7 +43,7 @@ class CompositeMerge implements ICompositesMerge
         $this->mergeSkills($composites, $mergeComposite);
         $this->mergeSocialProfiles($composites, $mergeComposite);
         $this->mergeUsernames($composites, $mergeComposite);
-           $mergeComposite->getProfile()->setHash($this->profileCompositeHashGenerator->generate($mergeComposite, $this->arrayHashing));
+        $mergeComposite->getProfile()->setHash($this->profileCompositeHashGenerator->generate($mergeComposite, $this->arrayHashing));
         return $mergeComposite;
     }
 
