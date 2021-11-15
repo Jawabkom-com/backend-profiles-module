@@ -19,9 +19,8 @@ class ProfileUsernamesInputValidator extends AbstractInputValidator
     {
         foreach ($inputs as $username) {
             $this->validateNullOrEmptyInputs($username);
+            $this->assertDefinedInputKeysOnly($username);
             foreach ($username as $inputKey => $inputValue) {
-                $this->assertDefinedInputKeysOnly($username);
-
                 if (isset($inputValue)) {
                     switch ($inputKey) {
                         case 'valid_since':

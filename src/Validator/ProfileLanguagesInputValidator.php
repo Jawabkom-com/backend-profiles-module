@@ -19,8 +19,8 @@ class ProfileLanguagesInputValidator extends AbstractInputValidator
     {
         foreach ($inputs as $language) {
             $this->validateNullOrEmptyInputs($language);
+            $this->assertDefinedInputKeysOnly($language);
             foreach($language as $inputKey => $inputValue) {
-                $this->assertDefinedInputKeysOnly($language);
                 if(isset($inputValue)) {
                     switch ($inputKey) {
                         case 'language':

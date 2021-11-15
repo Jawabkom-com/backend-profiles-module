@@ -29,8 +29,8 @@ class ProfilePhonesInputValidator extends AbstractInputValidator
     {
         foreach ($inputs as $phone) {
             $this->validateNullOrEmptyInputs($phone);
+            $this->assertDefinedInputKeysOnly($phone);
             foreach ($phone as $inputKey => $inputValue) {
-                $this->assertDefinedInputKeysOnly($phone);
                 if (isset($inputValue)) {
                     switch ($inputKey) {
                         case 'country_code':

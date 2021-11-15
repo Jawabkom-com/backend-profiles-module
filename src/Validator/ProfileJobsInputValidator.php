@@ -19,8 +19,8 @@ class ProfileJobsInputValidator extends AbstractInputValidator
     {
         foreach ($inputs as $jobs) {
             $this->validateNullOrEmptyInputs($jobs);
+            $this->assertDefinedInputKeysOnly($jobs);
             foreach($jobs as $inputKey => $inputValue) {
-                $this->assertDefinedInputKeysOnly($jobs);
                 if(isset($inputValue)) {
                     switch ($inputKey) {
                         case 'valid_since':

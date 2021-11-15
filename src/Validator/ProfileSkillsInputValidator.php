@@ -17,9 +17,8 @@ class ProfileSkillsInputValidator extends AbstractInputValidator
     {
         foreach ($inputs as $skill) {
             $this->validateNullOrEmptyInputs($skill);
+            $this->assertDefinedInputKeysOnly($skill);
             foreach($skill as $inputKey => $inputValue) {
-                $this->assertDefinedInputKeysOnly($skill);
-
                 if(isset($inputValue)) {
                     switch ($inputKey) {
                         case 'valid_since':

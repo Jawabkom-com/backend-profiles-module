@@ -19,8 +19,8 @@ class ProfileSocialProfilesInputValidator extends AbstractInputValidator
     {
         foreach ($inputs as $socialProfile) {
             $this->validateNullOrEmptyInputs($socialProfile);
+            $this->assertDefinedInputKeysOnly($socialProfile);
             foreach($socialProfile as $inputKey => $inputValue) {
-                $this->assertDefinedInputKeysOnly($socialProfile);
                 if(isset($inputValue)) {
                     switch ($inputKey) {
                         case 'url':

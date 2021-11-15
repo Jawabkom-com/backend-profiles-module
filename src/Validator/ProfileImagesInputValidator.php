@@ -19,9 +19,8 @@ class ProfileImagesInputValidator extends AbstractInputValidator
     {
         foreach ($inputs as $image) {
             $this->validateNullOrEmptyInputs($image);
+            $this->assertDefinedInputKeysOnly($image);
             foreach($image as $inputKey => $inputValue) {
-                $this->assertDefinedInputKeysOnly($image);
-
                 if(isset($inputValue)) {
                     switch ($inputKey) {
                         case 'original_url':

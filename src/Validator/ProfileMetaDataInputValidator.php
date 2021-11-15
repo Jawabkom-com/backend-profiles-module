@@ -16,8 +16,8 @@ class ProfileMetaDataInputValidator extends AbstractInputValidator
     {
         foreach ($inputs as $metaData) {
             $this->validateNullOrEmptyInputs($metaData);
+            $this->assertDefinedInputKeysOnly($metaData);
             foreach($metaData as $inputKey => $inputValue) {
-                $this->assertDefinedInputKeysOnly($metaData);
                 if(isset($inputValue)) {
                     // other validators goes here
                 }
