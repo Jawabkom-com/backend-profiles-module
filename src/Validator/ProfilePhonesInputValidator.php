@@ -7,7 +7,7 @@ use Jawabkom\Backend\Module\Profile\Exception\InvalidInputValue;
 use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 use Jawabkom\Backend\Module\Profile\Library\Country;
 
-class ProfilePhonesInputValidator
+class ProfilePhonesInputValidator extends AbstractInputValidator
 {
     protected array $structure = [
         'valid_since',
@@ -27,13 +27,10 @@ class ProfilePhonesInputValidator
 
     public function validate(array $inputs)
     {
-        foreach ($inputs as $phones) {
-            $this->validateNullOrEmptyInputs($phones);
-            foreach ($phones as $inputKey => $inputValue) {
-                if (!in_array($inputKey, $this->structure)) {
-                    throw new InvalidInputStructure('CLASS: ' . __CLASS__ . ", input key is not defined '{$inputKey}'");
-                }
-
+        foreach ($inputs as $phone) {
+            $this->validateNullOrEmptyInputs($phone);
+            foreach ($phone as $inputKey => $inputValue) {
+                $this->assertDefinedInputKeysOnly($phone);
                 if (isset($inputValue)) {
                     switch ($inputKey) {
                         case 'country_code':
@@ -65,22 +62,11 @@ class ProfilePhonesInputValidator
     protected function validateNullOrEmptyInputs(array $fields)
     {
         if (
-            $this->isNullOrEmptyString($fields['original_number'])
+            empty($fields['original_number'])
 
         ) {
             throw new MissingValueException("inputs should not be empty");
         }
     }
 
-
-    protected function isNullOrEmptyString($str)
-    {
-        return (!isset($str) || trim($str) === '');
-    }
-
-
-    protected function getErrorMessage(string $message, $inputValue) {
-        $stringInputValue = json_encode($inputValue);
-        return "[Profile Phones] {$message} - Invalid Value [{$stringInputValue}]";
-    }
 }

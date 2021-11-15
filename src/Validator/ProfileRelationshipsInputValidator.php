@@ -6,7 +6,7 @@ use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
-class ProfileRelationshipsInputValidator
+class ProfileRelationshipsInputValidator extends AbstractInputValidator
 {
     protected array $structure = ['valid_since', 'type',
         // below shouldn't be null/empty together
@@ -15,12 +15,10 @@ class ProfileRelationshipsInputValidator
 
     public function validate(array $inputs)
     {
-        foreach ($inputs as $relationships) {
-            $this->validateNullOrEmptyInputs($relationships);
-            foreach($relationships as $inputKey => $inputValue) {
-                if(!in_array($inputKey, $this->structure)) {
-                    throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
-                }
+        foreach ($inputs as $relationship) {
+            $this->validateNullOrEmptyInputs($relationship);
+            foreach($relationship as $inputKey => $inputValue) {
+                $this->assertDefinedInputKeysOnly($relationship);
 
                 if(isset($inputValue)) {
                     switch ($inputKey) {
@@ -36,22 +34,11 @@ class ProfileRelationshipsInputValidator
     protected function validateNullOrEmptyInputs(array $fields)
     {
         if (
-            $this->isNullOrEmptyString($fields['first_name']) &&
-            $this->isNullOrEmptyString($fields['last_name'])
+            empty($fields['first_name']) &&
+            empty($fields['last_name'])
 
         ) {
             throw new MissingValueException("inputs should not be empty");
         }
-    }
-
-
-    protected function isNullOrEmptyString($str)
-    {
-        return (!isset($str) || trim($str) === '');
-    }
-
-    protected function getErrorMessage(string $message, $inputValue) {
-        $stringInputValue = json_encode($inputValue);
-        return "[Profile Relationships] {$message} - Invalid Value [{$stringInputValue}]";
     }
 }

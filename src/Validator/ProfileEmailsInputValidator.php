@@ -7,7 +7,7 @@ use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
-class ProfileEmailsInputValidator
+class ProfileEmailsInputValidator extends AbstractInputValidator
 {
     protected array $structure = [
         'valid_since',
@@ -19,13 +19,10 @@ class ProfileEmailsInputValidator
 
     public function validate(array $inputs)
     {
-        foreach ($inputs as $emails) {
-            $this->validateNullOrEmptyInputs($emails);
-            foreach($emails as $inputKey => $inputValue) {
-                if(!in_array($inputKey, $this->structure)) {
-                    throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
-                }
-
+        foreach ($inputs as $email) {
+            $this->validateNullOrEmptyInputs($email);
+            foreach($email as $inputKey => $inputValue) {
+                $this->assertDefinedInputKeysOnly($email);
                 if(isset($inputValue)) {
                     switch ($inputKey) {
                         case 'email':
@@ -44,19 +41,9 @@ class ProfileEmailsInputValidator
     protected function validateNullOrEmptyInputs(array $fields)
     {
         if (
-            $this->isNullOrEmptyString($fields['email'])
+            empty($fields['email'])
         ) {
             throw new MissingValueException("inputs should not be empty");
         }
-    }
-
-    protected function isNullOrEmptyString($str)
-    {
-        return (!isset($str) || trim($str) === '');
-    }
-
-    protected function getErrorMessage(string $message, $inputValue) {
-        $stringInputValue = json_encode($inputValue);
-        return "[Profile Emails] {$message} - Invalid Value [{$stringInputValue}]";
     }
 }

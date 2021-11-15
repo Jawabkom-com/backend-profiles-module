@@ -2,10 +2,9 @@
 
 namespace Jawabkom\Backend\Module\Profile\Validator;
 
-use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 
-class ProfileNamesInputValidator
+class ProfileNamesInputValidator extends AbstractInputValidator
 {
     protected array $structure = [
         'prefix',
@@ -19,10 +18,7 @@ class ProfileNamesInputValidator
         foreach ($inputs as $name) {
             $this->validateNullOrEmptyInputs($name);
             foreach($name as $inputKey => $inputValue) {
-                if(!in_array($inputKey, $this->structure)) {
-                    throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
-                }
-
+                $this->assertDefinedInputKeysOnly($name);
                 if(isset($inputValue)) {
                     // other validators goes here
                 }

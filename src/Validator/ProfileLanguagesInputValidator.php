@@ -8,7 +8,7 @@ use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 use Jawabkom\Backend\Module\Profile\Library\Country;
 use Jawabkom\Backend\Module\Profile\Library\Language;
 
-class ProfileLanguagesInputValidator
+class ProfileLanguagesInputValidator extends AbstractInputValidator
 {
     protected array $structure = [
         // below shouldn't be null together
@@ -17,13 +17,10 @@ class ProfileLanguagesInputValidator
 
     public function validate(array $inputs)
     {
-        foreach ($inputs as $languages) {
-            $this->validateNullOrEmptyInputs($languages);
-            foreach($languages as $inputKey => $inputValue) {
-                if(!in_array($inputKey, $this->structure)) {
-                    throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
-                }
-
+        foreach ($inputs as $language) {
+            $this->validateNullOrEmptyInputs($language);
+            foreach($language as $inputKey => $inputValue) {
+                $this->assertDefinedInputKeysOnly($language);
                 if(isset($inputValue)) {
                     switch ($inputKey) {
                         case 'language':
@@ -44,22 +41,12 @@ class ProfileLanguagesInputValidator
     protected function validateNullOrEmptyInputs(array $fields)
     {
         if (
-            $this->isNullOrEmptyString($fields['language']) &&
-            $this->isNullOrEmptyString($fields['country'])
+            empty($fields['language']) &&
+            empty($fields['country'])
 
         ) {
             throw new MissingValueException("inputs should not be empty");
         }
     }
 
-
-    protected function isNullOrEmptyString($str)
-    {
-        return (!isset($str) || trim($str) === '');
-    }
-
-    protected function getErrorMessage(string $message, $inputValue) {
-        $stringInputValue = json_encode($inputValue);
-        return "[Profile Languages] {$message} - Invalid Value [{$stringInputValue}]";
-    }
 }

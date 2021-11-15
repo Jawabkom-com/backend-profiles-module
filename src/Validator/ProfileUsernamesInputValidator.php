@@ -6,7 +6,7 @@ use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 use Jawabkom\Backend\Module\Profile\Library\DateFormat;
 
-class ProfileUsernamesInputValidator
+class ProfileUsernamesInputValidator extends AbstractInputValidator
 {
     protected array $structure = [
         'valid_since',
@@ -17,13 +17,11 @@ class ProfileUsernamesInputValidator
 
     public function validate(array $inputs)
     {
-        foreach ($inputs as $usernames) {
-            $this->validateNullOrEmptyInputs($usernames);
-            foreach ($usernames as $inputKey => $inputValue) {
-                if (!in_array($inputKey, $this->structure)) {
-                    throw new InvalidInputStructure('CLASS: ' . __CLASS__ . ", input key is not defined '{$inputKey}'");
-                }
-
+        foreach ($inputs as $username) {
+            $this->validateNullOrEmptyInputs($username);
+            foreach ($username as $inputKey => $inputValue) {
+                $this->assertDefinedInputKeysOnly($username);
+                
                 if (isset($inputValue)) {
                     switch ($inputKey) {
                         case 'valid_since':
@@ -37,20 +35,9 @@ class ProfileUsernamesInputValidator
 
     protected function validateNullOrEmptyInputs(array $fields)
     {
-        if ($this->isNullOrEmptyString($fields['username'])) {
+        if (empty($fields['username'])) {
             throw new MissingValueException("inputs should not be empty");
         }
     }
 
-
-    protected function isNullOrEmptyString($str)
-    {
-        return (!isset($str) || trim($str) === '');
-    }
-
-    protected function getErrorMessage(string $message, $inputValue)
-    {
-        $stringInputValue = json_encode($inputValue);
-        return "[Profile Usernames] {$message} - Invalid Value [{$stringInputValue}]";
-    }
 }
