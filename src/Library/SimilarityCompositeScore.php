@@ -87,19 +87,18 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
      */
     protected function calculatePhoneScore(): int|float
     {
-        $arrayScore = [];
-        if (count($this->compositeOne->getPhones()) > count($this->compositeTwo->getPhones())){
-            $outerArray = $this->compositeOne->getPhones();
-            $innerArray = $this->compositeTwo->getPhones();
-        }else{
-            $outerArray = $this->compositeTwo->getPhones();
-            $innerArray = $this->compositeOne->getPhones();
+        $aPhones = [];
+        $matchedPhones = 0;
+        foreach($this->compositeOne->getPhones() as $oPhone) {
+            $aPhones[$oPhone->getFormattedNumber()] = true;
         }
-        foreach ($outerArray as $phoneOuter) {
-            foreach ($innerArray as $phoneInner) {
-                $arrayScore[] = $phoneOuter->getFormattedNumber() == $phoneInner->getFormattedNumber()?1:0;
+
+        foreach($this->compositeTwo->getPhones() as $oPhone) {
+            if(isset($aPhones[$oPhone->getFormattedNumber()])) {
+                $matchedPhones++;
             }
         }
-        return array_sum($arrayScore) / count($arrayScore);
+
+        return ($matchedPhones > 2 ? 100 : $matchedPhones * 40 );
     }
 }

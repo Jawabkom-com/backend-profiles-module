@@ -46,6 +46,5 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
         $score = $this->similarityService->setComposites($result[0],$result[1])->calculate();
         $this->assertNotNull($score);
         $this->assertIsNumeric($score);
-        dd($score);
     }
 }
