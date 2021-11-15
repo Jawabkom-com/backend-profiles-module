@@ -12,36 +12,16 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
     private IProfileComposite $compositeOne;
     private IProfileComposite $compositeTwo;
 
-    /**
-     * @throws MissingRequiredInputException
-     */
-    public function setComposites(IProfileComposite $compositeOne, IProfileComposite $compositeTwo): static
+    public function calculate(IProfileComposite $compositeOne, IProfileComposite $compositeTwo): int
     {
-       $this->validate($compositeOne);
-       $this->validate($compositeTwo);
-       $this->compositeOne = $compositeOne;
-       $this->compositeTwo = $compositeTwo;
-       return $this;
-    }
+        $this->compositeOne = $compositeOne;
+        $this->compositeTwo = $compositeTwo;
 
-    public function calculate(): int|float
-    {
-        $score =[
-            $this->calculateUsernameSimilarityScore(),
-            $this->calculateEmailSimilarityScore(),
-            $this->calculatePhoneSimilarityScore(),
-            $this->calculateNamesSimilarityScore(),
-        ];;
-       return number_format((array_sum($score) / count($score)), 2, '.', '');
-    }
+        $emailScore = $this->calculateEmailSimilarityScore();
+        $nameScore = $this->calculateNamesSimilarityScore();
 
-    protected function validate($composite){
-        if (empty($composite)){
-            throw new MissingRequiredInputException('Missing required argument,');
-        }
-        if (!$composite instanceof IProfileComposite){
-            throw new InvalidArgumentException('Invalid Argument ,must be ProfileComposite type');
-        }
+
+        
     }
 
     /**
@@ -51,16 +31,16 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
     {
         $aUsernames = [];
         $matchedUsernames = 0;
-        foreach($this->compositeOne->getUsernames() as $username) {
+        foreach ($this->compositeOne->getUsernames() as $username) {
             $aUsernames[$username->getUsername()] = true;
         }
 
-        foreach($this->compositeTwo->getUsernames() as $username) {
-            if(isset($aUsernames[$username->getUsername()])) {
+        foreach ($this->compositeTwo->getUsernames() as $username) {
+            if (isset($aUsernames[$username->getUsername()])) {
                 $matchedUsernames++;
             }
         }
-        return ($matchedUsernames > 2 ? 100 : $matchedUsernames * 20 );
+        return ($matchedUsernames > 2 ? 100 : $matchedUsernames * 20);
     }
 
     /**
@@ -70,17 +50,18 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
     {
         $aEmails = [];
         $matchedEmails = 0;
-        foreach($this->compositeOne->getEmails() as $email) {
+        foreach ($this->compositeOne->getEmails() as $email) {
             $aEmails[$email->getEmail()] = true;
         }
 
-        foreach($this->compositeTwo->getEmails() as $email) {
-            if(isset($aEmails[$email->getEmail()])) {
+        foreach ($this->compositeTwo->getEmails() as $email) {
+            if (isset($aEmails[$email->getEmail()])) {
                 $matchedEmails++;
             }
         }
-        return ($matchedEmails > 2 ? 100 : $matchedEmails * 40 );
+        return ($matchedEmails > 2 ? 100 : $matchedEmails * 40);
     }
+
     /**
      * @return float|int
      */
@@ -88,36 +69,47 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
     {
         $aPhones = [];
         $matchedPhones = 0;
-        foreach($this->compositeOne->getPhones() as $oPhone) {
+        foreach ($this->compositeOne->getPhones() as $oPhone) {
             $aPhones[$oPhone->getFormattedNumber()] = true;
         }
 
-        foreach($this->compositeTwo->getPhones() as $oPhone) {
-            if(isset($aPhones[$oPhone->getFormattedNumber()])) {
+        foreach ($this->compositeTwo->getPhones() as $oPhone) {
+            if (isset($aPhones[$oPhone->getFormattedNumber()])) {
                 $matchedPhones++;
             }
         }
 
-        return ($matchedPhones > 2 ? 100 : $matchedPhones * 40 );
+        return ($matchedPhones > 2 ? 100 : $matchedPhones * 40);
     }
 
     private function calculateNamesSimilarityScore(): float|int
     {
-        $aNames =[];
-        $matchedNames=0;
-        foreach($this->compositeOne->getNames() as $oName) {
-            $segmentName = explode(' ',$oName->getDisplay());
-            $aNames      = array_merge($aNames,$segmentName);
-        }
-        foreach($this->compositeTwo->getNames() as $oName) {
-            $localMatch =0;
-            $segmentName = explode(' ',$oName->getDisplay());
-            array_map(function ($ele) use($aNames,&$localMatch){
-                return in_array($ele,$aNames)?$localMatch++:$localMatch;
-            },$segmentName);
-             $localMatch <=2 ?:$matchedNames++ ;
-        }
-        return ($matchedNames > 2 ? 100 : $matchedNames * 40 );
+        $aComposite1Names = $this->extractNames($this->compositeOne);
+        $aComposite2Names = $this->extractNames($this->compositeTwo);
+        $aAllNames = array_merge($aComposite1Names, $aComposite2Names);
 
+        $matchesCount = 0;
+        foreach($aComposite1Names as $name => $tmp) {
+            if(isset($aComposite2Names[$name])) {
+                $matchesCount++;
+            }
+        }
+
+        return ceil(($matchesCount / count($aAllNames)) * 100);
+    }
+
+    protected function extractNames(IProfileComposite $composite): array
+    {
+        $extractedNames = [];
+        foreach ($composite as $oName) {
+            $aNameParts = explode(' ', $oName->getFirst().' '.$oName->getMiddle().' '.$oName->getLast());
+            foreach($aNameParts as $part) {
+                $part = trim(strtolower($part));
+                if($part) {
+                    $extractedNames[$part] = true;
+                }
+            }
+        }
+        return $extractedNames;
     }
 }
