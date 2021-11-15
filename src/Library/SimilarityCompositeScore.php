@@ -2,10 +2,8 @@
 
 namespace Jawabkom\Backend\Module\Profile\Library;
 
-use http\Exception\InvalidArgumentException;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\similarity\ISimilarityCompositeScore;
-use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class SimilarityCompositeScore implements ISimilarityCompositeScore
 {
@@ -17,11 +15,31 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
         $this->compositeOne = $compositeOne;
         $this->compositeTwo = $compositeTwo;
 
-        $emailScore = $this->calculateEmailSimilarityScore();
         $nameScore = $this->calculateNamesSimilarityScore();
+        $emailScore = $this->calculateEmailSimilarityScore();
+        $usernameScore = $this->calculateUsernameSimilarityScore();
+        $phoneScore = $this->calculatePhoneSimilarityScore();
 
+        $score = [];
+        if($emailScore) {
+            if($phoneScore) {
+                $score[] = floor($emailScore * 0.4);
+                $score[] = floor($phoneScore * 0.3);
+            } else {
+                $score[] = floor($emailScore * 0.7);
+            }
+            $score[] = floor($nameScore * 0.2);
+            $score[] = floor($usernameScore * 0.1);
+        } else if($phoneScore) {
+            $score[] = floor($phoneScore * 0.5);
+            $score[] = floor($nameScore * 0.4);
+            $score[] = floor($usernameScore * 0.1);
+        } else if($usernameScore) {
+            $score[] = floor($usernameScore * 0.5);
+            $score[] = floor($nameScore * 0.3);
+        }
 
-
+        return array_sum($score);
     }
 
     /**
@@ -101,7 +119,7 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
     protected function extractNames(IProfileComposite $composite): array
     {
         $extractedNames = [];
-        foreach ($composite as $oName) {
+        foreach ($composite->getNames() as $oName) {
             $aNameParts = explode(' ', $oName->getFirst().' '.$oName->getMiddle().' '.$oName->getLast());
             foreach($aNameParts as $part) {
                 $part = trim(strtolower($part));

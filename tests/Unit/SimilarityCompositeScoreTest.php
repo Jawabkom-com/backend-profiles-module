@@ -47,8 +47,79 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
                 ->output('result');
         }
         $this->assertInstanceOf(IProfileComposite::class,$result[0]);
-        $score = $this->similarityService->setComposites($result[0],$result[1])->calculate();
+        $score = $this->similarityService->calculate($result[0],$result[1]);
         $this->assertNotNull($score);
         $this->assertIsNumeric($score);
     }
+
+    public function testCompositesSimilarity_OneSimilarEmail_NoNameSimilarity()
+    {
+        // < 50
+    }
+
+    public function testCompositesSimilarity_OneSimilarPhone_NoNameSimilarity()
+    {
+        // < 50
+    }
+
+    public function testCompositesSimilarity_OneUsernameSimilarity_NameSimilarity()
+    {
+        // < 50
+    }
+
+    public function testCompositesSimilarity_OneUsernameSimilarity_FullNameSimilarity()
+    {
+        // > 50
+    }
+
+    public function testCompositesSimilarity_TwoUsernameSimilarity_NameSimilarity()
+    {
+        // > 50
+    }
+
+    public function testCompositesSimilarity_OneSimilarPhone_UsernameSimilarity()
+    {
+        // > 50
+    }
+
+    public function testCompositesSimilarity_OneSimilarEmail_UsernameSimilarity()
+    {
+        // > 50
+    }
+
+    public function testCompositesSimilarity_OneSimilarEmail_NameSimilarity()
+    {
+        // > 50
+    }
+
+    public function testCompositesSimilarity_OneSimilarEmail_OneSimilarPhone_NameSimilarity()
+    {
+        // > 50
+    }
+
+    public function testCompositesSimilarity_OneSimilarEmail_OneSimilarPhone_NoNameSimilarity()
+    {
+        // > 50
+    }
+
+    public function testCompositesSimilarity_TwoSimilarEmails_NoNameSimilarity()
+    {
+        // > 50
+    }
+
+    public function testCompositesSimilarity_TwoSimilarEmails_NameSimilarity()
+    {
+        // > 50
+    }
+
+    public function testCompositesSimilarity_TwoSimilarPhones_NameSimilarity()
+    {
+        // > 50
+    }
+
+    public function testCompositesSimilarity_TwoSimilarPhones_NoNameSimilarity()
+    {
+        // > 50
+    }
+
 }
