@@ -37,6 +37,10 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
         $userData = $this->generateBulkDummyDataWithMultiEntity(4);
         $userData[1]['usernames'][0]['username'] = $userData[0]['usernames'][0]['username'];
         $userData[1]['usernames'][1]['username'] = $userData[0]['usernames'][2]['username'];
+        $userData[1]['names'][0]['prefix'] = $userData[0]['names'][0]['prefix'];
+        $userData[1]['names'][0]['first']  = $userData[0]['names'][0]['first'];
+        $userData[1]['names'][0]['middle'] = $userData[0]['names'][0]['middle'];
+        $userData[1]['names'][0]['last']   = $userData[0]['names'][0]['last'];
         foreach ($userData as $userDatum){
             $result[] = $this->createProfile->input('profile',$userDatum)
                 ->process()

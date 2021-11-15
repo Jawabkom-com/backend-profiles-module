@@ -211,7 +211,12 @@ trait DummyTrait
         $userData['social_profiles'][] = $this->dummysSocialProfilesData();
         $userData['criminal_records'][] = $this->dummyCriminalRecordsData();
         $userData['addresses'][] = $this->dummyAddressData();
-        $userData['names'][] = $this->dummyNamesData();
+        $userData['names']=[
+            $this->dummyNamesData(),
+            $this->dummyNamesData(),
+            $this->dummyNamesData(),
+            $this->dummyNamesData(),
+        ];
         $userData['meta_data'][] = $this->dummyMetaData();
         return $userData;
     }
