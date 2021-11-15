@@ -16,6 +16,7 @@ class ProfileRelationshipsInputValidator
     public function validate(array $inputs)
     {
         foreach ($inputs as $relationships) {
+            $this->validateNullOrEmptyInputs($relationships);
             foreach($relationships as $inputKey => $inputValue) {
                 if(!in_array($inputKey, $this->structure)) {
                     throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
@@ -29,7 +30,6 @@ class ProfileRelationshipsInputValidator
                     }
                 }
             }
-            $this->validateNullOrEmptyInputs($relationships);
         }
     }
 

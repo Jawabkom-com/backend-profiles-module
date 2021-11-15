@@ -38,6 +38,7 @@ use Jawabkom\Backend\Module\Profile\Exception\InvalidInputStructure;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidInputValue;
 use Jawabkom\Backend\Module\Profile\Exception\InvalidUrlFormat;
 use Jawabkom\Backend\Module\Profile\Exception\LanguageCodeDoesNotExists;
+use Jawabkom\Backend\Module\Profile\Exception\MissingValueException;
 use Jawabkom\Backend\Module\Profile\Exception\ProfileEntityExists;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
@@ -708,7 +709,7 @@ class CreateProfileTest extends AbstractTestCase
     public function testCheckInvalidProfileJobInputStructure(){
         $this->expectException(InvalidInputStructure::class);
         $userData = $this->dummyBasicProfileData();
-        $userData['jobs'][] = $this->dummyLanguagesData();
+        $userData['jobs'][] = $this->dummyjobsData();
         $userData['jobs'][0][$this->faker->word]=$this->faker->word;
         $this->createProfile->input('profile',$userData)
             ->process()
@@ -718,7 +719,7 @@ class CreateProfileTest extends AbstractTestCase
     public function testCheckInvalidProfileEducationInputStructure(){
         $this->expectException(InvalidInputStructure::class);
         $userData = $this->dummyBasicProfileData();
-        $userData['educations'][] = $this->dummyLanguagesData();
+        $userData['educations'][] = $this->dummyEducationsData();
         $userData['educations'][0][$this->faker->word]=$this->faker->word;
         $this->createProfile->input('profile',$userData)
             ->process()
@@ -728,7 +729,7 @@ class CreateProfileTest extends AbstractTestCase
     public function testCheckInvalidProfileSocialProfileInputStructure(){
         $this->expectException(InvalidInputStructure::class);
         $userData = $this->dummyBasicProfileData();
-        $userData['social_profiles'][] = $this->dummyLanguagesData();
+        $userData['social_profiles'][] = $this->dummysSocialProfilesData();
         $userData['social_profiles'][0][$this->faker->word]=$this->faker->word;
         $this->createProfile->input('profile',$userData)
             ->process()
@@ -959,9 +960,153 @@ class CreateProfileTest extends AbstractTestCase
             ->process()
             ->output('result');
 
-/*        $this->assertDatabaseHas('profiles',[
-            'profile_id' => $profile->getProfileId()
-        ]);*/
     }
+
+    public function testCheckInvalidProfileAddressDateMissingValues(){
+        $this->expectException(MissingValueException::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['addresses'][] = $this->dummyAddressData();
+        $userData['addresses'][0]['country'] = '';
+        $userData['addresses'][0]['state'] = '';
+        $userData['addresses'][0]['city'] = '';
+        $userData['addresses'][0]['zip'] = '';
+        $userData['addresses'][0]['street'] = '';
+        $userData['addresses'][0]['building_number'] = '';
+        $userData['addresses'][0]['display'] = '';
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileEducationsDateMissingValues(){
+        $this->expectException(MissingValueException::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['educations'][] = $this->dummyEducationsData();
+        $userData['educations'][0]['school'] = '';
+        $userData['educations'][0]['major'] = '';
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileEmailsDateMissingValues(){
+        $this->expectException(MissingValueException::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['emails'][] = $this->dummyEmailsData();
+        $userData['emails'][0]['email'] = '';
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileImagesDateMissingValues(){
+        $this->expectException(MissingValueException::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['images'][] = $this->dummyImagesData();
+        $userData['images'][0]['original_url'] = '';
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileJobsDateMissingValues(){
+        $this->expectException(MissingValueException::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['jobs'][] = $this->dummyjobsData();
+        $userData['jobs'][0]['title'] = '';
+        $userData['jobs'][0]['organization'] = null;
+        $userData['jobs'][0]['industry'] = '';
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileLanguagesDateMissingValues(){
+        $this->expectException(MissingValueException::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['languages'][] = $this->dummyLanguagesData();
+        $userData['languages'][0]['language'] = '';
+        $userData['languages'][0]['country'] = null;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileMetaDateMissingValues(){
+        $this->expectException(MissingValueException::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['meta_data'][] = $this->dummyMetaData();
+        $userData['meta_data'][0]['meta_key'] = '';
+        $userData['meta_data'][0]['meta_value'] = null;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileNamesDateMissingValues(){
+        $this->expectException(MissingValueException::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['names'][] = $this->dummyNamesData();
+        $userData['names'][0]['first'] = '';
+        $userData['names'][0]['middle'] = null;
+        $userData['names'][0]['last'] = null;
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfilePhonesDateMissingValues(){
+        $this->expectException(MissingValueException::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['phones'][] = $this->dummyPhoneData();
+        $userData['phones'][0]['original_number'] = '';
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileRelationshipsDateMissingValues(){
+        $this->expectException(MissingValueException::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['relationships'][] = $this->dummyRelationshipsData();
+        $userData['relationships'][0]['first_name'] = '';
+        $userData['relationships'][0]['last_name'] = '';
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileSkillsDateMissingValues(){
+        $this->expectException(MissingValueException::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['skills'][] = $this->dummySkillsData();
+        $userData['skills'][0]['skill'] = '';
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileSocialProfilesDateMissingValues(){
+        $this->expectException(MissingValueException::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['social_profiles'][] = $this->dummysSocialProfilesData();
+        $userData['social_profiles'][0]['url'] = '';
+        $userData['social_profiles'][0]['username'] = '';
+        $userData['social_profiles'][0]['account_id'] = '';
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
+    public function testCheckInvalidProfileUsernamesDateMissingValues(){
+        $this->expectException(MissingValueException::class);
+        $userData = $this->dummyBasicProfileData();
+        $userData['usernames'][] = $this->dummyUsernamesData();
+        $userData['usernames'][0]['username'] = '';
+        $this->createProfile->input('profile',$userData)
+            ->process()
+            ->output('profile');
+    }
+
 
 }

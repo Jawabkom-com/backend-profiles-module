@@ -18,6 +18,7 @@ class ProfileSocialProfilesInputValidator
     public function validate(array $inputs)
     {
         foreach ($inputs as $socialProfiles) {
+            $this->validateNullOrEmptyInputs($socialProfiles);
             foreach($socialProfiles as $inputKey => $inputValue) {
                 if(!in_array($inputKey, $this->structure)) {
                     throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
@@ -35,7 +36,6 @@ class ProfileSocialProfilesInputValidator
                     }
                 }
             }
-            $this->validateNullOrEmptyInputs($socialProfiles);
         }
     }
 

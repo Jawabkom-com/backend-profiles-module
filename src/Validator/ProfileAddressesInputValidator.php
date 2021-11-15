@@ -25,6 +25,7 @@ class ProfileAddressesInputValidator
     public function validate(array $inputs)
     {
         foreach ($inputs as $addresses) {
+            $this->validateNullOrEmptyInputs($addresses);
             foreach ($addresses as $inputKey => $inputValue) {
                 if (!in_array($inputKey, $this->structure)) {
                     throw new InvalidInputStructure('CLASS: ' . __CLASS__ . ", input key is not defined '{$inputKey}'");
@@ -42,7 +43,6 @@ class ProfileAddressesInputValidator
                     }
                 }
             }
-            $this->validateNullOrEmptyInputs($addresses);
         }
     }
 

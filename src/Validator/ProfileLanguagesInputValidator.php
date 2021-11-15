@@ -18,6 +18,7 @@ class ProfileLanguagesInputValidator
     public function validate(array $inputs)
     {
         foreach ($inputs as $languages) {
+            $this->validateNullOrEmptyInputs($languages);
             foreach($languages as $inputKey => $inputValue) {
                 if(!in_array($inputKey, $this->structure)) {
                     throw new InvalidInputStructure('CLASS: '.__CLASS__.", input key is not defined '{$inputKey}'");
@@ -37,7 +38,6 @@ class ProfileLanguagesInputValidator
                 }
 
             }
-            $this->validateNullOrEmptyInputs($languages);
         }
     }
 
