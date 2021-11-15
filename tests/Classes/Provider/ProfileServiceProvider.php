@@ -119,7 +119,8 @@ use Jawabkom\Backend\Module\Profile\Contract\{EntityFilter\IProfileCompositeEnti
     Mapper\IProfileRelationshipEntityToArrayMapper,
     Mapper\IProfileSkillEntityToArrayMapper,
     Mapper\IProfileSocialProfileEntityToArrayMapper,
-    Mapper\IProfileUsernameEntityToArrayMapper};
+    Mapper\IProfileUsernameEntityToArrayMapper,
+    similarity\ISimilarityCompositeScore};
 use Jawabkom\Backend\Module\Profile\BasicArrayHashing;
 use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileCompositeEntitiesFilter;
 use Jawabkom\Backend\Module\Profile\Facade\ProfileCompositeFacade;
@@ -156,6 +157,7 @@ use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileSocialProfileEntityFilte
 use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileUsernameEntityFilter;
 use Jawabkom\Backend\Module\Profile\Library\BasicSearchableText;
 use Jawabkom\Backend\Module\Profile\Library\CompositeMerge;
+use Jawabkom\Backend\Module\Profile\Library\SimilarityCompositeScore;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileEntityMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileAddressEntityMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileCriminalRecordEntityMapper;
@@ -327,6 +329,7 @@ class ProfileServiceProvider extends ServiceProvider
             IOfflineSearchRequestEntity::class              => OfflineSearchRequest::class,
             IOfflineSearchRequestRepository::class          => OfflineSearchRequest::class,
             ICompositesMerge::class                         => CompositeMerge::class,
+            ISimilarityCompositeScore::class                => SimilarityCompositeScore::class,
 
 
             ISearchableText::class => BasicSearchableText::class

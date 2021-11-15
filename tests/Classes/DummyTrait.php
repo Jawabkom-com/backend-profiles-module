@@ -184,12 +184,52 @@ trait DummyTrait
         $userData['meta_data'][] = $this->dummyMetaData();
         return $userData;
     }
+    private function dummyFullProfileWithBlukData(){
+        $userData = $this->dummyBasicProfileData();
+        $userData['phones']=[
+            $this->dummyPhoneData(),
+            $this->dummyPhoneData(),
+            $this->dummyPhoneData(),
+        ] ;
+        $userData['usernames'] =[
+            $this->dummyUsernamesData(),
+            $this->dummyUsernamesData(),
+            $this->dummyUsernamesData(),
+        ];
+        $userData['emails']=[
+            $this->dummyEmailsData(),
+            $this->dummyEmailsData(),
+            $this->dummyEmailsData(),
+            $this->dummyEmailsData(),
+        ];
+        $userData['relationships'][] = $this->dummyRelationshipsData();
+        $userData['skills'][] = $this->dummySkillsData();
+        $userData['images'][] = $this->dummyImagesData();
+        $userData['languages'][] = $this->dummyLanguagesData();
+        $userData['jobs'][] = $this->dummyjobsData();
+        $userData['educations'][] = $this->dummyEducationsData();
+        $userData['social_profiles'][] = $this->dummysSocialProfilesData();
+        $userData['criminal_records'][] = $this->dummyCriminalRecordsData();
+        $userData['addresses'][] = $this->dummyAddressData();
+        $userData['names'][] = $this->dummyNamesData();
+        $userData['meta_data'][] = $this->dummyMetaData();
+        return $userData;
+    }
 
     private function generateBulkDummyData($count =2)
     {
         $dummyData  = [];
         for ($i = 0; $i < $count; $i++) {
             $fakeProfile = $this->dummyFullProfileData();
+            $dummyData[] =  $fakeProfile;
+        }
+        return $dummyData;
+    }
+    private function generateBulkDummyDataWithMultiEntity($count =2)
+    {
+        $dummyData  = [];
+        for ($i = 0; $i < $count; $i++) {
+            $fakeProfile = $this->dummyFullProfileWithBlukData();
             $dummyData[] =  $fakeProfile;
         }
         return $dummyData;
