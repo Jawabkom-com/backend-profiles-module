@@ -3,36 +3,9 @@
 namespace Jawabkom\Backend\Module\Profile\Test\Integration;
 
 
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileAddressEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileCriminalRecordEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileEducationEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileEmailEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileImageEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileJobEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileLanguageEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileMetaDataEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileNameEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfilePhoneEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileRelationshipEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileSkillEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileSocialProfileEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IArrayToProfileUsernameEntityMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileAddressEntityToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileCriminalRecordEntityToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileEducationEntityToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileEmailEntityToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileEntityToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileImageEntityToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileJobEntityToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileLanguageEntityToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileMetaDataEntityToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileNameEntityToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfilePhoneEntityToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileRelationshipEntityToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileSkillEntityToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileSocialProfileEntityToArrayMapper;
-use Jawabkom\Backend\Module\Profile\Contract\Mapper\IProfileUsernameEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\Contract\IArrayToProfileCompositeMapper;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
+use Jawabkom\Backend\Module\Profile\Contract\Libraries\ICompositeScoring;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
 use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
@@ -45,48 +18,253 @@ class CompositeScoringTest extends AbstractTestCase
 
     private \Faker\Generator $faker;
     private IDependencyInjector $di;
+    private mixed $profileCompositeMapper;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->di = new DI();
         $this->faker = Factory::create();
+        $this->profileCompositeMapper = $this->di->make(IArrayToProfileCompositeMapper::class);
+
     }
 
 
     public function testCompositeScore_ProfileName()
     {
-        // todo: make that the profile entity considered for scoring
+       $userData['names']=[
+            $this->dummyNamesData(),
+            $this->dummyNamesData(),
+        ];
+
+        $profileComposite       = $this->profileCompositeMapper->map($userData);
+        $this->assertInstanceOf(IProfileComposite::class,$profileComposite);
+        $compositeScoreService = $this->di->make(ICompositeScoring::class);
+        $compositeScore = $compositeScoreService->score($profileComposite);
+        $this->assertNotEmpty($compositeScore);
+        $this->assertEquals(30,$compositeScore);
     }
 
     public function testCompositeScore_ProfilePhone()
     {
-        // todo: make that the profile entity considered for scoring
+
+        $userData['phones']=[
+            $this->dummyPhoneData(),
+            $this->dummyPhoneData(),
+        ];
+        $profileComposite       = $this->profileCompositeMapper->map($userData);
+
+        $this->assertInstanceOf(IProfileComposite::class,$profileComposite);
+
+        $compositeScoreService = $this->di->make(ICompositeScoring::class);
+        $compositeScore = $compositeScoreService->score($profileComposite);
+        $this->assertNotEmpty($compositeScore);
+        $this->assertEquals(30,$compositeScore);
+
     }
 
     public function testCompositeScore_ProfileAddress()
     {
-        // todo: make that the profile entity considered for scoring
+        $userData['addresses']=[
+            $this->dummyAddressData(),
+            $this->dummyAddressData(),
+        ];
+        $profileComposite       = $this->profileCompositeMapper->map($userData);
+
+        $this->assertInstanceOf(IProfileComposite::class,$profileComposite);
+
+        $compositeScoreService = $this->di->make(ICompositeScoring::class);
+        $compositeScore = $compositeScoreService->score($profileComposite);
+        $this->assertNotEmpty($compositeScore);
+        $this->assertEquals(5,$compositeScore);
+    }
+
+    public function testCompositeScore_Relationships()
+    {
+        $userData['relationships']=[
+            $this->dummyRelationshipsData(),
+            $this->dummyAddressData(),
+        ];
+        $profileComposite       = $this->profileCompositeMapper->map($userData);
+
+        $this->assertInstanceOf(IProfileComposite::class,$profileComposite);
+
+        $compositeScoreService = $this->di->make(ICompositeScoring::class);
+        $compositeScore = $compositeScoreService->score($profileComposite);
+        $this->assertNotEmpty($compositeScore);
+        $this->assertEquals(10,$compositeScore);
+    }
+
+    public function testCompositeScore_ProfileSkills()
+    {
+        $userData['skills']=[
+            $this->dummySkillsData(),
+            $this->dummySkillsData(),
+        ];
+        $profileComposite       = $this->profileCompositeMapper->map($userData);
+
+        $this->assertInstanceOf(IProfileComposite::class,$profileComposite);
+
+        $compositeScoreService = $this->di->make(ICompositeScoring::class);
+        $compositeScore = $compositeScoreService->score($profileComposite);
+        $this->assertNotEmpty($compositeScore);
+        $this->assertEquals(5,$compositeScore);
+    }
+
+    public function testCompositeScore_CriminalRecords()
+    {
+        $userData['criminal_records']=[
+            $this->dummyCriminalRecordsData(),
+            $this->dummyCriminalRecordsData(),
+        ];
+        $profileComposite       = $this->profileCompositeMapper->map($userData);
+
+        $this->assertInstanceOf(IProfileComposite::class,$profileComposite);
+
+        $compositeScoreService = $this->di->make(ICompositeScoring::class);
+        $compositeScore = $compositeScoreService->score($profileComposite);
+        $this->assertNotEmpty($compositeScore);
+        $this->assertEquals(5,$compositeScore);
+    }
+
+    public function testCompositeScore_SocialProfiles()
+    {
+        $userData['social_profiles']=[
+            $this->dummysSocialProfilesData(),
+            $this->dummysSocialProfilesData(),
+        ];
+        $profileComposite       = $this->profileCompositeMapper->map($userData);
+
+        $this->assertInstanceOf(IProfileComposite::class,$profileComposite);
+
+        $compositeScoreService = $this->di->make(ICompositeScoring::class);
+        $compositeScore = $compositeScoreService->score($profileComposite);
+        $this->assertNotEmpty($compositeScore);
+        $this->assertEquals(5,$compositeScore);
+    }
+
+    public function testCompositeScore_Languages()
+    {
+        $userData['languages']=[
+            $this->dummyLanguagesData(),
+            $this->dummyLanguagesData(),
+        ];
+        $profileComposite       = $this->profileCompositeMapper->map($userData);
+
+        $this->assertInstanceOf(IProfileComposite::class,$profileComposite);
+
+        $compositeScoreService = $this->di->make(ICompositeScoring::class);
+        $compositeScore = $compositeScoreService->score($profileComposite);
+        $this->assertNotEmpty($compositeScore);
+        $this->assertEquals(5,$compositeScore);
+    }
+
+    public function testCompositeScore_Images()
+    {
+        $userData['images']=[
+            $this->dummyImagesData(),
+            $this->dummyImagesData(),
+        ];
+        $profileComposite       = $this->profileCompositeMapper->map($userData);
+
+        $this->assertInstanceOf(IProfileComposite::class,$profileComposite);
+
+        $compositeScoreService = $this->di->make(ICompositeScoring::class);
+        $compositeScore = $compositeScoreService->score($profileComposite);
+        $this->assertNotEmpty($compositeScore);
+        $this->assertEquals(5,$compositeScore);
+    }
+
+    public function testCompositeScore_Meta()
+    {
+        $userData['meta_data']=[
+            $this->dummyMetaData(),
+            $this->dummyMetaData(),
+        ];
+        $profileComposite       = $this->profileCompositeMapper->map($userData);
+
+        $this->assertInstanceOf(IProfileComposite::class,$profileComposite);
+
+        $compositeScoreService = $this->di->make(ICompositeScoring::class);
+        $compositeScore = $compositeScoreService->score($profileComposite);
+        $this->assertEquals(0,$compositeScore);
     }
 
     public function testCompositeScore_ProfileEducation()
     {
-        // todo: make that the profile entity considered for scoring
+        $userData['educations']=[
+            $this->dummyEducationsData(),
+            $this->dummyEducationsData(),
+        ];
+        $profileComposite       = $this->profileCompositeMapper->map($userData);
+
+        $this->assertInstanceOf(IProfileComposite::class,$profileComposite);
+
+        $compositeScoreService = $this->di->make(ICompositeScoring::class);
+        $compositeScore = $compositeScoreService->score($profileComposite);
+        $this->assertNotEmpty($compositeScore);
+        $this->assertEquals(5,$compositeScore);
+
     }
 
     public function testCompositeScore_ProfileJob()
     {
-        // todo: make that the profile entity considered for scoring
+        $userData['jobs']=[
+            $this->dummyjobsData(),
+            $this->dummyjobsData(),
+        ];
+        $profileComposite       = $this->profileCompositeMapper->map($userData);
+
+        $this->assertInstanceOf(IProfileComposite::class,$profileComposite);
+
+        $compositeScoreService = $this->di->make(ICompositeScoring::class);
+        $compositeScore = $compositeScoreService->score($profileComposite);
+        $this->assertNotEmpty($compositeScore);
+        $this->assertEquals(5,$compositeScore);
+
     }
 
     public function testCompositeScore_ProfileDateOfBirth()
     {
-        // todo: make that the profile entity considered for scoring
+        $userData = $this->dummyBasicProfileData();
+        unset($userData['place_of_birth']);
+
+        $profileComposite       = $this->profileCompositeMapper->map($userData);
+        $this->assertInstanceOf(IProfileComposite::class,$profileComposite);
+
+        $compositeScoreService = $this->di->make(ICompositeScoring::class);
+        $compositeScore = $compositeScoreService->score($profileComposite);
+        $this->assertNotEmpty($compositeScore);
+        $this->assertEquals(10,$compositeScore);
+
     }
 
     public function testCompositeScore_ProfilePlaceOfBirth()
     {
-        // todo: make that the profile entity considered for scoring
+        $userData = $this->dummyBasicProfileData();
+        unset($userData['date_of_birth']);
+        $profileComposite       = $this->profileCompositeMapper->map($userData);
+
+        $this->assertInstanceOf(IProfileComposite::class,$profileComposite);
+
+        $compositeScoreService = $this->di->make(ICompositeScoring::class);
+        $compositeScore = $compositeScoreService->score($profileComposite);
+        $this->assertNotEmpty($compositeScore);
+        $this->assertEquals(10,$compositeScore);
+    }
+
+    public function testCompositeScore_withAll()
+    {
+        $userData = $this->dummyFullProfileData();
+        $profileComposite       = $this->profileCompositeMapper->map($userData);
+
+        $this->assertInstanceOf(IProfileComposite::class,$profileComposite);
+
+        $compositeScoreService = $this->di->make(ICompositeScoring::class);
+        $compositeScore = $compositeScoreService->score($profileComposite);
+        $this->assertNotEmpty($compositeScore);
+        $this->assertIsNumeric($compositeScore);
+        $this->assertNotEquals(0,$compositeScore);
     }
 
 

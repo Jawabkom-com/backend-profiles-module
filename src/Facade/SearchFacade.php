@@ -2,7 +2,6 @@
 
 namespace Jawabkom\Backend\Module\Profile\Facade;
 
-use Jawabkom\Backend\Module\Profile\Contract\Facade\ISearchByEmailFacade;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\similarity\ISimilarityCompositeScore;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByEmail;

@@ -16,7 +16,6 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilt
     TestNameScoring};
 use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 use Jawabkom\Backend\Module\Profile\Contract\{EntityFilter\IProfileCompositeEntitiesFilter,
-    Facade\ISearchByEmailFacade,
     HashGenerator\IProfileAddressHashGenerator,
     HashGenerator\IProfileCompositeHashGenerator,
     HashGenerator\IProfileCriminalRecordHashGenerator,
@@ -88,6 +87,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{EntityFilter\IProfileCompositeEnti
     EntityFilter\IProfileSkillEntityFilter,
     EntityFilter\IProfileSocialProfileEntityFilter,
     EntityFilter\IProfileUsernameEntityFilter,
+    Libraries\ICompositeScoring,
     Libraries\ICompositesMerge,
     Libraries\INameScoring,
     Libraries\ISearchableText,
@@ -159,6 +159,7 @@ use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileSocialProfileEntityFilte
 use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileUsernameEntityFilter;
 use Jawabkom\Backend\Module\Profile\Library\BasicSearchableText;
 use Jawabkom\Backend\Module\Profile\Library\CompositeMerge;
+use Jawabkom\Backend\Module\Profile\Library\CompositeScoring;
 use Jawabkom\Backend\Module\Profile\Library\SimilarityCompositeScore;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileEntityMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ArrayToProfile\ArrayToProfileAddressEntityMapper;
@@ -332,8 +333,8 @@ class ProfileServiceProvider extends ServiceProvider
             IOfflineSearchRequestRepository::class          => OfflineSearchRequest::class,
             ICompositesMerge::class                         => CompositeMerge::class,
             ISimilarityCompositeScore::class                => SimilarityCompositeScore::class,
-            ISearchByEmailFacade::class                     => SearchByEmailFacade::class,
-            ISearchableText::class                          => BasicSearchableText::class
+            ISearchableText::class                          => BasicSearchableText::class,
+            ICompositeScoring::class                        => CompositeScoring::class
         ];
 
         foreach ($toBind as $interface => $implementation) {
