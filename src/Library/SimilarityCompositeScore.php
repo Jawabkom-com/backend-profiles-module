@@ -21,7 +21,7 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
         $nameScore = $this->calculateNamesSimilarityScore();
 
 
-        
+
     }
 
     /**
