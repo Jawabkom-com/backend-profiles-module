@@ -23,12 +23,11 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
         $this->compositeOne = $compositeOne;
         $this->compositeTwo = $compositeTwo;
 
-        $nameScore     = $this->calculateNamesSimilarityScore();
+        $nameScore = $this->calculateNamesSimilarityScore();
         $matchedEmails = $this->calculateEmailSimilarityScore();
         $matchedUsername = $this->calculateUsernameSimilarityScore();
-        $matchedPhone  = $this->calculatePhoneSimilarityScore();
+        $matchedPhone = $this->calculatePhoneSimilarityScore();
 
-        $score = [];
         if ($matchedEmails) {
             if ($matchedEmails >= 2 || $matchedPhone) {
                 return 100;
@@ -48,9 +47,9 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
             }
             return 40;
         } else if ($matchedUsername) {
-            if ($nameScore == 100){
+            if ($nameScore == 100) {
                 return 60;
-            }elseif ($nameScore >= 50 && $matchedUsername >= 2) {
+            } elseif ($nameScore >= 50 && $matchedUsername >= 2) {
                 return 80;
             }
             return 40;
@@ -120,12 +119,12 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
         $toReturn = 0;
         $aComposite1Names = $this->extractNames($this->compositeOne);
         $aComposite2Names = $this->extractNames($this->compositeTwo);
-        if ($aComposite1Names && $aComposite2Names){
+        if ($aComposite1Names && $aComposite2Names) {
             $aAllNames = array_merge($aComposite1Names, $aComposite2Names);
 
             $matchesCount = 0;
-            foreach($aComposite1Names as $name => $tmp) {
-                if(isset($aComposite2Names[$name])) {
+            foreach ($aComposite1Names as $name => $tmp) {
+                if (isset($aComposite2Names[$name])) {
                     $matchesCount++;
                 }
             }
@@ -138,11 +137,11 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
     {
         $extractedNames = [];
         foreach ($composite->getNames() as $oName) {
-            $fullName = $this->searchableText->prepare($oName->getFirst().' '.$oName->getMiddle().' '.$oName->getLast());
+            $fullName = $this->searchableText->prepare($oName->getFirst() . ' ' . $oName->getMiddle() . ' ' . $oName->getLast());
             $aNameParts = explode(' ', $fullName);
-            foreach($aNameParts as $part) {
+            foreach ($aNameParts as $part) {
                 $part = trim(strtolower($part));
-                if($part) {
+                if ($part) {
                     $extractedNames[$part] = true;
                 }
             }

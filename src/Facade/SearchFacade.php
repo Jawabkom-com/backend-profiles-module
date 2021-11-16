@@ -94,19 +94,34 @@ class SearchFacade
         $similarityChecker      = $this->di->make(ISimilarityCompositeScore::class);
         $compositesMergeService = $this->di->make(ICompositesMerge::class);
         $groups = [];
-        $count = count($composites) ;
-        for ($i=0;$i<$count;$i++) {
-          for ($j=$i+1;$j<$count;$j++){
-              //a +b ==?50
-              //c +d ==50
-              $score =  $similarityChecker->calculate($composites[$i],$composites[$j]);
-                if ($score > 50){
-                    $composite = $compositesMergeService->merge($composites[$i],$composites[$j]);
+
+        $leaderInx = 0;
+        while(count($composites)) {
+            if(isset($composites[$leaderInx])) {
+                $leaderComposite = $composites[$leaderInx];
+                $groups[$leaderComposite->getProfile()->getProfileId()][] = $composites[$leaderInx];
+                unset($composites[$leaderInx]);
+
+                foreach($composites as $inx => $composite) {
+                    if($similarityChecker->calculate($leaderComposite, $composite) >= 50) {
+                        $groups[$leaderComposite->getProfile()->getProfileId()][] = $composite;
+                        unset($composites[$inx]);
+                    }
                 }
-              $groups[$score][]=$composite;
-          }
+            }
+            $leaderInx++;
         }
-        return $groups;
+
+        $mergedGroups = [];
+        foreach($groups as $group) {
+            if(count($group) > 1) {
+                $mergedGroups[] = $compositesMergeService->merge($group);
+            } else {
+                $mergedGroups[] = $group[0];
+            }
+        }
+
+        return $mergedGroups;
     }
 
     /**
@@ -114,7 +129,9 @@ class SearchFacade
      */
     protected function sortCompositesByScores(array &$composites)
     {
-        krsort($composites);
+        usort($composites, function ($left, $right) {
+
+        });
     }
 
 }
