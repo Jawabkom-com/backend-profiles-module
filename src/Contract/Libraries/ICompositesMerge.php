@@ -6,7 +6,11 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 
 interface ICompositesMerge
 {
-    public function merge(IProfileComposite ...$composites):IProfileComposite;
+    /**
+     * @param IProfileComposite[] $composites
+     * @return IProfileComposite
+     */
+    public function merge(array $composites):IProfileComposite;
 }
 
 // composite1      composite2       composite3

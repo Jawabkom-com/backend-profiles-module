@@ -25,7 +25,11 @@ class CompositeMerge implements ICompositesMerge
         $this->arrayHashing = $arrayHashing;
     }
 
-    public function merge(IProfileComposite ...$composites): IProfileComposite
+    /**
+     * @param IProfileComposite[] $composites
+     * @return IProfileComposite
+     */
+    public function merge(array $composites): IProfileComposite
     {
         $mergeComposite = $this->di->make(IProfileComposite::class);
         $this->mergeProfileEntity($composites, $mergeComposite);
