@@ -3,43 +3,59 @@
 namespace Jawabkom\Backend\Module\Profile\Library;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
+use Jawabkom\Backend\Module\Profile\Contract\Libraries\ISearchableText;
 use Jawabkom\Backend\Module\Profile\Contract\similarity\ISimilarityCompositeScore;
 
 class SimilarityCompositeScore implements ISimilarityCompositeScore
 {
     private IProfileComposite $compositeOne;
     private IProfileComposite $compositeTwo;
+    private ISearchableText $searchableText;
+
+    public function __construct(ISearchableText $searchableText)
+    {
+
+        $this->searchableText = $searchableText;
+    }
 
     public function calculate(IProfileComposite $compositeOne, IProfileComposite $compositeTwo): int
     {
         $this->compositeOne = $compositeOne;
         $this->compositeTwo = $compositeTwo;
 
-        $nameScore = $this->calculateNamesSimilarityScore();
-        $emailScore = $this->calculateEmailSimilarityScore();
-        $usernameScore = $this->calculateUsernameSimilarityScore();
-        $phoneScore = $this->calculatePhoneSimilarityScore();
+        $nameScore     = $this->calculateNamesSimilarityScore();
+        $matchedEmails = $this->calculateEmailSimilarityScore();
+        $matchedUsername = $this->calculateUsernameSimilarityScore();
+        $matchedPhone  = $this->calculatePhoneSimilarityScore();
 
         $score = [];
-        if($emailScore) {
-            if($phoneScore) {
-                $score[] = floor($emailScore * 0.4);
-                $score[] = floor($phoneScore * 0.3);
+        if ($matchedEmails) {
+            if ($matchedEmails >= 2 || $matchedPhone) {
+                return 100;
             } else {
-                $score[] = floor($emailScore * 0.7);
+                if ($nameScore >= 50 || $matchedUsername) {
+                    return 80;
+                }
             }
-            $score[] = floor($nameScore * 0.2);
-            $score[] = floor($usernameScore * 0.1);
-        } else if($phoneScore) {
-            $score[] = floor($phoneScore * 0.5);
-            $score[] = floor($nameScore * 0.4);
-            $score[] = floor($usernameScore * 0.1);
-        } else if($usernameScore) {
-            $score[] = floor($usernameScore * 0.5);
-            $score[] = floor($nameScore * 0.3);
+            return 40;
+        } else if ($matchedPhone) {
+            if ($matchedPhone >= 2) {
+                return 100;
+            } else {
+                if ($nameScore >= 50 || $matchedUsername) {
+                    return 80;
+                }
+            }
+            return 40;
+        } else if ($matchedUsername) {
+            if ($nameScore == 100){
+                return 60;
+            }elseif ($nameScore >= 50 && $matchedUsername >= 2) {
+                return 80;
+            }
+            return 40;
         }
-
-        return array_sum($score);
+        return 0;
     }
 
     /**
@@ -58,7 +74,7 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
                 $matchedUsernames++;
             }
         }
-        return ($matchedUsernames > 2 ? 100 : $matchedUsernames * 20);
+        return $matchedUsernames;
     }
 
     /**
@@ -77,7 +93,7 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
                 $matchedEmails++;
             }
         }
-        return ($matchedEmails > 2 ? 100 : $matchedEmails * 40);
+        return $matchedEmails;
     }
 
     /**
@@ -96,31 +112,34 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
                 $matchedPhones++;
             }
         }
-
-        return ($matchedPhones > 2 ? 100 : $matchedPhones * 40);
+        return $matchedPhones;
     }
 
     private function calculateNamesSimilarityScore(): float|int
     {
+        $toReturn = 0;
         $aComposite1Names = $this->extractNames($this->compositeOne);
         $aComposite2Names = $this->extractNames($this->compositeTwo);
-        $aAllNames = array_merge($aComposite1Names, $aComposite2Names);
+        if ($aComposite1Names && $aComposite2Names){
+            $aAllNames = array_merge($aComposite1Names, $aComposite2Names);
 
-        $matchesCount = 0;
-        foreach($aComposite1Names as $name => $tmp) {
-            if(isset($aComposite2Names[$name])) {
-                $matchesCount++;
+            $matchesCount = 0;
+            foreach($aComposite1Names as $name => $tmp) {
+                if(isset($aComposite2Names[$name])) {
+                    $matchesCount++;
+                }
             }
+            $toReturn = ceil(($matchesCount / count($aAllNames)) * 100);
         }
-
-        return ceil(($matchesCount / count($aAllNames)) * 100);
+        return $toReturn;
     }
 
     protected function extractNames(IProfileComposite $composite): array
     {
         $extractedNames = [];
         foreach ($composite->getNames() as $oName) {
-            $aNameParts = explode(' ', $oName->getFirst().' '.$oName->getMiddle().' '.$oName->getLast());
+            $fullName = $this->searchableText->prepare($oName->getFirst().' '.$oName->getMiddle().' '.$oName->getLast());
+            $aNameParts = explode(' ', $fullName);
             foreach($aNameParts as $part) {
                 $part = trim(strtolower($part));
                 if($part) {

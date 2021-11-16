@@ -3,6 +3,7 @@
 namespace Jawabkom\Backend\Module\Profile\Facade;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
+use Jawabkom\Backend\Module\Profile\Contract\Libraries\ICompositesMerge;
 use Jawabkom\Backend\Module\Profile\Contract\similarity\ISimilarityCompositeScore;
 use Jawabkom\Backend\Module\Profile\Service\SearchOfflineByEmail;
 use Jawabkom\Backend\Module\Profile\Service\SearchOnlineBySearchersChain;
@@ -18,7 +19,7 @@ class SearchFacade
 
     }
 
-    public function searchByEmail(string $email, array $alias=[]):iterable
+    public function searchByEmail(string $email, array $alias=[],array $meta=[]):iterable
     {
         //
         // search offline first
@@ -26,10 +27,9 @@ class SearchFacade
         $offlineService = $this->di->make(SearchOfflineByEmail::class);
 
         /**@var IProfileComposite[] $composites */
-        $composites = $offlineService
-            ->input('email', $email)
-            ->process()
-            ->output('result');
+        $composites = $offlineService->input('email', $email)
+                                     ->process()
+                                     ->output('result');
 
         //
         // if no results then search online
@@ -39,20 +39,18 @@ class SearchFacade
             $composites = $onlineSearchService
                 ->input('filters', ['email' => $email])
                 ->input('searchersAliases', $alias)
+                ->input('requestMeta',$meta)
                 ->process()
                 ->output('result');
         }
-
         //
         // group composites by similarities
         //
         $compositesGroups = $this->groupCompositesBySimilarity($composites);
-
         //
         // order by composites score descending
         //
         $this->sortCompositesByScores($compositesGroups);
-
         return $compositesGroups;
     }
 
@@ -93,10 +91,20 @@ class SearchFacade
      */
     protected function groupCompositesBySimilarity(array $composites): array
     {
-        $similarityChecker = $this->di->make(ISimilarityCompositeScore::class);
+        $similarityChecker      = $this->di->make(ISimilarityCompositeScore::class);
+        $compositesMergeService = $this->di->make(ICompositesMerge::class);
         $groups = [];
-        foreach($composites as $composite) {
-
+        $count = count($composites) ;
+        for ($i=0;$i<$count;$i++) {
+          for ($j=$i+1;$j<$count;$j++){
+              //a +b ==?50
+              //c +d ==50
+              $score =  $similarityChecker->calculate($composites[$i],$composites[$j]);
+                if ($score > 50){
+                    $composite = $compositesMergeService->merge($composites[$i],$composites[$j]);
+                }
+              $groups[$score][]=$composite;
+          }
         }
         return $groups;
     }
@@ -104,9 +112,9 @@ class SearchFacade
     /**
      * @param IProfileComposite[] $composites
      */
-    protected function sortCompositesByScores(array &$composites): array
+    protected function sortCompositesByScores(array &$composites)
     {
-
+        krsort($composites);
     }
 
 }
