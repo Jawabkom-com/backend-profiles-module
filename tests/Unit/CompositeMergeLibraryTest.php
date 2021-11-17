@@ -63,7 +63,7 @@ class CompositeMergeLibraryTest extends AbstractTestCase
         $composite1 = $this->generateFirstComposite();
         $composite2 = $this->generateSecondComposite();
         $compositeMerge = $this->di->make(ICompositesMerge::class);
-        $newComposite = $compositeMerge->merge($composite1, $composite2);
+        $newComposite = $compositeMerge->merge(array($composite1, $composite2));
         $this->assertInstanceOf(IProfileComposite::class,$newComposite);
         $this->assertCount(3,$newComposite->getEmails());
         $this->assertCount(1,$newComposite->getUsernames());
