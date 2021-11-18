@@ -59,7 +59,12 @@ class CompositeMerge implements ICompositesMerge
     {
         $profileRepository = $this->di->make(IProfileRepository::class);
         $mergeComposite->setProfile($profileRepository);
-        foreach ($composites as $composite) {
+
+        foreach ($composites as $inx=>$composite) {
+
+            if (!$mergeComposite->getProfile()->getProfileId() && $composite->getProfile()->getProfileId()) {
+                $mergeComposite->getProfile()->setProfileId($composite->getProfile()->getProfileId());
+            }
             if (!$mergeComposite->getProfile()->getDateOfBirth() && $composite->getProfile()->getDateOfBirth()) {
                 $mergeComposite->getProfile()->setDateOfBirth($composite->getProfile()->getDateOfBirth());
             }
