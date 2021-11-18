@@ -151,7 +151,6 @@ class SearchFacade
         array $alias =[],
         array $meta=[]):array
     {
-
         if (empty($email) &&
             empty($phone) &&
             empty($username) &&
@@ -190,18 +189,15 @@ class SearchFacade
         //
 
         if (empty($composites) && !empty($alias)) {
-            $filters =[
-                'first_name'=>$firstName,
-                'last_name'=>$lastName,
-                'middle_name'=>$middleName,
-                'phone'=>$phone,
-                'email'=>$email,
-                'country_code'=>$countryCode,
-                'city'=>$city,
-                'state'=>$state,
-                'username'=>$username
-            ];
-
+            $filters =[];
+            if ($firstName)$filters['first_name'] = $firstName;
+            if ($middleName)$filters['middle_name'] = $middleName;
+            if ($phone)$filters['phone'] = $phone;
+            if ($email)$filters['email'] = $email;
+            if ($countryCode)$filters['country_code'] = $countryCode;
+            if ($city)$filters['city'] = $city;
+            if ($state)$filters['state'] = $state;
+            if ($username)$filters['username'] = $username;
             $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class);
             $composites = $onlineSearchService
                 ->input('filters', $filters)

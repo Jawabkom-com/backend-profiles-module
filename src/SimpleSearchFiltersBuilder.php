@@ -81,7 +81,7 @@ class SimpleSearchFiltersBuilder implements ISearchFiltersBuilder
             return $this->di->make(IOrFilterComposite::class);
         } elseif($this->filterType == 'and') {
             $compositeAndFilter = $this->di->make(IAndFilterComposite::class);
-            $this->formattedFilter();
+            $this->formattedPhone();
             foreach ($this->filters as $filterName => $filterValue) {
                 $filterObj = $this->di->make(IFilter::class);
                 $compositeAndFilter->addChild($filterObj->setName($filterName)->setValue($filterValue));
@@ -114,11 +114,11 @@ class SimpleSearchFiltersBuilder implements ISearchFiltersBuilder
         }
     }
 
-    private function formattedFilter()
+    private function formattedPhone()
     {
         if (array_key_exists('phone',$this->filters)){
             $phone = $this->di->make(Phone::class);
-            $this->filters['phone'] = $phone->parse($this->filters['phone'],[$this->filters['country_code']])['phone']??'';
+            $this->filters['phone'] = $phone->parse($this->filters['phone'],[$this->filters['country_code']??null])['phone']??'';
         }
     }
 }

@@ -47,10 +47,10 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
             }
             return 40;
         } else if ($matchedUsername) {
-            if ($nameScore == 100) {
-                return 60;
-            } elseif ($nameScore >= 50 && $matchedUsername >= 2) {
+            if ($nameScore >= 50 && $matchedUsername >= 2) {
                 return 80;
+            }elseif ($nameScore == 100){
+                return 60;
             }
             return 40;
         }

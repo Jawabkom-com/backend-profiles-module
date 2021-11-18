@@ -9,6 +9,7 @@ use Jawabkom\Backend\Module\Profile\Service\CreateProfile;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
+use Jawabkom\Standard\Exception\MissingRequiredInputException;
 
 class SearchFacadeTest extends AbstractTestCase
 {
@@ -37,6 +38,27 @@ class SearchFacadeTest extends AbstractTestCase
         $this->createProfile($dummyProfilesData);
 
         $resultComposites = $this->searchFacade->searchByEmail(email: $email);
+        $this->assertInstanceOf(IProfileComposite::class, $resultComposites[0]);
+    }
+    public function testSearchFacadeByAdvancedSearchWithEmailAndPhoneAndName(){
+        $dummyProfilesData = $this->generateBulkDummyData(7);
+        $email = $dummyProfilesData[0]['emails'][0]['email'];
+        $phone = $dummyProfilesData[0]['phones'][0]['original_number'];
+        $username = $dummyProfilesData[0]['usernames'][0]['username'];
+        $dummyProfilesData[2]['emails'][0]['email'] = $email;
+        $dummyProfilesData[5]['emails'][0]['email'] = $email;
+        unset( $dummyProfilesData[5]['phones']);
+        $this->createProfile($dummyProfilesData);
+
+        $resultComposites = $this->searchFacade->advancedSearch(phone: $phone, email: $email, username: $username);
+        $this->assertInstanceOf(IProfileComposite::class, $resultComposites[0]);
+    }
+    public function testSearchFacadeByAdvancedSearchWithEmailAndPhoneAndNameOnline(){
+        $email    = 'fds@jawabkom.com';
+        $phone    = '05527153514';
+        $countryCode    = 'TR';
+        $username = 'ahmadfds';
+        $resultComposites = $this->searchFacade->advancedSearch(phone: $phone, email: $email, username: $username,countryCode: $countryCode,alias: ['pipl']);
         $this->assertInstanceOf(IProfileComposite::class, $resultComposites[0]);
     }
 
@@ -98,6 +120,10 @@ class SearchFacadeTest extends AbstractTestCase
         $resultComposites = $this->searchFacade->advancedSearch(firstName: $prefix.$first,middleName: $middle,lastName: $last);
         $this->assertInstanceOf(IProfileComposite::class, $resultComposites[0]);
     }
+    public function testSearchFacadeByAdvanceWithMissingRequiredArgument(){
+        $this->expectException(MissingRequiredInputException::class);
+         $this->searchFacade->advancedSearch();
+    }
 
     public function testSearchFacadeByNameOnline(){
         $resultComposites = $this->searchFacade->searchByName(name: 'Ahmad',alias: ['pipl']);
@@ -119,8 +145,8 @@ class SearchFacadeTest extends AbstractTestCase
 
     public function testSearchFacadePhoneOnline(){
         $resultComposites = $this->searchFacade->searchByPhone(phone: '5527153514',possibleCountries: ['TR'],alias: ['pipl']);
-        $this->assertCount(0,$resultComposites);
-        $this->assertEmpty($resultComposites);
+        $this->assertCount(3,$resultComposites);
+        $this->assertInstanceOf(IProfileComposite::class,$resultComposites[0]);
     }
 
 

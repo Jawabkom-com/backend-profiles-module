@@ -168,7 +168,35 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
         $this->assertNotNull($score);
         $this->assertIsNumeric($score);
         $this->assertGreaterThan('50',$score);
+    }
 
+    public function testCompositesSimilarity_TwoUsernameSimilarity_TwoNameSimilarity()
+    {
+        // > 50
+        $name1        = $this->dummyNamesData();
+        $name2        = $this->dummyNamesData();
+        $username1    = $this->dummyUsernamesData();
+        $username2    = $this->dummyEmailsData();
+        $userDataOne = $this->dummyBasicProfileData();
+        $userDataOne['names'][]=$name1;
+        $userDataOne['names'][]=$name2;
+        $userDataOne['usernames'][]=$username1;
+        $userDataOne['usernames'][]=$username2;
+        $userDataTwo = $this->dummyBasicProfileData();
+        $userDataTwo['names'][]=$name1;
+        $userDataTwo['names'][]=$name2;
+        $userDataTwo['usernames'][]=$username1;
+        $userDataTwo['usernames'][]=$username2;
+
+        $profileCompositeOne       = $this->profileCompositeMapper->map($userDataOne);
+        $profileCompositeTwo       = $this->profileCompositeMapper->map($userDataTwo);
+
+        $this->assertInstanceOf(IProfileComposite::class,$profileCompositeOne);
+        $this->assertInstanceOf(IProfileComposite::class,$profileCompositeTwo);
+        $score = $this->similarityService->calculate($profileCompositeOne,$profileCompositeTwo);
+        $this->assertNotNull($score);
+        $this->assertIsNumeric($score);
+        $this->assertGreaterThan('50',$score);
     }
 
     public function testCompositesSimilarity_OneSimilarPhone_UsernameSimilarity()
