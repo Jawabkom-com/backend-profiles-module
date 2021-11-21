@@ -336,6 +336,12 @@ class TestSearcherWithMultiResults implements IProfileSearcher
           "url": "https://s-media-cache-ak0.pinimg.com/avatars/ahmadfds_1346617248_140.jpg",
           "thumbnail_token": "AE2861B20B7D6E22CA814E9059348AAB9C99E565D51CA7AE27F1CCF2813454AE0530DAD8D9DCAD302ACB85625B7C8A49381755E6AD62C64997CF271D571A15619A98C4301FBB30ED4110A5B2C3BAA5E6ECC7EF"
         }
+      ], "emails": [
+        {
+          "@valid_since": "2016-01-18",
+          "@type": "work",
+          "address": "fds@jawabkom.com"
+        }
       ]
     },
     {

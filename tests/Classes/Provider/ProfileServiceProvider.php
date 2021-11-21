@@ -13,6 +13,10 @@ use Jawabkom\Backend\Module\Profile\Test\Classes\{Composite\Filters\AbstractFilt
     Search\OfflineSearchRequest,
     Search\SearcherStatus,
     Search\SearchRequest,
+    Searcher\TestSearcherMapper,
+    Searcher\TestSearcherWithMultiResults,
+    Searcher\TestSearcherWithOneResult,
+    Searcher\TestSearcherWithZeroResults,
     TestNameScoring};
 use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 use Jawabkom\Backend\Module\Profile\Contract\{EntityFilter\IProfileCompositeEntitiesFilter,
@@ -193,6 +197,7 @@ use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileRelationshipEnt
 use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileSkillEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileSocialProfileEntityToArrayMapper;
 use Jawabkom\Backend\Module\Profile\Mapper\ProfileToArray\ProfileUsernameEntityToArrayMapper;
+use Jawabkom\Backend\Module\Profile\SearcherRegistry;
 use Jawabkom\Backend\Module\Profile\SimpleSearchFiltersBuilder;
 use Jawabkom\Standard\Contract\IAndFilterComposite;
 use Jawabkom\Standard\Contract\IOrFilterComposite;
@@ -340,6 +345,11 @@ class ProfileServiceProvider extends ServiceProvider
         foreach ($toBind as $interface => $implementation) {
             $this->app->bind($interface, $implementation);
         }
+        $this->app->singleton(SearcherRegistry::class, function ($app) {
+            $re = new SearcherRegistry();
+           $re->register('pipl',new TestSearcherWithMultiResults(),new TestSearcherMapper());
+           return $re;
+        });
     }
 
     private function registerResources()

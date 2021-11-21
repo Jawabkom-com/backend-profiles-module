@@ -48,7 +48,7 @@ class SearcherRegistryTest extends AbstractTestCase
         $searcherRegistry->register('searcher1', new TestSearcherWithException(), $mapper);
         $searcherRegistry->register('searcher2', new TestSearcherWithMultiResults(), $mapper);
         $getAllRegistries = $searcherRegistry->getRegistries();
-        $this->assertCount(2,$getAllRegistries);
+        $this->assertCount(3,$getAllRegistries);
     }
 
 
