@@ -259,7 +259,7 @@ class SearchFacade
             $leftScore  = $compositeScore->score($left);
             $rightScore = $compositeScore->score($right);
             if ($leftScore==$rightScore) return 0;
-            return ($leftScore<$rightScore);
+            return ($leftScore<$rightScore)?1:-1;
         });
     }
 
