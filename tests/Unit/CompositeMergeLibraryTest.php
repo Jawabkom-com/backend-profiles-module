@@ -4,6 +4,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Unit;
 
 use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileAddressHashGenerator;
+use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileCompositeHashGenerator;
 use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileCriminalRecordHashGenerator;
 use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileEducationHashGenerator;
 use Jawabkom\Backend\Module\Profile\Contract\HashGenerator\IProfileEmailHashGenerator;
@@ -34,6 +35,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSkillRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileSocialProfileRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUsernameRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileUuidFactory;
 use Jawabkom\Backend\Module\Profile\Contract\Libraries\ICompositesMerge;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
@@ -80,18 +82,42 @@ class CompositeMergeLibraryTest extends AbstractTestCase
         $this->assertCount(1,$newComposite->getSkills());
         $this->assertCount(1,$newComposite->getSocialProfiles());
     }
+    public function testCompositeMergeWithProfileId()
+    {
+        $composite1 = $this->generateFirstComposite();
+        $composite2 = $this->generateSecondComposite();
+        $compositeMerge = $this->di->make(ICompositesMerge::class);
+        $newComposite = $compositeMerge->merge(array($composite1, $composite2));
+        $this->assertInstanceOf(IProfileComposite::class,$newComposite);
+        $this->assertNotEmpty($newComposite->getProfile()->getProfileId());
+        $this->assertCount(3,$newComposite->getEmails());
+        $this->assertCount(1,$newComposite->getUsernames());
+        $this->assertCount(1,$newComposite->getAddresses());
+        $this->assertCount(1,$newComposite->getNames());
+        $this->assertCount(1,$newComposite->getPhones());
+        $this->assertCount(1,$newComposite->getCriminalRecords());
+        $this->assertCount(1,$newComposite->getEducations());
+        $this->assertCount(1,$newComposite->getImages());
+        $this->assertCount(1,$newComposite->getLanguages());
+        $this->assertCount(1,$newComposite->getJobs());
+        $this->assertCount(1,$newComposite->getMetaData());
+        $this->assertCount(1,$newComposite->getRelationships());
+        $this->assertCount(1,$newComposite->getSkills());
+        $this->assertCount(1,$newComposite->getSocialProfiles());
+    }
 
 
     public function generateFirstComposite()
     {
         $dummyBasicData = $this->dummyBasicProfileData();
         $profileRepository= $this->di->make(IProfileRepository::class);
+        $uuidFactory = $this->di->make(IProfileUuidFactory::class);
         $profileEntity = $profileRepository->createEntity();
+        $profileEntity->setProfileId($uuidFactory->generate());
         $profileEntity->setGender($dummyBasicData['gender'] ?? null);
         $profileEntity->setDataSource($dummyBasicData['data_source'] ?? null);
         $profileEntity->setPlaceOfBirth($dummyBasicData['place_of_birth'] ?? null);
         $profileEntity->setDateOfBirth(!empty($dummyBasicData['date_of_birth']) ? new \DateTime($dummyBasicData['date_of_birth']) : null);
-
         $composite = $this->di->make(IProfileComposite::class);
         $composite->setProfile($profileEntity);
         $this->generateEmailEntity($composite);

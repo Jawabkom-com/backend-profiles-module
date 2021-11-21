@@ -61,8 +61,7 @@ class CompositeMerge implements ICompositesMerge
         $mergeComposite->setProfile($profileRepository);
 
         foreach ($composites as $inx=>$composite) {
-
-            if (!$mergeComposite->getProfile()->getProfileId() && $composite->getProfile()->getProfileId()) {
+            if (isset($composites[0]) && (0 == $inx) && $composite->getProfile()->getProfileId()) {
                 $mergeComposite->getProfile()->setProfileId($composite->getProfile()->getProfileId());
             }
             if (!$mergeComposite->getProfile()->getDateOfBirth() && $composite->getProfile()->getDateOfBirth()) {
