@@ -11,7 +11,7 @@ class AbstractInputValidator
 
     protected function getErrorMessage(string $message, $inputValue) {
         $stringInputValue = json_encode($inputValue);
-        $classNameOnly = basename(get_class($this));
+        $classNameOnly = substr(get_class($this), strrpos('\\'));
         return "[{$classNameOnly}] {$message} - Invalid Value [{$stringInputValue}]";
     }
 
