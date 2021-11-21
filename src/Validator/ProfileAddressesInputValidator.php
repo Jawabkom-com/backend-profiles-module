@@ -55,7 +55,7 @@ class ProfileAddressesInputValidator extends AbstractInputValidator
             empty($fields['building_number']) &&
             empty($fields['display'])
         ) {
-            throw new MissingValueException("inputs should not be empty");
+            throw new MissingValueException($this->getErrorMessage("inputs should not be empty", null));
         }
     }
 

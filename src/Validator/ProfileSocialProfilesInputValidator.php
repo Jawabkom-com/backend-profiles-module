@@ -44,7 +44,7 @@ class ProfileSocialProfilesInputValidator extends AbstractInputValidator
             empty($fields['account_id'])
 
         ) {
-            throw new MissingValueException("inputs should not be empty");
+            throw new MissingValueException($this->getErrorMessage("inputs should not be empty", null));
         }
     }
 

@@ -43,7 +43,7 @@ class ProfileEmailsInputValidator extends AbstractInputValidator
         if (
             empty($fields['email'])
         ) {
-            throw new MissingValueException("inputs should not be empty");
+            throw new MissingValueException($this->getErrorMessage("inputs should not be empty", null));
         }
     }
 }

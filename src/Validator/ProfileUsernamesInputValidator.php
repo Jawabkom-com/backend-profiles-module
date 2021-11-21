@@ -35,7 +35,7 @@ class ProfileUsernamesInputValidator extends AbstractInputValidator
     protected function validateNullOrEmptyInputs(array $fields)
     {
         if (empty($fields['username'])) {
-            throw new MissingValueException("inputs should not be empty");
+            throw new MissingValueException($this->getErrorMessage("inputs should not be empty", null));
         }
     }
 

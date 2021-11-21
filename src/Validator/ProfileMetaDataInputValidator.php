@@ -32,7 +32,7 @@ class ProfileMetaDataInputValidator extends AbstractInputValidator
             empty($fields['meta_value'])
 
         ) {
-            throw new MissingValueException("inputs should not be empty");
+            throw new MissingValueException($this->getErrorMessage("inputs should not be empty", null));
         }
     }
 

@@ -61,11 +61,8 @@ class ProfilePhonesInputValidator extends AbstractInputValidator
 
     protected function validateNullOrEmptyInputs(array $fields)
     {
-        if (
-            empty($fields['original_number'])
-
-        ) {
-            throw new MissingValueException("inputs should not be empty");
+        if (empty($fields['original_number'])) {
+            throw new MissingValueException($this->getErrorMessage("inputs should not be empty", null));
         }
     }
 
