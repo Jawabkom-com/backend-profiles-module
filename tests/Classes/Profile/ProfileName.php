@@ -115,7 +115,7 @@ class ProfileName extends Model implements IProfileNameEntity,IProfileNameReposi
     }
     public function getByProfileId(string $profileId): ?iterable
     {
-        return $this->where('profile_id',$profileId)->get();
+        return $this->where('profile_id',$profileId)->orderBy('score', 'desc')->get();
     }
 
     public function setHash(string $hash)

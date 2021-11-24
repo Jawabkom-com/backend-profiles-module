@@ -120,15 +120,21 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
         $aComposite1Names = $this->extractNames($this->compositeOne);
         $aComposite2Names = $this->extractNames($this->compositeTwo);
         if ($aComposite1Names && $aComposite2Names) {
-            $aAllNames = array_merge($aComposite1Names, $aComposite2Names);
 
+            if(count($aComposite2Names) > count($aComposite1Names)) {
+                $nameWithMaxParts = $aComposite2Names;
+                $nameWithLessParts = $aComposite1Names;
+            } else {
+                $nameWithMaxParts = $aComposite1Names;
+                $nameWithLessParts = $aComposite2Names;
+            }
             $matchesCount = 0;
-            foreach ($aComposite1Names as $name => $tmp) {
-                if (isset($aComposite2Names[$name])) {
+            foreach ($nameWithLessParts as $name => $tmp) {
+                if (isset($nameWithMaxParts[$name])) {
                     $matchesCount++;
                 }
             }
-            $toReturn = ceil(($matchesCount / count($aAllNames)) * 100);
+            $toReturn = ceil($matchesCount / count($nameWithMaxParts) * 100);
         }
         return $toReturn;
     }
