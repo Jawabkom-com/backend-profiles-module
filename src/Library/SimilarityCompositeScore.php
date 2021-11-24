@@ -4,7 +4,7 @@ namespace Jawabkom\Backend\Module\Profile\Library;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\Libraries\ISearchableText;
-use Jawabkom\Backend\Module\Profile\Contract\similarity\ISimilarityCompositeScore;
+use Jawabkom\Backend\Module\Profile\Contract\Similarity\ISimilarityCompositeScore;
 
 class SimilarityCompositeScore implements ISimilarityCompositeScore
 {

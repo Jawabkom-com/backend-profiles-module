@@ -3,9 +3,12 @@
 namespace Jawabkom\Backend\Module\Profile\Facade;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileCompositeMergeEntity;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileCompositeMergeRepository;
+use Jawabkom\Backend\Module\Profile\Contract\IProfileUuidFactory;
 use Jawabkom\Backend\Module\Profile\Contract\Libraries\ICompositeScoring;
 use Jawabkom\Backend\Module\Profile\Contract\Libraries\ICompositesMerge;
-use Jawabkom\Backend\Module\Profile\Contract\similarity\ISimilarityCompositeScore;
+use Jawabkom\Backend\Module\Profile\Contract\Similarity\ISimilarityCompositeScore;
 use Jawabkom\Backend\Module\Profile\SearchFilter\NameFilter;
 use Jawabkom\Backend\Module\Profile\SearchFilter\PhoneNumberFilter;
 use Jawabkom\Backend\Module\Profile\SearchFilter\UserNameFilter;
@@ -52,7 +55,7 @@ class SearchFacade
                 ->process()
                 ->output('result');
         }
-        return $composites?$this->getComposites($composites):[];
+        return $composites?$this->mergeCompositesBySimilarity($composites):[];
     }
 
 
@@ -80,7 +83,7 @@ class SearchFacade
                 ->process()
                 ->output('result');
         }
-        return $composites?$this->getComposites($composites):[];
+        return $composites?$this->mergeCompositesBySimilarity($composites):[];
 
     }
 
@@ -107,7 +110,7 @@ class SearchFacade
                 ->process()
                 ->output('result');
         }
-        return $composites?$this->getComposites($composites):[];
+        return $composites?$this->mergeCompositesBySimilarity($composites):[];
 
     }
 
@@ -134,7 +137,7 @@ class SearchFacade
                 ->process()
                 ->output('result');
         }
-        return $composites?$this->getComposites($composites):[];
+        return $composites?$this->mergeCompositesBySimilarity($composites):[];
 
     }
 
@@ -205,7 +208,7 @@ class SearchFacade
                 ->input('requestMeta',$meta)
                 ->process()
                 ->output('result');
-            $composites = $composites?$this->getComposites($composites):[];
+            $composites = $composites?$this->mergeCompositesBySimilarity($composites):[];
         }
         return empty($composites)?[]:$composites;
     }
@@ -237,13 +240,22 @@ class SearchFacade
             $leaderInx++;
         }
 
+        //
+        // save merged composites
+        //
+        $mergeRepository = $this->di->make(IProfileCompositeMergeRepository::class);
+        $uuidGenerator = $this->di->make(IProfileUuidFactory::class);
         $mergedGroups = [];
         foreach($groups as $group) {
-            if(count($group) > 1) {
-                $mergedGroups[] = $compositesMergeService->merge($group);
-            } else {
-                $mergedGroups[] = $group[0];
+            $mergeEntity = $this->di->make(IProfileCompositeMergeEntity::class);
+            $mergeEntity->setMergeId('merge_'.$uuidGenerator->generate());
+            foreach($group as $composite) {
+                $mergeEntity->addProfileId($composite->getProfile()->getProfileId());
             }
+            $mergedComposite = $compositesMergeService->merge($group);
+            $mergedComposite->getProfile()->setProfileId($mergeEntity->getMergeId());
+            $mergedGroups[] = $mergedComposite;
+            $mergeRepository->saveEntity($mergeEntity);
         }
 
         return $mergedGroups;
@@ -267,7 +279,7 @@ class SearchFacade
      * @param array $composites
      * @return array
      */
-    protected function getComposites(array $composites): array
+    protected function mergeCompositesBySimilarity(array $composites): array
     {
         // group composites by similarities
         //

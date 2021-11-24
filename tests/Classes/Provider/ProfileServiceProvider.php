@@ -125,7 +125,7 @@ use Jawabkom\Backend\Module\Profile\Contract\{EntityFilter\IProfileCompositeEnti
     Mapper\IProfileSkillEntityToArrayMapper,
     Mapper\IProfileSocialProfileEntityToArrayMapper,
     Mapper\IProfileUsernameEntityToArrayMapper,
-    similarity\ISimilarityCompositeScore};
+    Similarity\ISimilarityCompositeScore};
 use Jawabkom\Backend\Module\Profile\BasicArrayHashing;
 use Jawabkom\Backend\Module\Profile\EntityFilter\ProfileCompositeEntitiesFilter;
 use Jawabkom\Backend\Module\Profile\Facade\ProfileCompositeFacade;

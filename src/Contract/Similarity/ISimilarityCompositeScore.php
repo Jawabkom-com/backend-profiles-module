@@ -1,6 +1,6 @@
 <?php
 
-namespace Jawabkom\Backend\Module\Profile\Contract\similarity;
+namespace Jawabkom\Backend\Module\Profile\Contract\Similarity;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 

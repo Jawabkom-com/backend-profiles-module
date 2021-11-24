@@ -5,7 +5,7 @@ namespace Jawabkom\Backend\Module\Profile\Test\Unit;
 use Faker\Factory;
 use Jawabkom\Backend\Module\Profile\Contract\IArrayToProfileCompositeMapper;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
-use Jawabkom\Backend\Module\Profile\Contract\similarity\ISimilarityCompositeScore;
+use Jawabkom\Backend\Module\Profile\Contract\Similarity\ISimilarityCompositeScore;
 use Jawabkom\Backend\Module\Profile\Test\AbstractTestCase;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DI;
 use Jawabkom\Backend\Module\Profile\Test\Classes\DummyTrait;
