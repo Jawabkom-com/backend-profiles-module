@@ -67,7 +67,7 @@ class ProfileJob extends Model implements IProfileJobEntity,IProfileJobRepositor
 
     public function getFrom():? \DateTime
     {
-       return $this->from;
+       return is_string($this->from)?new \DateTime($this->from):$this->from;
     }
 
     public function setTo(?\DateTime $to)
@@ -77,7 +77,7 @@ class ProfileJob extends Model implements IProfileJobEntity,IProfileJobRepositor
 
     public function getTo():? \DateTime
     {
-        return $this->to;
+        return is_string($this->to)?new \DateTime($this->to):$this->to;
     }
 
     public function setTitle(?string $title)

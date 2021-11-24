@@ -53,6 +53,7 @@ class AbstractTestCase extends TestCaseAlisa
             "CreateSearcherStatusesTable",
             "CreateProfileMetaDataTable",
             "CreateOfflineSearchRequestTable",
+            "CreateProfileCompositeMerge",
         ];
         foreach ($classes as $class) {
             $class = "\\Jawabkom\\Backend\\Module\\Profile\\Test\\Classes\\Database\\Migrations\\{$class}";

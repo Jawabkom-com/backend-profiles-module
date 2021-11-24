@@ -43,6 +43,8 @@ use Jawabkom\Backend\Module\Profile\Contract\{EntityFilter\IProfileCompositeEnti
     IProfileAddressEntity,
     IProfileAddressRepository,
     IProfileComposite,
+    IProfileCompositeMergeEntity,
+    IProfileCompositeMergeRepository,
     IProfileCompositeToArrayMapper,
     IProfileCriminalRecordEntity,
     IProfileCriminalRecordRepository,
@@ -205,6 +207,7 @@ use Jawabkom\Standard\Contract\IDependencyInjector;
 use Jawabkom\Standard\Contract\IFilter;
 use Jawabkom\Backend\Module\Profile\Test\Classes\Profile\{Profile,
     ProfileAddress,
+    ProfileCompositeMerge,
     ProfileCriminalRecord,
     ProfileEducation,
     ProfileEmail,
@@ -339,7 +342,9 @@ class ProfileServiceProvider extends ServiceProvider
             ICompositesMerge::class                         => CompositeMerge::class,
             ISimilarityCompositeScore::class                => SimilarityCompositeScore::class,
             ISearchableText::class                          => BasicSearchableText::class,
-            ICompositeScoring::class                        => CompositeScoring::class
+            ICompositeScoring::class                        => CompositeScoring::class,
+            IProfileCompositeMergeRepository::class         => ProfileCompositeMerge::class,
+            IProfileCompositeMergeEntity::class             => ProfileCompositeMerge::class
         ];
 
         foreach ($toBind as $interface => $implementation) {

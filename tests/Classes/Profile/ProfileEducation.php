@@ -67,7 +67,7 @@ class ProfileEducation extends Model implements IProfileEducationEntity,IProfile
 
     public function getFrom():? \DateTime
     {
-      return  $this->from;
+      return is_string($this->from)?new \DateTime($this->from):$this->from;
     }
 
     public function setTo(?\DateTime $to)
@@ -77,7 +77,7 @@ class ProfileEducation extends Model implements IProfileEducationEntity,IProfile
 
     public function getTo():? \DateTime
     {
-       return $this->to;
+        return is_string($this->to)?new \DateTime($this->to):$this->to;
     }
 
     public function setSchool(?string $school)

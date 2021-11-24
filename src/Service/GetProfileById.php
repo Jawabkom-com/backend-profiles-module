@@ -5,12 +5,13 @@ namespace Jawabkom\Backend\Module\Profile\Service;
 use Jawabkom\Backend\Module\Profile\Contract\Facade\IProfileCompositeFacade;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileCompositeMergeRepository;
 use Jawabkom\Backend\Module\Profile\Contract\Libraries\ICompositesMerge;
+use Jawabkom\Backend\Module\Profile\Trait\ValidationInputsTrait;
 use Jawabkom\Standard\Abstract\AbstractService;
 use Jawabkom\Standard\Contract\IDependencyInjector;
 
 class GetProfileById extends AbstractService
 {
-
+    use ValidationInputsTrait;
     public function __construct(IDependencyInjector $di)
     {
         parent::__construct($di);
@@ -18,7 +19,8 @@ class GetProfileById extends AbstractService
 
     public function process(): static
     {
-        $profileId = $this->getInput('profile_id');
+
+        $this->validateProfileIdInput($profileId = $this->getInput('profile_id'));
         $profileCompositeFacade = $this->di->make(IProfileCompositeFacade::class);
         if(strpos($profileId, 'merge_') === 0) {
             $mergeLibrary = $this->di->make(ICompositesMerge::class);

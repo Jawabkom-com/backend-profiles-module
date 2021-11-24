@@ -141,7 +141,7 @@ trait ValidationInputsTrait
          }
 
     }
-    private function validateProfileIdInput(string $profileId)
+    private function validateProfileIdInput($profileId)
     {
        $validator = $this->di->make(ProfileIdInputValidator::class);
        $validator->validate($profileId);
