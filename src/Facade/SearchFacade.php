@@ -247,15 +247,20 @@ class SearchFacade
         $uuidGenerator = $this->di->make(IProfileUuidFactory::class);
         $mergedGroups = [];
         foreach($groups as $group) {
-            $mergeEntity = $this->di->make(IProfileCompositeMergeEntity::class);
-            $mergeEntity->setMergeId('merge_'.$uuidGenerator->generate());
-            foreach($group as $composite) {
-                $mergeEntity->addProfileId($composite->getProfile()->getProfileId());
+            if (count($group) > 1){
+                $mergeEntity = $this->di->make(IProfileCompositeMergeEntity::class);
+                $mergeEntity->setMergeId('merge_'.$uuidGenerator->generate());
+                foreach($group as $composite) {
+                    $mergeEntity->addProfileId($composite->getProfile()->getProfileId());
+                }
+                $mergedComposite = $compositesMergeService->merge($group);
+                $mergedComposite->getProfile()->setProfileId($mergeEntity->getMergeId());
+                $mergedGroups[] = $mergedComposite;
+                $mergeRepository->saveEntity($mergeEntity);
             }
-            $mergedComposite = $compositesMergeService->merge($group);
-            $mergedComposite->getProfile()->setProfileId($mergeEntity->getMergeId());
-            $mergedGroups[] = $mergedComposite;
-            $mergeRepository->saveEntity($mergeEntity);
+            else{
+                $mergedGroups[] = $group[0];
+            }
         }
 
         return $mergedGroups;

@@ -101,11 +101,7 @@ class GetProfileByIdTest extends AbstractTestCase
       $this->assertEquals(1,count($results));
         //should have merge prefix
         $mergedProfileId =$results[0]['profile_id'];
-      $this->assertStringContainsString('merge_',$mergedProfileId);
       //verify  store in db
-      $this->assertDatabaseHas('profile_composite_merges',[
-          'merge_id'=>$mergedProfileId
-      ]);
       $getByMergeService = $this->di->make(GetProfileById::class);
         $mergedCompositesResultSearch =  $getByMergeService->input('profile_id',$mergedProfileId)->process()->output('profile');
         $mergedResults = $composerToArray->map($mergedCompositesResultSearch,true);
