@@ -32,7 +32,7 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
             if ($matchedEmails >= 2 || $matchedPhone) {
                 return 100;
             } else {
-                if ($nameScore >= 50 || $matchedUsername) {
+                if ($nameScore >= 20 || $matchedUsername) {
                     return 80;
                 }
             }
@@ -41,13 +41,13 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
             if ($matchedPhone >= 2) {
                 return 100;
             } else {
-                if ($nameScore >= 50 || $matchedUsername) {
+                if ($nameScore >= 20 || $matchedUsername) {
                     return 80;
                 }
             }
             return 40;
         } else if ($matchedUsername) {
-            if ($nameScore >= 50 && $matchedUsername >= 2) {
+            if ($nameScore >= 20 && $matchedUsername >= 2) {
                 return 80;
             }elseif ($nameScore == 100){
                 return 60;
