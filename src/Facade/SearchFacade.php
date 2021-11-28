@@ -40,6 +40,7 @@ class SearchFacade
         /**@var IProfileComposite[] $composites */
         $composites = $offlineService->input('email', $email)
                                      ->input('filters', $filters)
+                                     ->input('requestMeta',$meta)
                                      ->process()
                                      ->output('result');
 
@@ -69,6 +70,7 @@ class SearchFacade
         $composites = $offlineService->input('phone', $phone)
                                      ->input('possible_countries',$possibleCountries)
                                      ->input('filters', $filters)
+                                     ->input('requestMeta',$meta)
                                      ->process()
                                      ->output('result');
         //
@@ -96,6 +98,7 @@ class SearchFacade
         /**@var IProfileComposite[] $composites */
         $composites = $offlineService->input('name', $name)
                                      ->input('filters', $filters)
+                                     ->input('requestMeta',$meta)
                                      ->process()
                                      ->output('result');
         //
@@ -123,6 +126,7 @@ class SearchFacade
         /**@var IProfileComposite[] $composites */
         $composites = $offlineService->input('username', $username)
                                      ->input('filters', $filters)
+                                     ->input('requestMeta',$meta)
                                      ->process()
                                      ->output('result');
         //
