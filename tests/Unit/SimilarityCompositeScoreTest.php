@@ -42,7 +42,7 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
         $this->assertGreaterThan('90',$score);
     }
 
-    public function testCompositesSimilarity_OneSimilarEmail_NoNameSimilarity()
+    public function testOneSimilarEmail_NoNameSimilarity()
     {
         // < 50
         $email       = $this->dummyEmailsData();
@@ -65,7 +65,7 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
 
     }
 
-    public function testCompositesSimilarity_OneSimilarPhone_NoNameSimilarity()
+    public function testOneSimilarPhone_NoNameSimilarity()
     {
         // < 50
         $phone       = $this->dummyEmailsData();
@@ -88,7 +88,7 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
 
     }
 
-    public function testCompositesSimilarity_OneUsernameSimilarity_NameSimilarity()
+    public function testOneUsernameSimilarity_NameSimilarity()
     {
         // < 50
         $name        = $this->dummyNamesData();
@@ -114,7 +114,7 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
 
     }
 
-    public function testCompositesSimilarity_OneUsernameSimilarity_FullNameSimilarity()
+    public function testOneUsernameSimilarity_FullNameSimilarity()
     {
         // > 50
         $name1        = $this->dummyNamesData();
@@ -144,7 +144,7 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
 
     }
 
-    public function testCompositesSimilarity_TwoUsernameSimilarity_NameSimilarity()
+    public function testTwoUsernameSimilarity_NameSimilarity()
     {
         // > 50
         $name        = $this->dummyNamesData();
@@ -170,7 +170,7 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
         $this->assertGreaterThan('50',$score);
     }
 
-    public function testCompositesSimilarity_TwoUsernameSimilarity_TwoNameSimilarity()
+    public function testTwoUsernameSimilarity_TwoNameSimilarity()
     {
         // > 50
         $name1        = $this->dummyNamesData();
@@ -199,7 +199,7 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
         $this->assertGreaterThan('50',$score);
     }
 
-    public function testCompositesSimilarity_OneSimilarPhone_UsernameSimilarity()
+    public function testOneSimilarPhone_UsernameSimilarity()
     {
         // > 50
         $phone        = $this->dummyPhoneData();
@@ -224,7 +224,7 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
 
     }
 
-    public function testCompositesSimilarity_OneSimilarEmail_UsernameSimilarity()
+    public function testOneSimilarEmail_UsernameSimilarity()
     {
         // > 50
         $email        = $this->dummyEmailsData();
@@ -249,7 +249,7 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
 
     }
 
-    public function testCompositesSimilarity_OneSimilarEmail_NameSimilarity()
+    public function testOneSimilarEmail_NameSimilarity()
     {
         // > 50
         $email        = $this->dummyEmailsData();
@@ -274,7 +274,7 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
 
     }
 
-    public function testCompositesSimilarity_OneSimilarEmail_OneSimilarPhone_NameSimilarity()
+    public function testOneSimilarEmail_OneSimilarPhone_NameSimilarity()
     {
         // > 50
         $email        = $this->dummyEmailsData();
@@ -299,7 +299,7 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
 
     }
 
-    public function testCompositesSimilarity_OneSimilarEmail_OneSimilarPhone_NoNameSimilarity()
+    public function testOneSimilarEmail_OneSimilarPhone_NoNameSimilarity()
     {
         // > 50
         $email        = $this->dummyEmailsData();
@@ -324,7 +324,7 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
 
     }
 
-    public function testCompositesSimilarity_TwoSimilarEmails_NoNameSimilarity()
+    public function testTwoSimilarEmails_NoNameSimilarity()
     {
         // > 50
         $email1        = $this->dummyEmailsData();
@@ -349,7 +349,7 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
 
     }
 
-    public function testCompositesSimilarity_TwoSimilarEmails_NameSimilarity()
+    public function testTwoSimilarEmails_NameSimilarity()
     {
         // > 50
         $email1        = $this->dummyEmailsData();
@@ -377,7 +377,7 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
 
     }
 
-    public function testCompositesSimilarity_TwoSimilarPhones_NameSimilarity()
+    public function testTwoSimilarPhones_NameSimilarity()
     {
         // > 50
         $phone1        = $this->dummyPhoneData();
@@ -405,7 +405,7 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
 
     }
 
-    public function testCompositesSimilarity_TwoSimilarPhones_NoNameSimilarity()
+    public function testTwoSimilarPhones_NoNameSimilarity()
     {
         // > 50
         $phone1        = $this->dummyPhoneData();
@@ -428,6 +428,54 @@ class SimilarityCompositeScoreTest extends AbstractTestCase
         $this->assertIsNumeric($score);
         $this->assertGreaterThan('50',$score);
 
+    }
+
+
+
+    public function testOneSimilarPhones_50PercentNameSimilarity()
+    {
+        // > 50
+        $phone1        = $this->dummyPhoneData();
+        $userDataOne = $this->dummyBasicProfileData();
+
+        $userDataOne['phones'][] = $phone1;
+        $userDataOne['names'][] = ['first' => 'Ahmad', 'last' => 'Saleh'];
+        $userDataTwo = $this->dummyBasicProfileData();
+        $userDataTwo['phones'][] = $phone1;
+        $userDataTwo['names'][] = ['first' => 'Ahmad', 'last' => 'Fathi'];
+
+        $profileCompositeOne       = $this->profileCompositeMapper->map($userDataOne);
+        $profileCompositeTwo       = $this->profileCompositeMapper->map($userDataTwo);
+
+        $this->assertInstanceOf(IProfileComposite::class,$profileCompositeOne);
+        $this->assertInstanceOf(IProfileComposite::class,$profileCompositeTwo);
+        $score = $this->similarityService->calculate($profileCompositeOne,$profileCompositeTwo);
+        $this->assertNotNull($score);
+        $this->assertIsNumeric($score);
+        $this->assertGreaterThan('50',$score);
+    }
+
+    public function testOneSimilarPhones_50PercentNameSimilarity_SmallLetter()
+    {
+        // > 50
+        $phone1        = $this->dummyPhoneData();
+        $userDataOne = $this->dummyBasicProfileData();
+
+        $userDataOne['phones'][] = $phone1;
+        $userDataOne['names'][] = ['first' => 'ahmad', 'last' => 'Saleh'];
+        $userDataTwo = $this->dummyBasicProfileData();
+        $userDataTwo['phones'][] = $phone1;
+        $userDataTwo['names'][] = ['first' => 'Ahmad', 'last' => 'Fathi'];
+
+        $profileCompositeOne       = $this->profileCompositeMapper->map($userDataOne);
+        $profileCompositeTwo       = $this->profileCompositeMapper->map($userDataTwo);
+
+        $this->assertInstanceOf(IProfileComposite::class,$profileCompositeOne);
+        $this->assertInstanceOf(IProfileComposite::class,$profileCompositeTwo);
+        $score = $this->similarityService->calculate($profileCompositeOne,$profileCompositeTwo);
+        $this->assertNotNull($score);
+        $this->assertIsNumeric($score);
+        $this->assertGreaterThan('50',$score);
     }
 
 }

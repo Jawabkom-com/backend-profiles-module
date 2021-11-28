@@ -32,7 +32,7 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
             if ($matchedEmails >= 2 || $matchedPhone) {
                 return 100;
             } else {
-                if ($nameScore >= 50 || $matchedUsername) {
+                if ($nameScore >= 20 || $matchedUsername) {
                     return 80;
                 }
             }
@@ -41,13 +41,13 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
             if ($matchedPhone >= 2) {
                 return 100;
             } else {
-                if ($nameScore >= 50 || $matchedUsername) {
+                if ($nameScore >= 20 || $matchedUsername) {
                     return 80;
                 }
             }
             return 40;
         } else if ($matchedUsername) {
-            if ($nameScore >= 50 && $matchedUsername >= 2) {
+            if ($nameScore >= 20 && $matchedUsername >= 2) {
                 return 80;
             }elseif ($nameScore == 100){
                 return 60;
@@ -120,15 +120,21 @@ class SimilarityCompositeScore implements ISimilarityCompositeScore
         $aComposite1Names = $this->extractNames($this->compositeOne);
         $aComposite2Names = $this->extractNames($this->compositeTwo);
         if ($aComposite1Names && $aComposite2Names) {
-            $aAllNames = array_merge($aComposite1Names, $aComposite2Names);
 
+            if(count($aComposite2Names) > count($aComposite1Names)) {
+                $nameWithMaxParts = $aComposite2Names;
+                $nameWithLessParts = $aComposite1Names;
+            } else {
+                $nameWithMaxParts = $aComposite1Names;
+                $nameWithLessParts = $aComposite2Names;
+            }
             $matchesCount = 0;
-            foreach ($aComposite1Names as $name => $tmp) {
-                if (isset($aComposite2Names[$name])) {
+            foreach ($nameWithLessParts as $name => $tmp) {
+                if (isset($nameWithMaxParts[$name])) {
                     $matchesCount++;
                 }
             }
-            $toReturn = ceil(($matchesCount / count($aAllNames)) * 100);
+            $toReturn = ceil($matchesCount / count($nameWithMaxParts) * 100);
         }
         return $toReturn;
     }
