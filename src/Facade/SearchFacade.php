@@ -9,6 +9,7 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileUuidFactory;
 use Jawabkom\Backend\Module\Profile\Contract\Libraries\ICompositeScoring;
 use Jawabkom\Backend\Module\Profile\Contract\Libraries\ICompositesMerge;
 use Jawabkom\Backend\Module\Profile\Contract\Similarity\ISimilarityCompositeScore;
+use Jawabkom\Backend\Module\Profile\Library\Phone;
 use Jawabkom\Backend\Module\Profile\SearchFilter\NameFilter;
 use Jawabkom\Backend\Module\Profile\SearchFilter\PhoneNumberFilter;
 use Jawabkom\Backend\Module\Profile\SearchFilter\UserNameFilter;
@@ -75,13 +76,18 @@ class SearchFacade
         // if no results then search online
         //
         if (empty($composites) && !empty($alias)) {
-            $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class);
-            $composites = $onlineSearchService
-                ->input('filters', ['phone' => $phone])
-                ->input('searchersAliases', $alias)
-                ->input('requestMeta',$meta)
-                ->process()
-                ->output('result');
+            $phoneLib = $this->di->make(Phone::class);
+            $parsed = $phoneLib->parse($phone, $possibleCountries);
+            if($parsed['is_valid']) {
+                $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class);
+                $composites = $onlineSearchService
+                    ->input('filters', ['phone' => $parsed['phone']])
+                    ->input('searchersAliases', $alias)
+                    ->input('requestMeta',$meta)
+                    ->process()
+                    ->output('result');
+            }
+
         }
         return $composites?$this->mergeCompositesBySimilarity($composites):[];
 
