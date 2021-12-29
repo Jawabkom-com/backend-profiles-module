@@ -56,9 +56,9 @@ class SearchOfflineByEmail extends AbstractService
         $offlineSearchRequest = $this->initOfflineSearchRequest($offlineSearchHash);
         try {
             $this->validateEmail($email);
-            $profileEmailEntities = $this->emailRepository->getByEmail($email);
-            foreach($profileEmailEntities as $entity) {
-                $composites[] = $this->compositeFacade->getCompositeByProfileId($entity->getProfileId());
+            $profileIds = $this->emailRepository->getDistinctProfileIdsByEmail($email);
+            foreach($profileIds as $profileId) {
+                $composites[] = $this->compositeFacade->getCompositeByProfileId($profileId);
             }
             $searchFiltersResult = $this->applySearchFilters($searchFilters, $composites);
             $this->setOutput('result', $searchFiltersResult);

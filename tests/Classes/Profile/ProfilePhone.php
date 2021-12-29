@@ -240,8 +240,8 @@ class ProfilePhone extends Model implements IProfilePhoneEntity, IProfilePhoneRe
         return $this->possible_countries ?? [];
     }
 
-    public function getByPhone(string $normalizedPhoneNumber): ?iterable
+    public function getDistinctProfileIdsByPhone(string $normalizedPhoneNumber): ?array
     {
-        return $this->where('formatted_number', $normalizedPhoneNumber)->get();
+        return $this->where('formatted_number', $normalizedPhoneNumber)->groupBy('profile_id')->pluck('profile_id', 'profile_id')?->toArray();
     }
 }

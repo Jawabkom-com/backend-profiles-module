@@ -115,8 +115,8 @@ class ProfileEmail extends Model implements IProfileEmailEntity,IProfileEmailRep
        return $this->hash;
     }
 
-    public function getByEmail(string $email): ?iterable
+    public function getDistinctProfileIdsByEmail(string $email): ?array
     {
-    return    $this->where('email',$email)->get();
+        return $this->where('email',$email)->groupBy('profile_id')->pluck('profile_id', 'profile_id')?->toArray();
     }
 }

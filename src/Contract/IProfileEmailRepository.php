@@ -12,5 +12,5 @@ interface IProfileEmailRepository extends IRepository
     public function createEntity(array $params = []): IProfileEmailEntity;
 
     public function getByProfileId(string $profileId):?iterable;
-    public function getByEmail(string $email):?iterable;
+    public function getDistinctProfileIdsByEmail(string $email):?array;
 }
