@@ -17,6 +17,7 @@ class SimpleSearchFiltersBuilder implements ISearchFiltersBuilder
     protected array $registeredFilters = [
         'first_name',
         'last_name',
+        'raw_name',
         'middle_name',
         'phone',
         'email',
