@@ -235,7 +235,7 @@ class SearchFacade
 
         $leaderInx = 0;
         while(count($composites)) {
-            if(isset($composites[$leaderInx])) {
+            if(array_key_exists($leaderInx, $composites)) {
                 $leaderComposite = $composites[$leaderInx];
                 $groups[$leaderComposite->getProfile()->getProfileId()][] = $composites[$leaderInx];
                 unset($composites[$leaderInx]);
