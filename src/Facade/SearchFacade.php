@@ -126,7 +126,7 @@ class SearchFacade
         if (empty($composites) && !empty($alias)) {
             $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class);
             $composites = $onlineSearchService
-                ->input('filters', ['first_name' => $name])
+                ->input('filters', ['raw_name' => $name])
                 ->input('searchersAliases', $alias)
                 ->input('requestMeta', $meta)
                 ->process()
