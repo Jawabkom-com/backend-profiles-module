@@ -24,15 +24,16 @@ class SearchOfflineByName extends AbstractService
 {
     use OfflineRequestTrait;
     use SearchFiltersTrait;
+
     private IProfileCompositeFacade $compositeFacade;
     private mixed $phone;
     private IProfileNameRepository $nameRepository;
     private IOfflineSearchRequestRepository $offlineSearchRequestRepository;
 
-    public function __construct(IDependencyInjector $di,
-                                IProfileNameRepository $nameRepository,
+    public function __construct(IDependencyInjector             $di,
+                                IProfileNameRepository          $nameRepository,
                                 IOfflineSearchRequestRepository $offlineSearchRequestRepository,
-                                IProfileCompositeFacade $compositeFacade)
+                                IProfileCompositeFacade         $compositeFacade)
     {
         parent::__construct($di);
         $this->compositeFacade = $compositeFacade;
@@ -53,30 +54,32 @@ class SearchOfflineByName extends AbstractService
     {
         $composites = [];
         $name = $this->getInput('name'); // required
-        $searchFilters = $this->getInput('filters',[]);
-        $offlineSearchHash    = sha1(json_encode($this->getInputs()));
+        $searchFilters = $this->getInput('filters', []);
+        $offlineSearchHash = sha1(json_encode($this->getInputs()));
         $offlineSearchRequest = $this->initOfflineSearchRequest($offlineSearchHash);
         try {
             $this->validateName($name);
 
             $profileIds = $this->nameRepository->getDistinctProfileIdsByName($name);
-            foreach($profileIds as $profileId) {
-                $composites[] = $this->compositeFacade->getCompositeByProfileId($profileId);
+            foreach ($profileIds as $profileId) {
+                $oComposite = $this->compositeFacade->getCompositeByProfileId($profileId);
+                if ($oComposite)
+                    $composites[] = $oComposite;
             }
             $searchFiltersResult = $this->applySearchFilters($searchFilters, $composites);
             $this->setOutput('result', $searchFiltersResult);
             $this->setSucceededSearchRequestStatus($offlineSearchRequest, count($searchFiltersResult));
             return $this;
 
-        }catch (\Throwable $exception){
-            $this->setErrorSearchRequestStatus($offlineSearchRequest,$exception);
+        } catch (\Throwable $exception) {
+            $this->setErrorSearchRequestStatus($offlineSearchRequest, $exception);
             throw $exception;
         }
     }
 
-    private function validateName(?string $name):void
+    private function validateName(?string $name): void
     {
-        if (empty($name)){
+        if (empty($name)) {
             throw new MissingRequiredInputException('Missing Name* ,is required');
         }
 

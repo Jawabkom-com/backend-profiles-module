@@ -20,17 +20,18 @@ class SearchOfflineByEmail extends AbstractService
 {
     use OfflineRequestTrait;
     use SearchFiltersTrait;
+
     private IProfileCompositeFacade $compositeFacade;
     private mixed $phone;
     private IProfileEmailRepository $emailRepository;
     private IOfflineSearchRequestRepository $offlineSearchRequestRepository;
     private ISearchFiltersBuilder $searchFiltersBuilder;
 
-    public function __construct(IDependencyInjector $di,
-                                IProfileEmailRepository $emailRepository,
+    public function __construct(IDependencyInjector             $di,
+                                IProfileEmailRepository         $emailRepository,
                                 IOfflineSearchRequestRepository $offlineSearchRequestRepository,
-                                ISearchFiltersBuilder $searchFiltersBuilder,
-                                IProfileCompositeFacade $compositeFacade)
+                                ISearchFiltersBuilder           $searchFiltersBuilder,
+                                IProfileCompositeFacade         $compositeFacade)
     {
         parent::__construct($di);
         $this->compositeFacade = $compositeFacade;
@@ -51,28 +52,30 @@ class SearchOfflineByEmail extends AbstractService
     {
         $composites = [];
         $email = $this->getInput('email'); // required
-        $searchFilters = $this->getInput('filters',[]);
-        $offlineSearchHash    = sha1(json_encode($this->getInputs()));
+        $searchFilters = $this->getInput('filters', []);
+        $offlineSearchHash = sha1(json_encode($this->getInputs()));
         $offlineSearchRequest = $this->initOfflineSearchRequest($offlineSearchHash);
         try {
             $this->validateEmail($email);
             $profileIds = $this->emailRepository->getDistinctProfileIdsByEmail($email);
-            foreach($profileIds as $profileId) {
-                $composites[] = $this->compositeFacade->getCompositeByProfileId($profileId);
+            foreach ($profileIds as $profileId) {
+                $oComposite = $this->compositeFacade->getCompositeByProfileId($profileId);
+                if ($oComposite)
+                    $composites[] = $oComposite;
             }
             $searchFiltersResult = $this->applySearchFilters($searchFilters, $composites);
             $this->setOutput('result', $searchFiltersResult);
             $this->setSucceededSearchRequestStatus($offlineSearchRequest, count($searchFiltersResult));
             return $this;
-        }catch (\Throwable $exception){
-            $this->setErrorSearchRequestStatus($offlineSearchRequest,$exception);
+        } catch (\Throwable $exception) {
+            $this->setErrorSearchRequestStatus($offlineSearchRequest, $exception);
             throw $exception;
         }
     }
 
-    private function validateEmail(?string $email):void
+    private function validateEmail(?string $email): void
     {
-        if (empty($email)){
+        if (empty($email)) {
             throw new MissingRequiredInputException('Missing Email* ,is required');
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL))

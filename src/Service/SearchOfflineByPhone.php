@@ -26,10 +26,10 @@ class SearchOfflineByPhone extends AbstractService
     private mixed $phone;
     private IOfflineSearchRequestRepository $offlineSearchRequestRepository;
 
-    public function __construct(IDependencyInjector     $di,
-                                IProfilePhoneRepository $phoneRepository,
+    public function __construct(IDependencyInjector             $di,
+                                IProfilePhoneRepository         $phoneRepository,
                                 IOfflineSearchRequestRepository $offlineSearchRequestRepository,
-                                IProfileCompositeFacade $compositeFacade)
+                                IProfileCompositeFacade         $compositeFacade)
     {
         parent::__construct($di);
         $this->compositeFacade = $compositeFacade;
@@ -51,7 +51,7 @@ class SearchOfflineByPhone extends AbstractService
         $phoneNumber = $this->getInput('phone'); // required
         $phonePossibleCountries = $this->getInput('possible_countries'); //optional
         $searchFilters = $this->getInput('filters', []);
-        $offlineSearchHash    = sha1(json_encode($this->getInputs()));
+        $offlineSearchHash = sha1(json_encode($this->getInputs()));
         $offlineSearchRequest = $this->initOfflineSearchRequest($offlineSearchHash);
         try {
             $this->validate($phoneNumber, $phonePossibleCountries);
@@ -59,14 +59,16 @@ class SearchOfflineByPhone extends AbstractService
             $formattedPhone = $this->phone->parse($phoneNumber, $phonePossibleCountries)['phone'];
             $profileIds = $this->phoneRepository->getDistinctProfileIdsByPhone($formattedPhone);
             foreach ($profileIds as $profileId) {
-                $composites[] = $this->compositeFacade->getCompositeByProfileId($profileId);
+                $oComposite = $this->compositeFacade->getCompositeByProfileId($profileId);
+                if ($oComposite)
+                    $composites[] = $oComposite;
             }
             $searchFiltersResult = $this->applySearchFilters($searchFilters, $composites);
-            $this->setOutput('result',$searchFiltersResult);
+            $this->setOutput('result', $searchFiltersResult);
             $this->setSucceededSearchRequestStatus($offlineSearchRequest, count($searchFiltersResult));
             return $this;
-        }catch (\Throwable $exception){
-            $this->setErrorSearchRequestStatus($offlineSearchRequest,$exception);
+        } catch (\Throwable $exception) {
+            $this->setErrorSearchRequestStatus($offlineSearchRequest, $exception);
             throw $exception;
         }
     }
@@ -97,7 +99,7 @@ class SearchOfflineByPhone extends AbstractService
     {
         if ($phonePossibleCountries) {
             foreach ($phonePossibleCountries as $countryCode) {
-                Country::assertCountryCodeExists($countryCode, 'possible_countries input value must be a valid country codes list. Invalid ['.$countryCode.'], LIST: '.json_encode($phonePossibleCountries));
+                Country::assertCountryCodeExists($countryCode, 'possible_countries input value must be a valid country codes list. Invalid [' . $countryCode . '], LIST: ' . json_encode($phonePossibleCountries));
             }
         }
     }
