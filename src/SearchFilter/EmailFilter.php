@@ -13,13 +13,13 @@ class EmailFilter implements IProfileCompositeSearchFilter
 
     public function __construct(string $email)
     {
-        $this->email = $email;
+        $this->email = trim(strtolower($email));
     }
 
     public function apply(IProfileComposite $composite): bool
     {
         foreach($composite->getEmails() as $email) {
-            if($email->getEmail() == $this->email) {
+            if(trim(strtolower($email->getEmail())) == $this->email) {
                 return true;
             }
         }

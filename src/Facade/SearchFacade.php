@@ -8,8 +8,11 @@ use Jawabkom\Backend\Module\Profile\Contract\IProfileCompositeMergeRepository;
 use Jawabkom\Backend\Module\Profile\Contract\IProfileUuidFactory;
 use Jawabkom\Backend\Module\Profile\Contract\Libraries\ICompositeScoring;
 use Jawabkom\Backend\Module\Profile\Contract\Libraries\ICompositesMerge;
+use Jawabkom\Backend\Module\Profile\Contract\Libraries\ISearchableText;
 use Jawabkom\Backend\Module\Profile\Contract\Similarity\ISimilarityCompositeScore;
 use Jawabkom\Backend\Module\Profile\Library\Phone;
+use Jawabkom\Backend\Module\Profile\SearchFilter\CountryCodeFilter;
+use Jawabkom\Backend\Module\Profile\SearchFilter\EmailFilter;
 use Jawabkom\Backend\Module\Profile\SearchFilter\NameFilter;
 use Jawabkom\Backend\Module\Profile\SearchFilter\PhoneNumberFilter;
 use Jawabkom\Backend\Module\Profile\SearchFilter\UserNameFilter;
@@ -62,7 +65,7 @@ class SearchFacade
         //
         // order by composites score descending
         //
-        if($sortByScore)
+        if ($sortByScore)
             $this->sortCompositesByScores($mergedComposites);
         return $mergedComposites;
     }
@@ -103,7 +106,7 @@ class SearchFacade
         //
         // order by composites score descending
         //
-        if($sortByScore)
+        if ($sortByScore)
             $this->sortCompositesByScores($mergedComposites);
         return $mergedComposites;
     }
@@ -137,7 +140,7 @@ class SearchFacade
         //
         // order by composites score descending
         //
-        if($sortByScore)
+        if ($sortByScore)
             $this->sortCompositesByScores($mergedComposites);
         return $mergedComposites;
     }
@@ -171,7 +174,7 @@ class SearchFacade
         //
         // order by composites score descending
         //
-        if($sortByScore)
+        if ($sortByScore)
             $this->sortCompositesByScores($mergedComposites);
         return $mergedComposites;
     }
@@ -190,43 +193,46 @@ class SearchFacade
         array   $meta = [],
         bool    $sortByScore = true): array
     {
-        if (empty($email) &&
-            empty($phone) &&
-            empty($username) &&
-            empty($firstName) &&
-            empty($middleName) &&
-            empty($lastName)) {
+        if (empty($email) && empty($phone) && empty($username) && empty($firstName) && empty($middleName) && empty($lastName)) {
             throw new MissingRequiredInputException('Missing required Argument,must provide at least one of these fields (first name,middle name,last name ,phone,email,username)');
         }
+
+
+        $phoneLib = $this->di->make(Phone::class);
+        $filters = [];
+        if ($email) $filters[] = new EmailFilter($email);
+        if ($username) $filters[] = new UserNameFilter($username);
+        if($countryCode) {
+            $filters[] = new CountryCodeFilter($countryCode);
+            if($phone) {
+                $possibleCountries = [];
+                $possibleCountries[] = $countryCode;
+                $phone = $phoneLib->parse($phone, $possibleCountries)['phone'];
+            }
+        } elseif ($phone) {
+            $phone = $phoneLib->parse($phone, [])['phone'];
+            $filters[] = new PhoneNumberFilter($phone);
+        }
+        $searchableName = null;
+        if ($firstName || $middleName || $lastName) {
+            $searchableText = $this->di->make(ISearchableText::class);
+            $searchableName = $searchableText->prepare("{$firstName} {$middleName} {$lastName}");
+            $filters[] = new NameFilter( $searchableName );
+        }
+
         if ($email) {
-            $filters = [];
-            if ($phone) $filters[] = new PhoneNumberFilter($phone);
-            if ($username) $filters[] = new UserNameFilter($username);
-            if ($firstName || $middleName || $lastName) $filters[] = new NameFilter("{$firstName}{$middleName}{$lastName}");
             $composites = $this->searchByEmail(email: $email, filters: $filters);
-        }
-
-        if ($phone && empty($composites)) {
-            $filters = [];
-            if ($username) $filters[] = new UserNameFilter($username);
-            if ($firstName || $middleName || $lastName) $filters[] = new NameFilter("{$firstName}{$middleName}{$lastName}");
+        } elseif ($phone) {
             $composites = $this->searchByPhone(phone: $phone, filters: $filters);
-        }
-
-        if ($username && empty($composites)) {
-            $filters = [];
-            if ($firstName || $middleName || $lastName) $filters[] = new NameFilter("{$firstName}{$middleName}{$lastName}");
+        } elseif ($username) {
             $composites = $this->searchByUsername(username: $username, filters: $filters);
-        }
-
-        if (($firstName || $middleName || $lastName) && empty($composites)) {
-            $composites = $this->searchByName(name: "{$firstName}{$middleName}{$lastName}");
+        } elseif ($searchableName ) {
+            $composites = $this->searchByName(name: $searchableName);
         }
 
         //
         // if no results then search online
         //
-
         if (empty($composites) && !empty($alias)) {
             $filters = [];
             if ($firstName) $filters['first_name'] = $firstName;
@@ -251,7 +257,7 @@ class SearchFacade
         //
         // order by composites score descending
         //
-        if($sortByScore)
+        if ($sortByScore)
             $this->sortCompositesByScores($mergedComposites);
         return $mergedComposites;
     }

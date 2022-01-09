@@ -9,17 +9,31 @@ use Jawabkom\Backend\Module\Profile\Contract\SearchFilter\IProfileCompositeSearc
 class NameFilter implements IProfileCompositeSearchFilter
 {
 
-    private string $name;
+    private array $nameParts;
 
     public function __construct(string $name)
     {
-        $this->name = $name;
+        $parts = explode(' ', $name);
+        foreach($parts as $part) {
+            if($part) {
+                $this->nameParts[] = $part;
+            }
+        }
     }
 
     public function apply(IProfileComposite $composite): bool
     {
-        foreach($composite->getNames() as $name) {
-            if($name->getDisplay() == $this->name) {
+        if(count($this->nameParts)) {
+            foreach($composite->getNames() as $name) {
+                $preStrPos = 0;
+                foreach($this->nameParts as $part) {
+                    $partStrPos = stripos($name->getDisplay(), $part);
+                    if($partStrPos === false || $partStrPos < $preStrPos) {
+                        continue 2;
+                    } else {
+                        $preStrPos = $partStrPos;
+                    }
+                }
                 return true;
             }
         }

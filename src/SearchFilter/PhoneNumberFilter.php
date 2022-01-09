@@ -5,6 +5,7 @@ namespace Jawabkom\Backend\Module\Profile\SearchFilter;
 
 use Jawabkom\Backend\Module\Profile\Contract\IProfileComposite;
 use Jawabkom\Backend\Module\Profile\Contract\SearchFilter\IProfileCompositeSearchFilter;
+use Jawabkom\Backend\Module\Profile\Library\Phone;
 
 class PhoneNumberFilter implements IProfileCompositeSearchFilter
 {
@@ -18,7 +19,7 @@ class PhoneNumberFilter implements IProfileCompositeSearchFilter
     public function apply(IProfileComposite $composite): bool
     {
         foreach($composite->getPhones() as $oPhone) {
-            if($oPhone->getFormattedNumber() == $this->normalizedPhoneNumber) {
+            if(str_contains($oPhone->getFormattedNumber(), $this->normalizedPhoneNumber)) {
                 return true;
             }
         }

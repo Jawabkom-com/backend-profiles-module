@@ -55,6 +55,6 @@ class BasicSearchableText implements ISearchableText
 
     public function prepare(string $text): string
     {
-        return str_replace(array_keys($this->arabicLettersReplacables), array_values($this->arabicLettersReplacables), $text);
+        return trim(preg_replace('/[\s]+/', ' ', str_replace(array_keys($this->arabicLettersReplacables), array_values($this->arabicLettersReplacables), $text)));
     }
 }

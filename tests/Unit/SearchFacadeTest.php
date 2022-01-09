@@ -53,6 +53,36 @@ class SearchFacadeTest extends AbstractTestCase
         $resultComposites = $this->searchFacade->advancedSearch(phone: $phone, email: $email, username: $username);
         $this->assertInstanceOf(IProfileComposite::class, $resultComposites[0]);
     }
+
+    public function testSearchFacadeByAdvancedSearchWithPhone(){
+        $dummyProfilesData = $this->generateBulkDummyData(7);
+        $phone = $dummyProfilesData[0]['phones'][0]['original_number'];
+        $countryCode = $dummyProfilesData[0]['phones'][0]['country_code'];
+        $username = $dummyProfilesData[0]['usernames'][0]['username'];
+        $this->createProfile($dummyProfilesData);
+        $resultComposites = $this->searchFacade->advancedSearch(phone: $phone, countryCode: $countryCode);
+        $this->assertInstanceOf(IProfileComposite::class, $resultComposites[0]);
+    }
+
+    public function testSearchFacadeByAdvancedSearchWithUsername(){
+        $dummyProfilesData = $this->generateBulkDummyData(7);
+        $username = $dummyProfilesData[0]['usernames'][0]['username'];
+        $this->createProfile($dummyProfilesData);
+        $resultComposites = $this->searchFacade->advancedSearch(username: $username);
+        $this->assertInstanceOf(IProfileComposite::class, $resultComposites[0]);
+    }
+
+
+    public function testSearchFacadeByAdvancedSearchWithName(){
+        $dummyProfilesData = $this->generateBulkDummyData(7);
+        $firstName = $dummyProfilesData[2]['names'][0]['first'];
+        $middleName = $dummyProfilesData[2]['names'][0]['middle'];
+        $lastName = $dummyProfilesData[2]['names'][0]['last'];
+        $this->createProfile($dummyProfilesData);
+        $resultComposites = $this->searchFacade->advancedSearch(firstName: $firstName, middleName: $middleName, lastName: $lastName);
+        $this->assertInstanceOf(IProfileComposite::class, $resultComposites[0]);
+    }
+
     public function testSearchFacadeByAdvancedSearchWithEmailAndPhoneAndNameOnline(){
         $email    = 'fds@jawabkom.com';
         $phone    = '05527153514';
@@ -104,20 +134,12 @@ class SearchFacadeTest extends AbstractTestCase
 
     public function testSearchFacadeByAdvanceOffline(){
         $dummyProfilesData = $this->generateBulkDummyData(7);
-        $prefix = $dummyProfilesData[1]['names'][0]['prefix'];
         $first = ' '.$dummyProfilesData[2]['names'][0]['first'];
         $middle  = ' '.$dummyProfilesData[2]['names'][0]['middle'];
         $last = ' '.$dummyProfilesData[2]['names'][0]['last'];
-        $dummyProfilesData[5]['names'][0]['prefix'] = $dummyProfilesData[2]['names'][0]['prefix'];
-        $dummyProfilesData[5]['names'][0]['first'] = $dummyProfilesData[2]['names'][0]['first'];
-        $dummyProfilesData[5]['names'][0]['middle'] = $dummyProfilesData[2]['names'][0]['middle'];
-        $dummyProfilesData[5]['names'][0]['last']  = $dummyProfilesData[2]['names'][0]['last'];
-        $dummyProfilesData[3]['names'][0]['prefix'] = $dummyProfilesData[2]['names'][0]['prefix'];
-        $dummyProfilesData[3]['names'][0]['first'] = $dummyProfilesData[2]['names'][0]['first'];
-        $dummyProfilesData[3]['names'][0]['middle'] = $dummyProfilesData[2]['names'][0]['middle'];
-        $dummyProfilesData[3]['names'][0]['last']  = $dummyProfilesData[2]['names'][0]['last'];
+
         $this->createProfile($dummyProfilesData);
-        $resultComposites = $this->searchFacade->advancedSearch(firstName: $prefix.$first,middleName: $middle,lastName: $last);
+        $resultComposites = $this->searchFacade->advancedSearch(firstName: $first,middleName: $middle,lastName: $last);
         $this->assertInstanceOf(IProfileComposite::class, $resultComposites[0]);
     }
     public function testSearchFacadeByAdvanceWithMissingRequiredArgument(){

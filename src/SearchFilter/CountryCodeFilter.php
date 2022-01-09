@@ -14,13 +14,25 @@ class CountryCodeFilter implements IProfileCompositeSearchFilter
 
     public function __construct(string $countryCode)
     {
-        $this->countryCode = $countryCode;
+        $this->countryCode = trim(strtoupper($countryCode));
     }
 
     public function apply(IProfileComposite $composite): bool
     {
+        //
+        // search phones
+        //
         foreach($composite->getPhones() as $phone) {
             if($phone->getCountryCode() == $this->countryCode) {
+                return true;
+            }
+        }
+
+        //
+        // search addresses
+        //
+        foreach($composite->getAddresses() as $address) {
+            if($address->getCountry() == $this->countryCode) {
                 return true;
             }
         }

@@ -12,13 +12,13 @@ class UserNameFilter implements IProfileCompositeSearchFilter
 
     public function __construct(string $userName)
     {
-        $this->userName = $userName;
+        $this->userName = strtolower(trim($userName));
     }
 
     public function apply(IProfileComposite $composite): bool
     {
         foreach($composite->getUsernames() as $username) {
-            if($username->getUsername() == $this->userName) {
+            if(strtolower(trim($username->getUsername())) == $this->userName) {
                 return true;
             }
         }

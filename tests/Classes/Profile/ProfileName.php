@@ -140,6 +140,6 @@ class ProfileName extends Model implements IProfileNameEntity,IProfileNameReposi
 
     public function getDistinctProfileIdsByName(string $name): ?iterable
     {
-        return $this->where('display',$name)->groupBy('profile_id')->pluck('profile_id', 'profile_id')?->toArray();
+        return $this->where('display', 'LIKE', "%{$name}%")->groupBy('profile_id')->pluck('profile_id', 'profile_id')?->toArray();
     }
 }
