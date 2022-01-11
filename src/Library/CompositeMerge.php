@@ -90,10 +90,22 @@ class CompositeMerge implements ICompositesMerge
             // fill names
             foreach ($composite->getNames() as $oEntity) {
                 if (!isset($addedHashes[$oEntity->getHash()])) {
-                    $mergeComposite->addName($oEntity);
-                    $addedHashes[$oEntity->getHash()] = true;
+                    $addedHashes[$oEntity->getHash()] = $oEntity;
                 }
             }
+        }
+
+        usort($addedHashes, function ($left, $right) {
+            if($left->getScore() > $right->getScore()) {
+                return -1;
+            } elseif($left->getScore() < $right->getScore()) {
+                return 1;
+            }
+            return 0;
+        });
+
+        foreach($addedHashes as $oEntity) {
+            $mergeComposite->addName($oEntity);
         }
     }
 
