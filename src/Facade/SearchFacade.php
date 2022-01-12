@@ -197,7 +197,6 @@ class SearchFacade
             throw new MissingRequiredInputException('Missing required Argument,must provide at least one of these fields (first name,middle name,last name ,phone,email,username)');
         }
 
-
         $phoneLib = $this->di->make(Phone::class);
         $filters = [];
         if ($email) $filters[] = new EmailFilter($email);
@@ -221,45 +220,46 @@ class SearchFacade
         }
 
         if ($email) {
-            $composites = $this->searchByEmail(email: $email, filters: $filters);
+            return $this->searchByEmail(email: $email, filters: $filters, alias: $alias, meta: $meta, sortByScore: $sortByScore);
         } elseif ($phone) {
-            $composites = $this->searchByPhone(phone: $phone, filters: $filters);
+            return $this->searchByPhone(phone: $phone, filters: $filters, alias: $alias, meta: $meta, sortByScore: $sortByScore, possibleCountries: ($possibleCountries??[]) );
         } elseif ($username) {
-            $composites = $this->searchByUsername(username: $username, filters: $filters);
+            return $this->searchByUsername(username: $username, filters: $filters, alias: $alias, meta: $meta, sortByScore: $sortByScore);
         } elseif ($searchableName ) {
-            $composites = $this->searchByName(name: $searchableName);
+            return $this->searchByName(name: $searchableName, filters: $filters, alias: $alias, meta: $meta, sortByScore: $sortByScore);
         }
+        return [];
 
         //
         // if no results then search online
         //
-        if (empty($composites) && !empty($alias)) {
-            $filters = [];
-            if ($firstName) $filters['first_name'] = $firstName;
-            if ($middleName) $filters['middle_name'] = $middleName;
-            if ($phone) $filters['phone'] = $phone;
-            if ($email) $filters['email'] = $email;
-            if ($countryCode) $filters['country_code'] = $countryCode;
-            if ($city) $filters['city'] = $city;
-            if ($state) $filters['state'] = $state;
-            if ($username) $filters['username'] = $username;
-            $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class);
-            $composites = $onlineSearchService
-                ->input('filters', $filters)
-                ->input('searchersAliases', $alias)
-                ->input('requestMeta', $meta)
-                ->process()
-                ->output('result');
-            $composites = $composites ? $this->mergeCompositesBySimilarity($composites) : [];
-        }
-        $mergedComposites = empty($composites) ? [] : $composites;
-
-        //
-        // order by composites score descending
-        //
-        if ($sortByScore)
-            $this->sortCompositesByScores($mergedComposites);
-        return $mergedComposites;
+//        if (empty($composites) && !empty($alias)) {
+//            $filters = [];
+//            if ($firstName) $filters['first_name'] = $firstName;
+//            if ($middleName) $filters['middle_name'] = $middleName;
+//            if ($phone) $filters['phone'] = $phone;
+//            if ($email) $filters['email'] = $email;
+//            if ($countryCode) $filters['country_code'] = $countryCode;
+//            if ($city) $filters['city'] = $city;
+//            if ($state) $filters['state'] = $state;
+//            if ($username) $filters['username'] = $username;
+//            $onlineSearchService = $this->di->make(SearchOnlineBySearchersChain::class);
+//            $composites = $onlineSearchService
+//                ->input('filters', $filters)
+//                ->input('searchersAliases', $alias)
+//                ->input('requestMeta', $meta)
+//                ->process()
+//                ->output('result');
+//
+//        }
+//        $mergedComposites = $composites ? $this->mergeCompositesBySimilarity($composites) : [];
+//
+//        //
+//        // order by composites score descending
+//        //
+//        if ($sortByScore)
+//            $this->sortCompositesByScores($mergedComposites);
+//        return $mergedComposites;
     }
 
 
