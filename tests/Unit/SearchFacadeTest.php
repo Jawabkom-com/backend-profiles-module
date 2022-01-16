@@ -147,6 +147,11 @@ class SearchFacadeTest extends AbstractTestCase
          $this->searchFacade->advancedSearch();
     }
 
+    public function testSearchFacadeByNameEmpty(){
+        $resultComposites = $this->searchFacade->advancedSearch(firstName: ' ');
+        $this->assertCount(0,$resultComposites);
+    }
+
     public function testSearchFacadeByNameOnline(){
         $resultComposites = $this->searchFacade->searchByName(name: 'Ahmad',alias: ['pipl']);
         $this->assertInstanceOf(IProfileComposite::class, $resultComposites[0]);
