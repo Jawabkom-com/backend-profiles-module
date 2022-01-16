@@ -60,6 +60,24 @@ class CompositeMergeLibraryTest extends AbstractTestCase
         $this->faker = Factory::create();
     }
 
+    public function testTwoDifferentScore()
+    {
+        $composite1 = $this->generateFirstComposite();
+        $composite2 = $this->generateSecondComposite();
+        $this->generateNamesEntity($composite1);
+        $composite1->getNames()[0]->setScore(10);
+        $composite2->getNames()[0]->setScore(40);
+        $compositeMerge = $this->di->make(ICompositesMerge::class);
+        $newComposite = $compositeMerge->merge(array($composite1, $composite2));
+        $this->assertGreaterThan($newComposite->getNames()[1]->score , $newComposite->getNames()[0]->score);
+
+        $composite1->getNames()[0]->setScore(40);
+        $composite2->getNames()[0]->setScore(10);
+        $newComposite = $compositeMerge->merge(array($composite1, $composite2));
+        $this->assertGreaterThan($newComposite->getNames()[1]->score , $newComposite->getNames()[0]->score);
+
+    }
+
     public function testCompositeMerge()
     {
         $composite1 = $this->generateFirstComposite();
