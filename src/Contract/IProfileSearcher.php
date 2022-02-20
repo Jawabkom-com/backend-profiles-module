@@ -11,4 +11,5 @@ interface IProfileSearcher
     public function getWeeklyRequestsLimit():int;
     public function getMonthlyRequestsLimit():int;
     public function search(IFilterComposite $filters):mixed;
+    public function canBreakChain(mixed $searchResult):bool;
 }

@@ -80,15 +80,17 @@ class SearchOnlineBySearchersChain extends AbstractService
                 $isFromCache = isset($cachedResultsByAliases[$alias]);
                 $searchRequest = null; // reset the search request for each alias
                 $searchRequests[] = $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, $isFromCache);
-                $results = $this->getSearchResults($isFromCache, $alias, $cachedResultsByAliases);
+                $searcher = $this->registry->getSearcher($alias);
+                $results = $this->getSearchResults($isFromCache, $alias, $searcher, $cachedResultsByAliases);
                 $profileComposites = $this->mapResultsToProfileComposites($alias, $results);
                 if (count($profileComposites)) {
-                    //if (!$isFromCache)
                     $this->saveResultsMappedProfile($profileComposites, $alias);
                     $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileComposites));
-                    $this->setOutput('result', $profileComposites);
-                    $this->setOutput('raw_result', $results);
-                    break;
+                    if ($searcher->canBreakChain($results)) {
+                        $this->setOutput('result', $profileComposites);
+                        $this->setOutput('raw_result', $results);
+                        break;
+                    }
                 } else {
                     $this->setEmptySearchRequestStatus($searchRequest, $results);
                 }
@@ -233,10 +235,9 @@ class SearchOnlineBySearchersChain extends AbstractService
             ->getSearcherRequestsCount($alias, $year, $month, $day, $hour);
     }
 
-    protected function getSearchResults(bool $isFromCache, mixed $alias, $cachedResultsByAliases): mixed
+    protected function getSearchResults(bool $isFromCache, mixed $alias, IProfileSearcher $searcher, $cachedResultsByAliases): mixed
     {
         if (!$isFromCache) {
-            $searcher = $this->registry->getSearcher($alias);
             $this->assertSearcherLimit($searcher, $alias);
             $results = $searcher->search($this->searchFiltersBuilder->build());
             $this->updateSearcherSearchLimit($alias);

@@ -454,4 +454,9 @@ JSON
     {
         return 0;
     }
+
+    public function canBreakChain(mixed $searchResult): bool
+    {
+        return true;
+    }
 }
