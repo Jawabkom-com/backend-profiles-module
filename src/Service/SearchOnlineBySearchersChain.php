@@ -85,11 +85,13 @@ class SearchOnlineBySearchersChain extends AbstractService
                 $profileComposites = $this->mapResultsToProfileComposites($alias, $results);
                 if (count($profileComposites)) {
                     $this->saveResultsMappedProfile($profileComposites, $alias);
-                    $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileComposites));
                     if ($searcher->canBreakChain($results)) {
+                        $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileComposites));
                         $this->setOutput('result', $profileComposites);
                         $this->setOutput('raw_result', $results);
                         break;
+                    } else {
+                        $this->setEmptySearchRequestStatus($searchRequest, $results);
                     }
                 } else {
                     $this->setEmptySearchRequestStatus($searchRequest, $results);
