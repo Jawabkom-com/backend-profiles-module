@@ -84,7 +84,7 @@ class SearchRequest extends Model implements ISearchRequestEntity, ISearchReques
 
     public function getRequestDateTime(): \DateTime
     {
-        return $this->request_date_time;
+        return new \DateTime($this->request_date_time);
     }
 
     public function setResultAliasSource(string $alias)
@@ -163,7 +163,10 @@ class SearchRequest extends Model implements ISearchRequestEntity, ISearchReques
 
     public function getByHash(string $hash, string $status = 'done', bool $isFromCache = false): iterable
     {
-        return self::where('hash', $hash)->get();
+        return self::where('hash', $hash)
+            ->where('status', $status)
+            ->where('is_from_cache', $isFromCache)
+            ->get();
     }
 
     public function setRequestMeta(array $meta)

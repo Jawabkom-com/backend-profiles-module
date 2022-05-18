@@ -72,35 +72,37 @@ class SearchOnlineBySearchersChain extends AbstractService
         $this->validateSearchersChain($searchersAliases);
         $this->searchFiltersBuilder->setAllFilters($filter)->trim();
         $searchGroupHash = sha1(json_encode($this->searchFiltersBuilder->buildAsArray()));
-        $cachedResultsByAliases = $this->getCachedResultsByAliases($searchGroupHash);
         $searchRequests = [];
-        foreach ($searchersAliases as $alias) {
-            try {
-                // check if there's a result in the cache
-                $isFromCache = isset($cachedResultsByAliases[$alias]);
-                $searchRequest = null; // reset the search request for each alias
-                $searchRequests[] = $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, $isFromCache);
-                $searcher = $this->registry->getSearcher($alias);
-                $results = $this->getSearchResults($isFromCache, $alias, $searcher, $cachedResultsByAliases);
-                $profileComposites = $this->mapResultsToProfileComposites($alias, $results);
-                if (count($profileComposites)) {
-                    $this->saveResultsMappedProfile($profileComposites, $alias);
-                    if ($searcher->canBreakChain($results)) {
-                        $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileComposites));
-                        $this->setOutput('result', $profileComposites);
-                        $this->setOutput('raw_result', $results);
-                        break;
+        if(!$this->checkRunningRequest($searchGroupHash)) {
+            $cachedResultsByAliases = $this->getCachedResultsByAliases($searchGroupHash);
+            foreach ($searchersAliases as $alias) {
+                try {
+                    // check if there's a result in the cache
+                    $isFromCache = isset($cachedResultsByAliases[$alias]);
+                    $searchRequest = null; // reset the search request for each alias
+                    $searchRequests[] = $searchRequest = $this->initSearchRequest($searchGroupHash, $alias, $isFromCache);
+                    $searcher = $this->registry->getSearcher($alias);
+                    $results = $this->getSearchResults($isFromCache, $alias, $searcher, $cachedResultsByAliases);
+                    $profileComposites = $this->mapResultsToProfileComposites($alias, $results);
+                    if (count($profileComposites)) {
+                        $this->saveResultsMappedProfile($profileComposites, $alias);
+                        if ($searcher->canBreakChain($results)) {
+                            $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileComposites));
+                            $this->setOutput('result', $profileComposites);
+                            $this->setOutput('raw_result', $results);
+                            break;
+                        } else {
+                            $this->setEmptySearchRequestStatus($searchRequest, $results);
+                        }
                     } else {
                         $this->setEmptySearchRequestStatus($searchRequest, $results);
                     }
-                } else {
-                    $this->setEmptySearchRequestStatus($searchRequest, $results);
-                }
 
-            } catch (\Throwable $exception) {
-                if (!isset($searchRequest))
-                    throw $exception;
-                $this->setErrorSearchRequestStatus($searchRequest, $exception);
+                } catch (\Throwable $exception) {
+                    if (!isset($searchRequest))
+                        throw $exception;
+                    $this->setErrorSearchRequestStatus($searchRequest, $exception);
+                }
             }
         }
         $this->setOutput('search_requests', $searchRequests);
@@ -168,6 +170,18 @@ class SearchOnlineBySearchersChain extends AbstractService
         return $cachedResultsByAliases;
     }
 
+    protected function checkRunningRequest(string $searchGroupHash): bool
+    {
+        $initResults = $this->searchRequestRepository->getByHash($searchGroupHash, 'init', false);
+        if ($initResults) {
+            foreach ($initResults as $initResult) {
+                if($initResult->getRequestDateTime()->getTimestamp() > time() - 20 /* seconds */) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     protected function assertSearcherLimit(IProfileSearcher $searcher, string $alias)
     {
