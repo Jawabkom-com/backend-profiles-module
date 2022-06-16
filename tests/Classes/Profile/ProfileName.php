@@ -142,4 +142,17 @@ class ProfileName extends Model implements IProfileNameEntity,IProfileNameReposi
     {
         return $this->where('display', 'LIKE', "%{$name}%")->groupBy('profile_id')->pluck('profile_id', 'profile_id')?->toArray();
     }
+
+    public function setValidSince(?\DateTime $dateTime)
+    {
+        $this->created_at = $dateTime ? $dateTime->format('Y-m-d H:i:s') : null;
+    }
+
+    public function getValidSince(): ?\DateTime
+    {
+        if($this->created_at) {
+            return new \DateTime($this->created_at);
+        }
+        return null;
+    }
 }

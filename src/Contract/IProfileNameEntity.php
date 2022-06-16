@@ -30,4 +30,7 @@ interface IProfileNameEntity extends IEntity
     public function setHash(string $hash);
     public function getHash():string;
 
+    public function setValidSince(?\DateTime $dateTime);
+    public function getValidSince():?\DateTime;
+
 }

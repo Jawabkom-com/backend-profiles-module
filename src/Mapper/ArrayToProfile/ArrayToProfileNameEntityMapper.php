@@ -17,6 +17,7 @@ class ArrayToProfileNameEntityMapper extends AbstractMapper implements IArrayToP
         $entity->setMiddle($profile['middle'] ?? null);
         $entity->setLast($profile['last'] ?? null);
         $entity->setPrefix($profile['prefix'] ?? null);
+        $entity->setValidSince(!empty($profile['valid_since']) ? new \DateTime($profile['valid_since']) : null);
         return $entity;
     }
 }

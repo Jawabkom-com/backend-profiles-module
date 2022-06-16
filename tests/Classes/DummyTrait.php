@@ -149,6 +149,7 @@ trait DummyTrait
             'first'=>$this->faker->firstName,
             'middle'=>$this->faker->firstName,
             'last'=>$this->faker->lastName,
+            'valid_since' => date('Y-m-d H:i:s')
         ];
     }
 

@@ -8,6 +8,7 @@ class ProfileNamesInputValidator extends AbstractInputValidator
 {
     protected array $structure = [
         'prefix',
+        'valid_since',
 
         // below shouldn't be null together
         'first', 'middle', 'last'

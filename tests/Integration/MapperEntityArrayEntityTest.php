@@ -202,6 +202,7 @@ class MapperEntityArrayEntityTest extends AbstractTestCase
         $originEntity->setMiddle('middle');
         $originEntity->setLast('last');
         $originEntity->setPrefix('prefix');
+        $originEntity->setValidSince(null);
         $toArrayMapper = $this->di->make(IProfileNameEntityToArrayMapper::class);
         $aMappedEntity = $toArrayMapper->map($originEntity);
         $toProfileEntityMapper = $this->di->make(IArrayToProfileNameEntityMapper::class);

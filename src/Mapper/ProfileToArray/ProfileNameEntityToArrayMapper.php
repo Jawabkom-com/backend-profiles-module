@@ -14,6 +14,7 @@ class ProfileNameEntityToArrayMapper implements IProfileNameEntityToArrayMapper
            'middle' => $nameEntity->getMiddle(),
            'last' => $nameEntity->getLast(),
            'display' => $nameEntity->getDisplay(),
+           'valid_since' => $nameEntity->getValidSince() ? $nameEntity->getValidSince()->format('Y-m-d H:i:s') : null
        ];
     }
 }
