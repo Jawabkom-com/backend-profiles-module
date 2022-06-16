@@ -20,6 +20,7 @@ class ProfileNameHashGenerator implements IProfileNameHashGenerator
     {
         $nameArray =$this->arrayMapper->map($entity);
         unset($nameArray['display']);
+        unset($nameArray['valid_since']);
         return $arrayHashing->hash($nameArray);
     }
 }
