@@ -17,5 +17,5 @@ interface IProfilePhoneRepository extends IRepository
      * @param string $nomalizedPhoneNumber
      * @return string[]
      */
-    public function getDistinctProfileIdsByPhone(string $normalizedPhoneNumber):?array;
+    public function getDistinctProfileIdsByPhone(string $normalizedPhoneNumber, ?string $countryCode = null):?array;
 }
