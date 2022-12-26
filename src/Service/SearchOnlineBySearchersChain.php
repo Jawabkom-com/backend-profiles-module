@@ -255,8 +255,8 @@ class SearchOnlineBySearchersChain extends AbstractService
     {
         if (!$isFromCache) {
             $this->assertSearcherLimit($searcher, $alias);
-            $results = $searcher->search($this->searchFiltersBuilder->build());
             $this->updateSearcherSearchLimit($alias);
+            $results = $searcher->search($this->searchFiltersBuilder->build());
         } else {
             $results = $cachedResultsByAliases[$alias];
         }
