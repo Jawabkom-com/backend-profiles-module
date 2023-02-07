@@ -71,7 +71,7 @@ class SearchOnlineBySearchersChain extends AbstractService
         $searchersAliases = $this->getInput('searchersAliases', []);
         $this->validateSearchersChain($searchersAliases);
         $this->searchFiltersBuilder->setAllFilters($filter)->trim();
-        $searchGroupHash = sha1(json_encode($this->searchFiltersBuilder->buildAsArray()));
+        $searchGroupHash = sha1(json_encode($this->searchFiltersBuilder->buildAsArray()).json_encode($searchersAliases));
         $searchRequests = [];
         if(!$this->checkRunningRequest($searchGroupHash)) {
             $cachedResultsByAliases = $this->getCachedResultsByAliases($searchGroupHash);
