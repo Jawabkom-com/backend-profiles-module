@@ -92,7 +92,7 @@ class SearchOnlineBySearchersChain extends AbstractService
                             $this->setOutput('raw_result', $results);
                             break;
                         } else {
-                            $this->setEmptySearchRequestStatus($searchRequest, $results);
+                            $this->setSucceededSearchRequestStatus($searchRequest, $results, count($profileComposites));
                         }
                     } else {
                         $this->setEmptySearchRequestStatus($searchRequest, $results);
